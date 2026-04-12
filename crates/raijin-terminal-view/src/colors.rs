@@ -80,31 +80,31 @@ fn named_color_to_oklch(name: NamedColor, dim: bool, theme: &Theme) -> Oklch {
     let tc = &theme.styles.colors;
     let c = match name {
         // Theme-driven special colors
-        NamedColor::Background => return tc.terminal_background,
-        NamedColor::Foreground => return tc.terminal_foreground,
+        NamedColor::Background => return tc.terminal.background,
+        NamedColor::Foreground => return tc.terminal.foreground,
         NamedColor::Cursor => return tc.text_accent,
 
         // Normal ANSI 8 — from theme
-        NamedColor::Black => tc.terminal_ansi_black,
-        NamedColor::Red => tc.terminal_ansi_red,
-        NamedColor::Green => tc.terminal_ansi_green,
-        NamedColor::Yellow => tc.terminal_ansi_yellow,
-        NamedColor::Blue => tc.terminal_ansi_blue,
-        NamedColor::Magenta => tc.terminal_ansi_magenta,
-        NamedColor::Cyan => tc.terminal_ansi_cyan,
-        NamedColor::White => tc.terminal_ansi_white,
+        NamedColor::Black => tc.terminal.ansi.black,
+        NamedColor::Red => tc.terminal.ansi.red,
+        NamedColor::Green => tc.terminal.ansi.green,
+        NamedColor::Yellow => tc.terminal.ansi.yellow,
+        NamedColor::Blue => tc.terminal.ansi.blue,
+        NamedColor::Magenta => tc.terminal.ansi.magenta,
+        NamedColor::Cyan => tc.terminal.ansi.cyan,
+        NamedColor::White => tc.terminal.ansi.white,
 
         // Bright ANSI 8 — from theme
-        NamedColor::BrightBlack => tc.terminal_ansi_bright_black,
-        NamedColor::BrightRed => tc.terminal_ansi_bright_red,
-        NamedColor::BrightGreen => tc.terminal_ansi_bright_green,
-        NamedColor::BrightYellow => tc.terminal_ansi_bright_yellow,
-        NamedColor::BrightBlue => tc.terminal_ansi_bright_blue,
-        NamedColor::BrightMagenta => tc.terminal_ansi_bright_magenta,
-        NamedColor::BrightCyan => tc.terminal_ansi_bright_cyan,
-        NamedColor::BrightWhite => tc.terminal_ansi_bright_white,
+        NamedColor::BrightBlack => tc.terminal.ansi.bright_black,
+        NamedColor::BrightRed => tc.terminal.ansi.bright_red,
+        NamedColor::BrightGreen => tc.terminal.ansi.bright_green,
+        NamedColor::BrightYellow => tc.terminal.ansi.bright_yellow,
+        NamedColor::BrightBlue => tc.terminal.ansi.bright_blue,
+        NamedColor::BrightMagenta => tc.terminal.ansi.bright_magenta,
+        NamedColor::BrightCyan => tc.terminal.ansi.bright_cyan,
+        NamedColor::BrightWhite => tc.terminal.ansi.bright_white,
 
-        _ => tc.terminal_foreground,
+        _ => tc.terminal.foreground,
     };
     if dim {
         let mut c = c;
@@ -117,7 +117,7 @@ fn named_color_to_oklch(name: NamedColor, dim: bool, theme: &Theme) -> Oklch {
 
 fn indexed_256_to_oklch(idx: u8, theme: &Theme) -> Oklch {
     if idx < 16 {
-        return theme.styles.colors.terminal_foreground;
+        return theme.styles.colors.terminal.foreground;
     }
 
     if idx < 232 {

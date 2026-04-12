@@ -1,7 +1,7 @@
 use crate::{ListBulletItem, Vector, VectorName, prelude::*};
 use inazuma_component_registry::{Component, ComponentScope, example_group, single_example};
 use inazuma::{
-    AnyElement, ClickEvent, IntoElement, ParentElement, SharedString, StatefulInteractiveElement as _,
+    AnyElement, ClickEvent, IntoElement, ParentElement, SharedString,
     linear_color_stop, linear_gradient,
 };
 use smallvec::SmallVec;

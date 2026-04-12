@@ -18,6 +18,8 @@ pub enum TerminalEvent {
     Exit,
     /// Shell integration marker detected (OSC 133).
     ShellMarker(ShellMarker),
+    /// Breadcrumb text changed (e.g., agent updated the terminal label).
+    BreadcrumbsChanged,
 }
 
 /// Bridges raijin-term events to our TerminalEvent channel.

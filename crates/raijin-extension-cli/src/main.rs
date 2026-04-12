@@ -5,15 +5,15 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use ::fs::{CopyOptions, Fs, RealFs, copy_recursive};
+use raijin_fs::{CopyOptions, Fs, RealFs, copy_recursive};
 use anyhow::{Context as _, Result, anyhow, bail};
 use clap::Parser;
-use cloud_api_types::ExtensionProvides;
+use raijin_cloud_api_types::ExtensionProvides;
 use raijin_extension::extension_builder::{CompileExtensionOptions, ExtensionBuilder};
 use raijin_extension::{ExtensionManifest, ExtensionSnippets};
 use raijin_language::LanguageConfig;
-use reqwest_client::ReqwestClient;
-use settings_content::SemanticTokenRules;
+use raijin_reqwest_client::ReqwestClient;
+use inazuma_settings_content::SemanticTokenRules;
 use raijin_snippet_provider::file_to_snippets;
 use raijin_snippet_provider::format::VsSnippetsFile;
 use raijin_task::TaskTemplates;
@@ -39,7 +39,7 @@ async fn main() -> Result<()> {
     env_logger::init();
 
     let args = Args::parse();
-    let fs = Arc::new(RealFs::new(None, gpui_platform::background_executor()));
+    let fs = Arc::new(RealFs::new(None, inazuma_platform::background_executor()));
     let engine = wasmtime::Engine::default();
     let mut wasm_store = WasmStore::new(&engine)?;
 
@@ -108,7 +108,7 @@ async fn main() -> Result<()> {
         );
     }
 
-    let manifest_json = serde_json::to_string(&cloud_api_types::ExtensionApiManifest {
+    let manifest_json = serde_json::to_string(&raijin_cloud_api_types::ExtensionApiManifest {
         name: manifest.name,
         version: manifest.version,
         description: manifest.description,
@@ -414,7 +414,7 @@ async fn test_themes(
     for relative_theme_path in &manifest.themes {
         let theme_path = extension_path.join(relative_theme_path);
         let theme_family =
-            theme_settings::deserialize_user_theme(&fs.load_bytes(&theme_path).await?)?;
+            raijin_theme_settings::deserialize_user_theme(&fs.load_bytes(&theme_path).await?)?;
         log::info!("loaded theme family {}", theme_family.name);
 
         for theme in &theme_family.themes {

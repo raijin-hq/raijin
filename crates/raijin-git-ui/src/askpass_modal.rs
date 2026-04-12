@@ -3,7 +3,7 @@ use raijin_editor::Editor;
 use futures::channel::oneshot;
 use inazuma::{AppContext, DismissEvent, Entity, EventEmitter, Focusable, Styled};
 use raijin_ui::{
-    ActiveTheme, AnyElement, App, Button, Clickable, Color, Context, DynamicSpacing, Headline,
+    ActiveTheme, AnyElement, App, Button, Color, Context, DynamicSpacing, Headline,
     HeadlineSize, Icon, IconName, IconSize, InteractiveElement, IntoElement, Label, LabelCommon,
     LabelSize, ParentElement, Render, SharedString, StyledExt, StyledTypography, Window, div,
     h_flex, v_flex,

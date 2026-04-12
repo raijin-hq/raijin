@@ -119,7 +119,7 @@ fn render_provider_dropdown(window: &mut Window, cx: &mut App) -> AnyElement {
 
     let menu = ContextMenu::build(window, cx, move |mut menu, _, cx| {
         let available_providers = get_available_providers(cx);
-        let fs = <dyn fs::Fs>::global(cx);
+        let fs = <dyn raijin_fs::Fs>::global(cx);
 
         for provider in available_providers {
             let Some(name) = provider.display_name() else {
@@ -290,7 +290,7 @@ fn render_api_key_provider(
                         .when_some(env_var_name, |this, env_var_name| {
                             this.child({
                                 let label = format!(
-                                    "Or set the {} env var and restart Zed.",
+                                    "Or set the {} env var and restart Raijin.",
                                     env_var_name.as_ref()
                                 );
                                 Label::new(label).size(LabelSize::Small).color(Color::Muted)
@@ -708,16 +708,16 @@ fn codestral_settings() -> Box<[SettingsPageItem]> {
 
 fn render_github_copilot_provider(window: &mut Window, cx: &mut App) -> Option<impl IntoElement> {
     let configuration_view = window.use_state(cx, |_, cx| {
-        copilot_ui::ConfigurationView::new(
+        raijin_copilot_ui::ConfigurationView::new(
             move |cx| {
                 if let Some(app_state) = AppState::global(cx).upgrade() {
-                    copilot::GlobalCopilotAuth::try_get_or_init(app_state, cx)
+                    raijin_copilot::GlobalCopilotAuth::try_get_or_init(app_state, cx)
                         .is_some_and(|copilot| copilot.0.read(cx).is_authenticated())
                 } else {
                     false
                 }
             },
-            copilot_ui::ConfigurationMode::EditPrediction,
+            raijin_copilot_ui::ConfigurationMode::EditPrediction,
             cx,
         )
     });

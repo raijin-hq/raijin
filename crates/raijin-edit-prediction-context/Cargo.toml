@@ -13,32 +13,32 @@ path = "src/edit_prediction_context.rs"
 
 [dependencies]
 anyhow.workspace = true
-inazuma-clock = { workspace = true, package = "inazuma-clock" }
-inazuma-collections = { workspace = true, package = "inazuma-collections" }
+inazuma-clock.workspace = true
+inazuma-collections.workspace = true
 futures.workspace = true
 inazuma.workspace = true
-raijin-language = { workspace = true, package = "raijin-language" }
+raijin-language.workspace = true
 log.workspace = true
-raijin-lsp = { workspace = true, package = "raijin-lsp" }
+raijin-lsp.workspace = true
 parking_lot.workspace = true
-raijin-project = { workspace = true, package = "raijin-project" }
+raijin-project.workspace = true
 serde.workspace = true
 smallvec.workspace = true
-inazuma-text = { workspace = true, package = "inazuma-text" }
+inazuma-text.workspace = true
 tree-sitter.workspace = true
-inazuma-util = { workspace = true, package = "inazuma-util" }
-raijin-zeta-prompt = { workspace = true, package = "raijin-zeta-prompt" }
+inazuma-util.workspace = true
+raijin-zeta-prompt.workspace = true
 
 [dev-dependencies]
 env_logger.workspace = true
 indoc.workspace = true
 futures.workspace = true
 inazuma = { workspace = true, features = ["test-support"] }
-raijin-language = { workspace = true, package = "raijin-language", features = ["test-support"] }
-raijin-lsp = { workspace = true, package = "raijin-lsp", features = ["test-support"] }
+raijin-language = { workspace = true, features = ["test-support"] }
+raijin-lsp = { workspace = true, features = ["test-support"] }
 pretty_assertions.workspace = true
-raijin-project = { workspace = true, package = "raijin-project", features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
 serde_json.workspace = true
-inazuma-settings-framework = { workspace = true, package = "inazuma-settings-framework", features = ["test-support"] }
-inazuma-text = { workspace = true, package = "inazuma-text", features = ["test-support"] }
-inazuma-util = { workspace = true, package = "inazuma-util", features = ["test-support"] }
+inazuma-settings-framework = { workspace = true, features = ["test-support"] }
+inazuma-text = { workspace = true, features = ["test-support"] }
+inazuma-util = { workspace = true, features = ["test-support"] }

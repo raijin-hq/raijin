@@ -1,7 +1,7 @@
 use anyhow::Result;
 use raijin_client::{Client, UserStore, zed_urls};
-use cloud_llm_client::UsageLimit;
-use codestral::{self, CodestralEditPredictionDelegate};
+use raijin_cloud_llm_client::UsageLimit;
+use raijin_codestral::{self, CodestralEditPredictionDelegate};
 use raijin_copilot::Status;
 use raijin_edit_prediction::EditPredictionStore;
 use raijin_edit_prediction_types::EditPredictionDelegateHandle;
@@ -122,7 +122,7 @@ impl Render for EditPredictionButton {
                                             .on_click(
                                                 "Reinstall Copilot",
                                                 move |window, cx| {
-                                                    copilot_ui::reinstall_and_sign_in(
+                                                    raijin_copilot_ui::reinstall_and_sign_in(
                                                         copilot.clone(),
                                                         window,
                                                         cx,
@@ -182,7 +182,7 @@ impl Render for EditPredictionButton {
             }
             EditPredictionProvider::Codestral => {
                 let enabled = self.editor_enabled.unwrap_or(true);
-                let has_api_key = codestral::codestral_api_key(cx).is_some();
+                let has_api_key = raijin_codestral::codestral_api_key(cx).is_some();
                 let this = cx.weak_entity();
                 let file = self.file.clone();
                 let language = self.language.clone();
@@ -340,7 +340,7 @@ impl Render for EditPredictionButton {
                     .as_ref()
                     .map(|p| p.icons(cx))
                     .unwrap_or_else(|| {
-                        edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
+                        raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
                     });
 
                 let ep_icon;
@@ -351,10 +351,10 @@ impl Render for EditPredictionButton {
                     EditPredictionProvider::Mercury => {
                         ep_icon = if enabled { icons.base } else { icons.disabled };
                         let mercury_has_error =
-                            edit_prediction::EditPredictionStore::try_global(cx).is_some_and(
+                            raijin_edit_prediction::EditPredictionStore::try_global(cx).is_some_and(
                                 |ep_store| ep_store.read(cx).mercury_has_payment_required_error(),
                             );
-                        missing_token = edit_prediction::EditPredictionStore::try_global(cx)
+                        missing_token = raijin_edit_prediction::EditPredictionStore::try_global(cx)
                             .is_some_and(|ep_store| !ep_store.read(cx).has_mercury_api_token(cx));
                         tooltip_meta = if missing_token {
                             "Missing API key for Mercury"
@@ -370,7 +370,7 @@ impl Render for EditPredictionButton {
                     }
                 };
 
-                if edit_prediction::should_show_upsell_modal(cx) {
+                if raijin_edit_prediction::should_show_upsell_modal(cx) {
                     let tooltip_meta = if self.user_store.read(cx).current_user().is_some() {
                         "Choose a Plan"
                     } else {
@@ -386,12 +386,12 @@ impl Render for EditPredictionButton {
                                 Tooltip::with_meta("Edit Predictions", None, tooltip_meta, cx)
                             })
                             .on_click(cx.listener(move |_, _, window, cx| {
-                                telemetry::event!(
+                                raijin_telemetry::event!(
                                     "Pending ToS Clicked",
                                     source = "Edit Prediction Status Button"
                                 );
                                 window.dispatch_action(
-                                    zed_actions::OpenZedPredictOnboarding.boxed_clone(),
+                                    raijin_actions::OpenZedPredictOnboarding.boxed_clone(),
                                     cx,
                                 );
                             })),
@@ -412,7 +412,7 @@ impl Render for EditPredictionButton {
                 let user = self.user_store.read(cx).current_user();
 
                 let mercury_has_error = matches!(provider, EditPredictionProvider::Mercury)
-                    && edit_prediction::EditPredictionStore::try_global(cx).is_some_and(
+                    && raijin_edit_prediction::EditPredictionStore::try_global(cx).is_some_and(
                         |ep_store| ep_store.read(cx).mercury_has_payment_required_error(),
                     );
 
@@ -536,10 +536,10 @@ impl EditPredictionButton {
         cx.observe_global::<EditPredictionStore>(move |_, cx| cx.notify())
             .detach();
 
-        edit_prediction::ollama::ensure_authenticated(cx);
-        let mercury_api_token_task = edit_prediction::mercury::load_mercury_api_token(cx);
+        raijin_edit_prediction::ollama::ensure_authenticated(cx);
+        let mercury_api_token_task = raijin_edit_prediction::mercury::load_mercury_api_token(cx);
         let open_ai_compatible_api_token_task =
-            edit_prediction::open_ai_compatible::load_open_ai_compatible_api_token(cx);
+            raijin_edit_prediction::open_ai_compatible::load_open_ai_compatible_api_token(cx);
 
         cx.spawn(async move |this, cx| {
             _ = futures::join!(mercury_api_token_task, open_ai_compatible_api_token_task);
@@ -612,7 +612,7 @@ impl EditPredictionButton {
         let project = self.project.clone();
         ContextMenu::build(window, cx, |menu, _, _| {
             menu.entry("Sign In to Copilot", None, move |window, cx| {
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Edit Prediction Menu Action",
                     action = "sign_in",
                     provider = "copilot",
@@ -622,13 +622,13 @@ impl EditPredictionButton {
                         this.start_copilot_for_project(&project.upgrade()?, cx)
                     })
                 }) {
-                    copilot_ui::initiate_sign_in(copilot, window, cx);
+                    raijin_copilot_ui::initiate_sign_in(copilot, window, cx);
                 }
             })
             .entry("Disable Copilot", None, {
                 let fs = fs.clone();
                 move |_window, cx| {
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "Edit Prediction Menu Action",
                         action = "disable_provider",
                         provider = "copilot",
@@ -667,10 +667,10 @@ impl EditPredictionButton {
         if let Some(editor_focus_handle) = self.editor_focus_handle.clone() {
             let entry = ContextMenuEntry::new("This Buffer")
                 .toggleable(IconPosition::Start, self.editor_show_predictions)
-                .action(Box::new(editor::actions::ToggleEditPrediction))
+                .action(Box::new(raijin_editor::actions::ToggleEditPrediction))
                 .handler(move |window, cx| {
                     editor_focus_handle.dispatch_action(
-                        &editor::actions::ToggleEditPrediction,
+                        &raijin_editor::actions::ToggleEditPrediction,
                         window,
                         cx,
                     );
@@ -701,7 +701,7 @@ impl EditPredictionButton {
                 IconPosition::Start,
                 None,
                 move |_, cx| {
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "Edit Prediction Setting Changed",
                         setting = "language",
                         language = language_name.to_string(),
@@ -717,9 +717,9 @@ impl EditPredictionButton {
         let globally_enabled = settings.show_edit_predictions(None, cx);
         let entry = ContextMenuEntry::new("All Files")
             .toggleable(IconPosition::Start, globally_enabled)
-            .action(workspace::ToggleEditPrediction.boxed_clone())
+            .action(raijin_workspace::ToggleEditPrediction.boxed_clone())
             .handler(|window, cx| {
-                window.dispatch_action(workspace::ToggleEditPrediction.boxed_clone(), cx)
+                window.dispatch_action(raijin_workspace::ToggleEditPrediction.boxed_clone(), cx)
             });
         menu = menu.item(entry);
 
@@ -740,7 +740,7 @@ impl EditPredictionButton {
                         .handler({
                             let fs = fs.clone();
                             move |_, cx| {
-                                telemetry::event!(
+                                raijin_telemetry::event!(
                                     "Edit Prediction Setting Changed",
                                     setting = "mode",
                                     value = "eager",
@@ -758,7 +758,7 @@ impl EditPredictionButton {
                         .handler({
                             let fs = fs.clone();
                             move |_, cx| {
-                                telemetry::event!(
+                                raijin_telemetry::event!(
                                     "Edit Prediction Setting Changed",
                                     setting = "mode",
                                     value = "subtle",
@@ -845,12 +845,12 @@ impl EditPredictionButton {
                                 provider.toggle_data_collection(cx);
 
                                 if !enabled {
-                                    telemetry::event!(
+                                    raijin_telemetry::event!(
                                         "Data Collection Enabled",
                                         source = "Edit Prediction Status Menu"
                                     );
                                 } else {
-                                    telemetry::event!(
+                                    raijin_telemetry::event!(
                                         "Data Collection Disabled",
                                         source = "Edit Prediction Status Menu"
                                     );
@@ -880,7 +880,7 @@ impl EditPredictionButton {
                         Open your settings to add sensitive paths for which Zed will never predict edits."}).into_any_element()
                 })
                 .handler(move |window, cx| {
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "Edit Prediction Menu Action",
                         action = "configure_excluded_files",
                     );
@@ -901,7 +901,7 @@ impl EditPredictionButton {
                 .icon(IconName::FileGeneric)
                 .icon_color(Color::Muted)
                 .handler(move |_, cx| {
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "Edit Prediction Menu Action",
                         action = "view_docs",
                     );
@@ -915,7 +915,7 @@ impl EditPredictionButton {
                 .as_ref()
                 .map(|p| p.icons(cx))
                 .unwrap_or_else(|| {
-                    edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
+                    raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
                 });
             menu = menu.item(
                 ContextMenuEntry::new("This file is excluded.")
@@ -935,7 +935,7 @@ impl EditPredictionButton {
                     {
                         let editor_focus_handle = editor_focus_handle.clone();
                         move |window, cx| {
-                            telemetry::event!(
+                            raijin_telemetry::event!(
                                 "Edit Prediction Menu Action",
                                 action = "predict_at_cursor",
                             );
@@ -967,7 +967,7 @@ impl EditPredictionButton {
             .copilot
             .enable_next_edit_suggestions
             .unwrap_or(true);
-        let copilot_config = copilot_chat::CopilotChatConfiguration {
+        let copilot_config = raijin_copilot_chat::CopilotChatConfiguration {
             enterprise_uri: all_language_settings
                 .edit_predictions
                 .copilot
@@ -1007,7 +1007,7 @@ impl EditPredictionButton {
                     "Go to Copilot Settings",
                     OpenBrowser { url: settings_url }.boxed_clone(),
                 )
-                .action("Sign Out", copilot::SignOut.boxed_clone())
+                .action("Sign Out", raijin_copilot::SignOut.boxed_clone())
         })
     }
 
@@ -1062,7 +1062,7 @@ impl EditPredictionButton {
                     })
                     .separator()
                     .entry("Sign In & Start Using", None, |window, cx| {
-                        telemetry::event!(
+                        raijin_telemetry::event!(
                             "Edit Prediction Menu Action",
                             action = "sign_in",
                             provider = "zed",
@@ -1084,7 +1084,7 @@ impl EditPredictionButton {
                         }
                         .boxed_clone(),
                         |_window, _cx| {
-                            telemetry::event!(
+                            raijin_telemetry::event!(
                                 "Edit Prediction Menu Action",
                                 action = "view_docs",
                                 source = "upsell",
@@ -1094,7 +1094,7 @@ impl EditPredictionButton {
                     .separator();
             } else {
                 let mercury_payment_required = matches!(provider, EditPredictionProvider::Mercury)
-                    && edit_prediction::EditPredictionStore::try_global(cx).is_some_and(
+                    && raijin_edit_prediction::EditPredictionStore::try_global(cx).is_some_and(
                         |ep_store| ep_store.read(cx).mercury_has_payment_required_error(),
                     );
 
@@ -1151,7 +1151,7 @@ impl EditPredictionButton {
                         )
                         .when(usage.over_limit(), |menu| -> ContextMenu {
                             menu.entry("Subscribe to increase your limit", None, |_window, cx| {
-                                telemetry::event!(
+                                raijin_telemetry::event!(
                                     "Edit Prediction Menu Action",
                                     action = "upsell_clicked",
                                     reason = "usage_limit",
@@ -1172,7 +1172,7 @@ impl EditPredictionButton {
                             |_window, cx| cx.open_url(&zed_urls::account_url(cx)),
                         )
                         .entry("Upgrade to Zed Pro or contact us.", None, |_window, cx| {
-                            telemetry::event!(
+                            raijin_telemetry::event!(
                                 "Edit Prediction Menu Action",
                                 action = "upsell_clicked",
                                 reason = "account_age",
@@ -1269,7 +1269,7 @@ impl EditPredictionButton {
                     .icon_position(IconPosition::Start)
                     .icon_color(Color::Muted)
                     .handler(move |window, cx| {
-                        telemetry::event!(
+                        raijin_telemetry::event!(
                             "Edit Prediction Menu Action",
                             action = "configure_providers",
                         );
@@ -1341,8 +1341,8 @@ async fn open_disabled_globs_setting_in_editor(
 ) -> Result<()> {
     let settings_editor = workspace
         .update_in(cx, |_, window, cx| {
-            create_and_open_local_file(paths::settings_file(), window, cx, || {
-                settings::initial_user_settings_content().as_ref().into()
+            create_and_open_local_file(raijin_paths::settings_file(), window, cx, || {
+                inazuma_settings_framework::initial_user_settings_content().as_ref().into()
             })
         })?
         .await?
@@ -1418,18 +1418,18 @@ pub fn get_available_providers(cx: &mut App) -> Vec<EditPredictionProvider> {
 
     providers.push(EditPredictionProvider::Zed);
 
-    if let Some(app_state) = workspace::AppState::global(cx).upgrade()
-        && copilot::GlobalCopilotAuth::try_get_or_init(app_state, cx)
+    if let Some(app_state) = raijin_workspace::AppState::global(cx).upgrade()
+        && raijin_copilot::GlobalCopilotAuth::try_get_or_init(app_state, cx)
             .is_some_and(|copilot| copilot.0.read(cx).is_authenticated())
     {
         providers.push(EditPredictionProvider::Copilot);
     };
 
-    if codestral::codestral_api_key(cx).is_some() {
+    if raijin_codestral::codestral_api_key(cx).is_some() {
         providers.push(EditPredictionProvider::Codestral);
     }
 
-    if edit_prediction::ollama::is_available(cx) {
+    if raijin_edit_prediction::ollama::is_available(cx) {
         providers.push(EditPredictionProvider::Ollama);
     }
 
@@ -1441,7 +1441,7 @@ pub fn get_available_providers(cx: &mut App) -> Vec<EditPredictionProvider> {
         providers.push(EditPredictionProvider::OpenAiCompatibleApi);
     }
 
-    if edit_prediction::mercury::mercury_api_token(cx)
+    if raijin_edit_prediction::mercury::mercury_api_token(cx)
         .read(cx)
         .has_key()
     {
@@ -1492,7 +1492,7 @@ fn toggle_edit_prediction_mode(fs: Arc<dyn Fs>, mode: EditPredictionsMode, cx: &
                 edit_predictions.mode = Some(mode);
             } else {
                 settings.project.all_languages.edit_predictions =
-                    Some(settings::EditPredictionSettingsContent {
+                    Some(inazuma_settings_framework::EditPredictionSettingsContent {
                         mode: Some(mode),
                         ..Default::default()
                     });
@@ -1590,7 +1590,7 @@ fn emit_edit_prediction_menu_opened(
         .upgrade()
         .map(|p| p.read(cx).is_via_remote_server())
         .unwrap_or(false);
-    telemetry::event!(
+    raijin_telemetry::event!(
         "Toolbar Menu Opened",
         name = "Edit Predictions",
         provider,

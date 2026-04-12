@@ -42,8 +42,18 @@ use raijin_theme::ActiveTheme;
 use title_bar_settings::TitleBarSettings;
 use raijin_ui::{
     Avatar, ButtonLike, ContextMenu, IconWithIndicator, Indicator, PopoverMenu, PopoverMenuHandle,
-    TintColor, Tooltip, prelude::*, utils::platform_title_bar_height,
+    TintColor, Tooltip, prelude::*,
 };
+
+#[cfg(not(target_os = "windows"))]
+fn platform_title_bar_height(window: &Window) -> inazuma::Pixels {
+    (1.75 * window.rem_size()).max(inazuma::px(34.))
+}
+
+#[cfg(target_os = "windows")]
+fn platform_title_bar_height(_window: &Window) -> inazuma::Pixels {
+    inazuma::px(32.)
+}
 use update_version::UpdateVersion;
 use inazuma_util::ResultExt;
 use raijin_workspace::{
@@ -571,7 +581,7 @@ impl TitleBar {
                 })
                 .trigger_with_tooltip(
                     ButtonLike::new("remote_project")
-                        .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                        .selected_style(ButtonStyle::tinted(TintColor::Accent))
                         .child(
                             h_flex()
                                 .gap_2()
@@ -618,7 +628,7 @@ impl TitleBar {
         }
 
         let button = Button::new("restricted_mode_trigger", "Restricted Mode")
-            .style(ButtonStyle::Tinted(TintColor::Warning))
+            .style(ButtonStyle::tinted(TintColor::Warning))
             .label_size(LabelSize::Small)
             .color(Color::Warning)
             .start_icon(
@@ -777,7 +787,7 @@ impl TitleBar {
                                 .color(Color::Muted),
                         )
                     })
-                    .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                    .selected_style(ButtonStyle::tinted(TintColor::Accent))
                     .when(!is_project_selected, |s| s.color(Color::Muted)),
                 move |_window, cx| {
                     Tooltip::for_action(
@@ -840,7 +850,7 @@ impl TitleBar {
                                 .color(Color::Muted),
                         )
                     })
-                    .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                    .selected_style(ButtonStyle::tinted(TintColor::Accent))
                     .when(!is_project_selected, |s| s.color(Color::Muted)),
                 move |_window, cx| {
                     Tooltip::for_action(
@@ -916,7 +926,7 @@ impl TitleBar {
                 })
                 .trigger_with_tooltip(
                     ButtonLike::new("project_branch_trigger")
-                        .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                        .selected_style(ButtonStyle::tinted(TintColor::Accent))
                         .child(
                             h_flex()
                                 .gap_0p5()

@@ -138,9 +138,12 @@ impl Audio {
 }
 
 /// An opened input (microphone) stream using cpal directly.
+/// Implements `Iterator<Item = f32>` and `rodio::Source` so it can be
+/// fed into a rodio mixer or processed with `RodioExt` helpers.
 pub struct InputStream {
     _stream: cpal::Stream,
     config: cpal::StreamConfig,
+    receiver: crossbeam::channel::Receiver<f32>,
 }
 
 impl InputStream {
@@ -154,6 +157,36 @@ impl std::fmt::Debug for InputStream {
         f.debug_struct("InputStream")
             .field("config", &self.config)
             .finish()
+    }
+}
+
+impl Iterator for InputStream {
+    type Item = f32;
+
+    fn next(&mut self) -> Option<f32> {
+        // Use recv with a short timeout so the iterator can be stopped
+        // (returns None when the sender is dropped or times out).
+        self.receiver
+            .recv_timeout(std::time::Duration::from_millis(100))
+            .ok()
+    }
+}
+
+impl Source for InputStream {
+    fn current_frame_len(&self) -> Option<usize> {
+        None
+    }
+
+    fn channels(&self) -> u16 {
+        self.config.channels
+    }
+
+    fn sample_rate(&self) -> u32 {
+        self.config.sample_rate
+    }
+
+    fn total_duration(&self) -> Option<std::time::Duration> {
+        None
     }
 }
 
@@ -171,11 +204,18 @@ pub fn open_input_stream(
         buffer_size: cpal::BufferSize::Default,
     };
 
+    // Bounded channel large enough to buffer ~100ms of audio at typical rates.
+    let capacity = (config.sample_rate as usize / 10) * config.channels as usize;
+    let (sender, receiver) = crossbeam::channel::bounded::<f32>(capacity);
+
     let stream = device
         .build_input_stream(
             &config,
-            |_data: &[f32], _info: &cpal::InputCallbackInfo| {
-                // Input data is processed by the echo canceller pipeline
+            move |data: &[f32], _info: &cpal::InputCallbackInfo| {
+                for &sample in data {
+                    // Non-blocking: drop samples if the consumer can't keep up.
+                    let _ = sender.try_send(sample);
+                }
             },
             |err| {
                 log::error!("Input stream error: {}", err);
@@ -190,6 +230,7 @@ pub fn open_input_stream(
     Ok(InputStream {
         _stream: stream,
         config,
+        receiver,
     })
 }
 

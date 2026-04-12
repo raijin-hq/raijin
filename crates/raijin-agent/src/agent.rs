@@ -1,4 +1,5 @@
 mod db;
+pub use db::*;
 mod edit_agent;
 mod legacy_thread;
 mod native_agent_server;
@@ -17,7 +18,7 @@ pub use raijin_db::*;
 use itertools::Itertools;
 pub use native_agent_server::NativeAgentServer;
 pub use pattern_extraction::*;
-pub use shell_command_parser::extract_commands;
+pub use raijin_shell_command_parser::extract_commands;
 pub use templates::*;
 pub use thread::*;
 pub use thread_store::*;
@@ -58,7 +59,7 @@ use inazuma_util::rel_path::RelPath;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct ProjectSnapshot {
-    pub worktree_snapshots: Vec<project::telemetry_snapshot::TelemetryWorktreeSnapshot>,
+    pub worktree_snapshots: Vec<raijin_project::telemetry_snapshot::TelemetryWorktreeSnapshot>,
     pub timestamp: DateTime<Utc>,
 }
 
@@ -69,7 +70,7 @@ pub struct RulesLoadingError {
 struct ProjectState {
     project: Entity<Project>,
     project_context: Entity<ProjectContext>,
-    project_context_needs_refresh: watch::Sender<()>,
+    project_context_needs_refresh: raijin_watch::Sender<()>,
     _maintain_project_context: Task<Result<()>>,
     context_server_registry: Entity<ContextServerRegistry>,
     _subscriptions: Vec<Subscription>,
@@ -80,7 +81,7 @@ struct Session {
     /// The internal thread that processes messages
     thread: Entity<Thread>,
     /// The ACP thread that handles protocol communication
-    acp_thread: Entity<acp_thread::AcpThread>,
+    acp_thread: Entity<raijin_acp_thread::AcpThread>,
     project_id: EntityId,
     pending_save: Task<Result<()>>,
     _subscriptions: Vec<Subscription>,
@@ -90,19 +91,19 @@ pub struct LanguageModels {
     /// Access language model by ID
     models: HashMap<acp::ModelId, Arc<dyn LanguageModel>>,
     /// Cached list for returning language model information
-    model_list: acp_thread::AgentModelList,
-    refresh_models_rx: watch::Receiver<()>,
-    refresh_models_tx: watch::Sender<()>,
+    model_list: raijin_acp_thread::AgentModelList,
+    refresh_models_rx: raijin_watch::Receiver<()>,
+    refresh_models_tx: raijin_watch::Sender<()>,
     _authenticate_all_providers_task: Task<()>,
 }
 
 impl LanguageModels {
     fn new(cx: &mut App) -> Self {
-        let (refresh_models_tx, refresh_models_rx) = watch::channel(());
+        let (refresh_models_tx, refresh_models_rx) = raijin_watch::channel(());
 
         let mut this = Self {
             models: HashMap::default(),
-            model_list: acp_thread::AgentModelList::Grouped(IndexMap::default()),
+            model_list: raijin_acp_thread::AgentModelList::Grouped(IndexMap::default()),
             refresh_models_rx,
             refresh_models_tx,
             _authenticate_all_providers_task: Self::authenticate_all_language_model_providers(cx),
@@ -131,7 +132,7 @@ impl LanguageModels {
         }
         if !recommended.is_empty() {
             language_model_list.insert(
-                acp_thread::AgentModelGroupName("Recommended".into()),
+                raijin_acp_thread::AgentModelGroupName("Recommended".into()),
                 recommended,
             );
         }
@@ -147,18 +148,18 @@ impl LanguageModels {
             }
             if !provider_models.is_empty() {
                 language_model_list.insert(
-                    acp_thread::AgentModelGroupName(provider.name().0.clone()),
+                    raijin_acp_thread::AgentModelGroupName(provider.name().0.clone()),
                     provider_models,
                 );
             }
         }
 
         self.models = models;
-        self.model_list = acp_thread::AgentModelList::Grouped(language_model_list);
+        self.model_list = raijin_acp_thread::AgentModelList::Grouped(language_model_list);
         self.refresh_models_tx.send(()).ok();
     }
 
-    fn watch(&self) -> watch::Receiver<()> {
+    fn watch(&self) -> raijin_watch::Receiver<()> {
         self.refresh_models_rx.clone()
     }
 
@@ -169,14 +170,14 @@ impl LanguageModels {
     fn map_language_model_to_info(
         model: &Arc<dyn LanguageModel>,
         provider: &Arc<dyn LanguageModelProvider>,
-    ) -> acp_thread::AgentModelInfo {
-        acp_thread::AgentModelInfo {
+    ) -> raijin_acp_thread::AgentModelInfo {
+        raijin_acp_thread::AgentModelInfo {
             id: Self::model_id(model),
             name: model.name().0,
             description: None,
             icon: Some(match provider.icon() {
-                IconOrSvg::Svg(path) => acp_thread::AgentModelIcon::Path(path),
-                IconOrSvg::Icon(name) => acp_thread::AgentModelIcon::Named(name),
+                IconOrSvg::Svg(path) => raijin_acp_thread::AgentModelIcon::Path(path),
+                IconOrSvg::Icon(name) => raijin_acp_thread::AgentModelIcon::Named(name),
             }),
             is_latest: model.is_latest(),
             cost: model.model_cost_info().map(|cost| cost.to_shared_string()),
@@ -199,13 +200,13 @@ impl LanguageModels {
             for (provider_id, provider_name, authenticate_task) in authenticate_all_providers {
                 if let Err(err) = authenticate_task.await {
                     match err {
-                        language_model::AuthenticateError::CredentialsNotFound => {
+                        raijin_language_model::AuthenticateError::CredentialsNotFound => {
                             // Since we're authenticating these providers in the
                             // background for the purposes of populating the
                             // language selector, we don't care about providers
                             // where the credentials are not found.
                         }
-                        language_model::AuthenticateError::ConnectionRefused => {
+                        raijin_language_model::AuthenticateError::ConnectionRefused => {
                             // Not logging connection refused errors as they are mostly from LM Studio's noisy auth failures.
                             // LM Studio only has one auth method (endpoint call) which fails for users who haven't enabled it.
                             // TODO: Better manage LM Studio auth logic to avoid these noisy failures.
@@ -338,7 +339,7 @@ impl NativeAgent {
         let action_log = thread.action_log.clone();
         let prompt_capabilities_rx = thread.prompt_capabilities_rx.clone();
         let acp_thread = cx.new(|cx| {
-            let mut acp_thread = acp_thread::AcpThread::new(
+            let mut acp_thread = raijin_acp_thread::AcpThread::new(
                 parent_session_id,
                 title,
                 None,
@@ -443,7 +444,7 @@ impl NativeAgent {
         ];
 
         let (project_context_needs_refresh_tx, project_context_needs_refresh_rx) =
-            watch::channel(());
+            raijin_watch::channel(());
 
         self.projects.insert(
             project_id,
@@ -475,7 +476,7 @@ impl NativeAgent {
     async fn maintain_project_context(
         this: WeakEntity<Self>,
         project_id: EntityId,
-        mut needs_refresh: watch::Receiver<()>,
+        mut needs_refresh: raijin_watch::Receiver<()>,
         cx: &mut AsyncApp,
     ) -> Result<()> {
         while needs_refresh.changed().await.is_ok() {
@@ -694,7 +695,7 @@ impl NativeAgent {
     fn handle_project_event(
         &mut self,
         project: Entity<Project>,
-        event: &project::Event,
+        event: &raijin_project::Event,
         _cx: &mut Context<Self>,
     ) {
         let project_id = project.entity_id();
@@ -702,10 +703,10 @@ impl NativeAgent {
             return;
         };
         match event {
-            project::Event::WorktreeAdded(_) | project::Event::WorktreeRemoved(_) => {
+            raijin_project::Event::WorktreeAdded(_) | raijin_project::Event::WorktreeRemoved(_) => {
                 state.project_context_needs_refresh.send(()).ok();
             }
-            project::Event::WorktreeUpdatedEntries(_, items) => {
+            raijin_project::Event::WorktreeUpdatedEntries(_, items) => {
                 if items.iter().any(|(path, _, _)| {
                     RULES_FILE_NAMES
                         .iter()
@@ -721,7 +722,7 @@ impl NativeAgent {
     fn handle_prompts_updated_event(
         &mut self,
         _prompt_store: Entity<PromptStore>,
-        _event: &prompt_store::PromptsUpdatedEvent,
+        _event: &raijin_prompt_store::PromptsUpdatedEvent,
         _cx: &mut Context<Self>,
     ) {
         for state in self.projects.values_mut() {
@@ -732,7 +733,7 @@ impl NativeAgent {
     fn handle_models_updated_event(
         &mut self,
         _registry: Entity<LanguageModelRegistry>,
-        event: &language_model::Event,
+        event: &raijin_language_model::Event,
         cx: &mut Context<Self>,
     ) {
         self.models.refresh_list(cx);
@@ -751,7 +752,7 @@ impl NativeAgent {
                 }
                 if let Some(model) = summarization_model.clone() {
                     if thread.summarization_model().is_none()
-                        || matches!(event, language_model::Event::ThreadSummaryModelChanged)
+                        || matches!(event, raijin_language_model::Event::ThreadSummaryModelChanged)
                     {
                         thread.set_summarization_model(Some(model), cx);
                     }
@@ -762,8 +763,8 @@ impl NativeAgent {
 
     fn handle_context_server_store_updated(
         &mut self,
-        store: Entity<project::context_server_store::ContextServerStore>,
-        _event: &project::context_server_store::ServerStatusChangedEvent,
+        store: Entity<raijin_project::context_server_store::ContextServerStore>,
+        _event: &raijin_project::context_server_store::ServerStatusChangedEvent,
         cx: &mut Context<Self>,
     ) {
         let project_id = self.projects.iter().find_map(|(id, state)| {
@@ -1062,12 +1063,12 @@ impl NativeAgent {
             });
 
             for message in prompt.messages {
-                let context_server::types::PromptMessage { role, content } = message;
+                let raijin_context_server::types::PromptMessage { role, content } = message;
                 let block = mcp_message_content_to_acp_content_block(content);
 
                 match role {
-                    context_server::types::Role::User => {
-                        let id = acp_thread::UserMessageId::new();
+                    raijin_context_server::types::Role::User => {
+                        let id = raijin_acp_thread::UserMessageId::new();
 
                         acp_thread.update(cx, |acp_thread, cx| {
                             acp_thread.push_user_content_block_with_indent(
@@ -1082,7 +1083,7 @@ impl NativeAgent {
                             thread.push_acp_user_block(id, [block], path_style, cx);
                         });
                     }
-                    context_server::types::Role::Assistant => {
+                    raijin_context_server::types::Role::Assistant => {
                         acp_thread.update(cx, |acp_thread, cx| {
                             acp_thread.push_assistant_content_block_with_indent(
                                 block.clone(),
@@ -1098,7 +1099,7 @@ impl NativeAgent {
                     }
                 }
 
-                last_is_user = role == context_server::types::Role::User;
+                last_is_user = role == raijin_context_server::types::Role::User;
             }
 
             let response_stream = thread.update(cx, |thread, cx| {
@@ -1213,7 +1214,7 @@ impl NativeAgentConnection {
                                     thread.request_tool_call_authorization(tool_call, options, cx)
                                 })??;
                                 cx.background_spawn(async move {
-                                    if let acp_thread::RequestPermissionOutcome::Selected(outcome) =
+                                    if let raijin_acp_thread::RequestPermissionOutcome::Selected(outcome) =
                                         outcome_task.await
                                     {
                                         response
@@ -1304,8 +1305,8 @@ struct NativeAgentModelSelector {
     connection: NativeAgentConnection,
 }
 
-impl acp_thread::AgentModelSelector for NativeAgentModelSelector {
-    fn list_models(&self, cx: &mut App) -> Task<Result<acp_thread::AgentModelList>> {
+impl raijin_acp_thread::AgentModelSelector for NativeAgentModelSelector {
+    fn list_models(&self, cx: &mut App) -> Task<Result<raijin_acp_thread::AgentModelList>> {
         log::debug!("NativeAgentConnection::list_models called");
         let list = self.connection.0.read(cx).models.model_list.clone();
         Task::ready(if list.is_empty() {
@@ -1370,7 +1371,7 @@ impl acp_thread::AgentModelSelector for NativeAgentModelSelector {
         Task::ready(Ok(()))
     }
 
-    fn selected_model(&self, cx: &mut App) -> Task<Result<acp_thread::AgentModelInfo>> {
+    fn selected_model(&self, cx: &mut App) -> Task<Result<raijin_acp_thread::AgentModelInfo>> {
         let Some(thread) = self
             .connection
             .0
@@ -1393,7 +1394,7 @@ impl acp_thread::AgentModelSelector for NativeAgentModelSelector {
         )))
     }
 
-    fn watch(&self, cx: &mut App) -> Option<watch::Receiver<()>> {
+    fn watch(&self, cx: &mut App) -> Option<raijin_watch::Receiver<()>> {
         Some(self.connection.0.read(cx).models.watch())
     }
 
@@ -1404,7 +1405,7 @@ impl acp_thread::AgentModelSelector for NativeAgentModelSelector {
 
 pub static ZED_AGENT_ID: LazyLock<AgentId> = LazyLock::new(|| AgentId::new("Zed Agent"));
 
-impl acp_thread::AgentConnection for NativeAgentConnection {
+impl raijin_acp_thread::AgentConnection for NativeAgentConnection {
     fn agent_id(&self) -> AgentId {
         ZED_AGENT_ID.clone()
     }
@@ -1418,7 +1419,7 @@ impl acp_thread::AgentConnection for NativeAgentConnection {
         project: Entity<Project>,
         work_dirs: PathList,
         cx: &mut App,
-    ) -> Task<Result<Entity<acp_thread::AcpThread>>> {
+    ) -> Task<Result<Entity<raijin_acp_thread::AcpThread>>> {
         log::debug!("Creating new thread for project at: {work_dirs:?}");
         Task::ready(Ok(self
             .0
@@ -1436,7 +1437,7 @@ impl acp_thread::AgentConnection for NativeAgentConnection {
         _work_dirs: PathList,
         _title: Option<SharedString>,
         cx: &mut App,
-    ) -> Task<Result<Entity<acp_thread::AcpThread>>> {
+    ) -> Task<Result<Entity<raijin_acp_thread::AcpThread>>> {
         self.0
             .update(cx, |agent, cx| agent.open_thread(session_id, project, cx))
     }
@@ -1487,7 +1488,7 @@ impl acp_thread::AgentConnection for NativeAgentConnection {
 
     fn prompt(
         &self,
-        id: Option<acp_thread::UserMessageId>,
+        id: Option<raijin_acp_thread::UserMessageId>,
         params: acp::PromptRequest,
         cx: &mut App,
     ) -> Task<Result<acp::PromptResponse>> {
@@ -1560,7 +1561,7 @@ impl acp_thread::AgentConnection for NativeAgentConnection {
         &self,
         session_id: &acp::SessionId,
         _cx: &App,
-    ) -> Option<Rc<dyn acp_thread::AgentSessionRetry>> {
+    ) -> Option<Rc<dyn raijin_acp_thread::AgentSessionRetry>> {
         Some(Rc::new(NativeAgentSessionRetry {
             connection: self.clone(),
             session_id: session_id.clone(),
@@ -1583,7 +1584,7 @@ impl acp_thread::AgentConnection for NativeAgentConnection {
         &self,
         session_id: &acp::SessionId,
         cx: &App,
-    ) -> Option<Rc<dyn acp_thread::AgentSessionTruncate>> {
+    ) -> Option<Rc<dyn raijin_acp_thread::AgentSessionTruncate>> {
         self.0.read_with(cx, |agent, _cx| {
             agent.sessions.get(session_id).map(|session| {
                 Rc::new(NativeAgentSessionTruncate {
@@ -1598,7 +1599,7 @@ impl acp_thread::AgentConnection for NativeAgentConnection {
         &self,
         session_id: &acp::SessionId,
         cx: &App,
-    ) -> Option<Rc<dyn acp_thread::AgentSessionSetTitle>> {
+    ) -> Option<Rc<dyn raijin_acp_thread::AgentSessionSetTitle>> {
         self.0.read_with(cx, |agent, _cx| {
             agent
                 .sessions
@@ -1617,8 +1618,8 @@ impl acp_thread::AgentConnection for NativeAgentConnection {
         Some(Rc::new(NativeAgentSessionList::new(thread_store, cx)) as _)
     }
 
-    fn telemetry(&self) -> Option<Rc<dyn acp_thread::AgentTelemetry>> {
-        Some(Rc::new(self.clone()) as Rc<dyn acp_thread::AgentTelemetry>)
+    fn telemetry(&self) -> Option<Rc<dyn raijin_acp_thread::AgentTelemetry>> {
+        Some(Rc::new(self.clone()) as Rc<dyn raijin_acp_thread::AgentTelemetry>)
     }
 
     fn into_any(self: Rc<Self>) -> Rc<dyn Any> {
@@ -1626,7 +1627,7 @@ impl acp_thread::AgentConnection for NativeAgentConnection {
     }
 }
 
-impl acp_thread::AgentTelemetry for NativeAgentConnection {
+impl raijin_acp_thread::AgentTelemetry for NativeAgentConnection {
     fn thread_data(
         &self,
         session_id: &acp::SessionId,
@@ -1645,8 +1646,8 @@ impl acp_thread::AgentTelemetry for NativeAgentConnection {
 
 pub struct NativeAgentSessionList {
     thread_store: Entity<ThreadStore>,
-    updates_tx: smol::channel::Sender<acp_thread::SessionListUpdate>,
-    updates_rx: smol::channel::Receiver<acp_thread::SessionListUpdate>,
+    updates_tx: smol::channel::Sender<raijin_acp_thread::SessionListUpdate>,
+    updates_rx: smol::channel::Receiver<raijin_acp_thread::SessionListUpdate>,
     _subscription: Subscription,
 }
 
@@ -1656,7 +1657,7 @@ impl NativeAgentSessionList {
         let this_tx = tx.clone();
         let subscription = cx.observe(&thread_store, move |_, _| {
             this_tx
-                .try_send(acp_thread::SessionListUpdate::Refresh)
+                .try_send(raijin_acp_thread::SessionListUpdate::Refresh)
                 .ok();
         });
         Self {
@@ -1704,13 +1705,13 @@ impl AgentSessionList for NativeAgentSessionList {
     fn watch(
         &self,
         _cx: &mut App,
-    ) -> Option<smol::channel::Receiver<acp_thread::SessionListUpdate>> {
+    ) -> Option<smol::channel::Receiver<raijin_acp_thread::SessionListUpdate>> {
         Some(self.updates_rx.clone())
     }
 
     fn notify_refresh(&self) {
         self.updates_tx
-            .try_send(acp_thread::SessionListUpdate::Refresh)
+            .try_send(raijin_acp_thread::SessionListUpdate::Refresh)
             .ok();
     }
 
@@ -1724,8 +1725,8 @@ struct NativeAgentSessionTruncate {
     acp_thread: WeakEntity<AcpThread>,
 }
 
-impl acp_thread::AgentSessionTruncate for NativeAgentSessionTruncate {
-    fn run(&self, message_id: acp_thread::UserMessageId, cx: &mut App) -> Task<Result<()>> {
+impl raijin_acp_thread::AgentSessionTruncate for NativeAgentSessionTruncate {
+    fn run(&self, message_id: raijin_acp_thread::UserMessageId, cx: &mut App) -> Task<Result<()>> {
         match self.thread.update(cx, |thread, cx| {
             thread.truncate(message_id.clone(), cx)?;
             Ok(thread.latest_token_usage())
@@ -1748,7 +1749,7 @@ struct NativeAgentSessionRetry {
     session_id: acp::SessionId,
 }
 
-impl acp_thread::AgentSessionRetry for NativeAgentSessionRetry {
+impl raijin_acp_thread::AgentSessionRetry for NativeAgentSessionRetry {
     fn run(&self, cx: &mut App) -> Task<Result<acp::PromptResponse>> {
         self.connection
             .run_turn(self.session_id.clone(), cx, |thread, cx| {
@@ -1761,7 +1762,7 @@ struct NativeAgentSessionSetTitle {
     thread: Entity<Thread>,
 }
 
-impl acp_thread::AgentSessionSetTitle for NativeAgentSessionSetTitle {
+impl raijin_acp_thread::AgentSessionSetTitle for NativeAgentSessionSetTitle {
     fn run(&self, title: SharedString, cx: &mut App) -> Task<Result<()>> {
         self.thread
             .update(cx, |thread, cx| thread.set_title(title, cx));
@@ -1816,7 +1817,7 @@ impl NativeThreadEnvironment {
 
         let depth = current_depth + 1;
 
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Subagent Started",
             session = parent_thread_entity.read(cx).id().to_string(),
             subagent_session = session_id.to_string(),
@@ -1843,7 +1844,7 @@ impl NativeThreadEnvironment {
         let depth = subagent_thread.read(cx).depth();
 
         if let Some(parent_thread_entity) = self.thread.upgrade() {
-            telemetry::event!(
+            raijin_telemetry::event!(
                 "Subagent Started",
                 session = parent_thread_entity.read(cx).id().to_string(),
                 subagent_session = session_id.to_string(),
@@ -1859,7 +1860,7 @@ impl NativeThreadEnvironment {
         &self,
         session_id: acp::SessionId,
         subagent_thread: Entity<Thread>,
-        acp_thread: Entity<acp_thread::AcpThread>,
+        acp_thread: Entity<raijin_acp_thread::AcpThread>,
     ) -> Result<Rc<dyn SubagentHandle>> {
         let Some(parent_thread_entity) = self.thread.upgrade() else {
             anyhow::bail!("Parent thread no longer exists".to_string());
@@ -1932,14 +1933,14 @@ pub struct NativeSubagentHandle {
     session_id: acp::SessionId,
     parent_thread: WeakEntity<Thread>,
     subagent_thread: Entity<Thread>,
-    acp_thread: Entity<acp_thread::AcpThread>,
+    acp_thread: Entity<raijin_acp_thread::AcpThread>,
 }
 
 impl NativeSubagentHandle {
     fn new(
         session_id: acp::SessionId,
         subagent_thread: Entity<Thread>,
-        acp_thread: Entity<acp_thread::AcpThread>,
+        acp_thread: Entity<raijin_acp_thread::AcpThread>,
         parent_thread_entity: Entity<Thread>,
     ) -> Self {
         NativeSubagentHandle {
@@ -2073,7 +2074,7 @@ impl SubagentHandle for NativeSubagentHandle {
 }
 
 pub struct AcpTerminalHandle {
-    terminal: Entity<acp_thread::Terminal>,
+    terminal: Entity<raijin_acp_thread::Terminal>,
     _drop_tx: Option<oneshot::Sender<()>>,
 }
 
@@ -2251,7 +2252,7 @@ mod internal_tests {
             .await
             .unwrap();
 
-        let acp_thread::AgentModelList::Grouped(models) = models else {
+        let raijin_acp_thread::AgentModelList::Grouped(models) = models else {
             panic!("Unexpected model group");
         };
         assert_eq!(
@@ -2262,8 +2263,8 @@ mod internal_tests {
                     id: acp::ModelId::new("fake/fake"),
                     name: "Fake".into(),
                     description: None,
-                    icon: Some(acp_thread::AgentModelIcon::Named(
-                        ui::IconName::ZedAssistant
+                    icon: Some(raijin_acp_thread::AgentModelIcon::Named(
+                        raijin_ui::IconName::ZedAssistant
                     )),
                     is_latest: false,
                     cost: None,
@@ -2276,11 +2277,11 @@ mod internal_tests {
     async fn test_model_selection_persists_to_settings(cx: &mut TestAppContext) {
         init_test(cx);
         let fs = FakeFs::new(cx.executor());
-        fs.create_dir(paths::settings_file().parent().unwrap())
+        fs.create_dir(raijin_paths::settings_file().parent().unwrap())
             .await
             .unwrap();
         fs.insert_file(
-            paths::settings_file(),
+            raijin_paths::settings_file(),
             json!({
                 "agent": {
                     "default_model": {
@@ -2334,7 +2335,7 @@ mod internal_tests {
         cx.run_until_parked();
 
         // Verify settings file was updated
-        let settings_content = fs.load(paths::settings_file()).await.unwrap();
+        let settings_content = fs.load(raijin_paths::settings_file()).await.unwrap();
         let settings_json: serde_json::Value = serde_json::from_str(&settings_content).unwrap();
 
         // Check that the agent settings contain the selected model
@@ -2375,7 +2376,7 @@ mod internal_tests {
         cx.run_until_parked();
 
         // Verify enable_thinking was written to settings as true.
-        let settings_content = fs.load(paths::settings_file()).await.unwrap();
+        let settings_content = fs.load(raijin_paths::settings_file()).await.unwrap();
         let settings_json: serde_json::Value = serde_json::from_str(&settings_content).unwrap();
         assert_eq!(
             settings_json["agent"]["default_model"]["enable_thinking"],
@@ -2388,10 +2389,10 @@ mod internal_tests {
     async fn test_select_model_updates_thinking_enabled(cx: &mut TestAppContext) {
         init_test(cx);
         let fs = FakeFs::new(cx.executor());
-        fs.create_dir(paths::settings_file().parent().unwrap())
+        fs.create_dir(raijin_paths::settings_file().parent().unwrap())
             .await
             .unwrap();
-        fs.insert_file(paths::settings_file(), b"{}".to_vec()).await;
+        fs.insert_file(raijin_paths::settings_file(), b"{}".to_vec()).await;
         let project = Project::test(fs.clone(), [], cx).await;
 
         let thread_store = cx.new(|cx| ThreadStore::new(cx));
@@ -2807,7 +2808,7 @@ mod internal_tests {
 
         model.send_last_completion_stream_text_chunk("Lorem.");
         model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-            language_model::TokenUsage {
+            raijin_language_model::TokenUsage {
                 input_tokens: 150,
                 output_tokens: 75,
                 ..Default::default()
@@ -3093,24 +3094,24 @@ mod internal_tests {
 }
 
 fn mcp_message_content_to_acp_content_block(
-    content: context_server::types::MessageContent,
+    content: raijin_context_server::types::MessageContent,
 ) -> acp::ContentBlock {
     match content {
-        context_server::types::MessageContent::Text {
+        raijin_context_server::types::MessageContent::Text {
             text,
             annotations: _,
         } => text.into(),
-        context_server::types::MessageContent::Image {
+        raijin_context_server::types::MessageContent::Image {
             data,
             mime_type,
             annotations: _,
         } => acp::ContentBlock::Image(acp::ImageContent::new(data, mime_type)),
-        context_server::types::MessageContent::Audio {
+        raijin_context_server::types::MessageContent::Audio {
             data,
             mime_type,
             annotations: _,
         } => acp::ContentBlock::Audio(acp::AudioContent::new(data, mime_type)),
-        context_server::types::MessageContent::Resource {
+        raijin_context_server::types::MessageContent::Resource {
             resource,
             annotations: _,
         } => {

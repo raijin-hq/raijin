@@ -320,7 +320,7 @@ impl ThemePreview {
                                         .overflow_hidden(),
                                 )
                                 .size(ButtonSize::None)
-                                .style(ButtonStyle::Transparent)
+                                .style(ButtonStyle::Ghost)
                                 .tooltip(move |window, cx| {
                                     let name = name.clone();
                                     Tooltip::with_meta(name, None, format!("{:?}", color), cx)
@@ -406,7 +406,7 @@ impl ThemePreview {
                         cx.notify();
                     }))
                     .toggle_state(p == self.current_page)
-                    .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                    .selected_style(ButtonVariant::tinted(TintColor::Accent))
             }))
     }
 }

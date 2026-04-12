@@ -21,6 +21,7 @@ raijin-credentials-provider = { workspace = true }
 raijin-db = { workspace = true }
 raijin-fs = { workspace = true }
 raijin-http-client = { workspace = true }
+raijin-paths = { workspace = true }
 raijin-language = { workspace = true }
 raijin-node-runtime = { workspace = true }
 raijin-platform-title-bar = { workspace = true }
@@ -28,6 +29,7 @@ raijin-project = { workspace = true }
 raijin-release-channel = { workspace = true }
 raijin-session = { workspace = true }
 raijin-settings = { workspace = true }
+raijin-settings-ui = { workspace = true }
 raijin-shell = { workspace = true }
 raijin-tab-switcher = { workspace = true }
 raijin-term = { path = "../raijin-term" }
@@ -39,10 +41,12 @@ raijin-theme-settings = { workspace = true }
 raijin-title-bar = { workspace = true }
 raijin-workspace = { workspace = true }
 anyhow = { workspace = true }
+futures.workspace = true
 log = { workspace = true }
 env_logger = "0.11"
 parking_lot = { workspace = true }
 time = { version = "0.3", features = ["local-offset", "formatting", "macros"] }
+semver.workspace = true
 serde_json = { workspace = true }
 dirs.workspace = true
 strsim = "0.11"

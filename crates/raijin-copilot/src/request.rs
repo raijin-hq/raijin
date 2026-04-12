@@ -1,4 +1,4 @@
-use raijin_raijin_lsp::{Uri, VersionedTextDocumentIdentifier};
+use raijin_lsp::{Uri, VersionedTextDocumentIdentifier};
 use serde::{Deserialize, Serialize};
 
 pub enum CheckStatus {}

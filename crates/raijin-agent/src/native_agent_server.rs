@@ -30,8 +30,8 @@ impl AgentServer for NativeAgentServer {
         crate::ZED_AGENT_ID.clone()
     }
 
-    fn logo(&self) -> ui::IconName {
-        ui::IconName::ZedAgent
+    fn logo(&self) -> raijin_ui::IconName {
+        raijin_ui::IconName::ZedAgent
     }
 
     fn connect(
@@ -39,7 +39,7 @@ impl AgentServer for NativeAgentServer {
         _delegate: AgentServerDelegate,
         _project: Entity<Project>,
         cx: &mut App,
-    ) -> Task<Result<Rc<dyn acp_thread::AgentConnection>>> {
+    ) -> Task<Result<Rc<dyn raijin_acp_thread::AgentConnection>>> {
         log::debug!("NativeAgentServer::connect");
         let fs = self.fs.clone();
         let thread_store = self.thread_store.clone();
@@ -57,7 +57,7 @@ impl AgentServer for NativeAgentServer {
             let connection = NativeAgentConnection(agent);
             log::debug!("NativeAgentServer connection established successfully");
 
-            Ok(Rc::new(connection) as Rc<dyn acp_thread::AgentConnection>)
+            Ok(Rc::new(connection) as Rc<dyn raijin_acp_thread::AgentConnection>)
         })
     }
 
@@ -106,13 +106,13 @@ mod tests {
 
     use inazuma::AppContext;
 
-    agent_servers::e2e_tests::common_e2e_tests!(
+    raijin_agent_servers::e2e_tests::common_e2e_tests!(
         async |fs, cx| {
             let auth = cx.update(|cx| {
-                prompt_store::init(cx);
-                let registry = language_model::LanguageModelRegistry::read_global(cx);
+                raijin_prompt_store::init(cx);
+                let registry = raijin_language_model::LanguageModelRegistry::read_global(cx);
                 let auth = registry
-                    .provider(&language_model::ANTHROPIC_PROVIDER_ID)
+                    .provider(&raijin_language_model::ANTHROPIC_PROVIDER_ID)
                     .unwrap()
                     .authenticate(cx);
 
@@ -122,13 +122,13 @@ mod tests {
             auth.await.unwrap();
 
             cx.update(|cx| {
-                let registry = language_model::LanguageModelRegistry::global(cx);
+                let registry = raijin_language_model::LanguageModelRegistry::global(cx);
 
                 registry.update(cx, |registry, cx| {
                     registry.select_default_model(
-                        Some(&language_model::SelectedModel {
-                            provider: language_model::ANTHROPIC_PROVIDER_ID,
-                            model: language_model::LanguageModelId("claude-sonnet-4-latest".into()),
+                        Some(&raijin_language_model::SelectedModel {
+                            provider: raijin_language_model::ANTHROPIC_PROVIDER_ID,
+                            model: raijin_language_model::LanguageModelId("claude-sonnet-4-latest".into()),
                         }),
                         cx,
                     );

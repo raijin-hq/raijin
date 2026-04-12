@@ -219,7 +219,7 @@ impl LanguageModelProvider for VercelAiGatewayLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -244,7 +244,7 @@ pub struct VercelAiGatewayLanguageModel {
 impl VercelAiGatewayLanguageModel {
     fn stream_open_ai(
         &self,
-        request: open_ai::Request,
+        request: raijin_open_ai::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
@@ -264,7 +264,7 @@ impl VercelAiGatewayLanguageModel {
             let Some(api_key) = api_key else {
                 return Err(LanguageModelCompletionError::NoApiKey { provider });
             };
-            let request = open_ai::stream_completion(
+            let request = raijin_open_ai::stream_completion(
                 http_client.as_ref(),
                 provider.0.as_str(),
                 &api_url,
@@ -279,9 +279,9 @@ impl VercelAiGatewayLanguageModel {
     }
 }
 
-fn map_open_ai_error(error: open_ai::RequestError) -> LanguageModelCompletionError {
+fn map_open_ai_error(error: raijin_open_ai::RequestError) -> LanguageModelCompletionError {
     match error {
-        open_ai::RequestError::HttpResponseError {
+        raijin_open_ai::RequestError::HttpResponseError {
             status_code,
             body,
             headers,
@@ -299,7 +299,7 @@ fn map_open_ai_error(error: open_ai::RequestError) -> LanguageModelCompletionErr
                 retry_after,
             )
         }
-        open_ai::RequestError::Other(error) => LanguageModelCompletionError::Other(error),
+        raijin_open_ai::RequestError::Other(error) => LanguageModelCompletionError::Other(error),
     }
 }
 
@@ -615,7 +615,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;

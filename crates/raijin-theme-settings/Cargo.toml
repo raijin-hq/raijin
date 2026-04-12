@@ -9,14 +9,16 @@ test-support = []
 
 [dependencies]
 raijin-theme = { workspace = true }
-raijin-settings = { workspace = true }
+raijin-paths = { workspace = true }
 inazuma = { workspace = true }
 inazuma-settings-framework = { workspace = true }
 inazuma-settings-macros = { workspace = true }
 inazuma-settings-content = { workspace = true }
 inazuma-collections = { workspace = true }
 inazuma-refineable = { workspace = true }
+schemars = { workspace = true, features = ["indexmap2"] }
 serde = { workspace = true }
+serde_json_lenient = { workspace = true }
 anyhow = { workspace = true }
 log = "0.4"
 

@@ -41,8 +41,8 @@ use raijin_ui_input::ErasedEditor;
 
 use raijin_dev_container::{DevContainerContext, find_devcontainer_configs};
 use raijin_ui::{
-    ContextMenu, Divider, KeyBinding, ListItem, ListItemSpacing, ListSubHeader, PopoverMenu,
-    PopoverMenuHandle, TintColor, Tooltip, prelude::*,
+    ButtonVariant, ContextMenu, Divider, KeyBinding, ListItem, ListItemSpacing, ListSubHeader,
+    PopoverMenu, PopoverMenuHandle, TintColor, Tooltip, prelude::*,
 };
 use inazuma_util::{ResultExt, paths::PathExt};
 use raijin_workspace::{
@@ -1613,7 +1613,7 @@ impl PickerDelegate for RecentProjectsDelegate {
                         })
                         .trigger(
                             Button::new("actions-trigger", "Actions…")
-                                .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                                .selected_style(ButtonVariant::tinted(TintColor::Accent))
                                 .key_binding(KeyBinding::for_action_in(
                                     &ToggleActionsMenu,
                                     &focus_handle,

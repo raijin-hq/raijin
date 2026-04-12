@@ -8,7 +8,7 @@ use std::rc::Rc;
 
 use super::{Tab, TabVariant};
 use crate::{
-    ActiveTheme, Button, ButtonVariants as _, Component, ComponentScope, DropdownMenu as _, IconName, PopupMenuItem,
+    ActiveTheme, Button, ButtonVariants as _, Component, ComponentScope, PopupMenuExt as _, IconName, PopupMenuItem,
     RegisterComponent, Selectable, Sizable, Size, StyledExt, example_group_with_title, h_flex,
     single_example,
 };
@@ -24,7 +24,10 @@ pub struct TabBar {
     scroll_handle: Option<ScrollHandle>,
     start_children: SmallVec<[AnyElement; 2]>,
     end_children: SmallVec<[AnyElement; 2]>,
-    children: SmallVec<[Tab; 2]>,
+    /// Typed Tab children — used when variant/size/selected propagation is needed.
+    tab_children: SmallVec<[Tab; 2]>,
+    /// Generic AnyElement children — for arbitrary content (divs, drop targets, etc.).
+    children: SmallVec<[AnyElement; 2]>,
     last_empty_space: AnyElement,
     selected_index: Option<usize>,
     variant: TabVariant,
@@ -39,6 +42,7 @@ impl TabBar {
         Self {
             base: div().id(id).px(px(-1.)),
             style: StyleRefinement::default(),
+            tab_children: SmallVec::new(),
             children: SmallVec::new(),
             scroll_handle: None,
             start_children: SmallVec::new(),
@@ -148,15 +152,15 @@ impl TabBar {
         &mut self.end_children
     }
 
-    /// Add tab children of the TabBar, all children will inherit the variant.
-    pub fn children(mut self, children: impl IntoIterator<Item = impl Into<Tab>>) -> Self {
-        self.children.extend(children.into_iter().map(Into::into));
+    /// Add typed Tab children that inherit the bar's variant, size, and selection.
+    pub fn tab_children(mut self, children: impl IntoIterator<Item = impl Into<Tab>>) -> Self {
+        self.tab_children.extend(children.into_iter().map(Into::into));
         self
     }
 
-    /// Add a single tab child, tab will inherit the variant.
-    pub fn child(mut self, child: impl Into<Tab>) -> Self {
-        self.children.push(child.into());
+    /// Add a single typed Tab child that inherits the bar's variant, size, and selection.
+    pub fn tab_child(mut self, child: impl Into<Tab>) -> Self {
+        self.tab_children.push(child.into());
         self
     }
 
@@ -181,6 +185,12 @@ impl TabBar {
     {
         self.on_click = Some(Rc::new(on_click));
         self
+    }
+}
+
+impl ParentElement for TabBar {
+    fn extend(&mut self, elements: impl IntoIterator<Item = AnyElement>) {
+        self.children.extend(elements)
     }
 }
 
@@ -289,7 +299,8 @@ impl RenderOnce for TabBar {
                         this.track_scroll(&scroll_handle)
                     })
                     .gap(gap)
-                    .children(self.children.into_iter().enumerate().map(|(ix, child)| {
+                    // Typed Tab children with variant/size/selection propagation
+                    .children(self.tab_children.into_iter().enumerate().map(|(ix, child)| {
                         item_labels.push((child.label.clone(), child.disabled));
                         let tab_bar_prefix = child.tab_bar_prefix.unwrap_or(true);
                         child
@@ -304,6 +315,8 @@ impl RenderOnce for TabBar {
                                 this.on_click(move |_, window, cx| on_click(&ix, window, cx))
                             })
                     }))
+                    // Generic AnyElement children (divs, drop targets, etc.)
+                    .children(self.children)
                     .when(has_end || self.menu, |this| {
                         this.child(self.last_empty_space)
                     }),
@@ -314,7 +327,7 @@ impl RenderOnce for TabBar {
                         .xsmall()
                         .ghost()
                         .icon(IconName::ChevronDown)
-                        .dropdown_menu(move |mut this, _, _| {
+                        .popup_menu(move |mut this, _, _| {
                             this = this.scrollable(true);
                             for (ix, (label, disabled)) in item_labels.iter().enumerate() {
                                 this = this.item(
@@ -364,9 +377,9 @@ impl Component for TabBar {
                             single_example(
                                 "Tab (default)",
                                 TabBar::new("tab_variant")
-                                    .child(Tab::new("tab1"))
-                                    .child(Tab::new("tab2"))
-                                    .child(Tab::new("tab3"))
+                                    .tab_child(Tab::new("tab1"))
+                                    .tab_child(Tab::new("tab2"))
+                                    .tab_child(Tab::new("tab3"))
                                     .selected_index(0)
                                     .into_any_element(),
                             ),
@@ -374,9 +387,9 @@ impl Component for TabBar {
                                 "Pill",
                                 TabBar::new("pill_variant")
                                     .pill()
-                                    .child(Tab::new("tab1"))
-                                    .child(Tab::new("tab2"))
-                                    .child(Tab::new("tab3"))
+                                    .tab_child(Tab::new("tab1"))
+                                    .tab_child(Tab::new("tab2"))
+                                    .tab_child(Tab::new("tab3"))
                                     .selected_index(0)
                                     .into_any_element(),
                             ),
@@ -384,9 +397,9 @@ impl Component for TabBar {
                                 "Segmented",
                                 TabBar::new("segmented_variant")
                                     .segmented()
-                                    .child(Tab::new("tab1"))
-                                    .child(Tab::new("tab2"))
-                                    .child(Tab::new("tab3"))
+                                    .tab_child(Tab::new("tab1"))
+                                    .tab_child(Tab::new("tab2"))
+                                    .tab_child(Tab::new("tab3"))
                                     .selected_index(0)
                                     .into_any_element(),
                             ),
@@ -394,9 +407,9 @@ impl Component for TabBar {
                                 "Underline",
                                 TabBar::new("underline_variant")
                                     .underline()
-                                    .child(Tab::new("tab1"))
-                                    .child(Tab::new("tab2"))
-                                    .child(Tab::new("tab3"))
+                                    .tab_child(Tab::new("tab1"))
+                                    .tab_child(Tab::new("tab2"))
+                                    .tab_child(Tab::new("tab3"))
                                     .selected_index(0)
                                     .into_any_element(),
                             ),

@@ -14,46 +14,46 @@ doctest = false
 
 [dependencies]
 anyhow.workspace = true
-raijin-buffer-diff = { workspace = true, package = "raijin-buffer-diff" }
-inazuma-collections = { workspace = true, package = "inazuma-collections" }
+raijin-buffer-diff.workspace = true
+inazuma-collections.workspace = true
 time.workspace = true
-raijin-client = { workspace = true, package = "raijin-client" }
-raijin-cloud-llm-client = { workspace = true, package = "raijin-cloud-llm-client" }
-raijin-codestral = { workspace = true, package = "raijin-codestral" }
-raijin-command-palette-hooks = { workspace = true, package = "raijin-command-palette-hooks" }
-raijin-copilot = { workspace = true, package = "raijin-copilot" }
-raijin-copilot-chat = { workspace = true, package = "raijin-copilot-chat" }
-raijin-copilot-ui = { workspace = true, package = "raijin-copilot-ui" }
-raijin-edit-prediction-types = { workspace = true, package = "raijin-edit-prediction-types" }
-raijin-edit-prediction = { workspace = true, package = "raijin-edit-prediction" }
-raijin-editor = { workspace = true, package = "raijin-editor" }
-raijin-feature-flags = { workspace = true, package = "raijin-feature-flags" }
-raijin-fs = { workspace = true, package = "raijin-fs" }
+raijin-client.workspace = true
+raijin-cloud-llm-client.workspace = true
+raijin-codestral.workspace = true
+raijin-command-palette-hooks.workspace = true
+raijin-copilot.workspace = true
+raijin-copilot-chat.workspace = true
+raijin-copilot-ui.workspace = true
+raijin-edit-prediction-types.workspace = true
+raijin-edit-prediction.workspace = true
+raijin-editor.workspace = true
+raijin-feature-flags.workspace = true
+raijin-fs.workspace = true
 futures.workspace = true
 inazuma.workspace = true
 indoc.workspace = true
-raijin-language = { workspace = true, package = "raijin-language" }
-raijin-markdown = { workspace = true, package = "raijin-markdown" }
-inazuma-menu = { workspace = true, package = "inazuma-menu" }
-raijin-multi-buffer = { workspace = true, package = "raijin-multi-buffer" }
-raijin-paths = { workspace = true, package = "raijin-paths" }
-raijin-project = { workspace = true, package = "raijin-project" }
+raijin-language.workspace = true
+raijin-markdown.workspace = true
+inazuma-menu.workspace = true
+raijin-multi-buffer.workspace = true
+raijin-paths.workspace = true
+raijin-project.workspace = true
 regex.workspace = true
-inazuma-settings-framework = { workspace = true, package = "inazuma-settings-framework" }
-raijin-telemetry = { workspace = true, package = "raijin-telemetry" }
-inazuma-text = { workspace = true, package = "inazuma-text" }
-raijin-theme-settings = { workspace = true, package = "raijin-theme-settings" }
-raijin-ui = { workspace = true, package = "raijin-ui" }
-inazuma-util = { workspace = true, package = "inazuma-util" }
-raijin-workspace = { workspace = true, package = "raijin-workspace" }
-raijin-actions = { workspace = true, package = "raijin-actions" }
-raijin-zeta-prompt = { workspace = true, package = "raijin-zeta-prompt" }
+inazuma-settings-framework.workspace = true
+raijin-telemetry.workspace = true
+inazuma-text.workspace = true
+raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
+inazuma-util.workspace = true
+raijin-workspace.workspace = true
+raijin-actions.workspace = true
+raijin-zeta-prompt.workspace = true
 
 [dev-dependencies]
-raijin-copilot = { workspace = true, package = "raijin-copilot", features = ["test-support"] }
-raijin-editor = { workspace = true, package = "raijin-editor", features = ["test-support"] }
+raijin-copilot = { workspace = true, features = ["test-support"] }
+raijin-editor = { workspace = true, features = ["test-support"] }
 futures.workspace = true
 indoc.workspace = true
-raijin-project = { workspace = true, package = "raijin-project", features = ["test-support"] }
-raijin-theme = { workspace = true, package = "raijin-theme", features = ["test-support"] }
-raijin-workspace = { workspace = true, package = "raijin-workspace", features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
+raijin-theme = { workspace = true, features = ["test-support"] }
+raijin-workspace = { workspace = true, features = ["test-support"] }

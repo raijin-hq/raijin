@@ -10,7 +10,9 @@ use inazuma::{
 };
 use raijin_project::project_settings::ProjectSettings;
 use inazuma_settings_framework::Settings as _;
-use raijin_ui::{ButtonLike, CommonAnimationExt, ConfiguredApiCard, Vector, VectorName, prelude::*};
+use raijin_ui::{
+    ButtonCommon, ButtonLike, CommonAnimationExt, ConfiguredApiCard, Vector, VectorName, prelude::*,
+};
 use inazuma_util::ResultExt as _;
 use raijin_workspace::{AppState, Toast, Workspace, notifications::NotificationId};
 
@@ -210,10 +212,12 @@ impl CopilotCodeVerification {
             .map(|item| item.text().as_ref() == Some(&data.user_code))
             .unwrap_or(false);
 
-        ButtonLike::new("copy-button")
-            .full_width()
-            .style(ButtonStyle::Tinted(ui::TintColor::Accent))
-            .size(ButtonSize::Medium)
+        ButtonCommon::size(
+            ButtonLike::new("copy-button")
+                .full_width()
+                .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent)),
+            ButtonSize::Medium,
+        )
             .child(
                 h_flex()
                     .w_full()
@@ -248,7 +252,7 @@ impl CopilotCodeVerification {
             .gap_2p5()
             .items_center()
             .text_center()
-            .child(Headline::new("Use GitHub Copilot in Zed").size(HeadlineSize::Large))
+            .child(Headline::new("Use GitHub Copilot in Raijin").size(HeadlineSize::Large))
             .child(
                 Label::new("Using Copilot requires an active subscription on GitHub.")
                     .color(Color::Muted),
@@ -263,10 +267,12 @@ impl CopilotCodeVerification {
                     .w_full()
                     .gap_1()
                     .child(
-                        Button::new("connect-button", connect_button_label)
-                            .full_width()
-                            .style(ButtonStyle::Outlined)
-                            .size(ButtonSize::Medium)
+                        ButtonCommon::size(
+                            Button::new("connect-button", connect_button_label)
+                                .full_width()
+                                .style(ButtonStyle::Outlined),
+                            ButtonSize::Medium,
+                        )
                             .on_click({
                                 let command = data.command.clone();
                                 cx.listener(move |this, _, _window, cx| {
@@ -317,9 +323,11 @@ impl CopilotCodeVerification {
                             }),
                     )
                     .child(
-                        Button::new("copilot-enable-cancel-button", "Cancel")
-                            .full_width()
-                            .size(ButtonSize::Medium)
+                        ButtonCommon::size(
+                            Button::new("copilot-enable-cancel-button", "Cancel")
+                                .full_width(),
+                            ButtonSize::Medium,
+                        )
                             .on_click(cx.listener(|_, _, _, cx| {
                                 cx.emit(DismissEvent);
                             })),
@@ -335,10 +343,12 @@ impl CopilotCodeVerification {
             .child(Headline::new("Copilot Enabled!").size(HeadlineSize::Large))
             .child(Label::new("You're all set to use GitHub Copilot.").color(Color::Muted))
             .child(
-                Button::new("copilot-enabled-done-button", "Done")
-                    .full_width()
-                    .style(ButtonStyle::Outlined)
-                    .size(ButtonSize::Medium)
+                ButtonCommon::size(
+                    Button::new("copilot-enabled-done-button", "Done")
+                        .full_width()
+                        .style(ButtonStyle::Outlined),
+                    ButtonSize::Medium,
+                )
                     .on_click(cx.listener(|_, _, _, cx| cx.emit(DismissEvent))),
             )
     }
@@ -361,17 +371,21 @@ impl CopilotCodeVerification {
             )
             .child(Label::new(description).color(Color::Warning))
             .child(
-                Button::new("copilot-subscribe-button", "Subscribe on GitHub")
-                    .full_width()
-                    .style(ButtonStyle::Outlined)
-                    .size(ButtonSize::Medium)
-                    .on_click(move |_, _, cx| cx.open_url(&sign_up_url)),
+                ButtonCommon::size(
+                    Button::new("copilot-subscribe-button", "Subscribe on GitHub")
+                        .full_width()
+                        .style(ButtonStyle::Outlined),
+                    ButtonSize::Medium,
+                )
+                .on_click(move |_, _window, cx| cx.open_url(&sign_up_url)),
             )
             .child(
-                Button::new("copilot-subscribe-cancel-button", "Cancel")
-                    .full_width()
-                    .size(ButtonSize::Medium)
-                    .on_click(cx.listener(|_, _, _, cx| cx.emit(DismissEvent))),
+                ButtonCommon::size(
+                    Button::new("copilot-subscribe-cancel-button", "Cancel")
+                        .full_width(),
+                    ButtonSize::Medium,
+                )
+                .on_click(cx.listener(|_, _, _, cx| cx.emit(DismissEvent))),
             )
     }
 
@@ -383,10 +397,12 @@ impl CopilotCodeVerification {
             .child(Headline::new("An Error Happened").size(HeadlineSize::Large))
             .child(Label::new(ERROR_LABEL).color(Color::Muted))
             .child(
-                Button::new("copilot-subscribe-button", "Reinstall Copilot and Sign In")
-                    .full_width()
-                    .style(ButtonStyle::Outlined)
-                    .size(ButtonSize::Medium)
+                ButtonCommon::size(
+                    Button::new("copilot-subscribe-button", "Reinstall Copilot and Sign In")
+                        .full_width()
+                        .style(ButtonStyle::Outlined),
+                    ButtonSize::Medium,
+                )
                     .start_icon(
                         Icon::new(IconName::Download)
                             .size(IconSize::Small)
@@ -539,7 +555,9 @@ impl ConfigurationView {
         ButtonLike::new("loading_button")
             .disabled(true)
             .style(ButtonStyle::Outlined)
-            .when(edit_prediction, |this| this.size(ButtonSize::Medium))
+            .when(edit_prediction, |this: ButtonLike| {
+                ButtonCommon::size(this, ButtonSize::Medium)
+            })
             .child(
                 h_flex()
                     .w_full()
@@ -563,9 +581,9 @@ impl ConfigurationView {
         };
 
         Button::new("sign_in", label)
-            .map(|this| {
+            .map(|this: Button| {
                 if edit_prediction {
-                    this.size(ButtonSize::Medium)
+                    ButtonCommon::size(this, ButtonSize::Medium)
                 } else {
                     this.full_width()
                 }
@@ -576,7 +594,9 @@ impl ConfigurationView {
                     .size(IconSize::Small)
                     .color(Color::Muted),
             )
-            .when(edit_prediction, |this| this.tab_index(0isize))
+            .when(edit_prediction, |this: Button| {
+                ButtonCommon::tab_index(this, 0isize)
+            })
             .on_click(|_, window, cx| {
                 if let Some(app_state) = AppState::global(cx).upgrade()
                     && let Some(copilot) = GlobalCopilotAuth::try_get_or_init(app_state, cx)
@@ -594,9 +614,9 @@ impl ConfigurationView {
         };
 
         Button::new("reinstall_and_sign_in", label)
-            .map(|this| {
+            .map(|this: Button| {
                 if edit_prediction {
-                    this.size(ButtonSize::Medium)
+                    ButtonCommon::size(this, ButtonSize::Medium)
                 } else {
                     this.full_width()
                 }
@@ -667,7 +687,7 @@ impl ConfigurationView {
     }
 
     fn render_for_chat(&self) -> impl IntoElement {
-        let start_label = "To use Zed's agent with GitHub Copilot, you need to be logged in to GitHub. Note that your GitHub account must have an active Copilot Chat subscription.";
+        let start_label = "To use Raijin's agent with GitHub Copilot, you need to be logged in to GitHub. Note that your GitHub account must have an active Copilot Chat subscription.";
         let no_status_label = "Copilot Chat requires an active GitHub Copilot subscription. Please ensure Copilot is configured and try again, or use a different LLM provider.";
 
         if let Some(msg) = self.loading_message() {

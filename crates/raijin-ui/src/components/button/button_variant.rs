@@ -2,7 +2,7 @@ use inazuma::{App, Oklch, Pixels, Rems, Window, transparent_black};
 use raijin_theme::ActiveTheme;
 
 use crate::{Color, ElevationIndex};
-use crate::prelude::{Clickable, Disableable, Toggleable, rems_from_px};
+use crate::prelude::{Disableable, Toggleable, rems_from_px};
 
 // ---------------------------------------------------------------------------
 // ButtonVariant — the unified variant enum
@@ -527,7 +527,7 @@ fn element_bg_from_elevation(elevation: Option<ElevationIndex>, cx: &mut App) ->
 
 /// Resolve a tint-style variant to its status-based `ButtonLikeStyles`,
 /// applying a darken for the hover state.
-fn tint_for_variant(variant: &ButtonVariant, cx: &mut App) -> Option<TintColor> {
+fn tint_for_variant(variant: &ButtonVariant, _cx: &mut App) -> Option<TintColor> {
     match variant {
         ButtonVariant::Info => Some(TintColor::Accent),
         ButtonVariant::Danger => Some(TintColor::Error),
@@ -742,7 +742,7 @@ impl ButtonVariant {
     /// Resolve the disabled style.
     pub fn disabled_style(
         self,
-        elevation: Option<ElevationIndex>,
+        _elevation: Option<ElevationIndex>,
         _window: &mut Window,
         cx: &mut App,
     ) -> ButtonLikeStyles {

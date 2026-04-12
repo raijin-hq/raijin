@@ -2,7 +2,7 @@
 
 use std::{f32::consts::PI, fmt::Debug};
 
-use inazuma::{Bounds, Oklch, Path, PathBuilder, Pixels, Point, Window, point, px};
+use inazuma::{Bounds, Oklch, Path, PathBuilder, Pixels, Window, point, px};
 
 const EPSILON: f32 = 1e-12;
 const HALF_PI: f32 = PI / 2.;
@@ -57,15 +57,6 @@ impl Arc {
         self
     }
 
-    /// Get the centroid of the Arc.
-    pub fn centroid<T>(&self, arc: &ArcData<T>) -> Point<f32> {
-        let start_angle = arc.start_angle - HALF_PI;
-        let end_angle = arc.end_angle - HALF_PI;
-        let r = (self.inner_radius + self.outer_radius) / 2.;
-        let a = (start_angle + end_angle) / 2.;
-
-        point(r * a.cos(), r * a.sin())
-    }
 
     fn path<T>(
         &self,
@@ -208,24 +199,4 @@ mod tests {
         assert_eq!(arc.outer_radius, 20.);
     }
 
-    #[test]
-    fn test_arc_centroid() {
-        let arc = Arc::new().inner_radius(10.).outer_radius(20.);
-
-        let arc_data = ArcData {
-            data: &(),
-            index: 0,
-            value: 1.,
-            start_angle: 0.,
-            end_angle: PI,
-            pad_angle: 0.,
-        };
-
-        let centroid = arc.centroid(&arc_data);
-        let expected_radius = (10. + 20.) / 2.;
-        let expected_angle = (0. + PI - 2. * HALF_PI) / 2.;
-
-        assert_eq!(centroid.x, expected_radius * expected_angle.cos());
-        assert_eq!(centroid.y, expected_radius * expected_angle.sin());
-    }
 }

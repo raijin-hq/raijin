@@ -4,7 +4,7 @@ use crate::{
     prediction::EditPredictionResult, zeta::compute_edits,
 };
 use anyhow::{Context as _, Result};
-use cloud_llm_client::EditPredictionRejectReason;
+use raijin_cloud_llm_client::EditPredictionRejectReason;
 use futures::AsyncReadExt as _;
 use inazuma::{
     App, AppContext as _, Context, Entity, Global, SharedString, Task,
@@ -15,7 +15,7 @@ use raijin_language_model::{ApiKeyState, EnvVar, env_var};
 use raijin_release_channel::AppVersion;
 use serde::{Deserialize, Serialize};
 use std::{mem, ops::Range, path::Path, sync::Arc};
-use zeta_prompt::ZetaPromptInput;
+use raijin_zeta_prompt::ZetaPromptInput;
 
 const MERCURY_API_URL: &str = "https://api.inceptionlabs.ai/v1/edit/completions";
 
@@ -75,7 +75,7 @@ impl Mercury {
             let (excerpt_point_range, excerpt_offset_range, cursor_offset_in_excerpt) =
                 crate::cursor_excerpt::compute_cursor_excerpt(&snapshot, cursor_offset);
 
-            let related_files = zeta_prompt::filter_redundant_excerpts(
+            let related_files = raijin_zeta_prompt::filter_redundant_excerpts(
                 related_files,
                 full_path.as_ref(),
                 excerpt_point_range.start.row..excerpt_point_range.end.row,
@@ -90,7 +90,7 @@ impl Mercury {
                 cursor_offset,
                 &excerpt_offset_range,
             );
-            let excerpt_ranges = zeta_prompt::compute_legacy_excerpt_ranges(
+            let excerpt_ranges = raijin_zeta_prompt::compute_legacy_excerpt_ranges(
                 &cursor_excerpt,
                 cursor_offset_in_excerpt,
                 &syntax_ranges,
@@ -100,7 +100,7 @@ impl Mercury {
                 + excerpt_ranges.editable_350.start)
                 ..(excerpt_offset_range.start + excerpt_ranges.editable_350.end);
 
-            let inputs = zeta_prompt::ZetaPromptInput {
+            let inputs = raijin_zeta_prompt::ZetaPromptInput {
                 events,
                 related_files: Some(related_files),
                 cursor_offset_in_excerpt: cursor_point.to_offset(&snapshot)
@@ -131,10 +131,10 @@ impl Mercury {
                     .ok();
             }
 
-            let request_body = open_ai::Request {
+            let request_body = raijin_open_ai::Request {
                 model: "mercury-coder".into(),
-                messages: vec![open_ai::RequestMessage::User {
-                    content: open_ai::MessageContent::Plain(prompt),
+                messages: vec![raijin_open_ai::RequestMessage::User {
+                    content: raijin_open_ai::MessageContent::Plain(prompt),
                 }],
                 stream: false,
                 stream_options: None,
@@ -186,7 +186,7 @@ impl Mercury {
                 );
             };
 
-            let mut response: open_ai::Response =
+            let mut response: raijin_open_ai::Response =
                 serde_json::from_slice(&body).context("Failed to parse response")?;
 
             let id = mem::take(&mut response.id);
@@ -325,7 +325,7 @@ fn build_prompt(inputs: &ZetaPromptInput) -> String {
         EDIT_DIFF_HISTORY_START..EDIT_DIFF_HISTORY_END,
         |prompt| {
             for event in inputs.events.iter() {
-                zeta_prompt::write_event(prompt, &event);
+                raijin_zeta_prompt::write_event(prompt, &event);
             }
         },
     );
@@ -386,7 +386,7 @@ pub fn mercury_api_token(cx: &mut App) -> Entity<ApiKeyState> {
     entity
 }
 
-pub fn load_mercury_api_token(cx: &mut App) -> Task<Result<(), language_model::AuthenticateError>> {
+pub fn load_mercury_api_token(cx: &mut App) -> Task<Result<(), raijin_language_model::AuthenticateError>> {
     mercury_api_token(cx).update(cx, |key_state, cx| {
         key_state.load_if_needed(MERCURY_CREDENTIALS_URL, |s| s, cx)
     })

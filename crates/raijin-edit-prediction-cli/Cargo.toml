@@ -14,53 +14,53 @@ path = "src/main.rs"
 
 [dependencies]
 anyhow.workspace = true
-raijin-anthropic = { workspace = true, package = "raijin-anthropic" }
-raijin-http-client = { workspace = true, package = "raijin-http-client" }
+raijin-anthropic.workspace = true
+raijin-http-client.workspace = true
 chrono.workspace = true
 clap = "4"
-raijin-client = { workspace = true, package = "raijin-client" }
-raijin-cloud-llm-client = { workspace = true, package = "raijin-cloud-llm-client" }
-inazuma-collections = { workspace = true, package = "inazuma-collections" }
-raijin-db = { workspace = true, package = "raijin-db" }
-raijin-debug-adapter-extension = { workspace = true, package = "raijin-debug-adapter-extension" }
+raijin-client.workspace = true
+raijin-cloud-llm-client.workspace = true
+inazuma-collections.workspace = true
+raijin-db.workspace = true
+raijin-debug-adapter-extension.workspace = true
 dirs.workspace = true
-raijin-extension = { workspace = true, package = "raijin-extension" }
-raijin-fs = { workspace = true, package = "raijin-fs" }
+raijin-extension.workspace = true
+raijin-fs.workspace = true
 futures.workspace = true
 inazuma.workspace = true
-inazuma-platform = { workspace = true, package = "inazuma-platform" }
-inazuma-tokio = { workspace = true, package = "inazuma-tokio" }
+inazuma-platform.workspace = true
+inazuma-tokio.workspace = true
 indoc.workspace = true
-raijin-language = { workspace = true, package = "raijin-language" }
-raijin-language-extension = { workspace = true, package = "raijin-language-extension" }
-raijin-language-model = { workspace = true, package = "raijin-language-model" }
-raijin-language-models = { workspace = true, package = "raijin-language-models" }
-raijin-languages = { workspace = true, package = "raijin-languages", features = ["load-grammars"] }
+raijin-language.workspace = true
+raijin-language-extension.workspace = true
+raijin-language-model.workspace = true
+raijin-language-models.workspace = true
+raijin-languages = { workspace = true, features = ["load-grammars"] }
 libc.workspace = true
 log.workspace = true
-raijin-node-runtime = { workspace = true, package = "raijin-node-runtime" }
-raijin-open-ai = { workspace = true, package = "raijin-open-ai" }
+raijin-node-runtime.workspace = true
+raijin-open-ai.workspace = true
 
-raijin-paths = { workspace = true, package = "raijin-paths" }
-raijin-project = { workspace = true, package = "raijin-project" }
-raijin-prompt-store = { workspace = true, package = "raijin-prompt-store" }
-raijin-release-channel = { workspace = true, package = "raijin-release-channel" }
-raijin-reqwest-client = { workspace = true, package = "raijin-reqwest-client" }
+raijin-paths.workspace = true
+raijin-project.workspace = true
+raijin-prompt-store.workspace = true
+raijin-release-channel.workspace = true
+raijin-reqwest-client.workspace = true
 serde.workspace = true
 serde_json.workspace = true
-inazuma-settings-framework = { workspace = true, package = "inazuma-settings-framework" }
+inazuma-settings-framework.workspace = true
 shellexpand.workspace = true
 smol.workspace = true
-raijin-sqlez = { workspace = true, package = "raijin-sqlez" }
+raijin-sqlez.workspace = true
 strum.workspace = true
-raijin-sqlez-macros = { workspace = true, package = "raijin-sqlez-macros" }
+raijin-sqlez-macros.workspace = true
 # raijin-terminal-view: REMOVED — wird in Phase 20 gebaut
-inazuma-util = { workspace = true, package = "inazuma-util" }
-raijin-watch = { workspace = true, package = "raijin-watch" }
-raijin-edit-prediction = { workspace = true, package = "raijin-edit-prediction", features = ["cli-support"] }
-raijin-telemetry-events = { workspace = true, package = "raijin-telemetry-events" }
+inazuma-util.workspace = true
+raijin-watch.workspace = true
+raijin-edit-prediction = { workspace = true, features = ["cli-support"] }
+raijin-telemetry-events.workspace = true
 wasmtime.workspace = true
-raijin-zeta-prompt = { workspace = true, package = "raijin-zeta-prompt" }
+raijin-zeta-prompt.workspace = true
 rand.workspace = true
 similar = "2.7.0"
 flate2 = "1.1.8"
@@ -83,6 +83,6 @@ ignored = ["wasmtime"]
 inazuma = { workspace = true, features = ["test-support"] }
 indoc.workspace = true
 pretty_assertions.workspace = true
-raijin-project = { workspace = true, package = "raijin-project", features = ["test-support"] }
+raijin-project = { workspace = true, features = ["test-support"] }
 tempfile.workspace = true
-raijin-workspace = { workspace = true, package = "raijin-workspace", features = ["test-support"] }
+raijin-workspace = { workspace = true, features = ["test-support"] }

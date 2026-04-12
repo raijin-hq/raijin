@@ -1,5 +1,5 @@
 use raijin_editor::{Editor, EditorElement, EditorStyle, MultiBufferOffset, ToOffset};
-use inazuma::{Action, App, Entity, FocusHandle, Hsla, IntoElement, TextStyle};
+use inazuma::{Action, App, Entity, FocusHandle, Oklch, IntoElement, TextStyle};
 use inazuma_settings_framework::Settings;
 use raijin_theme_settings::ThemeSettings;
 use raijin_ui::{IconButton, IconButtonShape};
@@ -39,7 +39,7 @@ pub(super) enum ActionButtonState {
 
 pub(super) fn render_action_button(
     id_prefix: &'static str,
-    icon: ui::IconName,
+    icon: raijin_ui::IconName,
     button_state: Option<ActionButtonState>,
     tooltip: &'static str,
     action: &'static dyn Action,
@@ -66,7 +66,7 @@ pub(super) fn render_action_button(
     })
 }
 
-pub(crate) fn input_base_styles(border_color: Hsla, map: impl FnOnce(Div) -> Div) -> Div {
+pub(crate) fn input_base_styles(border_color: Oklch, map: impl FnOnce(Div) -> Div) -> Div {
     h_flex()
         .map(map)
         .min_w_32()
@@ -78,7 +78,7 @@ pub(crate) fn input_base_styles(border_color: Hsla, map: impl FnOnce(Div) -> Div
         .rounded_md()
 }
 pub(crate) fn filter_search_results_input(
-    border_color: Hsla,
+    border_color: Oklch,
     map: impl FnOnce(Div) -> Div,
     cx: &App,
 ) -> Div {

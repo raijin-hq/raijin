@@ -11,10 +11,29 @@ use raijin_project::DisableAiSettings;
 use inazuma_settings_framework::Settings;
 use smallvec::SmallVec;
 use std::mem;
-use raijin_ui::{
-    prelude::*,
-    utils::{TRAFFIC_LIGHT_PADDING, platform_title_bar_height},
-};
+use raijin_ui::prelude::*;
+
+// Use pixels here instead of a rem-based size because the macOS traffic
+// lights are a static size, and don't scale with the rest of the UI.
+//
+// Magic number: There is one extra pixel of padding on the left side due to
+// the 1px border around the window on macOS apps.
+#[cfg(macos_sdk_26)]
+const TRAFFIC_LIGHT_PADDING: f32 = 78.;
+
+#[cfg(not(macos_sdk_26))]
+const TRAFFIC_LIGHT_PADDING: f32 = 71.;
+
+/// Returns the platform-appropriate title bar height.
+#[cfg(not(target_os = "windows"))]
+fn platform_title_bar_height(window: &Window) -> inazuma::Pixels {
+    (1.75 * window.rem_size()).max(px(34.))
+}
+
+#[cfg(target_os = "windows")]
+fn platform_title_bar_height(_window: &Window) -> inazuma::Pixels {
+    px(32.)
+}
 use raijin_workspace::{MultiWorkspace, SidebarRenderState, SidebarSide};
 
 use crate::{

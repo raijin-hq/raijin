@@ -37,18 +37,6 @@ impl<T> Pie<T> {
         self
     }
 
-    /// Set the start angle of the Pie.
-    pub fn start_angle(mut self, start_angle: f32) -> Self {
-        self.start_angle = start_angle;
-        self
-    }
-
-    /// Set the end angle of the Pie.
-    pub fn end_angle(mut self, end_angle: f32) -> Self {
-        self.end_angle = end_angle;
-        self
-    }
-
     /// Set the pad angle of the Pie.
     pub fn pad_angle(mut self, pad_angle: f32) -> Self {
         self.pad_angle = pad_angle;

@@ -79,6 +79,7 @@ where
         Some(index as f32 * avg_width * self.ratio() + padding_outer_width)
     }
 
+    #[cfg(test)]
     fn least_index(&self, tick: f32) -> usize {
         if self.domain.is_empty() {
             return 0;

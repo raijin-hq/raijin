@@ -7,6 +7,7 @@ use super::{sealed::Sealed, Scale};
 
 #[derive(Clone)]
 pub struct ScaleLinear<T> {
+    #[cfg(test)]
     domain_len: usize,
     domain_start: T,
     domain_diff: T,
@@ -42,6 +43,7 @@ where
                 });
 
         Self {
+            #[cfg(test)]
             domain_len: domain.len(),
             domain_start,
             domain_diff: domain_end - domain_start,
@@ -65,6 +67,7 @@ where
         Some(ratio * self.range_diff + self.range_start)
     }
 
+    #[cfg(test)]
     fn least_index_with_domain(&self, tick: f32, domain: &[T]) -> (usize, f32) {
         if self.domain_len == 0 || domain.is_empty() {
             return (0, 0.);

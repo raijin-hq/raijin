@@ -11,13 +11,24 @@ context = ""
 "alt-f4" = "raijin::Quit"
 "ctrl-," = "raijin::OpenSettings"
 "ctrl-shift-p" = "raijin::ToggleCommandPalette"
-"ctrl-shift-t" = "raijin::ToggleThemeSelector"
+"ctrl-t" = "theme_selector::Toggle"
 "ctrl-shift-n" = "raijin::NewWindow"
 "ctrl-shift-w" = "raijin::CloseWindow"
 "ctrl-+" = "raijin::IncreaseFontSize"
 "ctrl-=" = "raijin::IncreaseFontSize"
 "ctrl--" = "raijin::DecreaseFontSize"
 "ctrl-0" = "raijin::ResetFontSize"
+
+# === Workspace context ===
+[[section]]
+context = "Workspace"
+
+[section.bindings]
+"ctrl-shift-t" = "workspace::NewTerminal"
+"ctrl-d" = "pane::SplitAndMoveRight"
+"ctrl-shift-d" = "pane::SplitAndMoveDown"
+"ctrl-tab" = "pane::ActivateNextItem"
+"ctrl-shift-tab" = "pane::ActivatePreviousItem"
 
 # === Terminal context ===
 [[section]]
@@ -27,9 +38,6 @@ context = "Terminal"
 "ctrl-shift-c" = "terminal::Copy"
 "ctrl-shift-v" = "terminal::Paste"
 "ctrl-shift-k" = "terminal::Clear"
-"ctrl-shift-t" = "terminal::NewTab"
-"ctrl-tab" = "terminal::NextTab"
-"ctrl-shift-tab" = "terminal::PreviousTab"
 "shift-pageup" = "terminal::ScrollPageUp"
 "shift-pagedown" = "terminal::ScrollPageDown"
 "ctrl-home" = "terminal::ScrollToTop"

@@ -3,7 +3,7 @@ use std::{rc::Rc, time::Duration};
 use inazuma::{
     Animation, AnimationExt as _, AnyElement, App, ClickEvent, DefiniteLength, DismissEvent, Edges,
     EventEmitter, FocusHandle, InteractiveElement as _, IntoElement, KeyBinding, MouseButton,
-    ParentElement, Pixels, RenderOnce, StatefulInteractiveElement as _, StyleRefinement, Styled,
+    ParentElement, Pixels, RenderOnce, StyleRefinement, Styled,
     Window, WindowControlArea, anchored, div, point, prelude::FluentBuilder as _, px,
 };
 use schemars::JsonSchema;

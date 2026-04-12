@@ -106,12 +106,6 @@ impl<T> Line<T> {
         self
     }
 
-    /// Set the stroke color of the dots on the Line.
-    pub fn dot_stroke_color(mut self, dot_stroke_color: impl Into<Oklch>) -> Self {
-        self.dot_stroke_color = Some(dot_stroke_color.into());
-        self
-    }
-
     /// Paint the dots on the Line.
     fn paint_dot(&self, dot: Point<Pixels>) -> PaintQuad {
         quad(

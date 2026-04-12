@@ -13,7 +13,7 @@ use crate::{
     Input,
     Popover,
     Slider,
-    Tab, TabBar,
+    TabBar,
     Tooltip,
     v_flex,
 };

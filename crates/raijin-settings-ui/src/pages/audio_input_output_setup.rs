@@ -35,7 +35,7 @@ pub(crate) fn render_audio_device_dropdown<F>(
 where
     F: Fn(Option<DeviceId>, &mut Window, &mut App) + Clone + 'static,
 {
-    audio::ensure_devices_initialized(cx);
+    raijin_audio::ensure_devices_initialized(cx);
     let devices = cx.global::<AvailableAudioDevices>().0.clone();
     let current_device = get_current_device(current_device_id.as_ref(), is_input, &devices);
 

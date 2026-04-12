@@ -1,4 +1,4 @@
-use action_log::ActionLog;
+use raijin_action_log::ActionLog;
 use agent_client_protocol::{self as acp, ToolCallUpdateFields};
 use anyhow::{Context as _, Result, anyhow};
 use futures::FutureExt as _;
@@ -320,7 +320,7 @@ impl AgentTool for ReadFileTool {
                         Some(AgentLocation {
                             buffer: buffer.downgrade(),
                             position: anchor.unwrap_or_else(|| {
-                                text::Anchor::min_for_buffer(buffer.read(cx).remote_id())
+                                inazuma_text::Anchor::min_for_buffer(buffer.read(cx).remote_id())
                             }),
                         }),
                         cx,
@@ -430,7 +430,7 @@ mod test {
         .await;
         let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
         let language_registry = project.read_with(cx, |project, _| project.languages().clone());
-        language_registry.add(language::rust_lang());
+        language_registry.add(raijin_language::rust_lang());
         let action_log = cx.new(|_| ActionLog::new(project.clone()));
         let tool = Arc::new(ReadFileTool::new(project, action_log, true));
         let result = cx
@@ -896,7 +896,7 @@ mod test {
         );
         authorization
             .response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))
@@ -1188,7 +1188,7 @@ mod test {
         );
 
         auth.response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))
@@ -1278,7 +1278,7 @@ mod test {
         .unwrap();
 
         cx.update(|cx| {
-            settings::SettingsStore::update_global(cx, |store, cx| {
+            inazuma_settings_framework::SettingsStore::update_global(cx, |store, cx| {
                 store.update_user_settings(cx, |settings| {
                     settings.project.worktree.private_files =
                         Some(vec!["**/secret_link.txt".to_string()].into());

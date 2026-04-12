@@ -166,7 +166,7 @@ impl ApplicationMenu {
                             SharedString::from(format!("{}-menu-trigger", menu_name)),
                             raijin_ui::IconName::Menu,
                         )
-                        .style(ButtonStyle::Subtle)
+                        .style(ButtonStyle::Ghost)
                         .icon_size(IconSize::Small),
                         Tooltip::text("Open Application Menu"),
                     )
@@ -199,7 +199,7 @@ impl ApplicationMenu {
                             SharedString::from(format!("{}-menu-trigger", menu_name)),
                             menu_name,
                         )
-                        .style(ButtonStyle::Subtle)
+                        .style(ButtonStyle::Ghost)
                         .label_size(LabelSize::Small),
                     )
                     .with_handle(current_handle.clone()),

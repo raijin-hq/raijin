@@ -7,7 +7,7 @@ use inazuma_gpui_util::defer;
 use anyhow::anyhow;
 use bytes::{BufMut, Bytes, BytesMut};
 use futures::{AsyncRead, FutureExt as _, TryStreamExt as _};
-use raijin_raijin_http_client::{RedirectPolicy, Url, http};
+use raijin_http_client::{RedirectPolicy, Url, http};
 use regex::Regex;
 use reqwest::{
     header::{HeaderMap, HeaderValue},
@@ -54,7 +54,7 @@ impl ReqwestClient {
         let mut client = Self::builder().default_headers(map);
         let client_has_proxy;
 
-        if let Some(proxy) = proxy.as_ref().and_then(|proxy_url| {
+        if let Some(proxy) = proxy.as_ref().and_then(|proxy_url: &Url| {
             reqwest::Proxy::all(proxy_url.clone())
                 .inspect_err(|e| {
                     log::error!(
@@ -73,7 +73,7 @@ impl ReqwestClient {
         };
 
         let client = client
-            .use_preconfigured_tls(http_client_tls::tls_config())
+            .use_preconfigured_tls(raijin_http_client_tls::tls_config())
             .build()?;
         let mut client: ReqwestClient = client.into();
         client.proxy = client_has_proxy.then_some(proxy).flatten();
@@ -232,15 +232,25 @@ impl raijin_http_client::HttpClient for ReqwestClient {
     > {
         let (parts, body) = req.into_parts();
 
-        let mut request = self.client.request(parts.method, parts.uri.to_string());
-        request = request.headers(parts.headers);
-        if let Some(redirect_policy) = parts.extensions.get::<RedirectPolicy>() {
-            request = request.redirect_policy(match redirect_policy {
+        // Stock reqwest 0.12 doesn't support per-request redirect policies on
+        // RequestBuilder. When a custom redirect policy is specified, build a
+        // one-off client that inherits the same TLS/timeout settings.
+        let client = if let Some(redirect_policy) = parts.extensions.get::<RedirectPolicy>() {
+            let policy = match redirect_policy {
                 RedirectPolicy::NoFollow => redirect::Policy::none(),
                 RedirectPolicy::FollowLimit(limit) => redirect::Policy::limited(*limit as usize),
                 RedirectPolicy::FollowAll => redirect::Policy::limited(100),
-            });
-        }
+            };
+            Self::builder()
+                .redirect(policy)
+                .build()
+                .unwrap_or_else(|_| self.client.clone())
+        } else {
+            self.client.clone()
+        };
+
+        let mut request = client.request(parts.method, parts.uri.to_string());
+        request = request.headers(parts.headers);
         let request = request.body(match body.0 {
             raijin_http_client::Inner::Empty => reqwest::Body::default(),
             raijin_http_client::Inner::Bytes(cursor) => cursor.into_inner().into(),
@@ -269,7 +279,7 @@ impl raijin_http_client::HttpClient for ReqwestClient {
                 .into_async_read();
             let body = raijin_http_client::AsyncBody::from_reader(bytes);
 
-            builder.body(body).map_err(|e| anyhow!(e))
+            builder.body(body).map_err(|e: http::Error| anyhow!(e))
         }
         .boxed()
     }

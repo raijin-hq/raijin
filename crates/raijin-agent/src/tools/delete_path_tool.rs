@@ -5,7 +5,7 @@ use super::tool_permissions::{
 use crate::{
     AgentTool, ToolCallEventStream, ToolInput, ToolPermissionDecision, decide_permission_for_path,
 };
-use action_log::ActionLog;
+use raijin_action_log::ActionLog;
 use agent_client_protocol::ToolKind;
 use raijin_agent_settings::AgentSettings;
 use futures::{FutureExt as _, SinkExt, StreamExt, channel::mpsc};
@@ -246,7 +246,7 @@ mod tests {
         });
         cx.update(|cx| {
             let mut settings = AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
             AgentSettings::override_global(settings, cx);
         });
     }
@@ -301,7 +301,7 @@ mod tests {
         );
 
         auth.response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))
@@ -381,7 +381,7 @@ mod tests {
         init_test(cx);
         cx.update(|cx| {
             let mut settings = AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Confirm;
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Confirm;
             AgentSettings::override_global(settings, cx);
         });
 
@@ -431,7 +431,7 @@ mod tests {
         );
 
         auth.response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))
@@ -462,8 +462,8 @@ mod tests {
             let mut settings = AgentSettings::get_global(cx).clone();
             settings.tool_permissions.tools.insert(
                 "delete_path".into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     ..Default::default()
                 },
             );

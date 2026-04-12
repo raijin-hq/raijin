@@ -390,10 +390,10 @@ impl Render for BufferSearchBar {
                         "buffer-search-bar-toggle-search-selection-button",
                         IconName::Quote,
                     )
-                    .style(ButtonStyle::Subtle)
+                    .style(ButtonStyle::SUBTLE)
                     .shape(IconButtonShape::Square)
                     .when(self.selection_search_enabled.is_some(), |button| {
-                        button.style(ButtonStyle::Filled)
+                        button.style(ButtonStyle::FILLED)
                     })
                     .on_click(cx.listener(|this, _: &ClickEvent, window, cx| {
                         this.toggle_selection(&ToggleSelection, window, cx);

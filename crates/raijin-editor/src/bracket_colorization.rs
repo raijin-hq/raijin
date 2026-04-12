@@ -10,7 +10,8 @@ use inazuma::{AppContext as _, Context, HighlightStyle};
 use itertools::Itertools;
 use raijin_language::{BufferRow, BufferSnapshot, language_settings::LanguageSettings};
 use raijin_multi_buffer::{Anchor, ExcerptId};
-use raijin_ui::{ActiveTheme, utils::ensure_minimum_contrast};
+use crate::apca_contrast::ensure_minimum_contrast;
+use raijin_ui::ActiveTheme;
 
 impl Editor {
     pub(crate) fn colorize_brackets(&mut self, invalidate: bool, cx: &mut Context<Editor>) {

@@ -23,7 +23,7 @@ static TASKS_SCHEMA: LazyLock<String> = LazyLock::new(|| {
 });
 
 static SNIPPETS_SCHEMA: LazyLock<String> = LazyLock::new(|| {
-    serde_json::to_string(&snippet_provider::format::VsSnippetsFile::generate_json_schema())
+    serde_json::to_string(&raijin_snippet_provider::format::VsSnippetsFile::generate_json_schema())
         .expect("VsSnippetsFile schema should serialize")
 });
 

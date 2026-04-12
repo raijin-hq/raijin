@@ -16,7 +16,7 @@ use inazuma::{
 };
 
 use crate::{
-    ActiveTheme, StyledExt as _,
+    StyledExt as _,
     text::{TextView, TextViewStyle},
 };
 
@@ -48,7 +48,7 @@ pub(super) fn render_markdown(
     id: impl Into<ElementId>,
     markdown: impl Into<SharedString>,
     _: &mut Window,
-    cx: &mut App,
+    _cx: &mut App,
 ) -> TextView {
     TextView::markdown(id, markdown)
         .style(

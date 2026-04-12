@@ -6,8 +6,10 @@ publish.workspace = true
 
 [dependencies]
 raijin-theme = { workspace = true }
-raijin-settings = { workspace = true }
+raijin-theme-settings = { workspace = true }
+raijin-fs = { workspace = true }
 inazuma = { workspace = true }
+inazuma-settings-framework = { workspace = true }
 anyhow = { workspace = true }
 log = "0.4"
 

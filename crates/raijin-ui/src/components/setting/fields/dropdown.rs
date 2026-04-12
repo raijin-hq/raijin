@@ -6,7 +6,7 @@ use inazuma::{
 };
 
 use crate::{
-    AnySettingField, AxisExt, Button, DropdownMenu, PopupMenuItem, RenderOptions, Sizable,
+    AnySettingField, AxisExt, Button, PopupMenuItem, RenderOptions, Sizable,
     StyledExt,
 };
 use super::{SettingFieldRender, get_value, set_value};

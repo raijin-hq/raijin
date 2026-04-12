@@ -8,33 +8,39 @@ use inazuma::{
 use crate::{Button, InteractivePopover, Selectable};
 use super::PopupMenu;
 
-/// A dropdown menu trait for buttons and other interactive elements
-pub trait DropdownMenu: Styled + Selectable + InteractiveElement + IntoElement + 'static {
-    /// Create a dropdown menu with the given items, anchored to the TopLeft corner
-    fn dropdown_menu(
+/// A trait for attaching a popup menu to any interactive element.
+///
+/// Use `.popup_menu(|menu, window, cx| menu.item(...))` on a Button or other
+/// interactive element to attach an ad-hoc popup menu.
+///
+/// For a standalone form-style dropdown (label + chevron + menu), use
+/// [`crate::DropdownMenu`] instead.
+pub trait PopupMenuExt: Styled + Selectable + InteractiveElement + IntoElement + 'static {
+    /// Attach a popup menu anchored to the TopLeft corner.
+    fn popup_menu(
         self,
         f: impl Fn(PopupMenu, &mut Window, &mut Context<PopupMenu>) -> PopupMenu + 'static,
-    ) -> DropdownMenuPopover<Self> {
-        self.dropdown_menu_with_anchor(Corner::TopLeft, f)
+    ) -> PopupMenuPopover<Self> {
+        self.popup_menu_with_anchor(Corner::TopLeft, f)
     }
 
-    /// Create a dropdown menu with the given items, anchored to the given corner
-    fn dropdown_menu_with_anchor(
+    /// Attach a popup menu anchored to the given corner.
+    fn popup_menu_with_anchor(
         mut self,
         anchor: impl Into<Corner>,
         f: impl Fn(PopupMenu, &mut Window, &mut Context<PopupMenu>) -> PopupMenu + 'static,
-    ) -> DropdownMenuPopover<Self> {
+    ) -> PopupMenuPopover<Self> {
         let style = self.style().clone();
         let id = self.interactivity().element_id.clone();
 
-        DropdownMenuPopover::new(id.unwrap_or(0.into()), anchor, self, f).trigger_style(style)
+        PopupMenuPopover::new(id.unwrap_or(0.into()), anchor, self, f).trigger_style(style)
     }
 }
 
-impl DropdownMenu for Button {}
+impl PopupMenuExt for Button {}
 
 #[derive(IntoElement)]
-pub struct DropdownMenuPopover<T: Selectable + IntoElement + 'static> {
+pub struct PopupMenuPopover<T: Selectable + IntoElement + 'static> {
     id: ElementId,
     style: StyleRefinement,
     anchor: Corner,
@@ -42,7 +48,7 @@ pub struct DropdownMenuPopover<T: Selectable + IntoElement + 'static> {
     builder: Rc<dyn Fn(PopupMenu, &mut Window, &mut Context<PopupMenu>) -> PopupMenu>,
 }
 
-impl<T> DropdownMenuPopover<T>
+impl<T> PopupMenuPopover<T>
 where
     T: Selectable + IntoElement + 'static,
 {
@@ -53,7 +59,7 @@ where
         builder: impl Fn(PopupMenu, &mut Window, &mut Context<PopupMenu>) -> PopupMenu + 'static,
     ) -> Self {
         Self {
-            id: SharedString::from(format!("dropdown-menu:{:?}", id)).into(),
+            id: SharedString::from(format!("popup-menu:{:?}", id)).into(),
             style: StyleRefinement::default(),
             anchor: anchor.into(),
             trigger,
@@ -61,13 +67,13 @@ where
         }
     }
 
-    /// Set the anchor corner for the dropdown menu popover.
+    /// Set the anchor corner for the popup menu popover.
     pub fn anchor(mut self, anchor: impl Into<Corner>) -> Self {
         self.anchor = anchor.into();
         self
     }
 
-    /// Set the style refinement for the dropdown menu trigger.
+    /// Set the style refinement for the popup menu trigger.
     fn trigger_style(mut self, style: StyleRefinement) -> Self {
         self.style = style;
         self
@@ -75,18 +81,18 @@ where
 }
 
 #[derive(Default)]
-struct DropdownMenuState {
+struct PopupMenuState {
     menu: Option<Entity<PopupMenu>>,
 }
 
-impl<T> RenderOnce for DropdownMenuPopover<T>
+impl<T> RenderOnce for PopupMenuPopover<T>
 where
     T: Selectable + IntoElement + 'static,
 {
     fn render(self, window: &mut Window, cx: &mut inazuma::App) -> impl IntoElement {
         let builder = self.builder.clone();
         let menu_state =
-            window.use_keyed_state(self.id.clone(), cx, |_, _| DropdownMenuState::default());
+            window.use_keyed_state(self.id.clone(), cx, |_, _| PopupMenuState::default());
 
         InteractivePopover::new(SharedString::from(format!("popover:{}", self.id)))
             .appearance(false)
@@ -95,12 +101,6 @@ where
             .trigger_style(self.style)
             .anchor(self.anchor)
             .content(move |_, window, cx| {
-                // Here is special logic to only create the PopupMenu once and reuse it.
-                // Because this `content` will called in every time render, so we need to store the menu
-                // in state to avoid recreating at every render.
-                //
-                // And we also need to rebuild the menu when it is dismissed, to rebuild menu items
-                // dynamically for support `dropdown_menu` method, so we listen for DismissEvent below.
                 let menu = match menu_state.read(cx).menu.clone() {
                     Some(menu) => menu,
                     None => {
@@ -113,7 +113,6 @@ where
                         });
                         menu.focus_handle(cx).focus(window, cx);
 
-                        // Listen for dismiss events from the PopupMenu to close the popover.
                         let popover_state = cx.entity();
                         window
                             .subscribe(&menu, cx, {

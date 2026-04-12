@@ -177,7 +177,7 @@ impl AgentTool for SpawnAgentTool {
             } else {
                 "error"
             };
-            telemetry::event!(
+            raijin_telemetry::event!(
                 "Subagent Completed",
                 subagent_session = session_info.session_id.to_string(),
                 status,

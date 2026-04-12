@@ -70,7 +70,7 @@ impl ExtensionThemeProxy for ThemeRegistryProxy {
 
     fn remove_user_themes(&self, themes: Vec<SharedString>) {
         let mut registry = self.registry.write();
-        registry.remove_themes(&themes);
+        registry.remove_user_themes(&themes);
         log::info!("removed {} user themes from registry", themes.len());
     }
 
@@ -87,7 +87,7 @@ impl ExtensionThemeProxy for ThemeRegistryProxy {
         let current_name = cx.theme().name.clone();
         let registry = self.registry.read();
         if let Ok(theme) = registry.get(&current_name) {
-            cx.set_global(GlobalTheme(theme));
+            GlobalTheme::update_theme(cx, theme);
             log::info!("reloaded current theme: {}", current_name);
         }
     }

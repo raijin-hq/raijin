@@ -3,11 +3,20 @@ use inazuma::Pixels;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use inazuma_settings_framework::{RegisterSetting, Settings, StatusStyle};
-use raijin_ui::{
-    px,
-    scrollbars::{ScrollbarVisibility, ShowScrollbar},
-};
+use raijin_ui::{px, ScrollbarVisibility, ShowScrollbar};
 use raijin_workspace::dock::DockPosition;
+
+/// Convert from the editor's `ShowScrollbar` (which is `pub(crate)` in `raijin_editor`)
+/// to `raijin_ui::ShowScrollbar` by matching on the `Debug` representation.
+fn editor_show_scrollbar_to_ui(cx: &raijin_ui::App) -> ShowScrollbar {
+    let editor_value = format!("{:?}", EditorSettings::get_global(cx).scrollbar.show);
+    match editor_value.as_str() {
+        "System" => ShowScrollbar::System,
+        "Always" => ShowScrollbar::Always,
+        "Never" => ShowScrollbar::Never,
+        _ => ShowScrollbar::Auto,
+    }
+}
 
 #[derive(Copy, Clone, Debug, Serialize, Deserialize, JsonSchema, PartialEq, Eq)]
 pub struct ScrollbarSettings {
@@ -44,7 +53,7 @@ impl ScrollbarVisibility for GitPanelSettings {
         // We should fix this. PR: https://github.com/zed-industries/zed/pull/19495
         self.scrollbar
             .show
-            .unwrap_or_else(|| EditorSettings::get_global(cx).scrollbar.show)
+            .unwrap_or_else(|| editor_show_scrollbar_to_ui(cx))
     }
 }
 

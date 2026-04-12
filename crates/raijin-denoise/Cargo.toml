@@ -12,6 +12,7 @@ workspace = true
 candle-core = "0.10"
 candle-onnx = "0.10"
 log.workspace = true
+prost = "0.14"
 
 rodio = { workspace = true, features = ["wav"] }
 

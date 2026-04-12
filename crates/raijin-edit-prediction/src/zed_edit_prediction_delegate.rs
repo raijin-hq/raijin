@@ -1,7 +1,7 @@
 use std::{cmp, sync::Arc};
 
 use raijin_client::{Client, UserStore};
-use cloud_llm_client::EditPredictionRejectReason;
+use raijin_cloud_llm_client::EditPredictionRejectReason;
 use raijin_edit_prediction_types::{
     DataCollectionState, EditPredictionDelegate, EditPredictionDiscardReason,
     EditPredictionIconSet, SuggestionDisplayType,
@@ -95,14 +95,14 @@ impl EditPredictionDelegate for ZedEditPredictionDelegate {
         });
     }
 
-    fn usage(&self, cx: &App) -> Option<client::EditPredictionUsage> {
+    fn usage(&self, cx: &App) -> Option<raijin_client::EditPredictionUsage> {
         self.store.read(cx).usage(cx)
     }
 
     fn is_enabled(
         &self,
-        _buffer: &Entity<language::Buffer>,
-        _cursor_position: language::Anchor,
+        _buffer: &Entity<raijin_language::Buffer>,
+        _cursor_position: raijin_language::Anchor,
         _cx: &App,
     ) -> bool {
         true
@@ -114,8 +114,8 @@ impl EditPredictionDelegate for ZedEditPredictionDelegate {
 
     fn refresh(
         &mut self,
-        buffer: Entity<language::Buffer>,
-        cursor_position: language::Anchor,
+        buffer: Entity<raijin_language::Buffer>,
+        cursor_position: raijin_language::Anchor,
         _debounce: bool,
         cx: &mut Context<Self>,
     ) {
@@ -165,10 +165,10 @@ impl EditPredictionDelegate for ZedEditPredictionDelegate {
 
     fn suggest(
         &mut self,
-        buffer: &Entity<language::Buffer>,
-        cursor_position: language::Anchor,
+        buffer: &Entity<raijin_language::Buffer>,
+        cursor_position: raijin_language::Anchor,
         cx: &mut Context<Self>,
-    ) -> Option<edit_prediction_types::EditPrediction> {
+    ) -> Option<raijin_edit_prediction_types::EditPrediction> {
         self.store.update(cx, |store, cx| {
             let prediction =
                 store.prediction_at(buffer, Some(cursor_position), &self.project, cx)?;
@@ -176,7 +176,7 @@ impl EditPredictionDelegate for ZedEditPredictionDelegate {
             let prediction = match prediction {
                 BufferEditPrediction::Local { prediction } => prediction,
                 BufferEditPrediction::Jump { prediction } => {
-                    return Some(edit_prediction_types::EditPrediction::Jump {
+                    return Some(raijin_edit_prediction_types::EditPrediction::Jump {
                         id: Some(prediction.id.to_string().into()),
                         snapshot: prediction.snapshot.clone(),
                         target: prediction.edits.first().unwrap().0.start,
@@ -227,7 +227,7 @@ impl EditPredictionDelegate for ZedEditPredictionDelegate {
                 }
             }
 
-            Some(edit_prediction_types::EditPrediction::Local {
+            Some(raijin_edit_prediction_types::EditPrediction::Local {
                 id: Some(prediction.id.to_string().into()),
                 edits: edits[edit_start_ix..edit_end_ix].to_vec(),
                 cursor_position: prediction.cursor_position,

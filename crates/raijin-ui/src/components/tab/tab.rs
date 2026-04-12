@@ -3,16 +3,16 @@ use std::rc::Rc;
 
 use inazuma::prelude::FluentBuilder as _;
 use inazuma::{
-    AnyElement, App, ClickEvent, Div, Edges, InteractiveElement, IntoElement, MouseButton,
-    ParentElement, Pixels, RenderOnce, SharedString, StatefulInteractiveElement, Styled, Window,
-    div, px, relative,
+    AnyElement, App, ClickEvent, Div, InteractiveElement, IntoElement, MouseButton,
+    ParentElement, Pixels, RenderOnce, SharedString, Stateful, StatefulInteractiveElement, Styled,
+    Window, div, px, relative,
 };
 use raijin_theme::ActiveTheme;
 
-use super::variant::{TabStyle, TabVariant};
+use super::variant::TabVariant;
 use crate::prelude::*;
 use crate::traits::selectable::Selectable;
-use crate::traits::size::{Sizable, Size, StyleSized};
+use crate::traits::size::{Sizable, Size};
 
 /// The position of a [`Tab`] within a workspace tab bar.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -273,19 +273,20 @@ impl ParentElement for Tab {
 }
 
 impl RenderOnce for Tab {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
+    #[allow(refining_impl_trait)]
+    fn render(self, _: &mut Window, cx: &mut App) -> Stateful<Div> {
         // Workspace variant uses the position-based rendering
         if self.variant == TabVariant::Workspace {
-            return self.render_workspace(cx).into_any_element();
+            return self.render_workspace(cx);
         }
 
         // Visual variants use the style system
-        self.render_visual(cx).into_any_element()
+        self.render_visual(cx)
     }
 }
 
 impl Tab {
-    fn render_workspace(self, cx: &App) -> impl IntoElement {
+    fn render_workspace(self, cx: &App) -> Stateful<Div> {
         let (text_color, tab_bg) = match self.selected {
             false => (
                 cx.theme().colors().text_muted,
@@ -313,7 +314,6 @@ impl Tab {
         };
 
         self.base
-            .id(self.ix)
             .h(Tab::container_height(cx))
             .bg(tab_bg)
             .border_color(cx.theme().colors().border)
@@ -351,7 +351,7 @@ impl Tab {
             )
     }
 
-    fn render_visual(self, cx: &App) -> impl IntoElement {
+    fn render_visual(self, cx: &App) -> Stateful<Div> {
         let mut tab_style = if self.selected {
             self.variant.selected(cx)
         } else {
@@ -370,7 +370,6 @@ impl Tab {
         let height = self.variant.height(self.size);
 
         self.base
-            .id(self.ix)
             .flex()
             .flex_wrap()
             .gap_1()

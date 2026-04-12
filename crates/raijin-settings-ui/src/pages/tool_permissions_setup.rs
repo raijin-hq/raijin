@@ -8,7 +8,9 @@ use inazuma_settings_framework::{Settings as _, SettingsStore, ToolPermissionMod
 use raijin_shell_command_parser::extract_commands;
 use std::sync::Arc;
 use raijin_theme_settings::ThemeSettings;
-use raijin_ui::{Banner, ContextMenu, Divider, PopoverMenu, Severity, Tooltip, prelude::*};
+use raijin_ui::{
+    Banner, ButtonCommon, ContextMenu, Divider, PopoverMenu, Severity, Tooltip, prelude::*,
+};
 use inazuma_util::ResultExt as _;
 use inazuma_util::shell::ShellKind;
 
@@ -16,7 +18,7 @@ use crate::{SettingsWindow, components::SettingsInputField};
 
 const HARDCODED_RULES_DESCRIPTION: &str =
     "`rm -rf` commands are always blocked when run on `$HOME`, `~`, `.`, `..`, or `/`";
-const SETTINGS_DISCLAIMER: &str = "Note: custom tool permissions only apply to the Zed native agent and don’t extend to external agents connected through the Agent Client Protocol (ACP).";
+const SETTINGS_DISCLAIMER: &str = "Note: custom tool permissions only apply to the Raijin native agent and don’t extend to external agents connected through the Agent Client Protocol (ACP).";
 
 /// Tools that support permission rules
 const TOOLS: &[ToolInfo] = &[
@@ -172,7 +174,7 @@ pub(crate) fn render_tool_permissions_setup_page(
         .id("tool-permissions-page")
         .on_action({
             let scroll_handle = scroll_handle.clone();
-            move |_: &menu::SelectNext, window, cx| {
+            move |_: &inazuma_menu::SelectNext, window, cx| {
                 window.focus_next(cx);
                 let current_offset = scroll_handle.offset();
                 scroll_handle.set_offset(point(current_offset.x, current_offset.y - scroll_step));
@@ -180,7 +182,7 @@ pub(crate) fn render_tool_permissions_setup_page(
         })
         .on_action({
             let scroll_handle = scroll_handle.clone();
-            move |_: &menu::SelectPrevious, window, cx| {
+            move |_: &inazuma_menu::SelectPrevious, window, cx| {
                 window.focus_prev(cx);
                 let current_offset = scroll_handle.offset();
                 scroll_handle.set_offset(point(current_offset.x, current_offset.y + scroll_step));
@@ -274,10 +276,14 @@ fn render_tool_list_item(
         )
         .child({
             let tool_name = tool.name;
-            Button::new(format!("configure-{}", tool.id), "Configure")
-                .tab_index(tool_index as isize)
-                .style(ButtonStyle::OutlinedGhost)
-                .size(ButtonSize::Medium)
+            ButtonCommon::size(
+                ButtonCommon::tab_index(
+                    Button::new(format!("configure-{}", tool.id), "Configure"),
+                    tool_index as isize,
+                )
+                .style(ButtonStyle::Outlined),
+                ButtonSize::Medium,
+            )
                 .end_icon(
                     Icon::new(IconName::ChevronRight)
                         .size(IconSize::Small)
@@ -331,7 +337,7 @@ pub(crate) fn render_tool_config_page(
         .id(format!("tool-config-page-{}", tool.id))
         .on_action({
             let scroll_handle = scroll_handle.clone();
-            move |_: &menu::SelectNext, window, cx| {
+            move |_: &inazuma_menu::SelectNext, window, cx| {
                 window.focus_next(cx);
                 let current_offset = scroll_handle.offset();
                 scroll_handle.set_offset(point(current_offset.x, current_offset.y - scroll_step));
@@ -339,7 +345,7 @@ pub(crate) fn render_tool_config_page(
         })
         .on_action({
             let scroll_handle = scroll_handle.clone();
-            move |_: &menu::SelectPrevious, window, cx| {
+            move |_: &inazuma_menu::SelectPrevious, window, cx| {
                 window.focus_prev(cx);
                 let current_offset = scroll_handle.offset();
                 scroll_handle.set_offset(point(current_offset.x, current_offset.y + scroll_step));
@@ -375,7 +381,7 @@ pub(crate) fn render_tool_config_page(
                         .child(Label::new(error).size(LabelSize::Small))
                         .action_slot(
                             Button::new("dismiss-regex-error", "Dismiss")
-                                .style(ButtonStyle::Tinted(ui::TintColor::Warning))
+                                .style(ButtonStyle::tinted(raijin_ui::TintColor::Warning))
                                 .on_click(cx.listener(|this, _, _, cx| {
                                     this.regex_validation_error = None;
                                     cx.notify();
@@ -391,7 +397,7 @@ pub(crate) fn render_tool_config_page(
                 .w_full()
                 .gap_5()
                 .child(render_default_mode_section(tool.id, rules.default, cx))
-                .child(Divider::horizontal().color(ui::DividerColor::BorderFaded))
+                .child(Divider::horizontal().color(raijin_ui::DividerColor::BorderFaded))
                 .child(render_rule_section(
                     tool.id,
                     "Always Deny",
@@ -400,7 +406,7 @@ pub(crate) fn render_tool_config_page(
                     &rules.always_deny,
                     cx,
                 ))
-                .child(Divider::horizontal().color(ui::DividerColor::BorderFaded))
+                .child(Divider::horizontal().color(raijin_ui::DividerColor::BorderFaded))
                 .child(render_rule_section(
                     tool.id,
                     "Always Allow",
@@ -409,7 +415,7 @@ pub(crate) fn render_tool_config_page(
                     &rules.always_allow,
                     cx,
                 ))
-                .child(Divider::horizontal().color(ui::DividerColor::BorderFaded))
+                .child(Divider::horizontal().color(raijin_ui::DividerColor::BorderFaded))
                 .child(render_rule_section(
                     tool.id,
                     "Always Confirm",
@@ -419,7 +425,7 @@ pub(crate) fn render_tool_config_page(
                     cx,
                 ))
                 .when(!rules.invalid_patterns.is_empty(), |this| {
-                    this.child(Divider::horizontal().color(ui::DividerColor::BorderFaded))
+                    this.child(Divider::horizontal().color(raijin_ui::DividerColor::BorderFaded))
                         .child(render_invalid_patterns_section(
                             tool.id,
                             &rules.invalid_patterns,
@@ -459,7 +465,7 @@ fn render_verification_section(
     let input_id = format!("{}-verification-input", tool_id);
 
     let editor = window.use_keyed_state(input_id, cx, |window, cx| {
-        let mut editor = editor::Editor::single_line(window, cx);
+        let mut editor = raijin_editor::Editor::single_line(window, cx);
         editor.set_placeholder_text("Enter a tool input to test your rules…", window, cx);
 
         let global_settings = ThemeSettings::get_global(cx);
@@ -529,7 +535,7 @@ fn render_verification_section(
             v_flex()
                 .p_2p5()
                 .gap_1p5()
-                .bg(color.surface_background.opacity(0.15))
+                .bg(color.surface.opacity(0.15))
                 .border_1()
                 .border_dashed()
                 .border_color(color.border_variant)
@@ -547,7 +553,7 @@ fn render_verification_section(
                         .rounded_md()
                         .border_1()
                         .border_color(color.border)
-                        .bg(color.editor_background)
+                        .bg(color.editor.background)
                         .track_focus(&focus_handle)
                         .child(editor),
                 )
@@ -855,7 +861,7 @@ fn render_invalid_patterns_section(
                         .rounded_md()
                         .border_1()
                         .border_color(theme_colors.border_variant)
-                        .bg(theme_colors.surface_background.opacity(0.15))
+                        .bg(theme_colors.surface.opacity(0.15))
                         .gap_1()
                         .child(
                             h_flex()
@@ -1093,10 +1099,14 @@ fn render_global_default_mode_section(current_mode: ToolPermissionMode) -> AnyEl
         .child(
             PopoverMenu::new("global-default-mode")
                 .trigger(
-                    Button::new("global-mode-trigger", mode_label)
-                        .tab_index(0_isize)
-                        .style(ButtonStyle::Outlined)
-                        .size(ButtonSize::Medium)
+                    ButtonCommon::size(
+                        ButtonCommon::tab_index(
+                            Button::new("global-mode-trigger", mode_label),
+                            0_isize,
+                        )
+                        .style(ButtonStyle::Outlined),
+                        ButtonSize::Medium,
+                    )
                         .end_icon(Icon::new(IconName::ChevronDown).size(IconSize::Small)),
                 )
                 .menu(move |window, cx| {
@@ -1147,10 +1157,14 @@ fn render_default_mode_section(
         .child(
             PopoverMenu::new(format!("default-mode-{}", tool_id))
                 .trigger(
-                    Button::new(format!("mode-trigger-{}", tool_id), mode_label)
-                        .tab_index(0_isize)
-                        .style(ButtonStyle::Outlined)
-                        .size(ButtonSize::Medium)
+                    ButtonCommon::size(
+                        ButtonCommon::tab_index(
+                            Button::new(format!("mode-trigger-{}", tool_id), mode_label),
+                            0_isize,
+                        )
+                        .style(ButtonStyle::Outlined),
+                        ButtonSize::Medium,
+                    )
                         .end_icon(Icon::new(IconName::ChevronDown).size(IconSize::Small)),
                 )
                 .menu(move |window, cx| {
@@ -1236,7 +1250,7 @@ fn get_tool_rules(tool_name: &str, cx: &App) -> ToolRulesView {
 fn save_pattern(tool_name: &str, rule_type: ToolPermissionMode, pattern: String, cx: &mut App) {
     let tool_name = tool_name.to_string();
 
-    SettingsStore::global(cx).update_settings_file(<dyn fs::Fs>::global(cx), move |settings, _| {
+    SettingsStore::global(cx).update_settings_file(<dyn raijin_fs::Fs>::global(cx), move |settings, _| {
         let tool_permissions = settings
             .agent
             .get_or_insert_default()
@@ -1247,7 +1261,7 @@ fn save_pattern(tool_name: &str, rule_type: ToolPermissionMode, pattern: String,
             .entry(Arc::from(tool_name.as_str()))
             .or_default();
 
-        let rule = settings::ToolRegexRule {
+        let rule = inazuma_settings_framework::ToolRegexRule {
             pattern,
             case_sensitive: None,
         };
@@ -1286,7 +1300,7 @@ fn update_pattern(
     let tool_name = tool_name.to_string();
     let old_pattern = old_pattern.to_string();
 
-    SettingsStore::global(cx).update_settings_file(<dyn fs::Fs>::global(cx), move |settings, _| {
+    SettingsStore::global(cx).update_settings_file(<dyn raijin_fs::Fs>::global(cx), move |settings, _| {
         let tool_permissions = settings
             .agent
             .get_or_insert_default()
@@ -1318,7 +1332,7 @@ fn delete_pattern(tool_name: &str, rule_type: ToolPermissionMode, pattern: &str,
     let tool_name = tool_name.to_string();
     let pattern = pattern.to_string();
 
-    SettingsStore::global(cx).update_settings_file(<dyn fs::Fs>::global(cx), move |settings, _| {
+    SettingsStore::global(cx).update_settings_file(<dyn raijin_fs::Fs>::global(cx), move |settings, _| {
         let tool_permissions = settings
             .agent
             .get_or_insert_default()
@@ -1340,7 +1354,7 @@ fn delete_pattern(tool_name: &str, rule_type: ToolPermissionMode, pattern: &str,
 }
 
 fn set_global_default_permission(mode: ToolPermissionMode, cx: &mut App) {
-    SettingsStore::global(cx).update_settings_file(<dyn fs::Fs>::global(cx), move |settings, _| {
+    SettingsStore::global(cx).update_settings_file(<dyn raijin_fs::Fs>::global(cx), move |settings, _| {
         settings
             .agent
             .get_or_insert_default()
@@ -1353,7 +1367,7 @@ fn set_global_default_permission(mode: ToolPermissionMode, cx: &mut App) {
 fn set_default_mode(tool_name: &str, mode: ToolPermissionMode, cx: &mut App) {
     let tool_name = tool_name.to_string();
 
-    SettingsStore::global(cx).update_settings_file(<dyn fs::Fs>::global(cx), move |settings, _| {
+    SettingsStore::global(cx).update_settings_file(<dyn raijin_fs::Fs>::global(cx), move |settings, _| {
         let tool_permissions = settings
             .agent
             .get_or_insert_default()

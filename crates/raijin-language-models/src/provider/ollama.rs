@@ -55,7 +55,7 @@ pub struct OllamaLanguageModelProvider {
 pub struct State {
     api_key_state: ApiKeyState,
     http_client: Arc<dyn HttpClient>,
-    fetched_models: Vec<ollama::Model>,
+    fetched_models: Vec<raijin_ollama::Model>,
     fetch_model_task: Option<Task<Result<()>>>,
 }
 
@@ -120,7 +120,7 @@ impl State {
                         let model =
                             show_model(http_client.as_ref(), &api_url, api_key.as_deref(), name)
                                 .await?;
-                        let ollama_model = ollama::Model::new(
+                        let ollama_model = raijin_ollama::Model::new(
                             name,
                             None,
                             model.context_length,
@@ -242,7 +242,7 @@ impl LanguageModelProvider for OllamaLanguageModelProvider {
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
-        let mut models: HashMap<String, ollama::Model> = HashMap::new();
+        let mut models: HashMap<String, raijin_ollama::Model> = HashMap::new();
         let settings = OllamaLanguageModelProvider::settings(cx);
 
         // Add models from the Ollama API
@@ -287,7 +287,7 @@ impl LanguageModelProvider for OllamaLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -304,7 +304,7 @@ impl LanguageModelProvider for OllamaLanguageModelProvider {
 
 pub struct OllamaLanguageModel {
     id: LanguageModelId,
-    model: ollama::Model,
+    model: raijin_ollama::Model,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
     state: Entity<State>,
@@ -951,7 +951,7 @@ impl Render for ConfigurationView {
                                 if is_authenticated {
                                     this.child(
                                         Button::new("ollama-site", "Ollama")
-                                            .style(ButtonStyle::Subtle)
+                                            .style(ButtonStyle::SUBTLE)
                                             .end_icon(
                                                 Icon::new(IconName::ArrowUpRight)
                                                     .size(IconSize::XSmall)
@@ -963,7 +963,7 @@ impl Render for ConfigurationView {
                                 } else {
                                     this.child(
                                         Button::new("download_ollama_button", "Download Ollama")
-                                            .style(ButtonStyle::Subtle)
+                                            .style(ButtonStyle::SUBTLE)
                                             .end_icon(
                                                 Icon::new(IconName::ArrowUpRight)
                                                     .size(IconSize::XSmall)
@@ -978,7 +978,7 @@ impl Render for ConfigurationView {
                             })
                             .child(
                                 Button::new("view-models", "View All Models")
-                                    .style(ButtonStyle::Subtle)
+                                    .style(ButtonStyle::SUBTLE)
                                     .end_icon(
                                         Icon::new(IconName::ArrowUpRight)
                                             .size(IconSize::XSmall)
@@ -1028,7 +1028,7 @@ impl Render for ConfigurationView {
 }
 
 fn merge_settings_into_models(
-    models: &mut HashMap<String, ollama::Model>,
+    models: &mut HashMap<String, raijin_ollama::Model>,
     available_models: &[AvailableModel],
     context_window: Option<u64>,
 ) {
@@ -1045,7 +1045,7 @@ fn merge_settings_into_models(
         } else {
             models.insert(
                 setting_model.name.clone(),
-                ollama::Model {
+                raijin_ollama::Model {
                     name: setting_model.name.clone(),
                     display_name: setting_model.display_name.clone(),
                     max_tokens: context_window.unwrap_or(setting_model.max_tokens),
@@ -1059,8 +1059,8 @@ fn merge_settings_into_models(
     }
 }
 
-fn tool_into_ollama(tool: LanguageModelRequestTool) -> ollama::OllamaTool {
-    ollama::OllamaTool::Function {
+fn tool_into_ollama(tool: LanguageModelRequestTool) -> raijin_ollama::OllamaTool {
+    raijin_ollama::OllamaTool::Function {
         function: OllamaFunctionTool {
             name: tool.name,
             description: Some(tool.description),
@@ -1079,10 +1079,10 @@ mod tests {
         // When multiple models share the same base name (e.g., qwen2.5-coder:1.5b and qwen2.5-coder:3b),
         // each model should get its own display_name from settings, not a random one.
 
-        let mut models: HashMap<String, ollama::Model> = HashMap::new();
+        let mut models: HashMap<String, raijin_ollama::Model> = HashMap::new();
         models.insert(
             "qwen2.5-coder:1.5b".to_string(),
-            ollama::Model {
+            raijin_ollama::Model {
                 name: "qwen2.5-coder:1.5b".to_string(),
                 display_name: None,
                 max_tokens: 4096,
@@ -1094,7 +1094,7 @@ mod tests {
         );
         models.insert(
             "qwen2.5-coder:3b".to_string(),
-            ollama::Model {
+            raijin_ollama::Model {
                 name: "qwen2.5-coder:3b".to_string(),
                 display_name: None,
                 max_tokens: 4096,

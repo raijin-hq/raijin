@@ -51,6 +51,7 @@ impl BlockNode {
     #[allow(dead_code)]
     pub(crate) fn to_markdown(&self) -> String {
         match self {
+            #[cfg(feature = "html")]
             BlockNode::Root { children, .. } => children
                 .iter()
                 .map(|child| child.to_markdown())

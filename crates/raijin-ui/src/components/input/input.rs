@@ -2,7 +2,7 @@ use inazuma::prelude::FluentBuilder as _;
 use inazuma::{
     AnyElement, App, DefiniteLength, Edges, EdgesRefinement, Entity, Oklch, InteractiveElement as _,
     IntoElement, IsZero, MouseButton, ParentElement as _, Rems, RenderOnce,
-    StatefulInteractiveElement as _, StyleRefinement, Styled, TextAlign, Window, div, px, relative,
+    StyleRefinement, Styled, TextAlign, Window, div, px, relative,
 };
 
 use crate::{Button, ButtonVariants as _};

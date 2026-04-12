@@ -5,7 +5,6 @@ use inazuma::{
     Window,
 };
 
-use inazuma::{InteractiveElement as _, StatefulInteractiveElement as _};
 
 use crate::{Button, ButtonVariants as _, IconName, Sizable as _};
 

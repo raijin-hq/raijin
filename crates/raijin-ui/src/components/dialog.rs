@@ -13,3 +13,4 @@ pub use dialog::*;
 pub use footer::*;
 pub use header::DialogHeader;
 pub use title::DialogTitle;
+pub(crate) use dialog::init;

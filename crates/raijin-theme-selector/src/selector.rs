@@ -4,7 +4,7 @@ use inazuma::{
     App, Context, DismissEvent, EventEmitter, Focusable, FocusHandle, IntoElement, ParentElement,
     Render, SharedString, Styled, Window, div, prelude::*, px,
 };
-use raijin_theme::{Appearance, GlobalTheme, ThemeMeta, ThemeRegistry};
+use raijin_theme::{ActiveTheme, Appearance, GlobalTheme, ThemeMeta, ThemeRegistry};
 
 /// A modal picker for selecting themes from the registry.
 ///
@@ -22,6 +22,8 @@ pub struct ThemeSelector {
     selected_index: usize,
     /// The theme that was active when the selector opened (for reverting on dismiss).
     original_theme: Arc<raijin_theme::Theme>,
+    /// Filesystem handle for persisting settings.
+    fs: Arc<dyn raijin_fs::Fs>,
     /// Focus handle for this view.
     focus_handle: FocusHandle,
 }
@@ -30,9 +32,10 @@ impl EventEmitter<DismissEvent> for ThemeSelector {}
 
 impl ThemeSelector {
     /// Creates a new theme selector, capturing the current theme for revert-on-dismiss.
-    pub fn new(cx: &mut Context<Self>) -> Self {
-        let original_theme = cx.global::<GlobalTheme>().0.clone();
-        let themes = cx.global::<ThemeRegistry>().list();
+    pub fn new(fs: Arc<dyn raijin_fs::Fs>, cx: &mut Context<Self>) -> Self {
+        let original_theme = cx.theme().clone();
+        let registry = ThemeRegistry::global(cx);
+        let themes = registry.list();
         let filtered: Vec<usize> = (0..themes.len()).collect();
 
         Self {
@@ -41,6 +44,7 @@ impl ThemeSelector {
             query: String::new(),
             selected_index: 0,
             original_theme,
+            fs,
             focus_handle: cx.focus_handle(),
         }
     }
@@ -71,25 +75,31 @@ impl ThemeSelector {
 
     /// Confirms the currently selected theme, persisting it in settings.
     pub fn confirm(&mut self, cx: &mut Context<Self>) {
-        // Persist the selected theme name to settings.toml
         if let Some(meta) = self.selected_theme() {
-            let theme_name = meta.name.to_string();
-            cx.update_global::<raijin_settings::RaijinSettings, _>(|settings, _cx| {
-                settings.theme.dark = theme_name;
-            });
-            let settings = cx.global::<raijin_settings::RaijinSettings>().clone();
-            if let Err(err) = settings.save() {
-                log::error!("Failed to save settings after theme change: {err}");
-            }
+            let theme_name: Arc<str> = meta.name.to_string().into();
+            let theme_appearance = meta.appearance;
+            // Use Dark as system appearance default — Raijin doesn't track system appearance yet.
+            let system_appearance = Appearance::Dark;
+
+            inazuma_settings_framework::update_settings_file(
+                self.fs.clone(),
+                cx,
+                move |settings, _cx| {
+                    raijin_theme_settings::set_theme(
+                        settings,
+                        theme_name,
+                        theme_appearance,
+                        system_appearance,
+                    );
+                },
+            );
         }
         cx.emit(DismissEvent);
     }
 
     /// Dismisses the selector and reverts to the original theme.
     pub fn dismiss(&mut self, cx: &mut Context<Self>) {
-        cx.update_global::<GlobalTheme, _>(|global, _cx| {
-            global.0 = self.original_theme.clone();
-        });
+        GlobalTheme::update_theme(cx, self.original_theme.clone());
         cx.emit(DismissEvent);
     }
 
@@ -104,11 +114,9 @@ impl ThemeSelector {
     fn show_selected_theme(&mut self, cx: &mut Context<Self>) {
         if let Some(&idx) = self.filtered.get(self.selected_index) {
             let meta = &self.themes[idx];
-            let registry = cx.global::<ThemeRegistry>();
+            let registry = ThemeRegistry::global(cx);
             if let Ok(theme) = registry.get(&meta.name) {
-                cx.update_global::<GlobalTheme, _>(|global, _cx| {
-                    global.0 = theme;
-                });
+                GlobalTheme::update_theme(cx, theme);
             }
         }
     }
@@ -155,12 +163,13 @@ impl Focusable for ThemeSelector {
 
 impl Render for ThemeSelector {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let theme = cx.global::<GlobalTheme>().0.clone();
-        let bg = theme.styles.colors.elevated_surface_background;
-        let border = theme.styles.colors.border;
-        let text_color = theme.styles.colors.text;
-        let text_muted = theme.styles.colors.text_muted;
-        let selection_bg = theme.styles.colors.element_selected;
+        let theme = cx.theme().clone();
+        let colors = theme.colors();
+        let bg = colors.elevated_surface;
+        let border = colors.border;
+        let text_color = colors.text;
+        let text_muted = colors.text_muted;
+        let selection_bg = colors.element_selected;
 
         let mut items = Vec::new();
 

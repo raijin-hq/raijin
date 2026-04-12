@@ -6,7 +6,7 @@ pub mod reindent;
 pub mod streaming_fuzzy_matcher;
 
 use crate::{Template, Templates};
-use action_log::ActionLog;
+use raijin_action_log::ActionLog;
 use anyhow::Result;
 use create_file_parser::{CreateFileParser, CreateFileParserEvent};
 pub use edit_parser::EditFormat;
@@ -28,7 +28,7 @@ use reindent::{IndentDelta, Reindenter};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::{mem, ops::Range, pin::Pin, sync::Arc, task::Poll};
-use streaming_diff::{CharOperation, StreamingDiff};
+use raijin_streaming_diff::{CharOperation, StreamingDiff};
 use streaming_fuzzy_matcher::StreamingFuzzyMatcher;
 
 #[derive(Serialize)]
@@ -177,7 +177,7 @@ impl EditAgent {
                     project.set_agent_location(
                         Some(AgentLocation {
                             buffer: buffer.downgrade(),
-                            position: language::Anchor::min_for_buffer(buffer_id),
+                            position: raijin_language::Anchor::min_for_buffer(buffer_id),
                         }),
                         cx,
                     )
@@ -199,7 +199,7 @@ impl EditAgent {
                     project.set_agent_location(
                         Some(AgentLocation {
                             buffer: buffer.downgrade(),
-                            position: language::Anchor::max_for_buffer(buffer_id),
+                            position: raijin_language::Anchor::max_for_buffer(buffer_id),
                         }),
                         cx,
                     )
@@ -494,12 +494,12 @@ impl EditAgent {
         cx: &mut AsyncApp,
     ) -> (
         Task<Result<(T, Vec<ResolvedOldText>)>>,
-        watch::Receiver<Option<Range<usize>>>,
+        raijin_watch::Receiver<Option<Range<usize>>>,
     )
     where
         T: 'static + Send + Unpin + Stream<Item = Result<EditParserEvent>>,
     {
-        let (mut old_range_tx, old_range_rx) = watch::channel(None);
+        let (mut old_range_tx, old_range_rx) = raijin_watch::channel(None);
         let task = cx.background_spawn(async move {
             let mut matcher = StreamingFuzzyMatcher::new(snapshot);
             while let Some(edit_event) = edit_events.next().await {
@@ -1154,7 +1154,7 @@ mod tests {
             project.read_with(cx, |project, _| project.agent_location()),
             Some(AgentLocation {
                 buffer: buffer.downgrade(),
-                position: language::Anchor::min_for_buffer(
+                position: raijin_language::Anchor::min_for_buffer(
                     cx.update(|cx| buffer.read(cx).remote_id())
                 ),
             })
@@ -1174,7 +1174,7 @@ mod tests {
             project.read_with(cx, |project, _| project.agent_location()),
             Some(AgentLocation {
                 buffer: buffer.downgrade(),
-                position: language::Anchor::max_for_buffer(
+                position: raijin_language::Anchor::max_for_buffer(
                     cx.update(|cx| buffer.read(cx).remote_id())
                 ),
             })
@@ -1194,7 +1194,7 @@ mod tests {
             project.read_with(cx, |project, _| project.agent_location()),
             Some(AgentLocation {
                 buffer: buffer.downgrade(),
-                position: language::Anchor::max_for_buffer(
+                position: raijin_language::Anchor::max_for_buffer(
                     cx.update(|cx| buffer.read(cx).remote_id())
                 ),
             })
@@ -1214,7 +1214,7 @@ mod tests {
             project.read_with(cx, |project, _| project.agent_location()),
             Some(AgentLocation {
                 buffer: buffer.downgrade(),
-                position: language::Anchor::max_for_buffer(
+                position: raijin_language::Anchor::max_for_buffer(
                     cx.update(|cx| buffer.read(cx).remote_id())
                 ),
             })
@@ -1231,7 +1231,7 @@ mod tests {
             project.read_with(cx, |project, _| project.agent_location()),
             Some(AgentLocation {
                 buffer: buffer.downgrade(),
-                position: language::Anchor::max_for_buffer(
+                position: raijin_language::Anchor::max_for_buffer(
                     cx.update(|cx| buffer.read(cx).remote_id())
                 ),
             })
@@ -1307,7 +1307,7 @@ mod tests {
     #[inazuma::test(iterations = 100)]
     async fn test_random_indents(mut rng: StdRng) {
         let len = rng.random_range(1..=100);
-        let new_text = util::RandomCharIter::new(&mut rng)
+        let new_text = inazuma_util::RandomCharIter::new(&mut rng)
             .with_simple_text()
             .take(len)
             .collect::<String>();
@@ -1388,7 +1388,7 @@ mod tests {
     }
 
     async fn init_test_with_thinking(cx: &mut TestAppContext, thinking_allowed: bool) -> EditAgent {
-        cx.update(settings::init);
+        cx.update(inazuma_settings_framework::init);
 
         let project = Project::test(FakeFs::new(cx.executor()), [], cx).await;
         let model = Arc::new(FakeLanguageModel::default());

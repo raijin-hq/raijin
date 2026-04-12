@@ -1,10 +1,10 @@
 use std::{ops::Range, sync::Arc};
 
-use cloud_llm_client::EditPredictionRejectReason;
+use raijin_cloud_llm_client::EditPredictionRejectReason;
 use raijin_edit_prediction_types::{PredictedCursorPosition, interpolate_edits};
 use inazuma::{AsyncApp, Entity, SharedString};
 use raijin_language::{Anchor, Buffer, BufferSnapshot, EditPreview, TextBufferSnapshot};
-use zeta_prompt::ZetaPromptInput;
+use raijin_zeta_prompt::ZetaPromptInput;
 
 #[derive(Clone, Default, Debug, PartialEq, Eq, Hash)]
 pub struct EditPredictionId(pub SharedString);
@@ -91,7 +91,7 @@ pub struct EditPrediction {
     pub snapshot: BufferSnapshot,
     pub edit_preview: EditPreview,
     pub buffer: Entity<Buffer>,
-    pub inputs: zeta_prompt::ZetaPromptInput,
+    pub inputs: raijin_zeta_prompt::ZetaPromptInput,
     pub model_version: Option<String>,
 }
 
@@ -124,7 +124,7 @@ mod tests {
     use super::*;
     use inazuma::{App, Entity, TestAppContext, prelude::*};
     use raijin_language::{Buffer, ToOffset as _};
-    use zeta_prompt::ZetaPromptInput;
+    use raijin_zeta_prompt::ZetaPromptInput;
 
     #[inazuma::test]
     async fn test_edit_prediction_basic_interpolation(cx: &mut TestAppContext) {

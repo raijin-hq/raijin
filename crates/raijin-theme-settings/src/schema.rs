@@ -1,7 +1,10 @@
+use anyhow::Result;
 use inazuma::{HighlightStyle, Oklch};
 use inazuma_settings_framework::IntoInazuma;
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 pub use inazuma_settings_content::{
-    FontStyleContent, HighlightStyleContent, StatusColorsContent, ThemeColorsContent,
+    StatusColorsContent, ThemeColorsContent,
     ThemeStyleContent,
 };
 
@@ -13,6 +16,43 @@ use raijin_theme::{
     TitleBarColorsRefinement, ToolbarColorsRefinement, SearchColorsRefinement,
     VimColorsRefinement, VersionControlColorsRefinement,
 };
+
+/// The content of a serialized theme family.
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ThemeFamilyContent {
+    pub name: String,
+    pub author: String,
+    pub themes: Vec<ThemeContent>,
+}
+
+/// The content of a serialized theme.
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+pub struct ThemeContent {
+    pub name: String,
+    pub appearance: raijin_theme::AppearanceContent,
+    pub style: ThemeStyleContent,
+}
+
+/// Deserializes a user theme from the given bytes.
+pub fn deserialize_user_theme(bytes: &[u8]) -> Result<ThemeFamilyContent> {
+    let theme_family: ThemeFamilyContent = serde_json_lenient::from_slice(bytes)?;
+
+    for theme in &theme_family.themes {
+        if theme
+            .style
+            .colors
+            .deprecated_scrollbar_thumb_background
+            .is_some()
+        {
+            log::warn!(
+                r#"Theme "{theme_name}" is using a deprecated style property: scrollbar_thumb.background. Use `scrollbar.thumb.background` instead."#,
+                theme_name = theme.name
+            )
+        }
+    }
+
+    Ok(theme_family)
+}
 
 fn try_parse_color(color: &str) -> anyhow::Result<Oklch> {
     raijin_theme::parse_color(color)

@@ -21,7 +21,7 @@ pub fn register_fake_definition_server(
 
     language_registry.register_fake_lsp(
         language.name(),
-        language::FakeLspAdapter {
+        raijin_language::FakeLspAdapter {
             name: "fake-definition-lsp",
             initialization_options: None,
             prettier_plugins: Vec::new(),
@@ -32,9 +32,9 @@ pub fn register_fake_definition_server(
                 arguments: Vec::new(),
                 env: None,
             },
-            capabilities: lsp::ServerCapabilities {
-                definition_provider: Some(lsp::OneOf::Left(true)),
-                type_definition_provider: Some(lsp::TypeDefinitionProviderCapability::Simple(true)),
+            capabilities: raijin_lsp::ServerCapabilities {
+                definition_provider: Some(raijin_lsp::OneOf::Left(true)),
+                type_definition_provider: Some(raijin_lsp::TypeDefinitionProviderCapability::Simple(true)),
                 text_document_sync: Some(TextDocumentSyncCapability::Kind(
                     TextDocumentSyncKind::FULL,
                 )),
@@ -43,7 +43,7 @@ pub fn register_fake_definition_server(
             label_for_completion: None,
             initializer: Some(Box::new({
                 move |server| {
-                    server.handle_notification::<lsp::notification::DidOpenTextDocument, _>({
+                    server.handle_notification::<raijin_lsp::notification::DidOpenTextDocument, _>({
                         let index = index.clone();
                         move |params, _cx| {
                             index
@@ -52,7 +52,7 @@ pub fn register_fake_definition_server(
                         }
                     });
 
-                    server.handle_notification::<lsp::notification::DidCloseTextDocument, _>({
+                    server.handle_notification::<raijin_lsp::notification::DidCloseTextDocument, _>({
                         let index = index.clone();
                         let fs = fs.clone();
                         move |params, cx| {
@@ -73,7 +73,7 @@ pub fn register_fake_definition_server(
                         }
                     });
 
-                    server.handle_notification::<lsp::notification::DidChangeWatchedFiles, _>({
+                    server.handle_notification::<raijin_lsp::notification::DidChangeWatchedFiles, _>({
                         let index = index.clone();
                         let fs = fs.clone();
                         move |params, cx| {
@@ -86,11 +86,11 @@ pub fn register_fake_definition_server(
                                     }
 
                                     match event.typ {
-                                        lsp::FileChangeType::DELETED => {
+                                        raijin_lsp::FileChangeType::DELETED => {
                                             index.lock().remove_definitions_for_file(&event.uri);
                                         }
-                                        lsp::FileChangeType::CREATED
-                                        | lsp::FileChangeType::CHANGED => {
+                                        raijin_lsp::FileChangeType::CREATED
+                                        | raijin_lsp::FileChangeType::CHANGED => {
                                             if let Some(path) = event.uri.to_file_path().ok() {
                                                 if let Ok(content) = fs.load(&path).await {
                                                     index.lock().index_file(event.uri, &content);
@@ -105,7 +105,7 @@ pub fn register_fake_definition_server(
                         }
                     });
 
-                    server.handle_notification::<lsp::notification::DidChangeTextDocument, _>({
+                    server.handle_notification::<raijin_lsp::notification::DidChangeTextDocument, _>({
                         let index = index.clone();
                         move |params, _cx| {
                             if let Some(change) = params.content_changes.into_iter().last() {
@@ -116,7 +116,7 @@ pub fn register_fake_definition_server(
                         }
                     });
 
-                    server.handle_notification::<lsp::notification::DidChangeWorkspaceFolders, _>(
+                    server.handle_notification::<raijin_lsp::notification::DidChangeWorkspaceFolders, _>(
                         {
                             let index = index.clone();
                             let fs = fs.clone();
@@ -144,7 +144,7 @@ pub fn register_fake_definition_server(
                         },
                     );
 
-                    server.set_request_handler::<lsp::request::GotoDefinition, _, _>({
+                    server.set_request_handler::<raijin_lsp::request::GotoDefinition, _, _>({
                         let index = index.clone();
                         move |params, _cx| {
                             let result = index.lock().get_definitions(
@@ -155,7 +155,7 @@ pub fn register_fake_definition_server(
                         }
                     });
 
-                    server.set_request_handler::<lsp::request::GotoTypeDefinition, _, _>({
+                    server.set_request_handler::<raijin_lsp::request::GotoTypeDefinition, _, _>({
                         let index = index.clone();
                         move |params, _cx| {
                             let result = index.lock().get_type_definitions(
@@ -173,7 +173,7 @@ pub fn register_fake_definition_server(
 
 struct DefinitionIndex {
     language: Arc<Language>,
-    definitions: HashMap<String, Vec<lsp::Location>>,
+    definitions: HashMap<String, Vec<raijin_lsp::Location>>,
     type_annotations_by_file: HashMap<Uri, HashMap<String, String>>,
     files: HashMap<Uri, FileEntry>,
 }
@@ -234,7 +234,7 @@ impl DefinitionIndex {
         let declarations = extract_declarations_from_tree(&tree, content, outline_config);
         for (name, byte_range) in declarations {
             let range = byte_range_to_lsp_range(content, byte_range);
-            let location = lsp::Location {
+            let location = raijin_lsp::Location {
                 uri: uri.clone(),
                 range,
             };
@@ -264,19 +264,19 @@ impl DefinitionIndex {
     fn get_definitions(
         &mut self,
         uri: Uri,
-        position: lsp::Position,
-    ) -> Option<lsp::GotoDefinitionResponse> {
+        position: raijin_lsp::Position,
+    ) -> Option<raijin_lsp::GotoDefinitionResponse> {
         let entry = self.files.get(&uri)?;
         let name = word_at_position(&entry.contents, position)?;
         let locations = self.definitions.get(name).cloned()?;
-        Some(lsp::GotoDefinitionResponse::Array(locations))
+        Some(raijin_lsp::GotoDefinitionResponse::Array(locations))
     }
 
     fn get_type_definitions(
         &mut self,
         uri: Uri,
-        position: lsp::Position,
-    ) -> Option<lsp::GotoDefinitionResponse> {
+        position: raijin_lsp::Position,
+    ) -> Option<raijin_lsp::GotoDefinitionResponse> {
         let entry = self.files.get(&uri)?;
         let name = word_at_position(&entry.contents, position)?;
 
@@ -286,7 +286,7 @@ impl DefinitionIndex {
             .and_then(|annotations| annotations.get(name))
         {
             if let Some(locations) = self.definitions.get(type_name) {
-                return Some(lsp::GotoDefinitionResponse::Array(locations.clone()));
+                return Some(raijin_lsp::GotoDefinitionResponse::Array(locations.clone()));
             }
         }
 
@@ -295,7 +295,7 @@ impl DefinitionIndex {
         // resolves to that type's definition.
         if name.starts_with(|c: char| c.is_uppercase()) {
             if let Some(locations) = self.definitions.get(name) {
-                return Some(lsp::GotoDefinitionResponse::Array(locations.clone()));
+                return Some(raijin_lsp::GotoDefinitionResponse::Array(locations.clone()));
             }
         }
 
@@ -396,7 +396,7 @@ fn extract_base_type_name(type_str: &str) -> String {
 fn extract_declarations_from_tree(
     tree: &Tree,
     content: &str,
-    outline_config: &language::OutlineConfig,
+    outline_config: &raijin_language::OutlineConfig,
 ) -> Vec<(String, Range<usize>)> {
     let mut cursor = QueryCursor::new();
     let mut declarations = Vec::new();
@@ -427,13 +427,13 @@ fn extract_declarations_from_tree(
     declarations
 }
 
-fn byte_range_to_lsp_range(content: &str, byte_range: Range<usize>) -> lsp::Range {
+fn byte_range_to_lsp_range(content: &str, byte_range: Range<usize>) -> raijin_lsp::Range {
     let start = byte_offset_to_position(content, byte_range.start);
     let end = byte_offset_to_position(content, byte_range.end);
-    lsp::Range { start, end }
+    raijin_lsp::Range { start, end }
 }
 
-fn byte_offset_to_position(content: &str, offset: usize) -> lsp::Position {
+fn byte_offset_to_position(content: &str, offset: usize) -> raijin_lsp::Position {
     let mut line = 0;
     let mut character = 0;
     let mut current_offset = 0;
@@ -449,10 +449,10 @@ fn byte_offset_to_position(content: &str, offset: usize) -> lsp::Position {
         }
         current_offset += ch.len_utf8();
     }
-    lsp::Position { line, character }
+    raijin_lsp::Position { line, character }
 }
 
-fn word_at_position(content: &str, position: lsp::Position) -> Option<&str> {
+fn word_at_position(content: &str, position: raijin_lsp::Position) -> Option<&str> {
     let mut lines = content.lines();
     let line = lines.nth(position.line as usize)?;
     let column = position.character as usize;

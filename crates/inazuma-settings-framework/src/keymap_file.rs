@@ -19,7 +19,7 @@ use inazuma_util::{
 };
 
 use crate::SettingsAssets;
-use raijin_settings_json::{
+use raijin_json_compat::{
     append_top_level_array_value_in_json_text, parse_json_with_comments,
     replace_top_level_array_value_in_json_text,
 };

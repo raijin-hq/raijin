@@ -328,7 +328,7 @@ mod tests {
         });
         cx.update(|cx| {
             let mut settings = AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
             AgentSettings::override_global(settings, cx);
         });
     }
@@ -518,7 +518,7 @@ mod tests {
         );
 
         auth.response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))
@@ -534,8 +534,8 @@ mod tests {
             let mut settings = AgentSettings::get_global(cx).clone();
             settings.tool_permissions.tools.insert(
                 "save_file".into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     ..Default::default()
                 },
             );
@@ -598,7 +598,7 @@ mod tests {
         init_test(cx);
         cx.update(|cx| {
             let mut settings = AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Confirm;
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Confirm;
             AgentSettings::override_global(settings, cx);
         });
 
@@ -649,7 +649,7 @@ mod tests {
         );
 
         auth.response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))
@@ -733,7 +733,7 @@ mod tests {
 
         let auth = event_rx.expect_authorization().await;
         auth.response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("deny"),
                 acp::PermissionOptionKind::RejectOnce,
             ))

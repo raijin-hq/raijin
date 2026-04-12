@@ -12,7 +12,7 @@ use raijin_editor::{
 use inazuma::{TestAppContext, VisualTestContext};
 use indoc::indoc;
 use raijin_language::{DiagnosticSourceKind, Rope};
-use raijin_raijin_lsp::LanguageServerId;
+use raijin_lsp::LanguageServerId;
 use pretty_assertions::assert_eq;
 use raijin_project::{
     FakeFs,

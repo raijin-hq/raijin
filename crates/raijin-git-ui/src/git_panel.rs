@@ -4512,8 +4512,7 @@ impl GitPanel {
                     ),
             )
             .child(
-                panel_button("Cancel")
-                    .size(ButtonSize::Default)
+                ButtonCommon::size(panel_button("Cancel"), ButtonSize::Default)
                     .on_click(cx.listener(|this, _, _, cx| this.set_amend_pending(false, cx))),
             )
     }
@@ -4716,7 +4715,7 @@ impl GitPanel {
                     .and_then(|entry| entry.staging.as_bool())
             });
 
-        let checkbox = Checkbox::new("stage-file", is_staging_or_staged.into())
+        let checkbox = Checkbox::new("stage-file").toggle_state(is_staging_or_staged.into())
             .disabled(!self.has_write_access(cx))
             .fill()
             .elevation(ElevationIndex::Surface)
@@ -5208,7 +5207,7 @@ impl GitPanel {
                     .occlude()
                     .cursor_pointer()
                     .child(
-                        Checkbox::new(checkbox_id, is_staged)
+                        Checkbox::new(checkbox_id).toggle_state(is_staged)
                             .disabled(!has_write_access)
                             .fill()
                             .elevation(ElevationIndex::Surface)
@@ -5399,7 +5398,7 @@ impl GitPanel {
                     .occlude()
                     .cursor_pointer()
                     .child(
-                        Checkbox::new(checkbox_id, toggle_state)
+                        Checkbox::new(checkbox_id).toggle_state(toggle_state)
                             .disabled(!has_write_access)
                             .fill()
                             .elevation(ElevationIndex::Surface)
@@ -6048,9 +6047,11 @@ impl RenderOnce for PanelRepoFooter {
             inazuma_util::truncate_and_trailoff(branch_name.trim_ascii(), branch_display_len)
         };
 
-        let repo_selector_trigger = Button::new("repo-selector", truncated_repo_name)
-            .size(ButtonSize::None)
-            .label_size(LabelSize::Small);
+        let repo_selector_trigger = ButtonCommon::size(
+            Button::new("repo-selector", truncated_repo_name),
+            ButtonSize::None,
+        )
+        .label_size(LabelSize::Small);
 
         let repo_selector = PopoverMenu::new("repository-switcher")
             .menu({
@@ -6062,7 +6063,7 @@ impl RenderOnce for PanelRepoFooter {
             })
             .trigger_with_tooltip(
                 repo_selector_trigger
-                    .when(single_repo, |this| this.disabled(true).color(Color::Muted))
+                    .when(single_repo, |this: Button| this.disabled(true).color(Color::Muted))
                     .truncate(true),
                 move |_, cx| {
                     if single_repo {
@@ -6079,13 +6080,15 @@ impl RenderOnce for PanelRepoFooter {
             })
             .into_any_element();
 
-        let branch_selector_button = Button::new("branch-selector", truncated_branch_name)
-            .size(ButtonSize::None)
-            .label_size(LabelSize::Small)
-            .truncate(true)
-            .on_click(|_, window, cx| {
-                window.dispatch_action(raijin_actions::git::Switch.boxed_clone(), cx);
-            });
+        let branch_selector_button = ButtonCommon::size(
+            Button::new("branch-selector", truncated_branch_name),
+            ButtonSize::None,
+        )
+        .label_size(LabelSize::Small)
+        .truncate(true)
+        .on_click(|_, window: &mut Window, cx| {
+            window.dispatch_action(raijin_actions::git::Switch.boxed_clone(), cx);
+        });
 
         let branch_selector = PopoverMenu::new("popover-button")
             .menu(move |window, cx| {

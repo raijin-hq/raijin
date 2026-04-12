@@ -280,7 +280,7 @@ impl TabVariant {
         }
     }
 
-    pub(super) fn tab_bar_radius(&self, size: Size, cx: &App) -> Pixels {
+    pub(super) fn tab_bar_radius(&self, size: Size, _cx: &App) -> Pixels {
         if *self != TabVariant::Segmented {
             return px(0.);
         }

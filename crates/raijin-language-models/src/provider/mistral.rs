@@ -95,7 +95,7 @@ impl MistralLanguageModelProvider {
         cx.global::<GlobalMistralLanguageModelProvider>().0.clone()
     }
 
-    fn create_language_model(&self, model: mistral::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_mistral::Model) -> Arc<dyn LanguageModel> {
         Arc::new(MistralLanguageModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -112,7 +112,7 @@ impl MistralLanguageModelProvider {
     pub fn api_url(cx: &App) -> SharedString {
         let api_url = &Self::settings(cx).api_url;
         if api_url.is_empty() {
-            mistral::MISTRAL_API_URL.into()
+            raijin_mistral::MISTRAL_API_URL.into()
         } else {
             SharedString::new(api_url.as_str())
         }
@@ -141,19 +141,19 @@ impl LanguageModelProvider for MistralLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(mistral::Model::default()))
+        Some(self.create_language_model(raijin_mistral::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(mistral::Model::default_fast()))
+        Some(self.create_language_model(raijin_mistral::Model::default_fast()))
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        // Add base models from mistral::Model::iter()
-        for model in mistral::Model::iter() {
-            if !matches!(model, mistral::Model::Custom { .. }) {
+        // Add base models from raijin_mistral::Model::iter()
+        for model in raijin_mistral::Model::iter() {
+            if !matches!(model, raijin_mistral::Model::Custom { .. }) {
                 models.insert(model.id().to_string(), model);
             }
         }
@@ -162,7 +162,7 @@ impl LanguageModelProvider for MistralLanguageModelProvider {
         for model in &Self::settings(cx).available_models {
             models.insert(
                 model.name.clone(),
-                mistral::Model::Custom {
+                raijin_mistral::Model::Custom {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
@@ -199,7 +199,7 @@ impl LanguageModelProvider for MistralLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -215,7 +215,7 @@ impl LanguageModelProvider for MistralLanguageModelProvider {
 
 pub struct MistralLanguageModel {
     id: LanguageModelId,
-    model: mistral::Model,
+    model: raijin_mistral::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
@@ -224,12 +224,12 @@ pub struct MistralLanguageModel {
 impl MistralLanguageModel {
     fn stream_completion(
         &self,
-        request: mistral::Request,
+        request: raijin_mistral::Request,
         affinity: Option<String>,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
-        Result<futures::stream::BoxStream<'static, Result<mistral::StreamResponse>>>,
+        Result<futures::stream::BoxStream<'static, Result<raijin_mistral::StreamResponse>>>,
     > {
         let http_client = self.http_client.clone();
 
@@ -244,7 +244,7 @@ impl MistralLanguageModel {
                     provider: PROVIDER_NAME,
                 });
             };
-            let request = mistral::stream_completion(
+            let request = raijin_mistral::stream_completion(
                 http_client.as_ref(),
                 &api_url,
                 &api_key,
@@ -356,33 +356,33 @@ impl LanguageModel for MistralLanguageModel {
 
 pub fn into_mistral(
     request: LanguageModelRequest,
-    model: mistral::Model,
+    model: raijin_mistral::Model,
     max_output_tokens: Option<u64>,
-) -> (mistral::Request, Option<String>) {
+) -> (raijin_mistral::Request, Option<String>) {
     let stream = true;
 
     let mut messages = Vec::new();
     for message in &request.messages {
         match message.role {
             Role::User => {
-                let mut message_content = mistral::MessageContent::empty();
+                let mut message_content = raijin_mistral::MessageContent::empty();
                 for content in &message.content {
                     match content {
                         MessageContent::Text(text) => {
                             message_content
-                                .push_part(mistral::MessagePart::Text { text: text.clone() });
+                                .push_part(raijin_mistral::MessagePart::Text { text: text.clone() });
                         }
                         MessageContent::Image(image_content) => {
                             if model.supports_images() {
-                                message_content.push_part(mistral::MessagePart::ImageUrl {
+                                message_content.push_part(raijin_mistral::MessagePart::ImageUrl {
                                     image_url: image_content.to_base64_url(),
                                 });
                             }
                         }
                         MessageContent::Thinking { text, .. } => {
                             if model.supports_thinking() {
-                                message_content.push_part(mistral::MessagePart::Thinking {
-                                    thinking: vec![mistral::ThinkingPart::Text {
+                                message_content.push_part(raijin_mistral::MessagePart::Thinking {
+                                    thinking: vec![raijin_mistral::ThinkingPart::Text {
                                         text: text.clone(),
                                     }],
                                 });
@@ -399,16 +399,16 @@ pub fn into_mistral(
                                     "[Tool responded with an image, but Zed doesn't support these in Mistral models yet]".to_string()
                                 }
                             };
-                            messages.push(mistral::RequestMessage::Tool {
+                            messages.push(raijin_mistral::RequestMessage::Tool {
                                 content: tool_content,
                                 tool_call_id: tool_result.tool_use_id.to_string(),
                             });
                         }
                     }
                 }
-                if !matches!(message_content, mistral::MessageContent::Plain { ref content } if content.is_empty())
+                if !matches!(message_content, raijin_mistral::MessageContent::Plain { ref content } if content.is_empty())
                 {
-                    messages.push(mistral::RequestMessage::User {
+                    messages.push(raijin_mistral::RequestMessage::User {
                         content: message_content,
                     });
                 }
@@ -420,8 +420,8 @@ pub fn into_mistral(
                             // Mistral API returns a 400 if there's neither content nor tool_calls
                         }
                         MessageContent::Text(text) => {
-                            messages.push(mistral::RequestMessage::Assistant {
-                                content: Some(mistral::MessageContent::Plain {
+                            messages.push(raijin_mistral::RequestMessage::Assistant {
+                                content: Some(raijin_mistral::MessageContent::Plain {
                                     content: text.clone(),
                                 }),
                                 tool_calls: Vec::new(),
@@ -429,10 +429,10 @@ pub fn into_mistral(
                         }
                         MessageContent::Thinking { text, .. } => {
                             if model.supports_thinking() {
-                                messages.push(mistral::RequestMessage::Assistant {
-                                    content: Some(mistral::MessageContent::Multipart {
-                                        content: vec![mistral::MessagePart::Thinking {
-                                            thinking: vec![mistral::ThinkingPart::Text {
+                                messages.push(raijin_mistral::RequestMessage::Assistant {
+                                    content: Some(raijin_mistral::MessageContent::Multipart {
+                                        content: vec![raijin_mistral::MessagePart::Thinking {
+                                            thinking: vec![raijin_mistral::ThinkingPart::Text {
                                                 text: text.clone(),
                                             }],
                                         }],
@@ -444,10 +444,10 @@ pub fn into_mistral(
                         MessageContent::RedactedThinking(_) => {}
                         MessageContent::Image(_) => {}
                         MessageContent::ToolUse(tool_use) => {
-                            let tool_call = mistral::ToolCall {
+                            let tool_call = raijin_mistral::ToolCall {
                                 id: tool_use.id.to_string(),
-                                content: mistral::ToolCallContent::Function {
-                                    function: mistral::FunctionContent {
+                                content: raijin_mistral::ToolCallContent::Function {
+                                    function: raijin_mistral::FunctionContent {
                                         name: tool_use.name.to_string(),
                                         arguments: serde_json::to_string(&tool_use.input)
                                             .unwrap_or_default(),
@@ -455,12 +455,12 @@ pub fn into_mistral(
                                 },
                             };
 
-                            if let Some(mistral::RequestMessage::Assistant { tool_calls, .. }) =
+                            if let Some(raijin_mistral::RequestMessage::Assistant { tool_calls, .. }) =
                                 messages.last_mut()
                             {
                                 tool_calls.push(tool_call);
                             } else {
-                                messages.push(mistral::RequestMessage::Assistant {
+                                messages.push(raijin_mistral::RequestMessage::Assistant {
                                     content: None,
                                     tool_calls: vec![tool_call],
                                 });
@@ -476,18 +476,18 @@ pub fn into_mistral(
                 for content in &message.content {
                     match content {
                         MessageContent::Text(text) => {
-                            messages.push(mistral::RequestMessage::System {
-                                content: mistral::MessageContent::Plain {
+                            messages.push(raijin_mistral::RequestMessage::System {
+                                content: raijin_mistral::MessageContent::Plain {
                                     content: text.clone(),
                                 },
                             });
                         }
                         MessageContent::Thinking { text, .. } => {
                             if model.supports_thinking() {
-                                messages.push(mistral::RequestMessage::System {
-                                    content: mistral::MessageContent::Multipart {
-                                        content: vec![mistral::MessagePart::Thinking {
-                                            thinking: vec![mistral::ThinkingPart::Text {
+                                messages.push(raijin_mistral::RequestMessage::System {
+                                    content: raijin_mistral::MessageContent::Multipart {
+                                        content: vec![raijin_mistral::MessagePart::Thinking {
+                                            thinking: vec![raijin_mistral::ThinkingPart::Text {
                                                 text: text.clone(),
                                             }],
                                         }],
@@ -508,12 +508,12 @@ pub fn into_mistral(
     }
 
     (
-        mistral::Request {
+        raijin_mistral::Request {
             model: model.id().to_string(),
             messages,
             stream,
             stream_options: if stream {
-                Some(mistral::StreamOptions {
+                Some(raijin_mistral::StreamOptions {
                     stream_tool_calls: Some(true),
                 })
             } else {
@@ -524,13 +524,13 @@ pub fn into_mistral(
             response_format: None,
             tool_choice: match request.tool_choice {
                 Some(LanguageModelToolChoice::Auto) if !request.tools.is_empty() => {
-                    Some(mistral::ToolChoice::Auto)
+                    Some(raijin_mistral::ToolChoice::Auto)
                 }
                 Some(LanguageModelToolChoice::Any) if !request.tools.is_empty() => {
-                    Some(mistral::ToolChoice::Any)
+                    Some(raijin_mistral::ToolChoice::Any)
                 }
-                Some(LanguageModelToolChoice::None) => Some(mistral::ToolChoice::None),
-                _ if !request.tools.is_empty() => Some(mistral::ToolChoice::Auto),
+                Some(LanguageModelToolChoice::None) => Some(raijin_mistral::ToolChoice::None),
+                _ if !request.tools.is_empty() => Some(raijin_mistral::ToolChoice::Auto),
                 _ => None,
             },
             parallel_tool_calls: if !request.tools.is_empty() {
@@ -541,8 +541,8 @@ pub fn into_mistral(
             tools: request
                 .tools
                 .into_iter()
-                .map(|tool| mistral::ToolDefinition::Function {
-                    function: mistral::FunctionDefinition {
+                .map(|tool| raijin_mistral::ToolDefinition::Function {
+                    function: raijin_mistral::FunctionDefinition {
                         name: tool.name,
                         description: Some(tool.description),
                         parameters: Some(tool.input_schema),
@@ -580,7 +580,7 @@ impl MistralEventMapper {
 
     pub fn map_event(
         &mut self,
-        event: mistral::StreamResponse,
+        event: raijin_mistral::StreamResponse,
     ) -> Vec<Result<LanguageModelCompletionEvent, LanguageModelCompletionError>> {
         let Some(choice) = event.choices.first() else {
             return vec![Err(LanguageModelCompletionError::from(anyhow!(
@@ -591,19 +591,19 @@ impl MistralEventMapper {
         let mut events = Vec::new();
         if let Some(content) = choice.delta.content.as_ref() {
             match content {
-                mistral::MessageContentDelta::Text(text) => {
+                raijin_mistral::MessageContentDelta::Text(text) => {
                     events.push(Ok(LanguageModelCompletionEvent::Text(text.clone())));
                 }
-                mistral::MessageContentDelta::Parts(parts) => {
+                raijin_mistral::MessageContentDelta::Parts(parts) => {
                     for part in parts {
                         match part {
-                            mistral::MessagePart::Text { text } => {
+                            raijin_mistral::MessagePart::Text { text } => {
                                 events.push(Ok(LanguageModelCompletionEvent::Text(text.clone())));
                             }
-                            mistral::MessagePart::Thinking { thinking } => {
+                            raijin_mistral::MessagePart::Thinking { thinking } => {
                                 for tp in thinking.iter().cloned() {
                                     match tp {
-                                        mistral::ThinkingPart::Text { text } => {
+                                        raijin_mistral::ThinkingPart::Text { text } => {
                                             events.push(Ok(
                                                 LanguageModelCompletionEvent::Thinking {
                                                     text,
@@ -614,7 +614,7 @@ impl MistralEventMapper {
                                     }
                                 }
                             }
-                            mistral::MessagePart::ImageUrl { .. } => {
+                            raijin_mistral::MessagePart::ImageUrl { .. } => {
                                 // We currently don't emit a separate event for images in responses.
                             }
                         }
@@ -777,7 +777,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;
@@ -919,7 +919,7 @@ mod tests {
         };
 
         let (mistral_request, affinity) =
-            into_mistral(request, mistral::Model::MistralSmallLatest, None);
+            into_mistral(request, raijin_mistral::Model::MistralSmallLatest, None);
 
         assert_eq!(mistral_request.model, "mistral-small-latest");
         assert_eq!(mistral_request.temperature, Some(0.5));
@@ -955,28 +955,28 @@ mod tests {
             speed: None,
         };
 
-        let (mistral_request, _) = into_mistral(request, mistral::Model::Pixtral12BLatest, None);
+        let (mistral_request, _) = into_mistral(request, raijin_mistral::Model::Pixtral12BLatest, None);
 
         assert_eq!(mistral_request.messages.len(), 1);
         assert!(matches!(
             &mistral_request.messages[0],
-            mistral::RequestMessage::User {
-                content: mistral::MessageContent::Multipart { .. }
+            raijin_mistral::RequestMessage::User {
+                content: raijin_mistral::MessageContent::Multipart { .. }
             }
         ));
 
-        if let mistral::RequestMessage::User {
-            content: mistral::MessageContent::Multipart { content },
+        if let raijin_mistral::RequestMessage::User {
+            content: raijin_mistral::MessageContent::Multipart { content },
         } = &mistral_request.messages[0]
         {
             assert_eq!(content.len(), 2);
             assert!(matches!(
                 &content[0],
-                mistral::MessagePart::Text { text } if text == "What's in this image?"
+                raijin_mistral::MessagePart::Text { text } if text == "What's in this image?"
             ));
             assert!(matches!(
                 &content[1],
-                mistral::MessagePart::ImageUrl { image_url } if image_url.starts_with("data:image/png;base64,")
+                raijin_mistral::MessagePart::ImageUrl { image_url } if image_url.starts_with("data:image/png;base64,")
             ));
         }
     }

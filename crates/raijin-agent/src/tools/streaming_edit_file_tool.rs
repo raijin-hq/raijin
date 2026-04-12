@@ -10,7 +10,7 @@ use crate::{
     },
 };
 use raijin_acp_thread::Diff;
-use action_log::ActionLog;
+use raijin_action_log::ActionLog;
 use agent_client_protocol::{self as acp, ToolCallLocation, ToolCallUpdateFields};
 use anyhow::{Context as _, Result};
 use inazuma_collections::HashSet;
@@ -29,7 +29,7 @@ use serde::{
 use std::ops::Range;
 use std::path::PathBuf;
 use std::sync::Arc;
-use streaming_diff::{CharOperation, StreamingDiff};
+use raijin_streaming_diff::{CharOperation, StreamingDiff};
 use inazuma_text::ToOffset;
 use raijin_ui::SharedString;
 use inazuma_util::rel_path::RelPath;
@@ -265,7 +265,7 @@ impl StreamingEditFileTool {
         )
     }
 
-    fn set_agent_location(&self, buffer: WeakEntity<Buffer>, position: text::Anchor, cx: &mut App) {
+    fn set_agent_location(&self, buffer: WeakEntity<Buffer>, position: inazuma_text::Anchor, cx: &mut App) {
         let should_update_agent_location = self
             .thread
             .read_with(cx, |thread, _cx| !thread.is_subagent())
@@ -494,7 +494,7 @@ enum EditPipelineEntry {
         streaming_diff: StreamingDiff,
         edit_cursor: usize,
         reindenter: Reindenter,
-        original_snapshot: text::BufferSnapshot,
+        original_snapshot: inazuma_text::BufferSnapshot,
     },
 }
 
@@ -555,7 +555,7 @@ impl EditSession {
 
         let diff = cx.new(|cx| Diff::new(buffer.clone(), cx));
         event_stream.update_diff(diff.clone());
-        let finalize_diff_guard = util::defer(Box::new({
+        let finalize_diff_guard = inazuma_util::defer(Box::new({
             let diff = diff.downgrade();
             let mut cx = cx.clone();
             move || {
@@ -674,7 +674,7 @@ impl EditSession {
                 let old_text = old_text.clone();
                 async move {
                     let new_text = new_snapshot.text();
-                    let diff = language::unified_diff(&old_text, &new_text);
+                    let diff = raijin_language::unified_diff(&old_text, &new_text);
                     (new_text, diff)
                 }
             })
@@ -741,7 +741,7 @@ impl EditSession {
                     cx.update(|cx| {
                         tool.set_agent_location(
                             self.buffer.downgrade(),
-                            text::Anchor::max_for_buffer(buffer_id),
+                            inazuma_text::Anchor::max_for_buffer(buffer_id),
                             cx,
                         );
                     });
@@ -809,7 +809,7 @@ impl EditSession {
                     );
 
                     let buffer_indent = snapshot.line_indent_for_row(line);
-                    let query_indent = text::LineIndent::from_iter(
+                    let query_indent = inazuma_text::LineIndent::from_iter(
                         matcher
                             .query_lines()
                             .first()
@@ -940,7 +940,7 @@ impl EditSession {
 fn apply_char_operations(
     ops: &[CharOperation],
     buffer: &Entity<Buffer>,
-    snapshot: &text::BufferSnapshot,
+    snapshot: &inazuma_text::BufferSnapshot,
     edit_cursor: &mut usize,
     action_log: &Entity<ActionLog>,
     cx: &mut AsyncApp,
@@ -2152,7 +2152,7 @@ mod tests {
     ) -> anyhow::Result<ProjectPath> {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/root",
             json!({
@@ -2179,15 +2179,15 @@ mod tests {
     async fn test_streaming_format_on_save(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/root", json!({"src": {}})).await;
         let (tool, project, action_log, fs, thread) =
             setup_test_with_fs(cx, fs, &[path!("/root").as_ref()]).await;
 
-        let rust_language = Arc::new(language::Language::new(
-            language::LanguageConfig {
+        let rust_language = Arc::new(raijin_language::Language::new(
+            raijin_language::LanguageConfig {
                 name: "Rust".into(),
-                matcher: language::LanguageMatcher {
+                matcher: raijin_language::LanguageMatcher {
                     path_suffixes: vec!["rs".to_string()],
                     ..Default::default()
                 },
@@ -2201,9 +2201,9 @@ mod tests {
 
         let mut fake_language_servers = language_registry.register_fake_lsp(
             "Rust",
-            language::FakeLspAdapter {
-                capabilities: lsp::ServerCapabilities {
-                    document_formatting_provider: Some(lsp::OneOf::Left(true)),
+            raijin_language::FakeLspAdapter {
+                capabilities: raijin_lsp::ServerCapabilities {
+                    document_formatting_provider: Some(raijin_lsp::OneOf::Left(true)),
                     ..Default::default()
                 },
                 ..Default::default()
@@ -2213,7 +2213,7 @@ mod tests {
         fs.save(
             path!("/root/src/main.rs").as_ref(),
             &"initial content".into(),
-            language::LineEnding::Unix,
+            raijin_language::LineEnding::Unix,
         )
         .await
         .unwrap();
@@ -2238,10 +2238,10 @@ mod tests {
 
         // Get the fake language server and set up formatting handler
         let fake_language_server = fake_language_servers.next().await.unwrap();
-        fake_language_server.set_request_handler::<lsp::request::Formatting, _, _>({
+        fake_language_server.set_request_handler::<raijin_lsp::request::Formatting, _, _>({
             |_, _| async move {
-                Ok(Some(vec![lsp::TextEdit {
-                    range: lsp::Range::new(lsp::Position::new(0, 0), lsp::Position::new(1, 0)),
+                Ok(Some(vec![raijin_lsp::TextEdit {
+                    range: raijin_lsp::Range::new(raijin_lsp::Position::new(0, 0), lsp::Position::new(1, 0)),
                     new_text: FORMATTED_CONTENT.to_string(),
                 }]))
             }
@@ -2253,7 +2253,7 @@ mod tests {
                 store.update_user_settings(cx, |settings| {
                     settings.project.all_languages.defaults.format_on_save = Some(FormatOnSave::On);
                     settings.project.all_languages.defaults.formatter =
-                        Some(language::language_settings::FormatterList::default());
+                        Some(raijin_language::language_settings::FormatterList::default());
                 });
             });
         });
@@ -2353,12 +2353,12 @@ mod tests {
     async fn test_streaming_remove_trailing_whitespace(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/root", json!({"src": {}})).await;
         fs.save(
             path!("/root/src/main.rs").as_ref(),
             &"initial content".into(),
-            language::LineEnding::Unix,
+            raijin_language::LineEnding::Unix,
         )
         .await
         .unwrap();
@@ -2514,9 +2514,9 @@ mod tests {
         // Test 5: When global default is allow, sensitive and outside-project
         // paths still require confirmation
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         // 5.1: .zed/settings.json is a sensitive path — still prompts
@@ -2558,9 +2558,9 @@ mod tests {
 
         // 5.4: With Confirm default, non-project paths still prompt
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Confirm;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Confirm;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
@@ -2575,7 +2575,7 @@ mod tests {
     async fn test_streaming_authorize_create_under_symlink_with_allow(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/root", json!({})).await;
         fs.insert_tree("/outside", json!({})).await;
         fs.insert_symlink("/root/link", PathBuf::from("/outside"))
@@ -2584,9 +2584,9 @@ mod tests {
             setup_test_with_fs(cx, fs, &[path!("/root").as_ref()]).await;
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
@@ -2612,7 +2612,7 @@ mod tests {
 
         event
             .response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))
@@ -2626,7 +2626,7 @@ mod tests {
     ) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             path!("/root"),
             json!({
@@ -2672,7 +2672,7 @@ mod tests {
     async fn test_streaming_edit_file_symlink_escape_denied(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             path!("/root"),
             json!({
@@ -2717,18 +2717,18 @@ mod tests {
     async fn test_streaming_edit_file_symlink_escape_honors_deny_policy(cx: &mut TestAppContext) {
         init_test(cx);
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
             settings.tool_permissions.tools.insert(
                 "edit_file".into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     ..Default::default()
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             path!("/root"),
             json!({
@@ -2777,7 +2777,7 @@ mod tests {
     #[inazuma::test]
     async fn test_streaming_authorize_global_config(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/project", json!({})).await;
         let (tool, _project, _action_log, _fs, _thread) =
             setup_test_with_fs(cx, fs, &[path!("/project").as_ref()]).await;
@@ -2822,7 +2822,7 @@ mod tests {
     #[inazuma::test]
     async fn test_streaming_needs_confirmation_with_multiple_worktrees(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/workspace/frontend",
             json!({
@@ -2899,7 +2899,7 @@ mod tests {
     #[inazuma::test]
     async fn test_streaming_needs_confirmation_edge_cases(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/project",
             json!({
@@ -2960,7 +2960,7 @@ mod tests {
     #[inazuma::test]
     async fn test_streaming_needs_confirmation_with_different_modes(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/project",
             json!({
@@ -3022,7 +3022,7 @@ mod tests {
     #[inazuma::test]
     async fn test_streaming_initial_title_with_partial_input(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/project", json!({})).await;
         let (tool, _project, _action_log, _fs, _thread) =
             setup_test_with_fs(cx, fs, &[path!("/project").as_ref()]).await;
@@ -3078,7 +3078,7 @@ mod tests {
     #[inazuma::test]
     async fn test_streaming_diff_finalization(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/", json!({"main.rs": ""})).await;
         let (tool, project, action_log, _fs, thread) =
             setup_test_with_fs(cx, fs, &[path!("/").as_ref()]).await;
@@ -3246,7 +3246,7 @@ mod tests {
         fs.save(
             path!("/root/test.txt").as_ref(),
             &"externally modified content".into(),
-            language::LineEnding::Unix,
+            raijin_language::LineEnding::Unix,
         )
         .await
         .unwrap();
@@ -3740,9 +3740,9 @@ mod tests {
         let (tool, _project, action_log, _fs, _thread) =
             setup_test(cx, json!({"file.txt": "line 1\nline 2\nline 3\n"})).await;
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         let (event_stream, _rx) = ToolCallEventStream::test();
@@ -3784,9 +3784,9 @@ mod tests {
         let (tool, _project, action_log, _fs, _thread) =
             setup_test(cx, json!({"file.txt": "original content"})).await;
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         let (event_stream, _rx) = ToolCallEventStream::test();
@@ -3973,9 +3973,9 @@ mod tests {
     async fn test_streaming_reject_created_file_deletes_it(cx: &mut TestAppContext) {
         let (tool, _project, action_log, fs, _thread) = setup_test(cx, json!({"dir": {}})).await;
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         // Create a new file via the streaming edit file tool
@@ -4022,13 +4022,13 @@ mod tests {
 
     async fn setup_test_with_fs(
         cx: &mut TestAppContext,
-        fs: Arc<project::FakeFs>,
+        fs: Arc<raijin_project::FakeFs>,
         worktree_paths: &[&std::path::Path],
     ) -> (
         Arc<StreamingEditFileTool>,
         Entity<Project>,
         Entity<ActionLog>,
-        Arc<project::FakeFs>,
+        Arc<raijin_project::FakeFs>,
         Entity<Thread>,
     ) {
         let project = Project::test(fs.clone(), worktree_paths.iter().copied(), cx).await;
@@ -4063,11 +4063,11 @@ mod tests {
         Arc<StreamingEditFileTool>,
         Entity<Project>,
         Entity<ActionLog>,
-        Arc<project::FakeFs>,
+        Arc<raijin_project::FakeFs>,
         Entity<Thread>,
     ) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/root", initial_tree).await;
         setup_test_with_fs(cx, fs, &[path!("/root").as_ref()]).await
     }

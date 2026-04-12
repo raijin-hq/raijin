@@ -637,9 +637,9 @@ mod tests {
     ) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default()
@@ -647,10 +647,10 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Confirm;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Confirm;
             settings.tool_permissions.tools.remove(TerminalTool::NAME);
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -690,7 +690,7 @@ mod tests {
             !matches!(
                 rx.try_next(),
                 Ok(Some(Ok(crate::ThreadEvent::ToolCallUpdate(
-                    acp_thread::ToolCallUpdate::UpdateFields(_)
+                    raijin_acp_thread::ToolCallUpdate::UpdateFields(_)
                 ))))
             ),
             "invalid command should not emit a terminal card update"
@@ -703,9 +703,9 @@ mod tests {
     ) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default().with_terminal(
@@ -714,10 +714,10 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
             settings.tool_permissions.tools.remove(TerminalTool::NAME);
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -765,9 +765,9 @@ mod tests {
     ) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default()
@@ -775,10 +775,10 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
             settings.tool_permissions.tools.remove(TerminalTool::NAME);
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -821,9 +821,9 @@ mod tests {
     async fn test_run_env_prefixed_allow_pattern_is_used_end_to_end(cx: &mut inazuma::TestAppContext) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default().with_terminal(
@@ -832,14 +832,14 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Deny;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Deny;
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     always_allow: vec![
-                        agent_settings::CompiledRegex::new(r"^PAGER=blah\s+git\s+log(\s|$)", false)
+                        raijin_agent_settings::CompiledRegex::new(r"^PAGER=blah\s+git\s+log(\s|$)", false)
                             .unwrap(),
                     ],
                     always_deny: vec![],
@@ -847,7 +847,7 @@ mod tests {
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -895,9 +895,9 @@ mod tests {
     ) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default().with_terminal(
@@ -906,21 +906,21 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Deny;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Deny;
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Confirm),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Confirm),
                     always_allow: vec![
-                        agent_settings::CompiledRegex::new(r"^git\b", false).unwrap(),
+                        raijin_agent_settings::CompiledRegex::new(r"^git\b", false).unwrap(),
                     ],
                     always_deny: vec![],
                     always_confirm: vec![],
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -979,7 +979,7 @@ mod tests {
     #[test]
     fn test_terminal_tool_input_schema_mentions_forbidden_substitutions() {
         let schema = <TerminalTool as crate::AgentTool>::input_schema(
-            language_model::LanguageModelToolSchemaFormat::JsonSchema,
+            raijin_language_model::LanguageModelToolSchemaFormat::JsonSchema,
         );
         let schema_json = serde_json::to_value(schema).expect("schema should serialize");
         let schema_text = schema_json.to_string();
@@ -1014,9 +1014,9 @@ mod tests {
         command: &str,
         cx: &mut inazuma::TestAppContext,
     ) {
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default()
@@ -1024,10 +1024,10 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Confirm;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Confirm;
             settings.tool_permissions.tools.remove(TerminalTool::NAME);
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -1171,9 +1171,9 @@ mod tests {
     ) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default().with_terminal(
@@ -1182,19 +1182,19 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Deny;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Deny;
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Allow),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                     always_allow: vec![],
                     always_deny: vec![],
                     always_confirm: vec![],
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -1240,9 +1240,9 @@ mod tests {
     async fn test_env_prefix_pattern_rejects_different_value(cx: &mut inazuma::TestAppContext) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default().with_terminal(
@@ -1251,14 +1251,14 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Deny;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Deny;
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     always_allow: vec![
-                        agent_settings::CompiledRegex::new(r"^PAGER=blah\s+git\s+log(\s|$)", false)
+                        raijin_agent_settings::CompiledRegex::new(r"^PAGER=blah\s+git\s+log(\s|$)", false)
                             .unwrap(),
                     ],
                     always_deny: vec![],
@@ -1266,7 +1266,7 @@ mod tests {
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -1306,9 +1306,9 @@ mod tests {
     ) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default().with_terminal(
@@ -1317,14 +1317,14 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Deny;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Deny;
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     always_allow: vec![
-                        agent_settings::CompiledRegex::new(r"^A=1\s+B=2\s+git\s+log(\s|$)", false)
+                        raijin_agent_settings::CompiledRegex::new(r"^A=1\s+B=2\s+git\s+log(\s|$)", false)
                             .unwrap(),
                     ],
                     always_deny: vec![],
@@ -1332,7 +1332,7 @@ mod tests {
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -1380,9 +1380,9 @@ mod tests {
     ) {
         crate::tests::init_test(cx);
 
-        let fs = fs::FakeFs::new(cx.executor());
+        let fs = raijin_fs::FakeFs::new(cx.executor());
         fs.insert_tree("/root", serde_json::json!({})).await;
-        let project = project::Project::test(fs, ["/root".as_ref()], cx).await;
+        let project = raijin_project::Project::test(fs, ["/root".as_ref()], cx).await;
 
         let environment = std::rc::Rc::new(cx.update(|cx| {
             crate::tests::FakeThreadEnvironment::default().with_terminal(
@@ -1391,14 +1391,14 @@ mod tests {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Deny;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Deny;
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     always_allow: vec![
-                        agent_settings::CompiledRegex::new(
+                        raijin_agent_settings::CompiledRegex::new(
                             r#"^PAGER="less\ -R"\s+git\s+log(\s|$)"#,
                             false,
                         )
@@ -1409,7 +1409,7 @@ mod tests {
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]

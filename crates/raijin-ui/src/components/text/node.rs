@@ -22,6 +22,7 @@ use super::TextViewStyle;
 #[derive(Debug, Clone, PartialEq)]
 pub(crate) enum BlockNode {
     /// Something like a Div container in HTML.
+    #[cfg(feature = "html")]
     Root {
         children: Vec<BlockNode>,
         span: Option<Span>,
@@ -73,11 +74,13 @@ impl BlockNode {
         matches!(self, Self::ListItem { .. })
     }
 
+    #[cfg(feature = "html")]
     pub(super) fn is_break(&self) -> bool {
         matches!(self, Self::Break { .. })
     }
 
     /// Combine all children, omitting the empt parent nodes.
+    #[cfg(feature = "html")]
     pub(super) fn compact(self) -> BlockNode {
         match self {
             Self::Root { mut children, .. } if children.len() == 1 => children.remove(0).compact(),
@@ -88,6 +91,7 @@ impl BlockNode {
     /// Get the span of the node.
     pub(super) fn span(&self) -> Option<Span> {
         match self {
+            #[cfg(feature = "html")]
             BlockNode::Root { span, .. } => *span,
             BlockNode::Paragraph(paragraph) => paragraph.span,
             BlockNode::Heading { span, .. } => *span,
@@ -106,6 +110,7 @@ impl BlockNode {
     pub(super) fn selected_text(&self) -> String {
         let mut text = String::new();
         match self {
+            #[cfg(feature = "html")]
             BlockNode::Root { children, .. } => {
                 let mut block_text = String::new();
                 for c in children.iter() {
@@ -227,11 +232,13 @@ impl TextMark {
         self
     }
 
+    #[cfg(feature = "html")]
     pub fn link(mut self, link: impl Into<LinkMark>) -> Self {
         self.link = Some(link.into());
         self
     }
 
+    #[cfg(feature = "html")]
     pub fn merge(&mut self, other: TextMark) {
         self.bold |= other.bold;
         self.italic |= other.italic;
@@ -425,6 +432,7 @@ pub(crate) struct TableCell {
 }
 
 impl Paragraph {
+    #[cfg(feature = "html")]
     pub(crate) fn take(&mut self) -> Paragraph {
         std::mem::replace(
             self,
@@ -437,6 +445,7 @@ impl Paragraph {
         )
     }
 
+    #[cfg(feature = "html")]
     pub(crate) fn is_image(&self) -> bool {
         false
     }
@@ -459,6 +468,7 @@ impl Paragraph {
         self.children.push(InlineNode::image(image));
     }
 
+    #[cfg(feature = "html")]
     pub(crate) fn is_empty(&self) -> bool {
         self.children.is_empty()
             || self

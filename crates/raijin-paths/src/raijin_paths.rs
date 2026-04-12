@@ -1,6 +1,5 @@
 //! Paths to locations used by Raijin.
 
-use std::env;
 use std::path::{Path, PathBuf};
 use std::sync::{LazyLock, OnceLock};
 
@@ -69,23 +68,14 @@ pub fn set_custom_data_dir(dir: &str) -> &'static PathBuf {
 }
 
 /// Returns the path to the configuration directory used by Raijin.
+///
+/// All platforms use `~/.raijin/` as the config directory.
 pub fn config_dir() -> &'static PathBuf {
     CONFIG_DIR.get_or_init(|| {
         if let Some(custom_dir) = CUSTOM_DATA_DIR.get() {
             custom_dir.join("config")
-        } else if cfg!(target_os = "windows") {
-            dirs::config_dir()
-                .expect("failed to determine RoamingAppData directory")
-                .join("Raijin")
-        } else if cfg!(any(target_os = "linux", target_os = "freebsd")) {
-            if let Ok(flatpak_xdg_config) = std::env::var("FLATPAK_XDG_CONFIG_HOME") {
-                flatpak_xdg_config.into()
-            } else {
-                dirs::config_dir().expect("failed to determine XDG_CONFIG_HOME directory")
-            }
-            .join("raijin")
         } else {
-            home_dir().join(".config").join("raijin")
+            home_dir().join(".raijin")
         }
     })
 }
@@ -234,16 +224,16 @@ pub fn settings_backup_file() -> &'static PathBuf {
     SETTINGS_FILE.get_or_init(|| config_dir().join("settings_backup.toml"))
 }
 
-/// Returns the path to the `keymap.json` file.
+/// Returns the path to the `keymap.toml` file.
 pub fn keymap_file() -> &'static PathBuf {
     static KEYMAP_FILE: OnceLock<PathBuf> = OnceLock::new();
-    KEYMAP_FILE.get_or_init(|| config_dir().join("keymap.json"))
+    KEYMAP_FILE.get_or_init(|| config_dir().join("keymap.toml"))
 }
 
-/// Returns the path to the `keymap_backup.json` file.
+/// Returns the path to the `keymap_backup.toml` file.
 pub fn keymap_backup_file() -> &'static PathBuf {
     static KEYMAP_FILE: OnceLock<PathBuf> = OnceLock::new();
-    KEYMAP_FILE.get_or_init(|| config_dir().join("keymap_backup.json"))
+    KEYMAP_FILE.get_or_init(|| config_dir().join("keymap_backup.toml"))
 }
 
 /// Returns the path to the `tasks.json` file.

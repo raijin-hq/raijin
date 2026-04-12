@@ -76,7 +76,7 @@ impl VercelLanguageModelProvider {
         Self { http_client, state }
     }
 
-    fn create_language_model(&self, model: vercel::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_vercel::Model) -> Arc<dyn LanguageModel> {
         Arc::new(VercelLanguageModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -122,18 +122,18 @@ impl LanguageModelProvider for VercelLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(vercel::Model::default()))
+        Some(self.create_language_model(raijin_vercel::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(vercel::Model::default_fast()))
+        Some(self.create_language_model(raijin_vercel::Model::default_fast()))
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        for model in vercel::Model::iter() {
-            if !matches!(model, vercel::Model::Custom { .. }) {
+        for model in raijin_vercel::Model::iter() {
+            if !matches!(model, raijin_vercel::Model::Custom { .. }) {
                 models.insert(model.id().to_string(), model);
             }
         }
@@ -141,7 +141,7 @@ impl LanguageModelProvider for VercelLanguageModelProvider {
         for model in &Self::settings(cx).available_models {
             models.insert(
                 model.name.clone(),
-                vercel::Model::Custom {
+                raijin_vercel::Model::Custom {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
@@ -167,7 +167,7 @@ impl LanguageModelProvider for VercelLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -183,7 +183,7 @@ impl LanguageModelProvider for VercelLanguageModelProvider {
 
 pub struct VercelLanguageModel {
     id: LanguageModelId,
-    model: vercel::Model,
+    model: raijin_vercel::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
@@ -192,7 +192,7 @@ pub struct VercelLanguageModel {
 impl VercelLanguageModel {
     fn stream_completion(
         &self,
-        request: open_ai::Request,
+        request: raijin_open_ai::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<'static, Result<futures::stream::BoxStream<'static, Result<ResponseStreamEvent>>>>
     {
@@ -208,7 +208,7 @@ impl VercelLanguageModel {
             let Some(api_key) = api_key else {
                 return Err(LanguageModelCompletionError::NoApiKey { provider });
             };
-            let request = open_ai::stream_completion(
+            let request = raijin_open_ai::stream_completion(
                 http_client.as_ref(),
                 provider.0.as_str(),
                 &api_url,
@@ -400,7 +400,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;

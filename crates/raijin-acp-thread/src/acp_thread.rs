@@ -28,7 +28,7 @@ use std::rc::Rc;
 use std::time::{Duration, Instant};
 use std::{fmt::Display, mem, path::PathBuf, sync::Arc};
 use raijin_task::{Shell, ShellBuilder};
-pub use raijin_terminal::*;
+pub use terminal::{Terminal, create_terminal_entity};
 use inazuma_text::Bias;
 use raijin_ui::App;
 use inazuma_util::markdown::MarkdownEscaped;
@@ -2847,8 +2847,8 @@ impl AcpThread {
                 if let Some(mut chunks) = self.pending_terminal_output.remove(&terminal_id) {
                     for data in chunks.drain(..) {
                         entity.update(cx, |term, cx| {
-                            term.inner().update(cx, |inner, cx| {
-                                inner.write_output(&data, cx);
+                            term.inner().update(cx, |inner, _cx| {
+                                inner.write_output(&data);
                             })
                         });
                     }
@@ -2865,8 +2865,8 @@ impl AcpThread {
             TerminalProviderEvent::Output { terminal_id, data } => {
                 if let Some(entity) = self.terminals.get(&terminal_id) {
                     entity.update(cx, |term, cx| {
-                        term.inner().update(cx, |inner, cx| {
-                            inner.write_output(&data, cx);
+                        term.inner().update(cx, |inner, _cx| {
+                            inner.write_output(&data);
                         })
                     });
                 } else {
@@ -2879,10 +2879,10 @@ impl AcpThread {
             TerminalProviderEvent::TitleChanged { terminal_id, title } => {
                 if let Some(entity) = self.terminals.get(&terminal_id) {
                     entity.update(cx, |term, cx| {
-                        term.inner().update(cx, |inner, cx| {
+                        term.inner().update(cx, |inner, _cx| {
                             inner.breadcrumb_text = title;
-                            cx.emit(::raijin_terminal::Event::BreadcrumbsChanged);
-                        })
+                        });
+                        cx.notify();
                     });
                 }
             }

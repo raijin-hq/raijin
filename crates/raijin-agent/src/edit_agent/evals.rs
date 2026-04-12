@@ -1278,7 +1278,7 @@ impl EvalAssertion {
         Self::new(async move |sample, _judge, _cx| {
             let matches = expected_diffs.iter().any(|possible_diff| {
                 let expected =
-                    language::apply_diff_patch(&sample.text_before, possible_diff).unwrap();
+                    raijin_language::apply_diff_patch(&sample.text_before, possible_diff).unwrap();
                 strip_empty_lines(&expected) == strip_empty_lines(&sample.text_after)
             });
 
@@ -1416,15 +1416,15 @@ impl EditAgentTest {
 
         let fs = FakeFs::new(cx.executor());
         cx.update(|cx| {
-            settings::init(cx);
+            inazuma_settings_framework::init(cx);
             gpui_tokio::init(cx);
             let http_client = Arc::new(ReqwestClient::user_agent("agent tests").unwrap());
             cx.set_http_client(http_client);
             let client = Client::production(cx);
             let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
-            settings::init(cx);
-            language_model::init(user_store.clone(), client.clone(), cx);
-            language_models::init(user_store, client.clone(), cx);
+            inazuma_settings_framework::init(cx);
+            raijin_language_model::init(user_store.clone(), client.clone(), cx);
+            raijin_language_models::init(user_store, client.clone(), cx);
         });
 
         fs.insert_tree("/root", json!({})).await;
@@ -1598,7 +1598,7 @@ impl EditAgentTest {
         let buffer_text = buffer.read_with(cx, |buffer, _| buffer.text());
         let sample = EvalSample {
             edit_output,
-            diff: language::unified_diff(
+            diff: raijin_language::unified_diff(
                 eval.input_content.as_deref().unwrap_or_default(),
                 &buffer_text,
             ),

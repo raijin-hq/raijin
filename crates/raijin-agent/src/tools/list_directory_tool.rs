@@ -848,7 +848,7 @@ mod tests {
         );
 
         auth.response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))

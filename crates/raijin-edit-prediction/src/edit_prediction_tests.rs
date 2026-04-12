@@ -2,9 +2,9 @@ use super::*;
 use crate::udiff::apply_diff_to_string;
 use raijin_client::{UserStore, test::FakeServer};
 use inazuma_clock::FakeSystemClock;
-use inazuma_clock::ReplicaId;
-use cloud_api_types::{CreateLlmTokenResponse, LlmToken};
-use cloud_llm_client::{
+use inazuma_ReplicaId;
+use raijin_cloud_api_types::{CreateLlmTokenResponse, LlmToken};
+use raijin_cloud_llm_client::{
     EditPredictionRejectReason, EditPredictionRejection, RejectEditPredictionsBody,
     predict_edits_v3::{PredictEditsV3Request, PredictEditsV3Response},
 };
@@ -23,7 +23,7 @@ use raijin_language::{
     Anchor, Buffer, Capability, CursorShape, Diagnostic, DiagnosticEntry, DiagnosticSet,
     DiagnosticSeverity, Operation, Point, Selection, SelectionGoal,
 };
-use raijin_language_model::RefreshLlmTokenListener;
+use raijin_RefreshLlmTokenListener;
 use raijin_lsp::LanguageServerId;
 use parking_lot::Mutex;
 use pretty_assertions::{assert_eq, assert_matches};
@@ -37,7 +37,7 @@ use inazuma_util::{
 };
 use uuid::Uuid;
 use raijin_workspace::{AppState, CollaboratorId, MultiWorkspace};
-use zeta_prompt::ZetaPromptInput;
+use raijin_zeta_prompt::ZetaPromptInput;
 
 use crate::{
     BufferEditPrediction, EDIT_PREDICTION_SETTLED_QUIESCENCE, EditPredictionId,
@@ -67,7 +67,7 @@ async fn test_current_state(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot1 = buffer1.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot1.anchor_before(language::Point::new(1, 3));
+    let position = snapshot1.anchor_before(Point::new(1, 3));
 
     ep_store.update(cx, |ep_store, cx| {
         ep_store.register_project(&project, cx);
@@ -129,7 +129,7 @@ async fn test_current_state(cx: &mut TestAppContext) {
                         version: None,
                     },
                     None,
-                    language::DiagnosticSourceKind::Pushed,
+                    raijin_language::DiagnosticSourceKind::Pushed,
                     &[],
                     cx,
                 )
@@ -227,7 +227,7 @@ async fn test_diagnostics_refresh_suppressed_while_following(cx: &mut TestAppCon
         .await
         .unwrap();
     let snapshot1 = buffer1.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot1.anchor_before(language::Point::new(1, 3));
+    let position = snapshot1.anchor_before(Point::new(1, 3));
 
     ep_store.update(cx, |ep_store, cx| {
         ep_store.register_project(&project, cx);
@@ -281,7 +281,7 @@ async fn test_diagnostics_refresh_suppressed_while_following(cx: &mut TestAppCon
                         version: None,
                     },
                     None,
-                    language::DiagnosticSourceKind::Pushed,
+                    raijin_language::DiagnosticSourceKind::Pushed,
                     &[],
                     cx,
                 )
@@ -310,7 +310,7 @@ async fn test_diagnostics_refresh_suppressed_while_following(cx: &mut TestAppCon
                         version: None,
                     },
                     None,
-                    language::DiagnosticSourceKind::Pushed,
+                    raijin_language::DiagnosticSourceKind::Pushed,
                     &[],
                     cx,
                 )
@@ -367,7 +367,7 @@ async fn test_simple_request(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     let prediction_task = ep_store.update(cx, |ep_store, cx| {
         ep_store.request_prediction(&project, &buffer, position, Default::default(), cx)
@@ -408,7 +408,7 @@ async fn test_simple_request(cx: &mut TestAppContext) {
     assert_eq!(prediction.edits.len(), 1);
     assert_eq!(
         prediction.edits[0].0.to_point(&snapshot).start,
-        language::Point::new(1, 3)
+        Point::new(1, 3)
     );
     assert_eq!(prediction.edits[0].1.as_ref(), " are you?");
 }
@@ -443,7 +443,7 @@ async fn test_request_events(cx: &mut TestAppContext) {
     });
 
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     let prediction_task = ep_store.update(cx, |ep_store, cx| {
         ep_store.request_prediction(&project, &buffer, position, Default::default(), cx)
@@ -545,7 +545,7 @@ async fn test_edit_history_getter_pause_splits_last_event(cx: &mut TestAppContex
     });
     assert_eq!(first_total_edit_range, Point::new(1, 0)..Point::new(1, 3));
 
-    let zeta_prompt::Event::BufferChange { diff, .. } = events[0].event.as_ref();
+    let raijin_zeta_prompt::Event::BufferChange { diff, .. } = events[0].event.as_ref();
     assert_eq!(
         diff.as_str(),
         indoc! {"
@@ -562,7 +562,7 @@ async fn test_edit_history_getter_pause_splits_last_event(cx: &mut TestAppContex
     });
     assert_eq!(second_total_edit_range, Point::new(1, 3)..Point::new(1, 13));
 
-    let zeta_prompt::Event::BufferChange { diff, .. } = events[1].event.as_ref();
+    let raijin_zeta_prompt::Event::BufferChange { diff, .. } = events[1].event.as_ref();
     assert_eq!(
         diff.as_str(),
         indoc! {"
@@ -758,7 +758,7 @@ fn render_events(events: &[StoredEvent]) -> String {
     events
         .iter()
         .map(|e| {
-            let zeta_prompt::Event::BufferChange { diff, .. } = e.event.as_ref();
+            let raijin_zeta_prompt::Event::BufferChange { diff, .. } = e.event.as_ref();
             diff.as_str()
         })
         .collect::<Vec<_>>()
@@ -769,7 +769,7 @@ fn render_events_with_predicted(events: &[StoredEvent]) -> Vec<String> {
     events
         .iter()
         .map(|e| {
-            let zeta_prompt::Event::BufferChange {
+            let raijin_zeta_prompt::Event::BufferChange {
                 diff, predicted, ..
             } = e.event.as_ref();
             let prefix = if *predicted { "predicted" } else { "manual" };
@@ -781,7 +781,7 @@ fn render_events_with_predicted(events: &[StoredEvent]) -> Vec<String> {
 fn make_collaborator_replica(
     buffer: &Entity<Buffer>,
     cx: &mut TestAppContext,
-) -> (Entity<Buffer>, clock::Global) {
+) -> (Entity<Buffer>, inazuma_clock::Global) {
     let (state, version) =
         buffer.read_with(cx, |buffer, _cx| (buffer.to_proto(_cx), buffer.version()));
     let collaborator = cx.new(|_cx| {
@@ -793,7 +793,7 @@ fn make_collaborator_replica(
 async fn apply_collaborator_edit(
     collaborator: &Entity<Buffer>,
     buffer: &Entity<Buffer>,
-    since_version: &mut clock::Global,
+    since_version: &mut inazuma_clock::Global,
     edit_range: Range<usize>,
     new_text: &str,
     cx: &mut TestAppContext,
@@ -811,7 +811,7 @@ async fn apply_collaborator_edit(
     buffer.update(cx, |buffer, cx| {
         buffer.apply_ops(
             ops.into_iter()
-                .map(|op| language::proto::deserialize_operation(op).unwrap()),
+                .map(|op| raijin_language::proto::deserialize_operation(op).unwrap()),
             cx,
         );
     });
@@ -1367,7 +1367,7 @@ async fn test_empty_prediction(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     ep_store.update(cx, |ep_store, cx| {
         ep_store.refresh_prediction_from_buffer(project.clone(), buffer.clone(), position, cx);
@@ -1424,7 +1424,7 @@ async fn test_interpolated_empty(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     ep_store.update(cx, |ep_store, cx| {
         ep_store.refresh_prediction_from_buffer(project.clone(), buffer.clone(), position, cx);
@@ -1496,7 +1496,7 @@ async fn test_replace_current(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     ep_store.update(cx, |ep_store, cx| {
         ep_store.refresh_prediction_from_buffer(project.clone(), buffer.clone(), position, cx);
@@ -1580,7 +1580,7 @@ async fn test_current_preferred(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     ep_store.update(cx, |ep_store, cx| {
         ep_store.refresh_prediction_from_buffer(project.clone(), buffer.clone(), position, cx);
@@ -1676,7 +1676,7 @@ async fn test_cancel_earlier_pending_requests(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     // start two refresh tasks
     ep_store.update(cx, |ep_store, cx| {
@@ -1769,7 +1769,7 @@ async fn test_cancel_second_on_third_request(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     // start two refresh tasks
     ep_store.update(cx, |ep_store, cx| {
@@ -1914,7 +1914,7 @@ async fn test_jump_and_edit_throttles_are_independent(cx: &mut TestAppContext) {
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     ep_store.update(cx, |ep_store, cx| {
         ep_store.register_project(&project, cx);
@@ -1948,7 +1948,7 @@ async fn test_jump_and_edit_throttles_are_independent(cx: &mut TestAppContext) {
                         version: None,
                     },
                     None,
-                    language::DiagnosticSourceKind::Pushed,
+                    raijin_language::DiagnosticSourceKind::Pushed,
                     &[],
                     cx,
                 )
@@ -2012,7 +2012,7 @@ async fn test_same_frame_duplicate_requests_deduplicated(cx: &mut TestAppContext
         .await
         .unwrap();
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(1, 3));
+    let position = snapshot.anchor_before(Point::new(1, 3));
 
     // Enqueue two refresh calls in the same synchronous frame (no yielding).
     // Both `cx.spawn` tasks are created before either executes, so they both
@@ -2218,7 +2218,7 @@ fn test_active_buffer_diagnostics_fetching(cx: &mut TestAppContext) {
                         },
                         group_id: index + 1,
                         is_primary: true,
-                        source_kind: language::DiagnosticSourceKind::Pushed,
+                        source_kind: raijin_language::DiagnosticSourceKind::Pushed,
                         ..Diagnostic::default()
                     },
                 }),
@@ -2235,7 +2235,7 @@ fn test_active_buffer_diagnostics_fetching(cx: &mut TestAppContext) {
 
     assert_eq!(
         active_buffer_diagnostics,
-        vec![zeta_prompt::ActiveBufferDiagnostic {
+        vec![raijin_zeta_prompt::ActiveBufferDiagnostic {
             severity: Some(1),
             message: "second error".to_string(),
             snippet: text,
@@ -2262,35 +2262,35 @@ fn test_active_buffer_diagnostics_fetching(cx: &mut TestAppContext) {
         let diagnostics = DiagnosticSet::new(
             vec![
                 DiagnosticEntry {
-                    range: text::PointUtf16::new(0, 0)..text::PointUtf16::new(0, 3),
+                    range: inazuma_text::PointUtf16::new(0, 0)..inazuma_text::PointUtf16::new(0, 3),
                     diagnostic: Diagnostic {
                         severity: DiagnosticSeverity::ERROR,
                         message: "row zero".to_string(),
                         group_id: 1,
                         is_primary: true,
-                        source_kind: language::DiagnosticSourceKind::Pushed,
+                        source_kind: raijin_language::DiagnosticSourceKind::Pushed,
                         ..Diagnostic::default()
                     },
                 },
                 DiagnosticEntry {
-                    range: text::PointUtf16::new(2, 0)..text::PointUtf16::new(2, 5),
+                    range: inazuma_text::PointUtf16::new(2, 0)..inazuma_text::PointUtf16::new(2, 5),
                     diagnostic: Diagnostic {
                         severity: DiagnosticSeverity::WARNING,
                         message: "row two".to_string(),
                         group_id: 2,
                         is_primary: true,
-                        source_kind: language::DiagnosticSourceKind::Pushed,
+                        source_kind: raijin_language::DiagnosticSourceKind::Pushed,
                         ..Diagnostic::default()
                     },
                 },
                 DiagnosticEntry {
-                    range: text::PointUtf16::new(4, 0)..text::PointUtf16::new(4, 4),
+                    range: inazuma_text::PointUtf16::new(4, 0)..inazuma_text::PointUtf16::new(4, 4),
                     diagnostic: Diagnostic {
                         severity: DiagnosticSeverity::INFORMATION,
                         message: "row four".to_string(),
                         group_id: 3,
                         is_primary: true,
-                        source_kind: language::DiagnosticSourceKind::Pushed,
+                        source_kind: raijin_language::DiagnosticSourceKind::Pushed,
                         ..Diagnostic::default()
                     },
                 },
@@ -2338,7 +2338,7 @@ fn test_active_buffer_diagnostics_fetching(cx: &mut TestAppContext) {
 // Generate a model response that would apply the given diff to the active file.
 fn model_response(request: &PredictEditsV3Request, diff_to_apply: &str) -> PredictEditsV3Response {
     let editable_range =
-        zeta_prompt::excerpt_range_for_format(Default::default(), &request.input.excerpt_ranges).1;
+        raijin_zeta_prompt::excerpt_range_for_format(Default::default(), &request.input.excerpt_ranges).1;
     let excerpt = request.input.cursor_excerpt[editable_range.clone()].to_string();
     let new_excerpt = apply_diff_to_string(diff_to_apply, &excerpt).unwrap();
 
@@ -2360,7 +2360,7 @@ fn empty_response() -> PredictEditsV3Response {
 }
 
 fn prompt_from_request(request: &PredictEditsV3Request) -> String {
-    zeta_prompt::format_zeta_prompt(&request.input, zeta_prompt::ZetaFormat::default())
+    raijin_zeta_prompt::format_zeta_prompt(&request.input, raijin_zeta_prompt::ZetaFormat::default())
         .expect("default zeta prompt formatting should succeed in edit prediction tests")
 }
 
@@ -2389,7 +2389,7 @@ fn init_test_with_fake_client(
     cx.update(move |cx| {
         let settings_store = SettingsStore::test(cx);
         cx.set_global(settings_store);
-        zlog::init_test();
+        raijin_log::init_test();
 
         let (predict_req_tx, predict_req_rx) = mpsc::unbounded();
         let (reject_req_tx, reject_req_rx) = mpsc::unbounded();
@@ -2435,11 +2435,11 @@ fn init_test_with_fake_client(
             }
         });
 
-        let client = client::Client::new(Arc::new(FakeSystemClock::new()), http_client, cx);
+        let client = raijin_client::Client::new(Arc::new(FakeSystemClock::new()), http_client, cx);
         client.cloud_client().set_credentials(1, "test".into());
 
         let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
-        language_model::init(user_store.clone(), client.clone(), cx);
+        raijin_language_model::init(user_store.clone(), client.clone(), cx);
         let ep_store = EditPredictionStore::global(&client, &user_store, cx);
 
         (
@@ -2668,7 +2668,7 @@ async fn test_edit_prediction_no_spurious_trailing_newline(cx: &mut TestAppConte
         .unwrap();
 
     let snapshot = buffer.read_with(cx, |buffer, _cx| buffer.snapshot());
-    let position = snapshot.anchor_before(language::Point::new(0, 5));
+    let position = snapshot.anchor_before(Point::new(0, 5));
 
     ep_store.update(cx, |ep_store, cx| {
         ep_store.refresh_prediction_from_buffer(project.clone(), buffer.clone(), position, cx);
@@ -2718,7 +2718,7 @@ async fn apply_edit_prediction(
     completion_response: &str,
     cx: &mut TestAppContext,
 ) -> String {
-    let fs = project::FakeFs::new(cx.executor());
+    let fs = FakeFs::new(cx.executor());
     let project = Project::test(fs.clone(), [path!("/project").as_ref()], cx).await;
     let buffer = cx.new(|cx| Buffer::local(buffer_content, cx));
     let (ep_store, response) = make_test_ep_store(&project, cx).await;
@@ -2805,7 +2805,7 @@ async fn make_test_ep_store(
     });
 
     let client = cx.update(|cx| Client::new(Arc::new(FakeSystemClock::new()), http_client, cx));
-    let user_store = cx.update(|cx| cx.new(|cx| client::UserStore::new(client.clone(), cx)));
+    let user_store = cx.update(|cx| cx.new(|cx| UserStore::new(client.clone(), cx)));
     cx.update(|cx| {
         RefreshLlmTokenListener::register(client.clone(), user_store.clone(), cx);
     });
@@ -2888,10 +2888,10 @@ async fn test_unauthenticated_without_custom_url_blocks_prediction_impl(cx: &mut
     });
 
     let client =
-        cx.update(|cx| client::Client::new(Arc::new(FakeSystemClock::new()), http_client, cx));
-    let user_store = cx.update(|cx| cx.new(|cx| client::UserStore::new(client.clone(), cx)));
+        cx.update(|cx| raijin_client::Client::new(Arc::new(FakeSystemClock::new()), http_client, cx));
+    let user_store = cx.update(|cx| cx.new(|cx| UserStore::new(client.clone(), cx)));
     cx.update(|cx| {
-        language_model::RefreshLlmTokenListener::register(client.clone(), user_store.clone(), cx);
+        RefreshLlmTokenListener::register(client.clone(), user_store.clone(), cx);
     });
 
     let ep_store = cx.new(|cx| EditPredictionStore::new(client, project.read(cx).user_store(), cx));
@@ -2927,7 +2927,7 @@ async fn test_unauthenticated_without_custom_url_blocks_prediction_impl(cx: &mut
 #[inazuma::test]
 async fn test_diagnostic_jump_excludes_collaborator_regions(cx: &mut TestAppContext) {
     fn set_collaborator_cursor(buffer: &Entity<Buffer>, row: u32, cx: &mut TestAppContext) {
-        let collab_replica = clock::ReplicaId::new(10);
+        let collab_replica = ReplicaId::new(10);
         let anchor = buffer.read_with(cx, |buffer, _| {
             buffer.snapshot().anchor_before(Point::new(row, 0))
         });
@@ -2942,7 +2942,7 @@ async fn test_diagnostic_jump_excludes_collaborator_regions(cx: &mut TestAppCont
             buffer.apply_ops(
                 [Operation::UpdateSelections {
                     selections,
-                    lamport_timestamp: clock::Lamport {
+                    lamport_timestamp: inazuma_clock::Lamport {
                         replica_id: collab_replica,
                         value: 1,
                     },
@@ -2980,7 +2980,7 @@ async fn test_diagnostic_jump_excludes_collaborator_regions(cx: &mut TestAppCont
                             version: None,
                         },
                         None,
-                        language::DiagnosticSourceKind::Pushed,
+                        raijin_language::DiagnosticSourceKind::Pushed,
                         &[],
                         cx,
                     )
@@ -3319,5 +3319,5 @@ async fn test_edit_prediction_settled(cx: &mut TestAppContext) {
 
 #[ctor::ctor]
 fn init_logger() {
-    zlog::init_test();
+    raijin_log::init_test();
 }

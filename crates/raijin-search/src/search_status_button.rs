@@ -19,7 +19,7 @@ impl SearchButton {
 }
 
 impl Render for SearchButton {
-    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl ui::IntoElement {
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let button = div();
 
         if !EditorSettings::get_global(cx).search.button {
@@ -34,20 +34,20 @@ impl Render for SearchButton {
                     if let Some(focus_handle) = &focus_handle {
                         Tooltip::for_action_in(
                             "Project Search",
-                            &workspace::DeploySearch::default(),
+                            &raijin_workspace::DeploySearch::default(),
                             focus_handle,
                             cx,
                         )
                     } else {
                         Tooltip::for_action(
                             "Project Search",
-                            &workspace::DeploySearch::default(),
+                            &raijin_workspace::DeploySearch::default(),
                             cx,
                         )
                     }
                 })
                 .on_click(cx.listener(|_this, _, window, cx| {
-                    window.dispatch_action(Box::new(workspace::DeploySearch::default()), cx);
+                    window.dispatch_action(Box::new(raijin_workspace::DeploySearch::default()), cx);
                 })),
         )
     }

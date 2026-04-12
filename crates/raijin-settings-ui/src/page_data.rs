@@ -6,7 +6,7 @@ use inazuma_settings_framework::{
     SettingsContent,
 };
 use std::sync::{Arc, OnceLock};
-use strum::{EnumMessage, IntoDiscriminant as _, VariantArray};
+use strum::{EnumMessage, VariantArray};
 use raijin_ui::IntoElement;
 
 use crate::{
@@ -18,8 +18,56 @@ use crate::{
     },
 };
 
+/// Polyfill for `strum::IntoDiscriminant` which is not available in strum 0.26.
+/// The `EnumDiscriminants` derive macro generates a `*Discriminants` type but does
+/// not provide a trait. This trait bridges that gap for `dynamic_variants`.
+trait IntoDiscriminant {
+    type Discriminant;
+    fn discriminant(&self) -> Self::Discriminant;
+}
+
+macro_rules! impl_into_discriminant {
+    ($ty:path, $disc:path) => {
+        impl IntoDiscriminant for $ty {
+            type Discriminant = $disc;
+            fn discriminant(&self) -> Self::Discriminant {
+                <$disc>::from(self)
+            }
+        }
+    };
+}
+
+impl_into_discriminant!(
+    inazuma_settings_framework::ThemeSelection,
+    inazuma_settings_framework::ThemeSelectionDiscriminants
+);
+impl_into_discriminant!(
+    inazuma_settings_framework::IconThemeSelection,
+    inazuma_settings_framework::IconThemeSelectionDiscriminants
+);
+impl_into_discriminant!(
+    inazuma_settings_framework::BufferLineHeight,
+    inazuma_settings_framework::BufferLineHeightDiscriminants
+);
+impl_into_discriminant!(
+    inazuma_settings_framework::AutosaveSetting,
+    inazuma_settings_framework::AutosaveSettingDiscriminants
+);
+impl_into_discriminant!(
+    inazuma_settings_framework::WindowButtonLayoutContent,
+    inazuma_settings_framework::WindowButtonLayoutContentDiscriminants
+);
+impl_into_discriminant!(
+    inazuma_settings_framework::Shell,
+    inazuma_settings_framework::ShellDiscriminants
+);
+impl_into_discriminant!(
+    inazuma_settings_framework::WorkingDirectory,
+    inazuma_settings_framework::WorkingDirectoryDiscriminants
+);
+
 const DEFAULT_STRING: String = String::new();
-/// A default empty string reference. Useful in `pick` functions for cases either in dynamic item fields, or when dealing with `settings::Maybe`
+/// A default empty string reference. Useful in `pick` functions for cases either in dynamic item fields, or when dealing with `inazuma_settings_framework::Maybe`
 /// to avoid the "NO DEFAULT" case.
 const DEFAULT_EMPTY_STRING: Option<&String> = Some(&DEFAULT_STRING);
 
@@ -207,7 +255,7 @@ fn general_page() -> SettingsPage {
             SettingsPageItem::SectionHeader("Security"),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Trust All Projects By Default",
-                description: "When opening Zed, avoid Restricted Mode by auto-trusting all projects, enabling use of all features without having to give permission to each new project.",
+                description: "When opening Raijin, avoid Restricted Mode by auto-trusting all projects, enabling use of all features without having to give permission to each new project.",
                 field: Box::new(SettingField {
                     json_path: Some("session.trust_all_projects"),
                     pick: |settings_content| {
@@ -255,7 +303,7 @@ fn general_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Restore On Startup",
-                description: "What to restore from the previous session when opening Zed.",
+                description: "What to restore from the previous session when opening Raijin.",
                 field: Box::new(SettingField {
                     json_path: Some("restore_on_startup"),
                     pick: |settings_content| settings_content.workspace.restore_on_startup.as_ref(),
@@ -275,7 +323,7 @@ fn general_page() -> SettingsPage {
             SettingsPageItem::SettingItem(SettingItem {
                 files: USER,
                 title: "Preview Channel",
-                description: "Which settings should be activated only in Preview build of Zed.",
+                description: "Which settings should be activated only in Preview build of Raijin.",
                 field: Box::new(
                     SettingField {
                         json_path: Some("preview_channel_settings"),
@@ -329,7 +377,7 @@ fn general_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Telemetry Metrics",
-                description: "Send anonymized usage data like what languages you're using Zed with.",
+                description: "Send anonymized usage data like what languages you're using Raijin with.",
                 field: Box::new(SettingField {
                     json_path: Some("telemetry.metrics"),
                     pick: |settings_content| {
@@ -392,7 +440,7 @@ fn appearance_page() -> SettingsPage {
                     field: Box::new(SettingField {
                         json_path: Some("theme$"),
                         pick: |settings_content| {
-                            Some(&dynamic_variants::<settings::ThemeSelection>()[
+                            Some(&dynamic_variants::<inazuma_settings_framework::ThemeSelection>()[
                                 settings_content
                                     .theme
                                     .theme
@@ -406,27 +454,27 @@ fn appearance_page() -> SettingsPage {
                             };
                             let settings_value = settings_content.theme.theme.get_or_insert_default();
                             *settings_value = match value {
-                                settings::ThemeSelectionDiscriminants::Static => {
+                                inazuma_settings_framework::ThemeSelectionDiscriminants::Static => {
                                     let name = match settings_value {
-                                        settings::ThemeSelection::Static(_) => return,
-                                        settings::ThemeSelection::Dynamic { mode, light, dark } => {
+                                        inazuma_settings_framework::ThemeSelection::Static(_) => return,
+                                        inazuma_settings_framework::ThemeSelection::Dynamic { mode, light, dark } => {
                                             match mode {
-                                                theme_settings::ThemeAppearanceMode::Light => light.clone(),
-                                                theme_settings::ThemeAppearanceMode::Dark => dark.clone(),
-                                                theme_settings::ThemeAppearanceMode::System => dark.clone(), // no cx, can't determine correct choice
+                                                raijin_theme_settings::ThemeAppearanceMode::Light => light.clone(),
+                                                raijin_theme_settings::ThemeAppearanceMode::Dark => dark.clone(),
+                                                raijin_theme_settings::ThemeAppearanceMode::System => dark.clone(), // no cx, can't determine correct choice
                                             }
                                         },
                                     };
-                                    settings::ThemeSelection::Static(name)
+                                    inazuma_settings_framework::ThemeSelection::Static(name)
                                 },
-                                settings::ThemeSelectionDiscriminants::Dynamic => {
+                                inazuma_settings_framework::ThemeSelectionDiscriminants::Dynamic => {
                                     let static_name = match settings_value {
-                                        settings::ThemeSelection::Static(theme_name) => theme_name.clone(),
-                                        settings::ThemeSelection::Dynamic {..} => return,
+                                        inazuma_settings_framework::ThemeSelection::Static(theme_name) => theme_name.clone(),
+                                        inazuma_settings_framework::ThemeSelection::Dynamic {..} => return,
                                     };
 
-                                    settings::ThemeSelection::Dynamic {
-                                        mode: settings::ThemeAppearanceMode::System,
+                                    inazuma_settings_framework::ThemeSelection::Dynamic {
+                                        mode: inazuma_settings_framework::ThemeAppearanceMode::System,
                                         light: static_name.clone(),
                                         dark: static_name,
                                     }
@@ -439,9 +487,9 @@ fn appearance_page() -> SettingsPage {
                 pick_discriminant: |settings_content| {
                     Some(settings_content.theme.theme.as_ref()?.discriminant() as usize)
                 },
-                fields: dynamic_variants::<settings::ThemeSelection>().into_iter().map(|variant| {
+                fields: dynamic_variants::<inazuma_settings_framework::ThemeSelection>().into_iter().map(|variant| {
                     match variant {
-                        settings::ThemeSelectionDiscriminants::Static => vec![
+                        inazuma_settings_framework::ThemeSelectionDiscriminants::Static => vec![
                             SettingItem {
                                 files: USER,
                                 title: "Theme Name",
@@ -450,7 +498,7 @@ fn appearance_page() -> SettingsPage {
                                     json_path: Some("theme"),
                                     pick: |settings_content| {
                                         match settings_content.theme.theme.as_ref() {
-                                            Some(settings::ThemeSelection::Static(name)) => Some(name),
+                                            Some(inazuma_settings_framework::ThemeSelection::Static(name)) => Some(name),
                                             _ => None
                                         }
                                     },
@@ -461,7 +509,7 @@ fn appearance_page() -> SettingsPage {
                                         match settings_content
                                             .theme
                                             .theme.get_or_insert_default() {
-                                                settings::ThemeSelection::Static(theme_name) => *theme_name = value,
+                                                inazuma_settings_framework::ThemeSelection::Static(theme_name) => *theme_name = value,
                                                 _ => return
                                             }
                                     },
@@ -469,7 +517,7 @@ fn appearance_page() -> SettingsPage {
                                 metadata: None,
                             }
                         ],
-                        settings::ThemeSelectionDiscriminants::Dynamic => vec![
+                        inazuma_settings_framework::ThemeSelectionDiscriminants::Dynamic => vec![
                             SettingItem {
                                 files: USER,
                                 title: "Mode",
@@ -478,7 +526,7 @@ fn appearance_page() -> SettingsPage {
                                     json_path: Some("theme.mode"),
                                     pick: |settings_content| {
                                         match settings_content.theme.theme.as_ref() {
-                                            Some(settings::ThemeSelection::Dynamic { mode, ..}) => Some(mode),
+                                            Some(inazuma_settings_framework::ThemeSelection::Dynamic { mode, ..}) => Some(mode),
                                             _ => None
                                         }
                                     },
@@ -489,7 +537,7 @@ fn appearance_page() -> SettingsPage {
                                         match settings_content
                                             .theme
                                             .theme.get_or_insert_default() {
-                                                settings::ThemeSelection::Dynamic{ mode, ..} => *mode = value,
+                                                inazuma_settings_framework::ThemeSelection::Dynamic{ mode, ..} => *mode = value,
                                                 _ => return
                                             }
                                     },
@@ -504,7 +552,7 @@ fn appearance_page() -> SettingsPage {
                                     json_path: Some("theme.light"),
                                     pick: |settings_content| {
                                         match settings_content.theme.theme.as_ref() {
-                                            Some(settings::ThemeSelection::Dynamic { light, ..}) => Some(light),
+                                            Some(inazuma_settings_framework::ThemeSelection::Dynamic { light, ..}) => Some(light),
                                             _ => None
                                         }
                                     },
@@ -515,7 +563,7 @@ fn appearance_page() -> SettingsPage {
                                         match settings_content
                                             .theme
                                             .theme.get_or_insert_default() {
-                                                settings::ThemeSelection::Dynamic{ light, ..} => *light = value,
+                                                inazuma_settings_framework::ThemeSelection::Dynamic{ light, ..} => *light = value,
                                                 _ => return
                                             }
                                     },
@@ -530,7 +578,7 @@ fn appearance_page() -> SettingsPage {
                                     json_path: Some("theme.dark"),
                                     pick: |settings_content| {
                                         match settings_content.theme.theme.as_ref() {
-                                            Some(settings::ThemeSelection::Dynamic { dark, ..}) => Some(dark),
+                                            Some(inazuma_settings_framework::ThemeSelection::Dynamic { dark, ..}) => Some(dark),
                                             _ => None
                                         }
                                     },
@@ -541,7 +589,7 @@ fn appearance_page() -> SettingsPage {
                                         match settings_content
                                             .theme
                                             .theme.get_or_insert_default() {
-                                                settings::ThemeSelection::Dynamic{ dark, ..} => *dark = value,
+                                                inazuma_settings_framework::ThemeSelection::Dynamic{ dark, ..} => *dark = value,
                                                 _ => return
                                             }
                                     },
@@ -556,11 +604,11 @@ fn appearance_page() -> SettingsPage {
                 discriminant: SettingItem {
                     files: USER,
                     title: "Icon Theme",
-                    description: "The custom set of icons Zed will associate with files and directories.",
+                    description: "The custom set of icons Raijin will associate with files and directories.",
                     field: Box::new(SettingField {
                         json_path: Some("icon_theme$"),
                         pick: |settings_content| {
-                            Some(&dynamic_variants::<settings::IconThemeSelection>()[
+                            Some(&dynamic_variants::<inazuma_settings_framework::IconThemeSelection>()[
                                 settings_content
                                     .theme
                                     .icon_theme
@@ -573,30 +621,30 @@ fn appearance_page() -> SettingsPage {
                                 return;
                             };
                             let settings_value = settings_content.theme.icon_theme.get_or_insert_with(|| {
-                                settings::IconThemeSelection::Static(settings::IconThemeName(theme::default_icon_theme().name.clone().into()))
+                                inazuma_settings_framework::IconThemeSelection::Static(inazuma_settings_framework::IconThemeName(raijin_theme::icon_theme::default_icon_theme().name.clone().into()))
                             });
                             *settings_value = match value {
-                                settings::IconThemeSelectionDiscriminants::Static => {
+                                inazuma_settings_framework::IconThemeSelectionDiscriminants::Static => {
                                     let name = match settings_value {
-                                        settings::IconThemeSelection::Static(_) => return,
-                                        settings::IconThemeSelection::Dynamic { mode, light, dark } => {
+                                        inazuma_settings_framework::IconThemeSelection::Static(_) => return,
+                                        inazuma_settings_framework::IconThemeSelection::Dynamic { mode, light, dark } => {
                                             match mode {
-                                                theme_settings::ThemeAppearanceMode::Light => light.clone(),
-                                                theme_settings::ThemeAppearanceMode::Dark => dark.clone(),
-                                                theme_settings::ThemeAppearanceMode::System => dark.clone(), // no cx, can't determine correct choice
+                                                raijin_theme_settings::ThemeAppearanceMode::Light => light.clone(),
+                                                raijin_theme_settings::ThemeAppearanceMode::Dark => dark.clone(),
+                                                raijin_theme_settings::ThemeAppearanceMode::System => dark.clone(), // no cx, can't determine correct choice
                                             }
                                         },
                                     };
-                                    settings::IconThemeSelection::Static(name)
+                                    inazuma_settings_framework::IconThemeSelection::Static(name)
                                 },
-                                settings::IconThemeSelectionDiscriminants::Dynamic => {
+                                inazuma_settings_framework::IconThemeSelectionDiscriminants::Dynamic => {
                                     let static_name = match settings_value {
-                                        settings::IconThemeSelection::Static(theme_name) => theme_name.clone(),
-                                        settings::IconThemeSelection::Dynamic {..} => return,
+                                        inazuma_settings_framework::IconThemeSelection::Static(theme_name) => theme_name.clone(),
+                                        inazuma_settings_framework::IconThemeSelection::Dynamic {..} => return,
                                     };
 
-                                    settings::IconThemeSelection::Dynamic {
-                                        mode: settings::ThemeAppearanceMode::System,
+                                    inazuma_settings_framework::IconThemeSelection::Dynamic {
+                                        mode: inazuma_settings_framework::ThemeAppearanceMode::System,
                                         light: static_name.clone(),
                                         dark: static_name,
                                     }
@@ -609,9 +657,9 @@ fn appearance_page() -> SettingsPage {
                 pick_discriminant: |settings_content| {
                     Some(settings_content.theme.icon_theme.as_ref()?.discriminant() as usize)
                 },
-                fields: dynamic_variants::<settings::IconThemeSelection>().into_iter().map(|variant| {
+                fields: dynamic_variants::<inazuma_settings_framework::IconThemeSelection>().into_iter().map(|variant| {
                     match variant {
-                        settings::IconThemeSelectionDiscriminants::Static => vec![
+                        inazuma_settings_framework::IconThemeSelectionDiscriminants::Static => vec![
                             SettingItem {
                                 files: USER,
                                 title: "Icon Theme Name",
@@ -620,7 +668,7 @@ fn appearance_page() -> SettingsPage {
                                     json_path: Some("icon_theme$string"),
                                     pick: |settings_content| {
                                         match settings_content.theme.icon_theme.as_ref() {
-                                            Some(settings::IconThemeSelection::Static(name)) => Some(name),
+                                            Some(inazuma_settings_framework::IconThemeSelection::Static(name)) => Some(name),
                                             _ => None
                                         }
                                     },
@@ -631,7 +679,7 @@ fn appearance_page() -> SettingsPage {
                                         match settings_content
                                             .theme
                                             .icon_theme.as_mut() {
-                                                Some(settings::IconThemeSelection::Static(theme_name)) => *theme_name = value,
+                                                Some(inazuma_settings_framework::IconThemeSelection::Static(theme_name)) => *theme_name = value,
                                                 _ => return
                                             }
                                     },
@@ -639,7 +687,7 @@ fn appearance_page() -> SettingsPage {
                                 metadata: None,
                             }
                         ],
-                        settings::IconThemeSelectionDiscriminants::Dynamic => vec![
+                        inazuma_settings_framework::IconThemeSelectionDiscriminants::Dynamic => vec![
                             SettingItem {
                                 files: USER,
                                 title: "Mode",
@@ -648,7 +696,7 @@ fn appearance_page() -> SettingsPage {
                                     json_path: Some("icon_theme"),
                                     pick: |settings_content| {
                                         match settings_content.theme.icon_theme.as_ref() {
-                                            Some(settings::IconThemeSelection::Dynamic { mode, ..}) => Some(mode),
+                                            Some(inazuma_settings_framework::IconThemeSelection::Dynamic { mode, ..}) => Some(mode),
                                             _ => None
                                         }
                                     },
@@ -659,7 +707,7 @@ fn appearance_page() -> SettingsPage {
                                         match settings_content
                                             .theme
                                             .icon_theme.as_mut() {
-                                                Some(settings::IconThemeSelection::Dynamic{ mode, ..}) => *mode = value,
+                                                Some(inazuma_settings_framework::IconThemeSelection::Dynamic{ mode, ..}) => *mode = value,
                                                 _ => return
                                             }
                                     },
@@ -674,7 +722,7 @@ fn appearance_page() -> SettingsPage {
                                     json_path: Some("icon_theme.light"),
                                     pick: |settings_content| {
                                         match settings_content.theme.icon_theme.as_ref() {
-                                            Some(settings::IconThemeSelection::Dynamic { light, ..}) => Some(light),
+                                            Some(inazuma_settings_framework::IconThemeSelection::Dynamic { light, ..}) => Some(light),
                                             _ => None
                                         }
                                     },
@@ -685,7 +733,7 @@ fn appearance_page() -> SettingsPage {
                                         match settings_content
                                             .theme
                                             .icon_theme.as_mut() {
-                                                Some(settings::IconThemeSelection::Dynamic{ light, ..}) => *light = value,
+                                                Some(inazuma_settings_framework::IconThemeSelection::Dynamic{ light, ..}) => *light = value,
                                                 _ => return
                                             }
                                     },
@@ -700,7 +748,7 @@ fn appearance_page() -> SettingsPage {
                                     json_path: Some("icon_theme.dark"),
                                     pick: |settings_content| {
                                         match settings_content.theme.icon_theme.as_ref() {
-                                            Some(settings::IconThemeSelection::Dynamic { dark, ..}) => Some(dark),
+                                            Some(inazuma_settings_framework::IconThemeSelection::Dynamic { dark, ..}) => Some(dark),
                                             _ => None
                                         }
                                     },
@@ -711,7 +759,7 @@ fn appearance_page() -> SettingsPage {
                                         match settings_content
                                             .theme
                                             .icon_theme.as_mut() {
-                                                Some(settings::IconThemeSelection::Dynamic{ dark, ..}) => *dark = value,
+                                                Some(inazuma_settings_framework::IconThemeSelection::Dynamic{ dark, ..}) => *dark = value,
                                                 _ => return
                                             }
                                     },
@@ -776,7 +824,7 @@ fn appearance_page() -> SettingsPage {
                         json_path: Some("buffer_line_height$"),
                         pick: |settings_content| {
                             Some(
-                                &dynamic_variants::<settings::BufferLineHeight>()[settings_content
+                                &dynamic_variants::<inazuma_settings_framework::BufferLineHeight>()[settings_content
                                     .theme
                                     .buffer_line_height
                                     .as_ref()?
@@ -792,19 +840,19 @@ fn appearance_page() -> SettingsPage {
                             let settings_value = settings_content
                                 .theme
                                 .buffer_line_height
-                                .get_or_insert_with(|| settings::BufferLineHeight::default());
+                                .get_or_insert_with(|| inazuma_settings_framework::BufferLineHeight::default());
                             *settings_value = match value {
-                                settings::BufferLineHeightDiscriminants::Comfortable => {
-                                    settings::BufferLineHeight::Comfortable
+                                inazuma_settings_framework::BufferLineHeightDiscriminants::Comfortable => {
+                                    inazuma_settings_framework::BufferLineHeight::Comfortable
                                 }
-                                settings::BufferLineHeightDiscriminants::Standard => {
-                                    settings::BufferLineHeight::Standard
+                                inazuma_settings_framework::BufferLineHeightDiscriminants::Standard => {
+                                    inazuma_settings_framework::BufferLineHeight::Standard
                                 }
-                                settings::BufferLineHeightDiscriminants::Custom => {
+                                inazuma_settings_framework::BufferLineHeightDiscriminants::Custom => {
                                     let custom_value =
-                                        theme_settings::BufferLineHeight::from(*settings_value)
+                                        raijin_theme_settings::BufferLineHeight::from(*settings_value)
                                             .value();
-                                    settings::BufferLineHeight::Custom(custom_value)
+                                    inazuma_settings_framework::BufferLineHeight::Custom(custom_value)
                                 }
                             };
                         },
@@ -820,12 +868,12 @@ fn appearance_page() -> SettingsPage {
                             .discriminant() as usize,
                     )
                 },
-                fields: dynamic_variants::<settings::BufferLineHeight>()
+                fields: dynamic_variants::<inazuma_settings_framework::BufferLineHeight>()
                     .into_iter()
                     .map(|variant| match variant {
-                        settings::BufferLineHeightDiscriminants::Comfortable => vec![],
-                        settings::BufferLineHeightDiscriminants::Standard => vec![],
-                        settings::BufferLineHeightDiscriminants::Custom => vec![SettingItem {
+                        inazuma_settings_framework::BufferLineHeightDiscriminants::Comfortable => vec![],
+                        inazuma_settings_framework::BufferLineHeightDiscriminants::Standard => vec![],
+                        inazuma_settings_framework::BufferLineHeightDiscriminants::Custom => vec![SettingItem {
                             files: USER,
                             title: "Custom Line Height",
                             description: "Custom line height value (must be at least 1.0).",
@@ -836,7 +884,7 @@ fn appearance_page() -> SettingsPage {
                                     .buffer_line_height
                                     .as_ref()
                                 {
-                                    Some(settings::BufferLineHeight::Custom(value)) => Some(value),
+                                    Some(inazuma_settings_framework::BufferLineHeight::Custom(value)) => Some(value),
                                     _ => None,
                                 },
                                 write: |settings_content, value| {
@@ -844,7 +892,7 @@ fn appearance_page() -> SettingsPage {
                                         return;
                                     };
                                     match settings_content.theme.buffer_line_height.as_mut() {
-                                        Some(settings::BufferLineHeight::Custom(line_height)) => {
+                                        Some(inazuma_settings_framework::BufferLineHeight::Custom(line_height)) => {
                                             *line_height = f32::max(value, 1.0)
                                         }
                                         _ => return,
@@ -1345,7 +1393,7 @@ fn editor_page() -> SettingsPage {
                         json_path: Some("autosave$"),
                         pick: |settings_content| {
                             Some(
-                                &dynamic_variants::<settings::AutosaveSetting>()[settings_content
+                                &dynamic_variants::<inazuma_settings_framework::AutosaveSetting>()[settings_content
                                     .workspace
                                     .autosave
                                     .as_ref()?
@@ -1361,25 +1409,25 @@ fn editor_page() -> SettingsPage {
                             let settings_value = settings_content
                                 .workspace
                                 .autosave
-                                .get_or_insert_with(|| settings::AutosaveSetting::Off);
+                                .get_or_insert_with(|| inazuma_settings_framework::AutosaveSetting::Off);
                             *settings_value = match value {
-                                settings::AutosaveSettingDiscriminants::Off => {
-                                    settings::AutosaveSetting::Off
+                                inazuma_settings_framework::AutosaveSettingDiscriminants::Off => {
+                                    inazuma_settings_framework::AutosaveSetting::Off
                                 }
-                                settings::AutosaveSettingDiscriminants::AfterDelay => {
+                                inazuma_settings_framework::AutosaveSettingDiscriminants::AfterDelay => {
                                     let milliseconds = match settings_value {
-                                        settings::AutosaveSetting::AfterDelay { milliseconds } => {
+                                        inazuma_settings_framework::AutosaveSetting::AfterDelay { milliseconds } => {
                                             *milliseconds
                                         }
-                                        _ => settings::DelayMs(1000),
+                                        _ => inazuma_settings_framework::DelayMs(1000),
                                     };
-                                    settings::AutosaveSetting::AfterDelay { milliseconds }
+                                    inazuma_settings_framework::AutosaveSetting::AfterDelay { milliseconds }
                                 }
-                                settings::AutosaveSettingDiscriminants::OnFocusChange => {
-                                    settings::AutosaveSetting::OnFocusChange
+                                inazuma_settings_framework::AutosaveSettingDiscriminants::OnFocusChange => {
+                                    inazuma_settings_framework::AutosaveSetting::OnFocusChange
                                 }
-                                settings::AutosaveSettingDiscriminants::OnWindowChange => {
-                                    settings::AutosaveSetting::OnWindowChange
+                                inazuma_settings_framework::AutosaveSettingDiscriminants::OnWindowChange => {
+                                    inazuma_settings_framework::AutosaveSetting::OnWindowChange
                                 }
                             };
                         },
@@ -1389,11 +1437,11 @@ fn editor_page() -> SettingsPage {
                 pick_discriminant: |settings_content| {
                     Some(settings_content.workspace.autosave.as_ref()?.discriminant() as usize)
                 },
-                fields: dynamic_variants::<settings::AutosaveSetting>()
+                fields: dynamic_variants::<inazuma_settings_framework::AutosaveSetting>()
                     .into_iter()
                     .map(|variant| match variant {
-                        settings::AutosaveSettingDiscriminants::Off => vec![],
-                        settings::AutosaveSettingDiscriminants::AfterDelay => vec![SettingItem {
+                        inazuma_settings_framework::AutosaveSettingDiscriminants::Off => vec![],
+                        inazuma_settings_framework::AutosaveSettingDiscriminants::AfterDelay => vec![SettingItem {
                             files: USER,
                             title: "Delay (milliseconds)",
                             description: "Save after inactivity period (in milliseconds).",
@@ -1404,7 +1452,7 @@ fn editor_page() -> SettingsPage {
                                     .autosave
                                     .as_ref()
                                 {
-                                    Some(settings::AutosaveSetting::AfterDelay {
+                                    Some(inazuma_settings_framework::AutosaveSetting::AfterDelay {
                                         milliseconds,
                                     }) => Some(milliseconds),
                                     _ => None,
@@ -1415,7 +1463,7 @@ fn editor_page() -> SettingsPage {
                                         return;
                                     };
                                     match settings_content.workspace.autosave.as_mut() {
-                                        Some(settings::AutosaveSetting::AfterDelay {
+                                        Some(inazuma_settings_framework::AutosaveSetting::AfterDelay {
                                             milliseconds,
                                         }) => *milliseconds = value,
                                         _ => return,
@@ -1424,8 +1472,8 @@ fn editor_page() -> SettingsPage {
                             }),
                             metadata: None,
                         }],
-                        settings::AutosaveSettingDiscriminants::OnFocusChange => vec![],
-                        settings::AutosaveSettingDiscriminants::OnWindowChange => vec![],
+                        inazuma_settings_framework::AutosaveSettingDiscriminants::OnFocusChange => vec![],
+                        inazuma_settings_framework::AutosaveSettingDiscriminants::OnWindowChange => vec![],
                     })
                     .collect(),
             }),
@@ -3246,7 +3294,7 @@ fn search_and_files_page() -> SettingsPage {
             SettingsPageItem::SectionHeader("File Scan"),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "File Scan Exclusions",
-                description: "Files or globs of files that will be excluded by Zed entirely. They will be skipped during file scans, file searches, and not be displayed in the project file tree. Takes precedence over \"File Scan Inclusions\"",
+                description: "Files or globs of files that will be excluded by Raijin entirely. They will be skipped during file scans, file searches, and not be displayed in the project file tree. Takes precedence over \"File Scan Inclusions\"",
                 field: Box::new(
                     SettingField {
                         json_path: Some("file_scan_exclusions"),
@@ -3268,7 +3316,7 @@ fn search_and_files_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "File Scan Inclusions",
-                description: "Files or globs of files that will be included by Zed, even when ignored by git. This is useful for files that are not tracked by git, but are still important to your project. Note that globs that are overly broad can slow down Zed's file scanning. \"File Scan Exclusions\" takes precedence over these inclusions",
+                description: "Files or globs of files that will be included by Raijin, even when ignored by git. This is useful for files that are not tracked by git, but are still important to your project. Note that globs that are overly broad can slow down Raijin's file scanning. \"File Scan Exclusions\" takes precedence over these inclusions",
                 field: Box::new(
                     SettingField {
                         json_path: Some("file_scan_inclusions"),
@@ -3675,7 +3723,7 @@ fn window_and_layout_page() -> SettingsPage {
                         json_path: Some("title_bar.button_layout$"),
                         pick: |settings_content| {
                             Some(
-                                &dynamic_variants::<settings::WindowButtonLayoutContent>()[settings_content
+                                &dynamic_variants::<inazuma_settings_framework::WindowButtonLayoutContent>()[settings_content
                                     .title_bar
                                     .as_ref()?
                                     .button_layout
@@ -3698,21 +3746,21 @@ fn window_and_layout_page() -> SettingsPage {
                                 .as_ref()
                                 .and_then(|title_bar| title_bar.button_layout.as_ref())
                                 .and_then(|button_layout| match button_layout {
-                                    settings::WindowButtonLayoutContent::Custom(layout) => {
+                                    inazuma_settings_framework::WindowButtonLayoutContent::Custom(layout) => {
                                         Some(layout.clone())
                                     }
                                     _ => None,
                                 });
 
                             let button_layout = match value {
-                                settings::WindowButtonLayoutContentDiscriminants::PlatformDefault => {
-                                    settings::WindowButtonLayoutContent::PlatformDefault
+                                inazuma_settings_framework::WindowButtonLayoutContentDiscriminants::PlatformDefault => {
+                                    inazuma_settings_framework::WindowButtonLayoutContent::PlatformDefault
                                 }
-                                settings::WindowButtonLayoutContentDiscriminants::Standard => {
-                                    settings::WindowButtonLayoutContent::Standard
+                                inazuma_settings_framework::WindowButtonLayoutContentDiscriminants::Standard => {
+                                    inazuma_settings_framework::WindowButtonLayoutContent::Standard
                                 }
-                                settings::WindowButtonLayoutContentDiscriminants::Custom => {
-                                    settings::WindowButtonLayoutContent::Custom(
+                                inazuma_settings_framework::WindowButtonLayoutContentDiscriminants::Custom => {
+                                    inazuma_settings_framework::WindowButtonLayoutContent::Custom(
                                         current_custom_layout.unwrap_or_else(|| {
                                             "close:minimize,maximize".to_string()
                                         }),
@@ -3738,14 +3786,14 @@ fn window_and_layout_page() -> SettingsPage {
                             .discriminant() as usize,
                     )
                 },
-                fields: dynamic_variants::<settings::WindowButtonLayoutContent>()
+                fields: dynamic_variants::<inazuma_settings_framework::WindowButtonLayoutContent>()
                     .into_iter()
                     .map(|variant| match variant {
-                        settings::WindowButtonLayoutContentDiscriminants::PlatformDefault => {
+                        inazuma_settings_framework::WindowButtonLayoutContentDiscriminants::PlatformDefault => {
                             vec![]
                         }
-                        settings::WindowButtonLayoutContentDiscriminants::Standard => vec![],
-                        settings::WindowButtonLayoutContentDiscriminants::Custom => vec![
+                        inazuma_settings_framework::WindowButtonLayoutContentDiscriminants::Standard => vec![],
+                        inazuma_settings_framework::WindowButtonLayoutContentDiscriminants::Custom => vec![
                             SettingItem {
                                 files: USER,
                                 title: "Custom Button Layout",
@@ -3759,7 +3807,7 @@ fn window_and_layout_page() -> SettingsPage {
                                         .button_layout
                                         .as_ref()?
                                     {
-                                        settings::WindowButtonLayoutContent::Custom(layout) => {
+                                        inazuma_settings_framework::WindowButtonLayoutContent::Custom(layout) => {
                                             Some(layout)
                                         }
                                         _ => DEFAULT_EMPTY_STRING,
@@ -3769,7 +3817,7 @@ fn window_and_layout_page() -> SettingsPage {
                                             .title_bar
                                             .get_or_insert_default()
                                             .button_layout = value
-                                            .map(settings::WindowButtonLayoutContent::Custom);
+                                            .map(inazuma_settings_framework::WindowButtonLayoutContent::Custom);
                                     },
                                 }),
                                 metadata: Some(Box::new(SettingsFieldMetadata {
@@ -4232,7 +4280,7 @@ fn window_and_layout_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Window Decorations",
-                description: "(Linux only) whether Zed or your compositor should draw window decorations.",
+                description: "(Linux only) whether Raijin or your compositor should draw window decorations.",
                 field: Box::new(SettingField {
                     json_path: Some("window_decorations"),
                     pick: |settings_content| settings_content.workspace.window_decorations.as_ref(),
@@ -5760,7 +5808,7 @@ fn debugger_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Save Breakpoints",
-                description: "Whether breakpoints should be reused across Zed sessions.",
+                description: "Whether breakpoints should be reused across Raijin sessions.",
                 field: Box::new(SettingField {
                     json_path: Some("debugger.save_breakpoints"),
                     pick: |settings_content| {
@@ -5795,7 +5843,7 @@ fn debugger_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Log DAP Communications",
-                description: "Whether to log messages between active debug adapters and Zed.",
+                description: "Whether to log messages between active debug adapters and Raijin.",
                 field: Box::new(SettingField {
                     json_path: Some("debugger.log_dap_communications"),
                     pick: |settings_content| {
@@ -5858,7 +5906,7 @@ fn terminal_page() -> SettingsPage {
                         field: Box::new(SettingField {
                             json_path: Some("terminal.shell$"),
                             pick: |settings_content| {
-                                Some(&dynamic_variants::<settings::Shell>()[
+                                Some(&dynamic_variants::<inazuma_settings_framework::Shell>()[
                                     settings_content
                                         .terminal
                                         .as_ref()?
@@ -5880,33 +5928,33 @@ fn terminal_page() -> SettingsPage {
                                     .get_or_insert_default()
                                     .project
                                     .shell
-                                    .get_or_insert_with(|| settings::Shell::default());
+                                    .get_or_insert_with(|| inazuma_settings_framework::Shell::default());
                                 let default_shell = if cfg!(target_os = "windows") {
                                     "powershell.exe"
                                 } else {
                                     "sh"
                                 };
                                 *settings_value = match value {
-                                    settings::ShellDiscriminants::System => settings::Shell::System,
-                                    settings::ShellDiscriminants::Program => {
+                                    inazuma_settings_framework::ShellDiscriminants::System => inazuma_settings_framework::Shell::System,
+                                    inazuma_settings_framework::ShellDiscriminants::Program => {
                                         let program = match settings_value {
-                                            settings::Shell::Program(program) => program.clone(),
-                                            settings::Shell::WithArguments { program, .. } => program.clone(),
+                                            inazuma_settings_framework::Shell::Program(program) => program.clone(),
+                                            inazuma_settings_framework::Shell::WithArguments { program, .. } => program.clone(),
                                             _ => String::from(default_shell),
                                         };
-                                        settings::Shell::Program(program)
+                                        inazuma_settings_framework::Shell::Program(program)
                                     }
-                                    settings::ShellDiscriminants::WithArguments => {
+                                    inazuma_settings_framework::ShellDiscriminants::WithArguments => {
                                         let (program, args, title_override) = match settings_value {
-                                            settings::Shell::Program(program) => (program.clone(), vec![], None),
-                                            settings::Shell::WithArguments {
+                                            inazuma_settings_framework::Shell::Program(program) => (program.clone(), vec![], None),
+                                            inazuma_settings_framework::Shell::WithArguments {
                                                 program,
                                                 args,
                                                 title_override,
                                             } => (program.clone(), args.clone(), title_override.clone()),
                                             _ => (String::from(default_shell), vec![], None),
                                         };
-                                        settings::Shell::WithArguments {
+                                        inazuma_settings_framework::Shell::WithArguments {
                                             program,
                                             args,
                                             title_override,
@@ -5928,11 +5976,11 @@ fn terminal_page() -> SettingsPage {
                                 .discriminant() as usize,
                         )
                     },
-                    fields: dynamic_variants::<settings::Shell>()
+                    fields: dynamic_variants::<inazuma_settings_framework::Shell>()
                         .into_iter()
                         .map(|variant| match variant {
-                            settings::ShellDiscriminants::System => vec![],
-                            settings::ShellDiscriminants::Program => vec![SettingItem {
+                            inazuma_settings_framework::ShellDiscriminants::System => vec![],
+                            inazuma_settings_framework::ShellDiscriminants::Program => vec![SettingItem {
                                 files: USER | PROJECT,
                                 title: "Program",
                                 description: "The shell program to use.",
@@ -5940,7 +5988,7 @@ fn terminal_page() -> SettingsPage {
                                     json_path: Some("terminal.shell"),
                                     pick: |settings_content| match settings_content.terminal.as_ref()?.project.shell.as_ref()
                                     {
-                                        Some(settings::Shell::Program(program)) => Some(program),
+                                        Some(inazuma_settings_framework::Shell::Program(program)) => Some(program),
                                         _ => None,
                                     },
                                     write: |settings_content, value| {
@@ -5954,14 +6002,14 @@ fn terminal_page() -> SettingsPage {
                                             .shell
                                             .as_mut()
                                         {
-                                            Some(settings::Shell::Program(program)) => *program = value,
+                                            Some(inazuma_settings_framework::Shell::Program(program)) => *program = value,
                                             _ => return,
                                         }
                                     },
                                 }),
                                 metadata: None,
                             }],
-                            settings::ShellDiscriminants::WithArguments => vec![
+                            inazuma_settings_framework::ShellDiscriminants::WithArguments => vec![
                                 SettingItem {
                                     files: USER | PROJECT,
                                     title: "Program",
@@ -5970,7 +6018,7 @@ fn terminal_page() -> SettingsPage {
                                         json_path: Some("terminal.shell.program"),
                                         pick: |settings_content| {
                                             match settings_content.terminal.as_ref()?.project.shell.as_ref() {
-                                                Some(settings::Shell::WithArguments { program, .. }) => Some(program),
+                                                Some(inazuma_settings_framework::Shell::WithArguments { program, .. }) => Some(program),
                                                 _ => None,
                                             }
                                         },
@@ -5985,7 +6033,7 @@ fn terminal_page() -> SettingsPage {
                                                 .shell
                                                 .as_mut()
                                             {
-                                                Some(settings::Shell::WithArguments { program, .. }) => {
+                                                Some(inazuma_settings_framework::Shell::WithArguments { program, .. }) => {
                                                     *program = value
                                                 }
                                                 _ => return,
@@ -6003,7 +6051,7 @@ fn terminal_page() -> SettingsPage {
                                             json_path: Some("terminal.shell.args"),
                                             pick: |settings_content| {
                                                 match settings_content.terminal.as_ref()?.project.shell.as_ref() {
-                                                    Some(settings::Shell::WithArguments { args, .. }) => Some(args),
+                                                    Some(inazuma_settings_framework::Shell::WithArguments { args, .. }) => Some(args),
                                                     _ => None,
                                                 }
                                             },
@@ -6018,7 +6066,7 @@ fn terminal_page() -> SettingsPage {
                                                     .shell
                                                     .as_mut()
                                                 {
-                                                    Some(settings::Shell::WithArguments { args, .. }) => *args = value,
+                                                    Some(inazuma_settings_framework::Shell::WithArguments { args, .. }) => *args = value,
                                                     _ => return,
                                                 }
                                             },
@@ -6035,7 +6083,7 @@ fn terminal_page() -> SettingsPage {
                                         json_path: Some("terminal.shell.title_override"),
                                         pick: |settings_content| {
                                             match settings_content.terminal.as_ref()?.project.shell.as_ref() {
-                                                Some(settings::Shell::WithArguments { title_override, .. }) => {
+                                                Some(inazuma_settings_framework::Shell::WithArguments { title_override, .. }) => {
                                                     title_override.as_ref().or(DEFAULT_EMPTY_STRING)
                                                 }
                                                 _ => None,
@@ -6049,7 +6097,7 @@ fn terminal_page() -> SettingsPage {
                                                 .shell
                                                 .as_mut()
                                             {
-                                                Some(settings::Shell::WithArguments { title_override, .. }) => {
+                                                Some(inazuma_settings_framework::Shell::WithArguments { title_override, .. }) => {
                                                     *title_override = value.filter(|s| !s.is_empty())
                                                 }
                                                 _ => return,
@@ -6070,7 +6118,7 @@ fn terminal_page() -> SettingsPage {
                         field: Box::new(SettingField {
                             json_path: Some("terminal.working_directory$"),
                             pick: |settings_content| {
-                                Some(&dynamic_variants::<settings::WorkingDirectory>()[
+                                Some(&dynamic_variants::<inazuma_settings_framework::WorkingDirectory>()[
                                     settings_content
                                         .terminal
                                         .as_ref()?
@@ -6092,26 +6140,26 @@ fn terminal_page() -> SettingsPage {
                                     .get_or_insert_default()
                                     .project
                                     .working_directory
-                                    .get_or_insert_with(|| settings::WorkingDirectory::CurrentProjectDirectory);
+                                    .get_or_insert_with(|| inazuma_settings_framework::WorkingDirectory::CurrentProjectDirectory);
                                 *settings_value = match value {
-                                    settings::WorkingDirectoryDiscriminants::CurrentFileDirectory => {
-                                        settings::WorkingDirectory::CurrentFileDirectory
+                                    inazuma_settings_framework::WorkingDirectoryDiscriminants::CurrentFileDirectory => {
+                                        inazuma_settings_framework::WorkingDirectory::CurrentFileDirectory
                                     },
-                                    settings::WorkingDirectoryDiscriminants::CurrentProjectDirectory => {
-                                        settings::WorkingDirectory::CurrentProjectDirectory
+                                    inazuma_settings_framework::WorkingDirectoryDiscriminants::CurrentProjectDirectory => {
+                                        inazuma_settings_framework::WorkingDirectory::CurrentProjectDirectory
                                     }
-                                    settings::WorkingDirectoryDiscriminants::FirstProjectDirectory => {
-                                        settings::WorkingDirectory::FirstProjectDirectory
+                                    inazuma_settings_framework::WorkingDirectoryDiscriminants::FirstProjectDirectory => {
+                                        inazuma_settings_framework::WorkingDirectory::FirstProjectDirectory
                                     }
-                                    settings::WorkingDirectoryDiscriminants::AlwaysHome => {
-                                        settings::WorkingDirectory::AlwaysHome
+                                    inazuma_settings_framework::WorkingDirectoryDiscriminants::AlwaysHome => {
+                                        inazuma_settings_framework::WorkingDirectory::AlwaysHome
                                     }
-                                    settings::WorkingDirectoryDiscriminants::Always => {
+                                    inazuma_settings_framework::WorkingDirectoryDiscriminants::Always => {
                                         let directory = match settings_value {
-                                            settings::WorkingDirectory::Always { .. } => return,
+                                            inazuma_settings_framework::WorkingDirectory::Always { .. } => return,
                                             _ => String::new(),
                                         };
-                                        settings::WorkingDirectory::Always { directory }
+                                        inazuma_settings_framework::WorkingDirectory::Always { directory }
                                     }
                                 };
                             },
@@ -6129,14 +6177,14 @@ fn terminal_page() -> SettingsPage {
                                 .discriminant() as usize,
                         )
                     },
-                    fields: dynamic_variants::<settings::WorkingDirectory>()
+                    fields: dynamic_variants::<inazuma_settings_framework::WorkingDirectory>()
                         .into_iter()
                         .map(|variant| match variant {
-                            settings::WorkingDirectoryDiscriminants::CurrentFileDirectory => vec![],
-                            settings::WorkingDirectoryDiscriminants::CurrentProjectDirectory => vec![],
-                            settings::WorkingDirectoryDiscriminants::FirstProjectDirectory => vec![],
-                            settings::WorkingDirectoryDiscriminants::AlwaysHome => vec![],
-                            settings::WorkingDirectoryDiscriminants::Always => vec![SettingItem {
+                            inazuma_settings_framework::WorkingDirectoryDiscriminants::CurrentFileDirectory => vec![],
+                            inazuma_settings_framework::WorkingDirectoryDiscriminants::CurrentProjectDirectory => vec![],
+                            inazuma_settings_framework::WorkingDirectoryDiscriminants::FirstProjectDirectory => vec![],
+                            inazuma_settings_framework::WorkingDirectoryDiscriminants::AlwaysHome => vec![],
+                            inazuma_settings_framework::WorkingDirectoryDiscriminants::Always => vec![SettingItem {
                                 files: USER | PROJECT,
                                 title: "Directory",
                                 description: "The directory path to use (will be shell expanded).",
@@ -6144,7 +6192,7 @@ fn terminal_page() -> SettingsPage {
                                     json_path: Some("terminal.working_directory.always"),
                                     pick: |settings_content| {
                                         match settings_content.terminal.as_ref()?.project.working_directory.as_ref() {
-                                            Some(settings::WorkingDirectory::Always { directory }) => Some(directory),
+                                            Some(inazuma_settings_framework::WorkingDirectory::Always { directory }) => Some(directory),
                                             _ => None,
                                         }
                                     },
@@ -6157,7 +6205,7 @@ fn terminal_page() -> SettingsPage {
                                             .working_directory
                                             .as_mut()
                                         {
-                                            Some(settings::WorkingDirectory::Always { directory }) => *directory = value,
+                                            Some(inazuma_settings_framework::WorkingDirectory::Always { directory }) => *directory = value,
                                             _ => return,
                                         }
                                     },
@@ -6668,7 +6716,7 @@ fn version_control_page() -> SettingsPage {
                 discriminant: SettingItem {
                     files: USER,
                     title: "Disable Git Integration",
-                    description: "Disable all Git integration features in Zed.",
+                    description: "Disable all Git integration features in Raijin.",
                     field: Box::new(SettingField::<bool> {
                         json_path: Some("git.disable_git"),
                         pick: |settings_content| {
@@ -7149,7 +7197,7 @@ fn ai_page(cx: &App) -> SettingsPage {
             SettingsPageItem::SectionHeader("General"),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Disable AI",
-                description: "Whether to disable all AI features in Zed.",
+                description: "Whether to disable all AI features in Raijin.",
                 field: Box::new(SettingField {
                     json_path: Some("disable_ai"),
                     pick: |settings_content| settings_content.project.disable_ai.as_ref(),
@@ -7524,7 +7572,7 @@ fn network_page() -> SettingsPage {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Server URL",
-                description: "The URL of the Zed server to connect to.",
+                description: "The URL of the Raijin server to connect to.",
                 field: Box::new(SettingField {
                     json_path: Some("server_url"),
                     pick: |settings_content| settings_content.server_url.as_ref(),
@@ -8040,7 +8088,7 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
             SettingsPageItem::SectionHeader("Autoclose"),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Use Autoclose",
-                description: "Whether to automatically type closing characters for you. For example, when you type '(', Zed will automatically add a closing ')' at the correct position.",
+                description: "Whether to automatically type closing characters for you. For example, when you type '(', Raijin will automatically add a closing ')' at the correct position.",
                 field: Box::new(SettingField {
                     json_path: Some("languages.$(language).use_autoclose"),
                     pick: |settings_content| {
@@ -8059,7 +8107,7 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Use Auto Surround",
-                description: "Whether to automatically surround text with characters for you. For example, when you select text and type '(', Zed will automatically surround text with ().",
+                description: "Whether to automatically surround text with characters for you. For example, when you select text and type '(', Raijin will automatically surround text with ().",
                 field: Box::new(SettingField {
                     json_path: Some("languages.$(language).use_auto_surround"),
                     pick: |settings_content| {
@@ -8568,7 +8616,7 @@ fn language_settings_data() -> Box<[SettingsPageItem]> {
             }),
             SettingsPageItem::SettingItem(SettingItem {
                 title: "Prefer LSP",
-                description: "Use LSP tasks over Zed language extension tasks.",
+                description: "Use LSP tasks over Raijin language extension tasks.",
                 field: Box::new(SettingField {
                     json_path: Some("languages.$(language).tasks.prefer_lsp"),
                     pick: |settings_content| {
@@ -9179,7 +9227,7 @@ fn edit_prediction_language_settings_section() -> [SettingsPageItem; 4] {
             title: "Configure Providers".into(),
             r#type: Default::default(),
             json_path: Some("edit_predictions.providers"),
-            description: Some("Set up different edit prediction providers in complement to Zed's built-in Zeta model.".into()),
+            description: Some("Set up different edit prediction providers in complement to Raijin's built-in Zeta model.".into()),
             in_json: false,
             files: USER,
             render: render_edit_prediction_setup_page
@@ -9230,8 +9278,8 @@ fn edit_prediction_language_settings_section() -> [SettingsPageItem; 4] {
 
 fn show_scrollbar_or_editor(
     settings_content: &SettingsContent,
-    show: fn(&SettingsContent) -> Option<&settings::ShowScrollbar>,
-) -> Option<&settings::ShowScrollbar> {
+    show: fn(&SettingsContent) -> Option<&inazuma_settings_framework::ShowScrollbar>,
+) -> Option<&inazuma_settings_framework::ShowScrollbar> {
     show(settings_content).or(settings_content
         .editor
         .scrollbar
@@ -9241,10 +9289,10 @@ fn show_scrollbar_or_editor(
 
 fn dynamic_variants<T>() -> &'static [T::Discriminant]
 where
-    T: strum::IntoDiscriminant,
+    T: IntoDiscriminant,
     T::Discriminant: strum::VariantArray,
 {
-    <<T as strum::IntoDiscriminant>::Discriminant as strum::VariantArray>::VARIANTS
+    <<T as IntoDiscriminant>::Discriminant as strum::VariantArray>::VARIANTS
 }
 
 /// Updates the `vim_mode` setting, disabling `helix_mode` if present and

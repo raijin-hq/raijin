@@ -434,7 +434,7 @@ impl SignatureHelpPopover {
         let controls = if self.signatures.len() > 1 {
             let prev_button = IconButton::new("signature_help_prev", IconName::ChevronUp)
                 .shape(IconButtonShape::Square)
-                .style(ButtonStyle::Subtle)
+                .style(ButtonStyle::Ghost)
                 .icon_size(IconSize::Small)
                 .tooltip(move |_window, cx| {
                     raijin_ui::Tooltip::for_action("Previous Signature", &crate::SignatureHelpPrevious, cx)
@@ -445,7 +445,7 @@ impl SignatureHelpPopover {
 
             let next_button = IconButton::new("signature_help_next", IconName::ChevronDown)
                 .shape(IconButtonShape::Square)
-                .style(ButtonStyle::Subtle)
+                .style(ButtonStyle::Ghost)
                 .icon_size(IconSize::Small)
                 .tooltip(move |_window, cx| {
                     raijin_ui::Tooltip::for_action("Next Signature", &crate::SignatureHelpNext, cx)

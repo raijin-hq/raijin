@@ -341,14 +341,14 @@ impl AcpTools {
                     .child(div().flex_1())
                     .child(
                         div()
-                            .child(ui::Chip::new(message.message_type.to_string()))
+                            .child(raijin_ui::Chip::new(message.message_type.to_string()))
                             .visible_on_hover("message"),
                     )
                     .children(
                         message
                             .request_id
                             .as_ref()
-                            .map(|req_id| div().child(ui::Chip::new(req_id.to_string()))),
+                            .map(|req_id| div().child(raijin_ui::Chip::new(req_id.to_string()))),
                     ),
             )
             // I'm aware using markdown is a hack. Trying to get something working for the demo.
@@ -366,7 +366,7 @@ impl AcpTools {
                                 params,
                                 MarkdownStyle {
                                     base_text_style: text_style,
-                                    selection_background_color: colors.element_selection_background,
+                                    selection_background_color: colors.element_selection,
                                     syntax: cx.theme().syntax().clone(),
                                     code_block_overflow_x_scroll: true,
                                     code_block: StyleRefinement {
@@ -479,7 +479,7 @@ impl EventEmitter<AcpToolsEvent> for AcpTools {}
 impl Item for AcpTools {
     type Event = AcpToolsEvent;
 
-    fn tab_content_text(&self, _detail: usize, _cx: &App) -> ui::SharedString {
+    fn tab_content_text(&self, _detail: usize, _cx: &App) -> SharedString {
         format!(
             "ACP: {}",
             self.watched_connection
@@ -490,7 +490,7 @@ impl Item for AcpTools {
     }
 
     fn tab_icon(&self, _window: &Window, _cx: &App) -> Option<Icon> {
-        Some(ui::Icon::new(IconName::Thread))
+        Some(Icon::new(IconName::Thread))
     }
 }
 

@@ -8,7 +8,7 @@ use inazuma::{
 use raijin_i18n::t;
 
 use crate::{
-    ActiveTheme, Clickable as _, Disableable, ElementExt as _, Icon, IconName, IconSize, IndexPath,
+    ActiveTheme, Disableable, ElementExt as _, Icon, IconName, IconSize, IndexPath,
     Selectable, Sizable, Size, StyleSized, StyledExt,
     actions::{Cancel, Confirm, SelectDown, SelectUp},
     PopoverGlobalState,

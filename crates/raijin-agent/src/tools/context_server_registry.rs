@@ -18,7 +18,7 @@ pub fn mcp_tool_id(server_id: &str, tool_name: &str) -> String {
 
 pub struct ContextServerPrompt {
     pub server_id: ContextServerId,
-    pub prompt: context_server::types::Prompt,
+    pub prompt: raijin_context_server::types::Prompt,
 }
 
 pub enum ContextServerRegistryEvent {
@@ -127,7 +127,7 @@ impl ContextServerRegistry {
             .and_then(|server| {
                 let client = server.client()?;
 
-                if !client.capable(context_server::protocol::ServerCapability::Tools) {
+                if !client.capable(raijin_context_server::protocol::ServerCapability::Tools) {
                     return None;
                 }
 
@@ -170,14 +170,14 @@ impl ContextServerRegistry {
             return;
         };
 
-        if !client.capable(context_server::protocol::ServerCapability::Tools) {
+        if !client.capable(raijin_context_server::protocol::ServerCapability::Tools) {
             return;
         }
 
         let registered_server = self.get_or_register_server(&server_id, cx);
         registered_server.load_tools = cx.spawn(async move |this, cx| {
             let response = client
-                .request::<context_server::types::requests::ListTools>(())
+                .request::<raijin_context_server::types::requests::ListTools>(())
                 .await;
 
             this.update(cx, |this, cx| {
@@ -209,7 +209,7 @@ impl ContextServerRegistry {
         let Some(client) = server.client() else {
             return;
         };
-        if !client.capable(context_server::protocol::ServerCapability::Prompts) {
+        if !client.capable(raijin_context_server::protocol::ServerCapability::Prompts) {
             return;
         }
 
@@ -217,7 +217,7 @@ impl ContextServerRegistry {
 
         registered_server.load_prompts = cx.spawn(async move |this, cx| {
             let response = client
-                .request::<context_server::types::requests::PromptsList>(())
+                .request::<raijin_context_server::types::requests::PromptsList>(())
                 .await;
 
             this.update(cx, |this, cx| {
@@ -247,10 +247,10 @@ impl ContextServerRegistry {
     fn handle_context_server_store_event(
         &mut self,
         _: Entity<ContextServerStore>,
-        event: &project::context_server_store::ServerStatusChangedEvent,
+        event: &raijin_project::context_server_store::ServerStatusChangedEvent,
         cx: &mut Context<Self>,
     ) {
-        let project::context_server_store::ServerStatusChangedEvent { server_id, status } = event;
+        let raijin_project::context_server_store::ServerStatusChangedEvent { server_id, status } = event;
 
         match status {
             ContextServerStatus::Starting | ContextServerStatus::Authenticating => {}
@@ -278,14 +278,14 @@ impl ContextServerRegistry {
 struct ContextServerTool {
     store: Entity<ContextServerStore>,
     server_id: ContextServerId,
-    tool: context_server::types::Tool,
+    tool: raijin_context_server::types::Tool,
 }
 
 impl ContextServerTool {
     fn new(
         store: Entity<ContextServerStore>,
         server_id: ContextServerId,
-        tool: context_server::types::Tool,
+        tool: raijin_context_server::types::Tool,
     ) -> Self {
         Self {
             store,
@@ -314,10 +314,10 @@ impl AnyAgentTool for ContextServerTool {
 
     fn input_schema(
         &self,
-        format: language_model::LanguageModelToolSchemaFormat,
+        format: raijin_language_model::LanguageModelToolSchemaFormat,
     ) -> Result<serde_json::Value> {
         let mut schema = self.tool.input_schema.clone();
-        language_model::tool_schema::adapt_schema_to_format(&mut schema, format)?;
+        raijin_language_model::tool_schema::adapt_schema_to_format(&mut schema, format)?;
         Ok(match schema {
             serde_json::Value::Null => {
                 serde_json::json!({ "type": "object", "properties": [] })
@@ -368,8 +368,8 @@ impl AnyAgentTool for ContextServerTool {
                 arguments
             );
 
-            let request = protocol.request::<context_server::types::requests::CallTool>(
-                context_server::types::CallToolParams {
+            let request = protocol.request::<raijin_context_server::types::requests::CallTool>(
+                raijin_context_server::types::CallToolParams {
                     name: tool_name,
                     arguments,
                     meta: None,
@@ -392,16 +392,16 @@ impl AnyAgentTool for ContextServerTool {
             let mut result = String::new();
             for content in response.content {
                 match content {
-                    context_server::types::ToolResponseContent::Text { text } => {
+                    raijin_context_server::types::ToolResponseContent::Text { text } => {
                         result.push_str(&text);
                     }
-                    context_server::types::ToolResponseContent::Image { .. } => {
+                    raijin_context_server::types::ToolResponseContent::Image { .. } => {
                         log::warn!("Ignoring image content from tool response");
                     }
-                    context_server::types::ToolResponseContent::Audio { .. } => {
+                    raijin_context_server::types::ToolResponseContent::Audio { .. } => {
                         log::warn!("Ignoring audio content from tool response");
                     }
-                    context_server::types::ToolResponseContent::Resource { .. } => {
+                    raijin_context_server::types::ToolResponseContent::Resource { .. } => {
                         log::warn!("Ignoring resource content from tool response");
                     }
                 }
@@ -430,7 +430,7 @@ pub fn get_prompt(
     prompt_name: &str,
     arguments: HashMap<String, String>,
     cx: &mut AsyncApp,
-) -> Task<Result<context_server::types::PromptsGetResponse>> {
+) -> Task<Result<raijin_context_server::types::PromptsGetResponse>> {
     let server = cx.update(|cx| server_store.read(cx).get_running_server(server_id));
     let Some(server) = server else {
         return Task::ready(Err(anyhow::anyhow!("Context server not found")));
@@ -444,8 +444,8 @@ pub fn get_prompt(
 
     cx.background_spawn(async move {
         let response = protocol
-            .request::<context_server::types::requests::PromptsGet>(
-                context_server::types::PromptsGetParams {
+            .request::<raijin_context_server::types::requests::PromptsGet>(
+                raijin_context_server::types::PromptsGetParams {
                     name: prompt_name,
                     arguments: (!arguments.is_empty()).then(|| arguments),
                     meta: None,

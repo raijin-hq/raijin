@@ -28,8 +28,8 @@ use crate::provider::util::{fix_streamed_json, parse_tool_arguments};
 
 pub use inazuma_settings_framework::AnthropicAvailableModel as AvailableModel;
 
-const PROVIDER_ID: LanguageModelProviderId = language_model::ANTHROPIC_PROVIDER_ID;
-const PROVIDER_NAME: LanguageModelProviderName = language_model::ANTHROPIC_PROVIDER_NAME;
+const PROVIDER_ID: LanguageModelProviderId = raijin_language_model::ANTHROPIC_PROVIDER_ID;
+const PROVIDER_NAME: LanguageModelProviderName = raijin_language_model::ANTHROPIC_PROVIDER_NAME;
 
 #[derive(Default, Clone, Debug, PartialEq)]
 pub struct AnthropicSettings {
@@ -86,7 +86,7 @@ impl AnthropicLanguageModelProvider {
         Self { http_client, state }
     }
 
-    fn create_language_model(&self, model: anthropic::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_anthropic::Model) -> Arc<dyn LanguageModel> {
         Arc::new(AnthropicModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -132,15 +132,15 @@ impl LanguageModelProvider for AnthropicLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(anthropic::Model::default()))
+        Some(self.create_language_model(raijin_anthropic::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(anthropic::Model::default_fast()))
+        Some(self.create_language_model(raijin_anthropic::Model::default_fast()))
     }
 
     fn recommended_models(&self, _cx: &App) -> Vec<Arc<dyn LanguageModel>> {
-        [anthropic::Model::ClaudeSonnet4_6]
+        [raijin_anthropic::Model::ClaudeSonnet4_6]
             .into_iter()
             .map(|model| self.create_language_model(model))
             .collect()
@@ -149,9 +149,9 @@ impl LanguageModelProvider for AnthropicLanguageModelProvider {
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        // Add base models from anthropic::Model::iter()
-        for model in anthropic::Model::iter() {
-            if !matches!(model, anthropic::Model::Custom { .. }) {
+        // Add base models from raijin_anthropic::Model::iter()
+        for model in raijin_anthropic::Model::iter() {
+            if !matches!(model, raijin_anthropic::Model::Custom { .. }) {
                 models.insert(model.id().to_string(), model);
             }
         }
@@ -160,13 +160,13 @@ impl LanguageModelProvider for AnthropicLanguageModelProvider {
         for model in &AnthropicLanguageModelProvider::settings(cx).available_models {
             models.insert(
                 model.name.clone(),
-                anthropic::Model::Custom {
+                raijin_anthropic::Model::Custom {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
                     tool_override: model.tool_override.clone(),
                     cache_configuration: model.cache_configuration.as_ref().map(|config| {
-                        anthropic::AnthropicModelCacheConfiguration {
+                        raijin_anthropic::AnthropicModelCacheConfiguration {
                             max_cache_anchors: config.max_cache_anchors,
                             should_speculate: config.should_speculate,
                             min_total_token: config.min_total_token,
@@ -176,8 +176,8 @@ impl LanguageModelProvider for AnthropicLanguageModelProvider {
                     default_temperature: model.default_temperature,
                     extra_beta_headers: model.extra_beta_headers.clone(),
                     mode: match model.mode.unwrap_or_default() {
-                        settings::ModelMode::Default => AnthropicModelMode::Default,
-                        settings::ModelMode::Thinking { budget_tokens } => {
+                        inazuma_settings_framework::ModelMode::Default => AnthropicModelMode::Default,
+                        inazuma_settings_framework::ModelMode::Thinking { budget_tokens } => {
                             AnthropicModelMode::Thinking { budget_tokens }
                         }
                     },
@@ -217,13 +217,13 @@ impl LanguageModelProvider for AnthropicLanguageModelProvider {
 
 pub struct AnthropicModel {
     id: LanguageModelId,
-    model: anthropic::Model,
+    model: raijin_anthropic::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
 }
 
-fn to_anthropic_content(content: MessageContent) -> Option<anthropic::RequestContent> {
+fn to_anthropic_content(content: MessageContent) -> Option<raijin_anthropic::RequestContent> {
     match content {
         MessageContent::Text(text) => {
             let text = if text.chars().last().is_some_and(|c| c.is_whitespace()) {
@@ -232,7 +232,7 @@ fn to_anthropic_content(content: MessageContent) -> Option<anthropic::RequestCon
                 text
             };
             if !text.is_empty() {
-                Some(anthropic::RequestContent::Text {
+                Some(raijin_anthropic::RequestContent::Text {
                     text,
                     cache_control: None,
                 })
@@ -247,7 +247,7 @@ fn to_anthropic_content(content: MessageContent) -> Option<anthropic::RequestCon
             if let Some(signature) = signature
                 && !thinking.is_empty()
             {
-                Some(anthropic::RequestContent::Thinking {
+                Some(raijin_anthropic::RequestContent::Thinking {
                     thinking,
                     signature,
                     cache_control: None,
@@ -258,26 +258,26 @@ fn to_anthropic_content(content: MessageContent) -> Option<anthropic::RequestCon
         }
         MessageContent::RedactedThinking(data) => {
             if !data.is_empty() {
-                Some(anthropic::RequestContent::RedactedThinking { data })
+                Some(raijin_anthropic::RequestContent::RedactedThinking { data })
             } else {
                 None
             }
         }
-        MessageContent::Image(image) => Some(anthropic::RequestContent::Image {
-            source: anthropic::ImageSource {
+        MessageContent::Image(image) => Some(raijin_anthropic::RequestContent::Image {
+            source: raijin_anthropic::ImageSource {
                 source_type: "base64".to_string(),
                 media_type: "image/png".to_string(),
                 data: image.source.to_string(),
             },
             cache_control: None,
         }),
-        MessageContent::ToolUse(tool_use) => Some(anthropic::RequestContent::ToolUse {
+        MessageContent::ToolUse(tool_use) => Some(raijin_anthropic::RequestContent::ToolUse {
             id: tool_use.id.to_string(),
             name: tool_use.name.to_string(),
             input: tool_use.input,
             cache_control: None,
         }),
-        MessageContent::ToolResult(tool_result) => Some(anthropic::RequestContent::ToolResult {
+        MessageContent::ToolResult(tool_result) => Some(raijin_anthropic::RequestContent::ToolResult {
             tool_use_id: tool_result.tool_use_id.to_string(),
             is_error: tool_result.is_error,
             content: match tool_result.content {
@@ -286,7 +286,7 @@ fn to_anthropic_content(content: MessageContent) -> Option<anthropic::RequestCon
                 }
                 LanguageModelToolResultContent::Image(image) => {
                     ToolResultContent::Multipart(vec![ToolResultPart::Image {
-                        source: anthropic::ImageSource {
+                        source: raijin_anthropic::ImageSource {
                             source_type: "base64".to_string(),
                             media_type: "image/png".to_string(),
                             data: image.source.to_string(),
@@ -305,7 +305,7 @@ pub fn into_anthropic_count_tokens_request(
     model: String,
     mode: AnthropicModelMode,
 ) -> CountTokensRequest {
-    let mut new_messages: Vec<anthropic::Message> = Vec::new();
+    let mut new_messages: Vec<raijin_anthropic::Message> = Vec::new();
     let mut system_message = String::new();
 
     for message in request.messages {
@@ -315,14 +315,14 @@ pub fn into_anthropic_count_tokens_request(
 
         match message.role {
             Role::User | Role::Assistant => {
-                let anthropic_message_content: Vec<anthropic::RequestContent> = message
+                let anthropic_message_content: Vec<raijin_anthropic::RequestContent> = message
                     .content
                     .into_iter()
                     .filter_map(to_anthropic_content)
                     .collect();
                 let anthropic_role = match message.role {
-                    Role::User => anthropic::Role::User,
-                    Role::Assistant => anthropic::Role::Assistant,
+                    Role::User => raijin_anthropic::Role::User,
+                    Role::Assistant => raijin_anthropic::Role::Assistant,
                     Role::System => unreachable!("System role should never occur here"),
                 };
                 if anthropic_message_content.is_empty() {
@@ -336,7 +336,7 @@ pub fn into_anthropic_count_tokens_request(
                     continue;
                 }
 
-                new_messages.push(anthropic::Message {
+                new_messages.push(raijin_anthropic::Message {
                     role: anthropic_role,
                     content: anthropic_message_content,
                 });
@@ -356,14 +356,14 @@ pub fn into_anthropic_count_tokens_request(
         system: if system_message.is_empty() {
             None
         } else {
-            Some(anthropic::StringOrContents::String(system_message))
+            Some(raijin_anthropic::StringOrContents::String(system_message))
         },
         thinking: if request.thinking_allowed {
             match mode {
                 AnthropicModelMode::Thinking { budget_tokens } => {
-                    Some(anthropic::Thinking::Enabled { budget_tokens })
+                    Some(raijin_anthropic::Thinking::Enabled { budget_tokens })
                 }
-                AnthropicModelMode::AdaptiveThinking => Some(anthropic::Thinking::Adaptive),
+                AnthropicModelMode::AdaptiveThinking => Some(raijin_anthropic::Thinking::Adaptive),
                 AnthropicModelMode::Default => None,
             }
         } else {
@@ -372,7 +372,7 @@ pub fn into_anthropic_count_tokens_request(
         tools: request
             .tools
             .into_iter()
-            .map(|tool| anthropic::Tool {
+            .map(|tool| raijin_anthropic::Tool {
                 name: tool.name,
                 description: tool.description,
                 input_schema: tool.input_schema,
@@ -380,9 +380,9 @@ pub fn into_anthropic_count_tokens_request(
             })
             .collect(),
         tool_choice: request.tool_choice.map(|choice| match choice {
-            LanguageModelToolChoice::Auto => anthropic::ToolChoice::Auto,
-            LanguageModelToolChoice::Any => anthropic::ToolChoice::Any,
-            LanguageModelToolChoice::None => anthropic::ToolChoice::None,
+            LanguageModelToolChoice::Auto => raijin_anthropic::ToolChoice::Auto,
+            LanguageModelToolChoice::Any => raijin_anthropic::ToolChoice::Any,
+            LanguageModelToolChoice::None => raijin_anthropic::ToolChoice::None,
         }),
     }
 }
@@ -448,12 +448,12 @@ pub fn count_anthropic_tokens_with_tiktoken(request: LanguageModelRequest) -> Re
 impl AnthropicModel {
     fn stream_completion(
         &self,
-        request: anthropic::Request,
+        request: raijin_anthropic::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
         Result<
-            BoxStream<'static, Result<anthropic::Event, AnthropicError>>,
+            BoxStream<'static, Result<raijin_anthropic::Event, AnthropicError>>,
             LanguageModelCompletionError,
         >,
     > {
@@ -472,7 +472,7 @@ impl AnthropicModel {
                     provider: PROVIDER_NAME,
                 });
             };
-            let request = anthropic::stream_completion(
+            let request = raijin_anthropic::stream_completion(
                 http_client.as_ref(),
                 &api_url,
                 &api_key,
@@ -526,25 +526,25 @@ impl LanguageModel for AnthropicModel {
         self.model.supports_thinking()
     }
 
-    fn supported_effort_levels(&self) -> Vec<language_model::LanguageModelEffortLevel> {
+    fn supported_effort_levels(&self) -> Vec<raijin_language_model::LanguageModelEffortLevel> {
         if self.model.supports_adaptive_thinking() {
             vec![
-                language_model::LanguageModelEffortLevel {
+                raijin_language_model::LanguageModelEffortLevel {
                     name: "Low".into(),
                     value: "low".into(),
                     is_default: false,
                 },
-                language_model::LanguageModelEffortLevel {
+                raijin_language_model::LanguageModelEffortLevel {
                     name: "Medium".into(),
                     value: "medium".into(),
                     is_default: false,
                 },
-                language_model::LanguageModelEffortLevel {
+                raijin_language_model::LanguageModelEffortLevel {
                     name: "High".into(),
                     value: "high".into(),
                     is_default: true,
                 },
-                language_model::LanguageModelEffortLevel {
+                raijin_language_model::LanguageModelEffortLevel {
                     name: "Max".into(),
                     value: "max".into(),
                     is_default: false,
@@ -600,7 +600,7 @@ impl LanguageModel for AnthropicModel {
             let count_request =
                 into_anthropic_count_tokens_request(request.clone(), model_id, mode);
 
-            match anthropic::count_tokens(http_client.as_ref(), &api_url, &api_key, count_request)
+            match raijin_anthropic::count_tokens(http_client.as_ref(), &api_url, &api_key, count_request)
                 .await
             {
                 Ok(response) => Ok(response.input_tokens),
@@ -658,8 +658,8 @@ pub fn into_anthropic(
     default_temperature: f32,
     max_output_tokens: u64,
     mode: AnthropicModelMode,
-) -> anthropic::Request {
-    let mut new_messages: Vec<anthropic::Message> = Vec::new();
+) -> raijin_anthropic::Request {
+    let mut new_messages: Vec<raijin_anthropic::Message> = Vec::new();
     let mut system_message = String::new();
 
     for message in request.messages {
@@ -669,14 +669,14 @@ pub fn into_anthropic(
 
         match message.role {
             Role::User | Role::Assistant => {
-                let mut anthropic_message_content: Vec<anthropic::RequestContent> = message
+                let mut anthropic_message_content: Vec<raijin_anthropic::RequestContent> = message
                     .content
                     .into_iter()
                     .filter_map(to_anthropic_content)
                     .collect();
                 let anthropic_role = match message.role {
-                    Role::User => anthropic::Role::User,
-                    Role::Assistant => anthropic::Role::Assistant,
+                    Role::User => raijin_anthropic::Role::User,
+                    Role::Assistant => raijin_anthropic::Role::Assistant,
                     Role::System => unreachable!("System role should never occur here"),
                 };
                 if anthropic_message_content.is_empty() {
@@ -692,19 +692,19 @@ pub fn into_anthropic(
 
                 // Mark the last segment of the message as cached
                 if message.cache {
-                    let cache_control_value = Some(anthropic::CacheControl {
-                        cache_type: anthropic::CacheControlType::Ephemeral,
+                    let cache_control_value = Some(raijin_anthropic::CacheControl {
+                        cache_type: raijin_anthropic::CacheControlType::Ephemeral,
                     });
                     for message_content in anthropic_message_content.iter_mut().rev() {
                         match message_content {
-                            anthropic::RequestContent::RedactedThinking { .. } => {
+                            raijin_anthropic::RequestContent::RedactedThinking { .. } => {
                                 // Caching is not possible, fallback to next message
                             }
-                            anthropic::RequestContent::Text { cache_control, .. }
-                            | anthropic::RequestContent::Thinking { cache_control, .. }
-                            | anthropic::RequestContent::Image { cache_control, .. }
-                            | anthropic::RequestContent::ToolUse { cache_control, .. }
-                            | anthropic::RequestContent::ToolResult { cache_control, .. } => {
+                            raijin_anthropic::RequestContent::Text { cache_control, .. }
+                            | raijin_anthropic::RequestContent::Thinking { cache_control, .. }
+                            | raijin_anthropic::RequestContent::Image { cache_control, .. }
+                            | raijin_anthropic::RequestContent::ToolUse { cache_control, .. }
+                            | raijin_anthropic::RequestContent::ToolResult { cache_control, .. } => {
                                 *cache_control = cache_control_value;
                                 break;
                             }
@@ -712,7 +712,7 @@ pub fn into_anthropic(
                     }
                 }
 
-                new_messages.push(anthropic::Message {
+                new_messages.push(raijin_anthropic::Message {
                     role: anthropic_role,
                     content: anthropic_message_content,
                 });
@@ -726,21 +726,21 @@ pub fn into_anthropic(
         }
     }
 
-    anthropic::Request {
+    raijin_anthropic::Request {
         model,
         messages: new_messages,
         max_tokens: max_output_tokens,
         system: if system_message.is_empty() {
             None
         } else {
-            Some(anthropic::StringOrContents::String(system_message))
+            Some(raijin_anthropic::StringOrContents::String(system_message))
         },
         thinking: if request.thinking_allowed {
             match mode {
                 AnthropicModelMode::Thinking { budget_tokens } => {
-                    Some(anthropic::Thinking::Enabled { budget_tokens })
+                    Some(raijin_anthropic::Thinking::Enabled { budget_tokens })
                 }
-                AnthropicModelMode::AdaptiveThinking => Some(anthropic::Thinking::Adaptive),
+                AnthropicModelMode::AdaptiveThinking => Some(raijin_anthropic::Thinking::Adaptive),
                 AnthropicModelMode::Default => None,
             }
         } else {
@@ -749,7 +749,7 @@ pub fn into_anthropic(
         tools: request
             .tools
             .into_iter()
-            .map(|tool| anthropic::Tool {
+            .map(|tool| raijin_anthropic::Tool {
                 name: tool.name,
                 description: tool.description,
                 input_schema: tool.input_schema,
@@ -757,9 +757,9 @@ pub fn into_anthropic(
             })
             .collect(),
         tool_choice: request.tool_choice.map(|choice| match choice {
-            LanguageModelToolChoice::Auto => anthropic::ToolChoice::Auto,
-            LanguageModelToolChoice::Any => anthropic::ToolChoice::Any,
-            LanguageModelToolChoice::None => anthropic::ToolChoice::None,
+            LanguageModelToolChoice::Auto => raijin_anthropic::ToolChoice::Auto,
+            LanguageModelToolChoice::Any => raijin_anthropic::ToolChoice::Any,
+            LanguageModelToolChoice::None => raijin_anthropic::ToolChoice::None,
         }),
         metadata: None,
         output_config: if request.thinking_allowed
@@ -767,13 +767,13 @@ pub fn into_anthropic(
         {
             request.thinking_effort.as_deref().and_then(|effort| {
                 let effort = match effort {
-                    "low" => Some(anthropic::Effort::Low),
-                    "medium" => Some(anthropic::Effort::Medium),
-                    "high" => Some(anthropic::Effort::High),
-                    "max" => Some(anthropic::Effort::Max),
+                    "low" => Some(raijin_anthropic::Effort::Low),
+                    "medium" => Some(raijin_anthropic::Effort::Medium),
+                    "high" => Some(raijin_anthropic::Effort::High),
+                    "max" => Some(raijin_anthropic::Effort::Max),
                     _ => None,
                 };
-                effort.map(|effort| anthropic::OutputConfig {
+                effort.map(|effort| raijin_anthropic::OutputConfig {
                     effort: Some(effort),
                 })
             })
@@ -982,8 +982,8 @@ fn update_usage(usage: &mut Usage, new: &Usage) {
     }
 }
 
-fn convert_usage(usage: &Usage) -> language_model::TokenUsage {
-    language_model::TokenUsage {
+fn convert_usage(usage: &Usage) -> raijin_language_model::TokenUsage {
+    raijin_language_model::TokenUsage {
         input_tokens: usage.input_tokens.unwrap_or(0),
         output_tokens: usage.output_tokens.unwrap_or(0),
         cache_creation_input_tokens: usage.cache_creation_input_tokens.unwrap_or(0),
@@ -1034,7 +1034,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx);
         if api_key.is_empty() {
             return;
@@ -1145,10 +1145,10 @@ mod tests {
                 role: Role::User,
                 content: vec![
                     MessageContent::Text("Some prompt".to_string()),
-                    MessageContent::Image(language_model::LanguageModelImage::empty()),
-                    MessageContent::Image(language_model::LanguageModelImage::empty()),
-                    MessageContent::Image(language_model::LanguageModelImage::empty()),
-                    MessageContent::Image(language_model::LanguageModelImage::empty()),
+                    MessageContent::Image(raijin_language_model::LanguageModelImage::empty()),
+                    MessageContent::Image(raijin_language_model::LanguageModelImage::empty()),
+                    MessageContent::Image(raijin_language_model::LanguageModelImage::empty()),
+                    MessageContent::Image(raijin_language_model::LanguageModelImage::empty()),
                 ],
                 cache: true,
                 reasoning_details: None,
@@ -1180,7 +1180,7 @@ mod tests {
 
         assert!(matches!(
             message.content[0],
-            anthropic::RequestContent::Text {
+            raijin_anthropic::RequestContent::Text {
                 cache_control: None,
                 ..
             }
@@ -1188,7 +1188,7 @@ mod tests {
         for i in 1..3 {
             assert!(matches!(
                 message.content[i],
-                anthropic::RequestContent::Image {
+                raijin_anthropic::RequestContent::Image {
                     cache_control: None,
                     ..
                 }
@@ -1197,9 +1197,9 @@ mod tests {
 
         assert!(matches!(
             message.content[4],
-            anthropic::RequestContent::Image {
-                cache_control: Some(anthropic::CacheControl {
-                    cache_type: anthropic::CacheControlType::Ephemeral,
+            raijin_anthropic::RequestContent::Image {
+                cache_control: Some(raijin_anthropic::CacheControl {
+                    cache_type: raijin_anthropic::CacheControlType::Ephemeral,
                 }),
                 ..
             }
@@ -1208,7 +1208,7 @@ mod tests {
 
     fn request_with_assistant_content(
         assistant_content: Vec<MessageContent>,
-    ) -> anthropic::Request {
+    ) -> raijin_anthropic::Request {
         let mut request = LanguageModelRequest {
             messages: vec![LanguageModelRequestMessage {
                 role: Role::User,
@@ -1257,7 +1257,7 @@ mod tests {
         let assistant_message = result
             .messages
             .iter()
-            .find(|m| m.role == anthropic::Role::Assistant)
+            .find(|m| m.role == raijin_anthropic::Role::Assistant)
             .expect("assistant message should still exist");
 
         assert_eq!(
@@ -1267,7 +1267,7 @@ mod tests {
         );
         assert!(matches!(
             &assistant_message.content[0],
-            anthropic::RequestContent::Text { text, .. } if text == "Some response text"
+            raijin_anthropic::RequestContent::Text { text, .. } if text == "Some response text"
         ));
     }
 
@@ -1284,7 +1284,7 @@ mod tests {
         let assistant_message = result
             .messages
             .iter()
-            .find(|m| m.role == anthropic::Role::Assistant)
+            .find(|m| m.role == raijin_anthropic::Role::Assistant)
             .expect("assistant message should exist");
 
         assert_eq!(
@@ -1294,7 +1294,7 @@ mod tests {
         );
         assert!(matches!(
             &assistant_message.content[0],
-            anthropic::RequestContent::Thinking { thinking, signature, .. }
+            raijin_anthropic::RequestContent::Thinking { thinking, signature, .. }
                 if thinking == "Completed thinking" && signature == "valid-signature"
         ));
     }
@@ -1309,7 +1309,7 @@ mod tests {
         let assistant_messages: Vec<_> = result
             .messages
             .iter()
-            .filter(|m| m.role == anthropic::Role::Assistant)
+            .filter(|m| m.role == raijin_anthropic::Role::Assistant)
             .collect();
 
         assert_eq!(

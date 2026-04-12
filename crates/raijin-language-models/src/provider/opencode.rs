@@ -81,7 +81,7 @@ impl OpenCodeLanguageModelProvider {
         Self { http_client, state }
     }
 
-    fn create_language_model(&self, model: opencode::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_opencode::Model) -> Arc<dyn LanguageModel> {
         Arc::new(OpenCodeLanguageModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -127,18 +127,18 @@ impl LanguageModelProvider for OpenCodeLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(opencode::Model::default()))
+        Some(self.create_language_model(raijin_opencode::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(opencode::Model::default_fast()))
+        Some(self.create_language_model(raijin_opencode::Model::default_fast()))
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        for model in opencode::Model::iter() {
-            if !matches!(model, opencode::Model::Custom { .. }) {
+        for model in raijin_opencode::Model::iter() {
+            if !matches!(model, raijin_opencode::Model::Custom { .. }) {
                 models.insert(model.id().to_string(), model);
             }
         }
@@ -153,7 +153,7 @@ impl LanguageModelProvider for OpenCodeLanguageModelProvider {
             };
             models.insert(
                 model.name.clone(),
-                opencode::Model::Custom {
+                raijin_opencode::Model::Custom {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
@@ -179,7 +179,7 @@ impl LanguageModelProvider for OpenCodeLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -195,7 +195,7 @@ impl LanguageModelProvider for OpenCodeLanguageModelProvider {
 
 pub struct OpenCodeLanguageModel {
     id: LanguageModelId,
-    model: opencode::Model,
+    model: raijin_opencode::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
@@ -217,14 +217,14 @@ impl OpenCodeLanguageModel {
 
     fn stream_anthropic(
         &self,
-        request: anthropic::Request,
+        request: raijin_anthropic::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
         Result<
             futures::stream::BoxStream<
                 'static,
-                Result<anthropic::Event, anthropic::AnthropicError>,
+                Result<raijin_anthropic::Event, raijin_anthropic::AnthropicError>,
             >,
             LanguageModelCompletionError,
         >,
@@ -240,7 +240,7 @@ impl OpenCodeLanguageModel {
                     provider: PROVIDER_NAME,
                 });
             };
-            let request = anthropic::stream_completion(
+            let request = raijin_anthropic::stream_completion(
                 http_client.as_ref(),
                 &api_url,
                 &api_key,
@@ -256,11 +256,11 @@ impl OpenCodeLanguageModel {
 
     fn stream_openai_chat(
         &self,
-        request: open_ai::Request,
+        request: raijin_open_ai::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
-        Result<futures::stream::BoxStream<'static, Result<open_ai::ResponseStreamEvent>>>,
+        Result<futures::stream::BoxStream<'static, Result<raijin_open_ai::ResponseStreamEvent>>>,
     > {
         let http_client = self.http_client.clone();
         // OpenAI crate appends /chat/completions to api_url, so we pass base + "/v1"
@@ -275,7 +275,7 @@ impl OpenCodeLanguageModel {
                     provider: PROVIDER_NAME,
                 });
             };
-            let request = open_ai::stream_completion(
+            let request = raijin_open_ai::stream_completion(
                 http_client.as_ref(),
                 &provider_name,
                 &api_url,
@@ -291,11 +291,11 @@ impl OpenCodeLanguageModel {
 
     fn stream_openai_response(
         &self,
-        request: open_ai::responses::Request,
+        request: raijin_open_ai::responses::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
-        Result<futures::stream::BoxStream<'static, Result<open_ai::responses::StreamEvent>>>,
+        Result<futures::stream::BoxStream<'static, Result<raijin_open_ai::responses::StreamEvent>>>,
     > {
         let http_client = self.http_client.clone();
         // Responses crate appends /responses to api_url, so we pass base + "/v1"
@@ -310,7 +310,7 @@ impl OpenCodeLanguageModel {
                     provider: PROVIDER_NAME,
                 });
             };
-            let request = open_ai::responses::stream_response(
+            let request = raijin_open_ai::responses::stream_response(
                 http_client.as_ref(),
                 &provider_name,
                 &api_url,
@@ -326,11 +326,11 @@ impl OpenCodeLanguageModel {
 
     fn stream_google_zen(
         &self,
-        request: google_ai::GenerateContentRequest,
+        request: raijin_google_ai::GenerateContentRequest,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
-        Result<futures::stream::BoxStream<'static, Result<google_ai::GenerateContentResponse>>>,
+        Result<futures::stream::BoxStream<'static, Result<raijin_google_ai::GenerateContentResponse>>>,
     > {
         let http_client = self.http_client.clone();
         let api_url = self.base_api_url(cx);
@@ -342,7 +342,7 @@ impl OpenCodeLanguageModel {
                     provider: PROVIDER_NAME,
                 });
             };
-            let request = opencode::stream_generate_content_zen(
+            let request = raijin_opencode::stream_generate_content_zen(
                 http_client.as_ref(),
                 &api_url,
                 &api_key,
@@ -450,7 +450,7 @@ impl LanguageModel for OpenCodeLanguageModel {
                     self.model.id().to_string(),
                     1.0,
                     self.model.max_output_tokens().unwrap_or(8192),
-                    anthropic::AnthropicModelMode::Default,
+                    raijin_anthropic::AnthropicModelMode::Default,
                 );
                 let stream = self.stream_anthropic(anthropic_request, cx);
                 async move {
@@ -495,7 +495,7 @@ impl LanguageModel for OpenCodeLanguageModel {
                 let google_request = into_google(
                     request,
                     self.model.id().to_string(),
-                    google_ai::GoogleModelMode::Default,
+                    raijin_google_ai::GoogleModelMode::Default,
                 );
                 let stream = self.stream_google_zen(google_request, cx);
                 async move {
@@ -546,7 +546,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;

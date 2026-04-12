@@ -287,20 +287,6 @@ impl Drop for CompletionsMenu {
     }
 }
 
-struct CompletionMenuScrollBarSetting;
-
-impl raijin_ui::scrollbars::GlobalSetting for CompletionMenuScrollBarSetting {
-    fn get_value(_cx: &App) -> &Self {
-        &Self
-    }
-}
-
-impl raijin_ui::scrollbars::ScrollbarVisibility for CompletionMenuScrollBarSetting {
-    fn visibility(&self, cx: &App) -> raijin_ui::scrollbars::ShowScrollbar {
-        EditorSettings::get_global(cx).completion_menu_scrollbar
-    }
-}
-
 impl CompletionsMenu {
     pub fn new(
         id: CompletionId,
@@ -1031,11 +1017,10 @@ impl CompletionsMenu {
             }
         });
 
-        Popover::new()
+        Popover::new("completion-menu-popover")
             .child(
                 div().child(list).custom_scrollbars(
-                    Scrollbars::for_settings::<CompletionMenuScrollBarSetting>()
-                        .show_along(ScrollAxes::Vertical)
+                    Scrollbars::new(ScrollAxes::Vertical)
                         .tracked_scroll_handle(&self.scroll_handle),
                     window,
                     cx,
@@ -1100,7 +1085,7 @@ impl CompletionsMenu {
         };
 
         Some(
-            Popover::new()
+            Popover::new("completion-aside-popover")
                 .child(
                     multiline_docs
                         .id("multiline_docs")
@@ -1666,7 +1651,7 @@ impl CodeActionsMenu {
         )
         .with_sizing_behavior(ListSizingBehavior::Infer);
 
-        Popover::new().child(list).into_any_element()
+        Popover::new("code-action-popover").child(list).into_any_element()
     }
 
     fn render_aside(
@@ -1697,7 +1682,7 @@ impl CodeActionsMenu {
         }
 
         Some(
-            Popover::new()
+            Popover::new("code-action-aside-popover")
                 .child(
                     div()
                         .child(label)

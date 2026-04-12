@@ -706,6 +706,87 @@ NICHT im Item (kommt vom Workspace):
 - **Entity\<Project\> + Arc\<AppState\>** — Volle Initialisierung wie Zed es macht, mit `Client::new()`, `NodeRuntime::unavailable()`, und `Project::local()`. Kein Abspecken.
 - **Item Trait** erfordert `Focusable + EventEmitter<Self::Event> + Render + Sized` plus Associated Type `type Event`
 
+## Fehlende Crates — Porting von Zed
+
+Diese Zed-Crates existieren in `.reference/zed/crates/` und müssen nach Raijin geportet werden. Alle sind workspace-relevant. Porting-Prinzip: vollständig übernehmen, `gpui` → `inazuma`, `ui` → `raijin-ui`, `zed_actions` → `raijin-actions`, Inhalt auf Terminal-Kontext anpassen wo nötig.
+
+### Tier 1 — Workspace-Infrastruktur (MUSS vor Phase 1-2)
+
+| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+|---|---|---|---|
+| `raijin-panel` | `panel` | ~75 | `PanelHeader` + `PanelTabs` Traits (erweitern `workspace::Panel`), Helper-Buttons. Deps: `inazuma`, `raijin-ui`, `raijin-workspace` |
+| `raijin-platform-title-bar` | `platform_title_bar` | ~1.186 | Cross-platform TitleBar **View** (`impl Render`). `SystemWindowTabs` (Multi-Window Tab Drag/Drop), `PlatformStyle` (Mac/Linux/Windows), Linux/Windows Window-Controls. Deps: `inazuma`, `raijin-ui`, `raijin-workspace`, `raijin-settings-framework`, `raijin-feature-flags` |
+| `raijin-title-bar` | `title_bar` | ~1.267 | App-Level TitleBar View der `PlatformTitleBar` Entity wraps. Zeigt Project-Info, Git-Branch, User-Menu, Update-Notifications. Raijin-Anpassung: statt Zed's Collab/Branch → Shell-Context (CWD, Git-Branch, User@Host). Deps: `raijin-platform-title-bar`, `raijin-workspace`, `raijin-project`, `raijin-client`, `raijin-settings-framework`, `raijin-theme` |
+
+### Tier 2 — Terminal als Workspace-Item (KERN)
+
+| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+|---|---|---|---|
+| `raijin-terminal-view` | `terminal_view` | ~7.034 | `TerminalView` (`impl Item`, `impl SerializableItem`, `impl SearchableItem`), `TerminalElement` (GPUI Element für Grid-Rendering), `TerminalPanel` (`impl Panel` für Dock), `TerminalScrollbar` (ScrollableHandle), Persistence (SQLite Schema), `terminal_path_like_target` (Hover/Click auf Dateipfade). **Raijin hat bereits** `raijin-app/src/terminal/` mit eigenem Grid/Block-Rendering — dieses muss in die Zed-Item-Architektur eingebettet werden, kein blindes Kopieren. Deps: `raijin-workspace`, `raijin-terminal`, `raijin-project`, `raijin-editor`, `raijin-task`, `raijin-db`, `raijin-ui` |
+
+### Tier 3 — Essenzielle Modals & Navigation
+
+| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+|---|---|---|---|
+| `raijin-command-palette-hooks` | `command_palette_hooks` | ~153 | Global Filtering/Interception für Command Palette. `CommandPaletteFilter`, `GlobalCommandPaletteInterceptor`. Muss VOR `raijin-command-palette` existieren. Deps: `inazuma`, `raijin-workspace`, `inazuma-collections` |
+| `raijin-command-palette` | `command_palette` | ~1.223 | Fuzzy-Searchable Action-Palette Modal. `CommandPalette` (`impl ModalView`), `CommandPaletteDelegate` (`impl PickerDelegate`). Deps: `raijin-command-palette-hooks`, `inazuma-picker`, `inazuma-fuzzy`, `raijin-workspace`, `raijin-settings-framework` |
+| `raijin-tab-switcher` | `tab_switcher` | ~883 | Ctrl+Tab Modal zum schnellen Tab-Wechsel. `TabSwitcher` (`impl ModalView`), fuzzy search, tab closing. Deps: `inazuma-picker`, `raijin-workspace`, `raijin-project`, `raijin-editor`, `inazuma-fuzzy` |
+| `raijin-file-finder` | `file_finder` | ~2.039 | Cmd+P File-Finder Modal. Fuzzy-Suche über Workspace-Files, Recent History, Split-Direction. Deps: `inazuma-picker`, `raijin-project`, `raijin-workspace`, `raijin-editor`, `inazuma-fuzzy`, `raijin-file-icons` |
+| `raijin-recent-projects` | `recent_projects` | ~2.179 | Recent Projects Modal/Popover. Liest Workspace-History aus DB. Deps: `inazuma-picker`, `raijin-workspace`, `raijin-project`, `inazuma-fuzzy`, `raijin-remote` |
+
+### Tier 4 — Panels & Sidebar
+
+| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+|---|---|---|---|
+| `raijin-sidebar` | `sidebar` | ~7.151 | Sidebar-Architektur mit Thread/Session-Management. **Stark Zed-Agent-spezifisch** — Architektur porten, Inhalt komplett auf Raijin anpassen (statt Agent-Threads → Terminal-Sessions). Deps: `raijin-workspace`, `raijin-project`, `raijin-git`, `raijin-editor`, `raijin-theme`, `raijin-settings-framework` |
+| `raijin-project-panel` | `project_panel` | groß | File-Tree Panel (linke Sidebar). `impl Panel`. Deps: `raijin-workspace`, `raijin-project`, `raijin-editor`, `raijin-git`, `raijin-file-icons`, `raijin-settings-framework` |
+| `raijin-outline` | `outline` | ~1.110 | Code-Outline Modal. Symbol-Navigation im Editor-Buffer. Deps: `inazuma-picker`, `raijin-editor`, `raijin-language`, `raijin-workspace`, `inazuma-fuzzy` |
+| `raijin-outline-panel` | `outline_panel` | groß | Persistent Outline Panel als Dock-Item. Deps: `raijin-workspace`, `raijin-outline`, `raijin-editor`, `raijin-settings-framework` |
+| `raijin-search` | `search` | mehrteilig | Buffer-Search + Project-Search mit Replace. `SearchBar`, `ProjectSearch`. Deps: `raijin-workspace`, `raijin-editor`, `raijin-project`, `inazuma-fuzzy` |
+| `raijin-diagnostics` | `diagnostics` | mehrteilig | Error/Warning Panel. `impl Item` für Diagnostic-Ansicht. Deps: `raijin-workspace`, `raijin-editor`, `raijin-language`, `raijin-project` |
+
+### Tier 5 — Kleinere Features
+
+| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+|---|---|---|---|
+| `raijin-which-key` | `which_key` | ~94 | Vi-style Key-Hint Modal. Zeigt Pending-Keystrokes nach Delay. Trivial — fast 1:1 kopieren. Deps: `raijin-workspace`, `raijin-settings-framework`, `inazuma` |
+
+### Bereits vorhanden (kein Porting nötig)
+
+| Raijin Crate | Zed-Äquivalent | Status |
+|---|---|---|
+| `raijin-workspace/notifications.rs` + `toast_layer.rs` | `notifications` | ✅ Voll implementiert |
+| `inazuma-picker` | `picker` | ✅ Voll implementiert |
+| `raijin-workspace/dock.rs` (Panel Trait) | `workspace::Panel` | ✅ Basis-Trait vorhanden |
+| `raijin-actions` (command_palette::Toggle) | `command_palette_hooks` (partial) | ⚠️ Action definiert, Implementierung fehlt |
+| `inazuma-settings-content` (FileFinderSettingsContent) | `file_finder` Settings | ⚠️ Settings vorhanden, UI fehlt |
+
+### Porting-Reihenfolge
+
+```
+Tier 1 (Infrastruktur):
+  raijin-panel → raijin-platform-title-bar → raijin-title-bar
+
+Tier 2 (Terminal-Item):
+  raijin-terminal-view (parallel zu Phase 1-6 des Implementierungsplans)
+
+Tier 3 (Modals, kann nach Phase 6):
+  raijin-command-palette-hooks → raijin-command-palette
+  raijin-tab-switcher
+  raijin-file-finder
+  raijin-recent-projects
+
+Tier 4 (Panels, kann nach Tier 3):
+  raijin-sidebar
+  raijin-project-panel
+  raijin-outline → raijin-outline-panel
+  raijin-search
+  raijin-diagnostics
+
+Tier 5 (jederzeit):
+  raijin-which-key
+```
+
 ## Was Zed hat das wir später aktivieren
 
 Diese Workspace-Features sind da, initial versteckt, können schrittweise aktiviert werden:

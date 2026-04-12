@@ -36,7 +36,7 @@ use thiserror::Error;
 use inazuma_util::command::{Stdio, new_command};
 use inazuma_util::paths::PathStyle;
 use inazuma_util::rel_path::RelPath;
-use inazuma_util::{ResultExt, paths};
+use inazuma_util::ResultExt;
 use uuid::Uuid;
 
 pub use raijin_askpass::{AskPassDelegate, AskPassResult, AskPassSession};

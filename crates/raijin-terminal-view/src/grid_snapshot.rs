@@ -238,7 +238,7 @@ fn extract_single_block(
     // This makes the command selectable, uses the same font as output,
     // and preserves multi-line formatting.
     let command_fg = theme.styles.colors.text;
-    let bg = theme.styles.colors.terminal_background;
+    let bg = theme.styles.colors.terminal.background;
     let mut command_lines: Vec<SnapshotLine> = Vec::new();
     if !block.command.is_empty() {
         for cmd_line in block.command.lines() {

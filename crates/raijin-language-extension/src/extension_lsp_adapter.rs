@@ -520,7 +520,7 @@ fn build_code_label(
 
     for span in &label.spans {
         match span {
-            raijin_raijin_extension::CodeLabelSpan::CodeRange(range) => {
+            raijin_extension::CodeLabelSpan::CodeRange(range) => {
                 let code_span = &label.code.get(range.clone())?;
                 let mut input_ix = range.start;
                 let mut output_ix = text.len();
@@ -546,7 +546,7 @@ fn build_code_label(
 
                 text.push_str(code_span);
             }
-            raijin_raijin_extension::CodeLabelSpan::Literal(span) => {
+            raijin_extension::CodeLabelSpan::Literal(span) => {
                 if let Some(highlight_id) = language
                     .grammar()
                     .zip(span.highlight_name.as_ref())
@@ -582,7 +582,7 @@ fn lsp_completion_to_extension(value: raijin_lsp::CompletionItem) -> raijin_exte
 }
 
 fn lsp_completion_item_label_details_to_extension(
-    value: raijin_raijin_lsp::CompletionItemLabelDetails,
+    value: raijin_lsp::CompletionItemLabelDetails,
 ) -> raijin_extension::CompletionLabelDetails {
     raijin_extension::CompletionLabelDetails {
         detail: value.detail,
@@ -591,34 +591,34 @@ fn lsp_completion_item_label_details_to_extension(
 }
 
 fn lsp_completion_item_kind_to_extension(
-    value: raijin_raijin_lsp::CompletionItemKind,
+    value: raijin_lsp::CompletionItemKind,
 ) -> raijin_extension::CompletionKind {
     match value {
-        raijin_raijin_lsp::CompletionItemKind::TEXT => raijin_extension::CompletionKind::Text,
-        raijin_raijin_lsp::CompletionItemKind::METHOD => raijin_extension::CompletionKind::Method,
-        raijin_raijin_lsp::CompletionItemKind::FUNCTION => raijin_extension::CompletionKind::Function,
-        raijin_raijin_lsp::CompletionItemKind::CONSTRUCTOR => raijin_extension::CompletionKind::Constructor,
-        raijin_raijin_lsp::CompletionItemKind::FIELD => raijin_extension::CompletionKind::Field,
-        raijin_raijin_lsp::CompletionItemKind::VARIABLE => raijin_extension::CompletionKind::Variable,
-        raijin_raijin_lsp::CompletionItemKind::CLASS => raijin_extension::CompletionKind::Class,
-        raijin_raijin_lsp::CompletionItemKind::INTERFACE => raijin_extension::CompletionKind::Interface,
-        raijin_raijin_lsp::CompletionItemKind::MODULE => raijin_extension::CompletionKind::Module,
-        raijin_raijin_lsp::CompletionItemKind::PROPERTY => raijin_extension::CompletionKind::Property,
-        raijin_raijin_lsp::CompletionItemKind::UNIT => raijin_extension::CompletionKind::Unit,
-        raijin_raijin_lsp::CompletionItemKind::VALUE => raijin_extension::CompletionKind::Value,
-        raijin_raijin_lsp::CompletionItemKind::ENUM => raijin_extension::CompletionKind::Enum,
-        raijin_raijin_lsp::CompletionItemKind::KEYWORD => raijin_extension::CompletionKind::Keyword,
-        raijin_raijin_lsp::CompletionItemKind::SNIPPET => raijin_extension::CompletionKind::Snippet,
-        raijin_raijin_lsp::CompletionItemKind::COLOR => raijin_extension::CompletionKind::Color,
-        raijin_raijin_lsp::CompletionItemKind::FILE => raijin_extension::CompletionKind::File,
-        raijin_raijin_lsp::CompletionItemKind::REFERENCE => raijin_extension::CompletionKind::Reference,
-        raijin_raijin_lsp::CompletionItemKind::FOLDER => raijin_extension::CompletionKind::Folder,
-        raijin_raijin_lsp::CompletionItemKind::ENUM_MEMBER => raijin_extension::CompletionKind::EnumMember,
-        raijin_raijin_lsp::CompletionItemKind::CONSTANT => raijin_extension::CompletionKind::Constant,
-        raijin_raijin_lsp::CompletionItemKind::STRUCT => raijin_extension::CompletionKind::Struct,
-        raijin_raijin_lsp::CompletionItemKind::EVENT => raijin_extension::CompletionKind::Event,
-        raijin_raijin_lsp::CompletionItemKind::OPERATOR => raijin_extension::CompletionKind::Operator,
-        raijin_raijin_lsp::CompletionItemKind::TYPE_PARAMETER => raijin_extension::CompletionKind::TypeParameter,
+        raijin_lsp::CompletionItemKind::TEXT => raijin_extension::CompletionKind::Text,
+        raijin_lsp::CompletionItemKind::METHOD => raijin_extension::CompletionKind::Method,
+        raijin_lsp::CompletionItemKind::FUNCTION => raijin_extension::CompletionKind::Function,
+        raijin_lsp::CompletionItemKind::CONSTRUCTOR => raijin_extension::CompletionKind::Constructor,
+        raijin_lsp::CompletionItemKind::FIELD => raijin_extension::CompletionKind::Field,
+        raijin_lsp::CompletionItemKind::VARIABLE => raijin_extension::CompletionKind::Variable,
+        raijin_lsp::CompletionItemKind::CLASS => raijin_extension::CompletionKind::Class,
+        raijin_lsp::CompletionItemKind::INTERFACE => raijin_extension::CompletionKind::Interface,
+        raijin_lsp::CompletionItemKind::MODULE => raijin_extension::CompletionKind::Module,
+        raijin_lsp::CompletionItemKind::PROPERTY => raijin_extension::CompletionKind::Property,
+        raijin_lsp::CompletionItemKind::UNIT => raijin_extension::CompletionKind::Unit,
+        raijin_lsp::CompletionItemKind::VALUE => raijin_extension::CompletionKind::Value,
+        raijin_lsp::CompletionItemKind::ENUM => raijin_extension::CompletionKind::Enum,
+        raijin_lsp::CompletionItemKind::KEYWORD => raijin_extension::CompletionKind::Keyword,
+        raijin_lsp::CompletionItemKind::SNIPPET => raijin_extension::CompletionKind::Snippet,
+        raijin_lsp::CompletionItemKind::COLOR => raijin_extension::CompletionKind::Color,
+        raijin_lsp::CompletionItemKind::FILE => raijin_extension::CompletionKind::File,
+        raijin_lsp::CompletionItemKind::REFERENCE => raijin_extension::CompletionKind::Reference,
+        raijin_lsp::CompletionItemKind::FOLDER => raijin_extension::CompletionKind::Folder,
+        raijin_lsp::CompletionItemKind::ENUM_MEMBER => raijin_extension::CompletionKind::EnumMember,
+        raijin_lsp::CompletionItemKind::CONSTANT => raijin_extension::CompletionKind::Constant,
+        raijin_lsp::CompletionItemKind::STRUCT => raijin_extension::CompletionKind::Struct,
+        raijin_lsp::CompletionItemKind::EVENT => raijin_extension::CompletionKind::Event,
+        raijin_lsp::CompletionItemKind::OPERATOR => raijin_extension::CompletionKind::Operator,
+        raijin_lsp::CompletionItemKind::TYPE_PARAMETER => raijin_extension::CompletionKind::TypeParameter,
         _ => raijin_extension::CompletionKind::Other(extract_int(value)),
     }
 }
@@ -633,35 +633,35 @@ fn lsp_insert_text_format_to_extension(
     }
 }
 
-fn lsp_symbol_kind_to_extension(value: raijin_lsp::SymbolKind) -> raijin_raijin_extension::SymbolKind {
+fn lsp_symbol_kind_to_extension(value: raijin_lsp::SymbolKind) -> raijin_extension::SymbolKind {
     match value {
-        raijin_lsp::SymbolKind::FILE => raijin_raijin_extension::SymbolKind::File,
-        raijin_lsp::SymbolKind::MODULE => raijin_raijin_extension::SymbolKind::Module,
-        raijin_lsp::SymbolKind::NAMESPACE => raijin_raijin_extension::SymbolKind::Namespace,
-        raijin_lsp::SymbolKind::PACKAGE => raijin_raijin_extension::SymbolKind::Package,
-        raijin_lsp::SymbolKind::CLASS => raijin_raijin_extension::SymbolKind::Class,
-        raijin_lsp::SymbolKind::METHOD => raijin_raijin_extension::SymbolKind::Method,
-        raijin_lsp::SymbolKind::PROPERTY => raijin_raijin_extension::SymbolKind::Property,
-        raijin_lsp::SymbolKind::FIELD => raijin_raijin_extension::SymbolKind::Field,
-        raijin_lsp::SymbolKind::CONSTRUCTOR => raijin_raijin_extension::SymbolKind::Constructor,
-        raijin_lsp::SymbolKind::ENUM => raijin_raijin_extension::SymbolKind::Enum,
-        raijin_lsp::SymbolKind::INTERFACE => raijin_raijin_extension::SymbolKind::Interface,
-        raijin_lsp::SymbolKind::FUNCTION => raijin_raijin_extension::SymbolKind::Function,
-        raijin_lsp::SymbolKind::VARIABLE => raijin_raijin_extension::SymbolKind::Variable,
-        raijin_lsp::SymbolKind::CONSTANT => raijin_raijin_extension::SymbolKind::Constant,
-        raijin_lsp::SymbolKind::STRING => raijin_raijin_extension::SymbolKind::String,
-        raijin_lsp::SymbolKind::NUMBER => raijin_raijin_extension::SymbolKind::Number,
-        raijin_lsp::SymbolKind::BOOLEAN => raijin_raijin_extension::SymbolKind::Boolean,
-        raijin_lsp::SymbolKind::ARRAY => raijin_raijin_extension::SymbolKind::Array,
-        raijin_lsp::SymbolKind::OBJECT => raijin_raijin_extension::SymbolKind::Object,
-        raijin_lsp::SymbolKind::KEY => raijin_raijin_extension::SymbolKind::Key,
-        raijin_lsp::SymbolKind::NULL => raijin_raijin_extension::SymbolKind::Null,
-        raijin_lsp::SymbolKind::ENUM_MEMBER => raijin_raijin_extension::SymbolKind::EnumMember,
-        raijin_lsp::SymbolKind::STRUCT => raijin_raijin_extension::SymbolKind::Struct,
-        raijin_lsp::SymbolKind::EVENT => raijin_raijin_extension::SymbolKind::Event,
-        raijin_lsp::SymbolKind::OPERATOR => raijin_raijin_extension::SymbolKind::Operator,
-        raijin_lsp::SymbolKind::TYPE_PARAMETER => raijin_raijin_extension::SymbolKind::TypeParameter,
-        _ => raijin_raijin_extension::SymbolKind::Other(extract_int(value)),
+        raijin_lsp::SymbolKind::FILE => raijin_extension::SymbolKind::File,
+        raijin_lsp::SymbolKind::MODULE => raijin_extension::SymbolKind::Module,
+        raijin_lsp::SymbolKind::NAMESPACE => raijin_extension::SymbolKind::Namespace,
+        raijin_lsp::SymbolKind::PACKAGE => raijin_extension::SymbolKind::Package,
+        raijin_lsp::SymbolKind::CLASS => raijin_extension::SymbolKind::Class,
+        raijin_lsp::SymbolKind::METHOD => raijin_extension::SymbolKind::Method,
+        raijin_lsp::SymbolKind::PROPERTY => raijin_extension::SymbolKind::Property,
+        raijin_lsp::SymbolKind::FIELD => raijin_extension::SymbolKind::Field,
+        raijin_lsp::SymbolKind::CONSTRUCTOR => raijin_extension::SymbolKind::Constructor,
+        raijin_lsp::SymbolKind::ENUM => raijin_extension::SymbolKind::Enum,
+        raijin_lsp::SymbolKind::INTERFACE => raijin_extension::SymbolKind::Interface,
+        raijin_lsp::SymbolKind::FUNCTION => raijin_extension::SymbolKind::Function,
+        raijin_lsp::SymbolKind::VARIABLE => raijin_extension::SymbolKind::Variable,
+        raijin_lsp::SymbolKind::CONSTANT => raijin_extension::SymbolKind::Constant,
+        raijin_lsp::SymbolKind::STRING => raijin_extension::SymbolKind::String,
+        raijin_lsp::SymbolKind::NUMBER => raijin_extension::SymbolKind::Number,
+        raijin_lsp::SymbolKind::BOOLEAN => raijin_extension::SymbolKind::Boolean,
+        raijin_lsp::SymbolKind::ARRAY => raijin_extension::SymbolKind::Array,
+        raijin_lsp::SymbolKind::OBJECT => raijin_extension::SymbolKind::Object,
+        raijin_lsp::SymbolKind::KEY => raijin_extension::SymbolKind::Key,
+        raijin_lsp::SymbolKind::NULL => raijin_extension::SymbolKind::Null,
+        raijin_lsp::SymbolKind::ENUM_MEMBER => raijin_extension::SymbolKind::EnumMember,
+        raijin_lsp::SymbolKind::STRUCT => raijin_extension::SymbolKind::Struct,
+        raijin_lsp::SymbolKind::EVENT => raijin_extension::SymbolKind::Event,
+        raijin_lsp::SymbolKind::OPERATOR => raijin_extension::SymbolKind::Operator,
+        raijin_lsp::SymbolKind::TYPE_PARAMETER => raijin_extension::SymbolKind::TypeParameter,
+        _ => raijin_extension::SymbolKind::Other(extract_int(value)),
     }
 }
 
@@ -690,8 +690,8 @@ fn test_build_code_label() {
     let label = build_code_label(
         &raijin_extension::CodeLabel {
             spans: vec![
-                raijin_raijin_extension::CodeLabelSpan::CodeRange(code.find("pqrs").unwrap()..code.len()),
-                raijin_raijin_extension::CodeLabelSpan::CodeRange(
+                raijin_extension::CodeLabelSpan::CodeRange(code.find("pqrs").unwrap()..code.len()),
+                raijin_extension::CodeLabelSpan::CodeRange(
                     code.find(": fn").unwrap()..code.find(" = ").unwrap(),
                 ),
             ],
@@ -731,10 +731,10 @@ fn test_build_code_label_with_invalid_ranges() {
     let label = build_code_label(
         &raijin_extension::CodeLabel {
             spans: vec![
-                raijin_raijin_extension::CodeLabelSpan::CodeRange(
+                raijin_extension::CodeLabelSpan::CodeRange(
                     code.find('B').unwrap()..code.find(" = ").unwrap(),
                 ),
-                raijin_raijin_extension::CodeLabelSpan::CodeRange((code.find('🏀').unwrap() + 1)..code.len()),
+                raijin_extension::CodeLabelSpan::CodeRange((code.find('🏀').unwrap() + 1)..code.len()),
             ],
             filter_range: 0.."B".len(),
             code,
@@ -747,8 +747,8 @@ fn test_build_code_label_with_invalid_ranges() {
     // Filter range extends beyond actual text
     let label = build_code_label(
         &raijin_extension::CodeLabel {
-            spans: vec![raijin_raijin_extension::CodeLabelSpan::Literal(
-                raijin_raijin_raijin_extension::CodeLabelSpanLiteral {
+            spans: vec![raijin_extension::CodeLabelSpan::Literal(
+                raijin_extension::CodeLabelSpanLiteral {
                     text: "abc".into(),
                     highlight_name: Some("type".into()),
                 },

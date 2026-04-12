@@ -75,7 +75,7 @@ impl Render for EditPredictionOnboarding {
                 cx,
             ))
             .when(is_free_plan, |this| {
-                this.child(ui::Divider::horizontal()).child(github_copilot)
+                this.child(raijin_ui::Divider::horizontal()).child(github_copilot)
             })
     }
 }

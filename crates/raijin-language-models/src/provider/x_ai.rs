@@ -77,7 +77,7 @@ impl XAiLanguageModelProvider {
         Self { http_client, state }
     }
 
-    fn create_language_model(&self, model: x_ai::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_x_ai::Model) -> Arc<dyn LanguageModel> {
         Arc::new(XAiLanguageModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -123,18 +123,18 @@ impl LanguageModelProvider for XAiLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(x_ai::Model::default()))
+        Some(self.create_language_model(raijin_x_ai::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(x_ai::Model::default_fast()))
+        Some(self.create_language_model(raijin_x_ai::Model::default_fast()))
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        for model in x_ai::Model::iter() {
-            if !matches!(model, x_ai::Model::Custom { .. }) {
+        for model in raijin_x_ai::Model::iter() {
+            if !matches!(model, raijin_x_ai::Model::Custom { .. }) {
                 models.insert(model.id().to_string(), model);
             }
         }
@@ -142,7 +142,7 @@ impl LanguageModelProvider for XAiLanguageModelProvider {
         for model in &Self::settings(cx).available_models {
             models.insert(
                 model.name.clone(),
-                x_ai::Model::Custom {
+                raijin_x_ai::Model::Custom {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
@@ -171,7 +171,7 @@ impl LanguageModelProvider for XAiLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -187,7 +187,7 @@ impl LanguageModelProvider for XAiLanguageModelProvider {
 
 pub struct XAiLanguageModel {
     id: LanguageModelId,
-    model: x_ai::Model,
+    model: raijin_x_ai::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
@@ -196,7 +196,7 @@ pub struct XAiLanguageModel {
 impl XAiLanguageModel {
     fn stream_completion(
         &self,
-        request: open_ai::Request,
+        request: raijin_open_ai::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
@@ -217,7 +217,7 @@ impl XAiLanguageModel {
             let Some(api_key) = api_key else {
                 return Err(LanguageModelCompletionError::NoApiKey { provider });
             };
-            let request = open_ai::stream_completion(
+            let request = raijin_open_ai::stream_completion(
                 http_client.as_ref(),
                 provider.0.as_str(),
                 &api_url,
@@ -406,7 +406,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;

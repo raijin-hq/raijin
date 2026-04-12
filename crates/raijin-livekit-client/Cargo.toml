@@ -27,8 +27,8 @@ inazuma-collections.workspace = true
 cpal.workspace = true
 futures.workspace = true
 inazuma = { workspace = true, features = ["screen-capture", "x11", "wayland"] }
+inazuma-gpui-util.workspace = true
 inazuma-tokio.workspace = true
-raijin-http-client-tls.workspace = true
 image.workspace = true
 raijin-livekit-api.workspace = true
 log.workspace = true
@@ -55,7 +55,10 @@ webrtc-sys.workspace = true
 scap.workspace = true
 
 [target.'cfg(target_os = "macos")'.dependencies]
+core-foundation.workspace = true
 objc2.workspace = true
+objc2-core-foundation.workspace = true
+objc2-core-video.workspace = true
 objc2-foundation = { workspace = true, features = ["NSProcessInfo", "NSString"] }
 core-video.workspace = true
 coreaudio-rs = "0.12.1"

@@ -62,7 +62,7 @@ pub fn init(themes_to_load: LoadThemes, cx: &mut App) {
     // 4. Load user themes from ~/.raijin/themes/
     if load_user_themes {
         let registry = ThemeRegistry::global(cx);
-        let themes_dir = raijin_settings::RaijinSettings::themes_dir();
+        let themes_dir = raijin_paths::themes_dir().clone();
         if themes_dir.is_dir() {
             if let Ok(entries) = std::fs::read_dir(&themes_dir) {
                 for entry in entries.flatten() {

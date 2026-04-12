@@ -1,7 +1,6 @@
-use inazuma::{App, Entity, Placement, Window};
-use std::rc::Rc;
+use inazuma::{App, Placement, Window};
 
-use crate::{AppShell, Dialog, InputState, Notification, Sheet};
+use crate::{AppShell, Dialog, Notification, Sheet};
 
 /// Extension trait for [`Window`] to add dialog, sheet, and notification functionality.
 pub trait WindowExt: Sized {

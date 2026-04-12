@@ -69,7 +69,7 @@ impl Editor {
                                     background_color: Some(
                                         cx.theme()
                                             .colors()
-                                            .editor_document_highlight_bracket_background,
+                                            .editor.document_highlight_bracket_background,
                                     ),
                                     ..Default::default()
                                 },

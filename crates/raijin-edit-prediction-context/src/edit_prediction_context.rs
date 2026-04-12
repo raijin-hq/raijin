@@ -23,7 +23,7 @@ mod edit_prediction_context_tests;
 #[cfg(test)]
 mod fake_definition_lsp;
 
-pub use zeta_prompt::{RelatedExcerpt, RelatedFile};
+pub use raijin_zeta_prompt::{RelatedExcerpt, RelatedFile};
 
 const IDENTIFIER_LINE_COUNT: u32 = 3;
 
@@ -45,7 +45,7 @@ struct RelatedBuffer {
 
 struct CachedRelatedFile {
     excerpts: Vec<RelatedExcerpt>,
-    buffer_version: clock::Global,
+    buffer_version: inazuma_clock::Global,
 }
 
 pub enum RelatedExcerptStoreEvent {
@@ -545,7 +545,7 @@ impl RelatedBuffer {
         return related_file;
     }
 
-    fn fill_cache(&mut self, buffer: &text::BufferSnapshot) -> &CachedRelatedFile {
+    fn fill_cache(&mut self, buffer: &inazuma_text::BufferSnapshot) -> &CachedRelatedFile {
         let excerpts = self
             .anchor_ranges
             .iter()

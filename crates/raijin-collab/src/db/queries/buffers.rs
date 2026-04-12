@@ -62,7 +62,7 @@ impl Database {
                 .iter()
                 .map(|c| c.replica_id)
                 .collect::<HashSet<_>>();
-            let mut replica_id = ReplicaId(clock::ReplicaId::FIRST_COLLAB_ID.as_u16() as i32);
+            let mut replica_id = ReplicaId(inazuma_clock::ReplicaId::FIRST_COLLAB_ID.as_u16() as i32);
             while replica_ids.contains(&replica_id) {
                 replica_id = ReplicaId(replica_id.0 + 1);
             }
@@ -198,12 +198,12 @@ impl Database {
 
                 // Find the server's version vector and any operations
                 // that the client has not seen.
-                let mut server_version = clock::Global::new();
+                let mut server_version = inazuma_clock::Global::new();
                 let mut operations = Vec::new();
                 while let Some(row) = rows.next().await {
                     let row = row?;
-                    let timestamp = clock::Lamport {
-                        replica_id: clock::ReplicaId::new(row.replica_id as u16),
+                    let timestamp = inazuma_clock::Lamport {
+                        replica_id: inazuma_clock::ReplicaId::new(row.replica_id as u16),
                         value: row.lamport_timestamp as u32,
                     };
                     server_version.observe(timestamp);
@@ -701,9 +701,9 @@ impl Database {
             return Ok(());
         }
 
-        let mut text_buffer = text::Buffer::new(
-            clock::ReplicaId::LOCAL,
-            text::BufferId::new(1).unwrap(),
+        let mut text_buffer = inazuma_text::Buffer::new(
+            inazuma_clock::ReplicaId::LOCAL,
+            inazuma_text::BufferId::new(1).unwrap(),
             base_text,
         );
         text_buffer.apply_ops(operations.into_iter().filter_map(operation_from_wire));
@@ -934,11 +934,11 @@ fn version_from_storage(version: &[storage::VectorClockEntry]) -> Vec<proto::Vec
 }
 
 // This is currently a manual copy of the deserialization code in the client's language crate
-pub fn operation_from_wire(operation: proto::Operation) -> Option<text::Operation> {
+pub fn operation_from_wire(operation: proto::Operation) -> Option<inazuma_text::Operation> {
     match operation.variant? {
-        proto::operation::Variant::Edit(edit) => Some(text::Operation::Edit(EditOperation {
-            timestamp: clock::Lamport {
-                replica_id: clock::ReplicaId::new(edit.replica_id as u16),
+        proto::operation::Variant::Edit(edit) => Some(inazuma_text::Operation::Edit(EditOperation {
+            timestamp: inazuma_clock::Lamport {
+                replica_id: inazuma_clock::ReplicaId::new(edit.replica_id as u16),
                 value: edit.lamport_timestamp,
             },
             version: version_from_wire(&edit.version),
@@ -946,14 +946,14 @@ pub fn operation_from_wire(operation: proto::Operation) -> Option<text::Operatio
                 .ranges
                 .into_iter()
                 .map(|range| {
-                    text::FullOffset(range.start as usize)..text::FullOffset(range.end as usize)
+                    inazuma_text::FullOffset(range.start as usize)..inazuma_text::FullOffset(range.end as usize)
                 })
                 .collect(),
             new_text: edit.new_text.into_iter().map(Arc::from).collect(),
         })),
-        proto::operation::Variant::Undo(undo) => Some(text::Operation::Undo(UndoOperation {
-            timestamp: clock::Lamport {
-                replica_id: clock::ReplicaId::new(undo.replica_id as u16),
+        proto::operation::Variant::Undo(undo) => Some(inazuma_text::Operation::Undo(UndoOperation {
+            timestamp: inazuma_clock::Lamport {
+                replica_id: inazuma_clock::ReplicaId::new(undo.replica_id as u16),
                 value: undo.lamport_timestamp,
             },
             version: version_from_wire(&undo.version),
@@ -962,8 +962,8 @@ pub fn operation_from_wire(operation: proto::Operation) -> Option<text::Operatio
                 .into_iter()
                 .map(|c| {
                     (
-                        clock::Lamport {
-                            replica_id: clock::ReplicaId::new(c.replica_id as u16),
+                        inazuma_clock::Lamport {
+                            replica_id: inazuma_clock::ReplicaId::new(c.replica_id as u16),
                             value: c.lamport_timestamp,
                         },
                         c.count,
@@ -975,18 +975,18 @@ pub fn operation_from_wire(operation: proto::Operation) -> Option<text::Operatio
     }
 }
 
-fn version_from_wire(message: &[proto::VectorClockEntry]) -> clock::Global {
-    let mut version = clock::Global::new();
+fn version_from_wire(message: &[proto::VectorClockEntry]) -> inazuma_clock::Global {
+    let mut version = inazuma_clock::Global::new();
     for entry in message {
-        version.observe(clock::Lamport {
-            replica_id: clock::ReplicaId::new(entry.replica_id as u16),
+        version.observe(inazuma_clock::Lamport {
+            replica_id: inazuma_clock::ReplicaId::new(entry.replica_id as u16),
             value: entry.timestamp,
         });
     }
     version
 }
 
-fn version_to_wire(version: &clock::Global) -> Vec<proto::VectorClockEntry> {
+fn version_to_wire(version: &inazuma_clock::Global) -> Vec<proto::VectorClockEntry> {
     let mut message = Vec::new();
     for entry in version.iter() {
         message.push(proto::VectorClockEntry {

@@ -53,7 +53,7 @@ pub struct LmStudioLanguageModelProvider {
 pub struct State {
     api_key_state: ApiKeyState,
     http_client: Arc<dyn HttpClient>,
-    available_models: Vec<lmstudio::Model>,
+    available_models: Vec<raijin_lmstudio::Model>,
     fetch_model_task: Option<Task<Result<()>>>,
     _subscription: Subscription,
 }
@@ -83,11 +83,11 @@ impl State {
             let models =
                 get_models(http_client.as_ref(), &api_url, api_key.as_deref(), None).await?;
 
-            let mut models: Vec<lmstudio::Model> = models
+            let mut models: Vec<raijin_lmstudio::Model> = models
                 .into_iter()
                 .filter(|model| model.r#type != ModelType::Embeddings)
                 .map(|model| {
-                    lmstudio::Model::new(
+                    raijin_lmstudio::Model::new(
                         &model.id,
                         None,
                         model
@@ -231,7 +231,7 @@ impl LanguageModelProvider for LmStudioLanguageModelProvider {
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
-        let mut models: BTreeMap<String, lmstudio::Model> = BTreeMap::default();
+        let mut models: BTreeMap<String, raijin_lmstudio::Model> = BTreeMap::default();
 
         // Add models from the LM Studio API
         for model in self.state.read(cx).available_models.iter() {
@@ -246,7 +246,7 @@ impl LanguageModelProvider for LmStudioLanguageModelProvider {
         {
             models.insert(
                 model.name.clone(),
-                lmstudio::Model {
+                raijin_lmstudio::Model {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
@@ -280,7 +280,7 @@ impl LanguageModelProvider for LmStudioLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         _window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -296,7 +296,7 @@ impl LanguageModelProvider for LmStudioLanguageModelProvider {
 
 pub struct LmStudioLanguageModel {
     id: LanguageModelId,
-    model: lmstudio::Model,
+    model: raijin_lmstudio::Model,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
     state: Entity<State>,
@@ -306,14 +306,14 @@ impl LmStudioLanguageModel {
     fn to_lmstudio_request(
         &self,
         request: LanguageModelRequest,
-    ) -> lmstudio::ChatCompletionRequest {
+    ) -> raijin_lmstudio::ChatCompletionRequest {
         let mut messages = Vec::new();
 
         for message in request.messages {
             for content in message.content {
                 match content {
                     MessageContent::Text(text) => add_message_content_part(
-                        lmstudio::MessagePart::Text { text },
+                        raijin_lmstudio::MessagePart::Text { text },
                         message.role,
                         &mut messages,
                     ),
@@ -321,8 +321,8 @@ impl LmStudioLanguageModel {
                     MessageContent::RedactedThinking(_) => {}
                     MessageContent::Image(image) => {
                         add_message_content_part(
-                            lmstudio::MessagePart::Image {
-                                image_url: lmstudio::ImageUrl {
+                            raijin_lmstudio::MessagePart::Image {
+                                image_url: raijin_lmstudio::ImageUrl {
                                     url: image.to_base64_url(),
                                     detail: None,
                                 },
@@ -332,10 +332,10 @@ impl LmStudioLanguageModel {
                         );
                     }
                     MessageContent::ToolUse(tool_use) => {
-                        let tool_call = lmstudio::ToolCall {
+                        let tool_call = raijin_lmstudio::ToolCall {
                             id: tool_use.id.to_string(),
-                            content: lmstudio::ToolCallContent::Function {
-                                function: lmstudio::FunctionContent {
+                            content: raijin_lmstudio::ToolCallContent::Function {
+                                function: raijin_lmstudio::FunctionContent {
                                     name: tool_use.name.to_string(),
                                     arguments: serde_json::to_string(&tool_use.input)
                                         .unwrap_or_default(),
@@ -343,12 +343,12 @@ impl LmStudioLanguageModel {
                             },
                         };
 
-                        if let Some(lmstudio::ChatMessage::Assistant { tool_calls, .. }) =
+                        if let Some(raijin_lmstudio::ChatMessage::Assistant { tool_calls, .. }) =
                             messages.last_mut()
                         {
                             tool_calls.push(tool_call);
                         } else {
-                            messages.push(lmstudio::ChatMessage::Assistant {
+                            messages.push(raijin_lmstudio::ChatMessage::Assistant {
                                 content: None,
                                 tool_calls: vec![tool_call],
                             });
@@ -357,13 +357,13 @@ impl LmStudioLanguageModel {
                     MessageContent::ToolResult(tool_result) => {
                         let content = match &tool_result.content {
                             LanguageModelToolResultContent::Text(text) => {
-                                vec![lmstudio::MessagePart::Text {
+                                vec![raijin_lmstudio::MessagePart::Text {
                                     text: text.to_string(),
                                 }]
                             }
                             LanguageModelToolResultContent::Image(image) => {
-                                vec![lmstudio::MessagePart::Image {
-                                    image_url: lmstudio::ImageUrl {
+                                vec![raijin_lmstudio::MessagePart::Image {
+                                    image_url: raijin_lmstudio::ImageUrl {
                                         url: image.to_base64_url(),
                                         detail: None,
                                     },
@@ -371,7 +371,7 @@ impl LmStudioLanguageModel {
                             }
                         };
 
-                        messages.push(lmstudio::ChatMessage::Tool {
+                        messages.push(raijin_lmstudio::ChatMessage::Tool {
                             content: content.into(),
                             tool_call_id: tool_result.tool_use_id.to_string(),
                         });
@@ -380,7 +380,7 @@ impl LmStudioLanguageModel {
             }
         }
 
-        lmstudio::ChatCompletionRequest {
+        raijin_lmstudio::ChatCompletionRequest {
             model: self.model.name.clone(),
             messages,
             stream: true,
@@ -393,8 +393,8 @@ impl LmStudioLanguageModel {
             tools: request
                 .tools
                 .into_iter()
-                .map(|tool| lmstudio::ToolDefinition::Function {
-                    function: lmstudio::FunctionDefinition {
+                .map(|tool| raijin_lmstudio::ToolDefinition::Function {
+                    function: raijin_lmstudio::FunctionDefinition {
                         name: tool.name,
                         description: Some(tool.description),
                         parameters: Some(tool.input_schema),
@@ -402,20 +402,20 @@ impl LmStudioLanguageModel {
                 })
                 .collect(),
             tool_choice: request.tool_choice.map(|choice| match choice {
-                LanguageModelToolChoice::Auto => lmstudio::ToolChoice::Auto,
-                LanguageModelToolChoice::Any => lmstudio::ToolChoice::Required,
-                LanguageModelToolChoice::None => lmstudio::ToolChoice::None,
+                LanguageModelToolChoice::Auto => raijin_lmstudio::ToolChoice::Auto,
+                LanguageModelToolChoice::Any => raijin_lmstudio::ToolChoice::Required,
+                LanguageModelToolChoice::None => raijin_lmstudio::ToolChoice::None,
             }),
         }
     }
 
     fn stream_completion(
         &self,
-        request: lmstudio::ChatCompletionRequest,
+        request: raijin_lmstudio::ChatCompletionRequest,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
-        Result<futures::stream::BoxStream<'static, Result<lmstudio::ResponseStreamEvent>>>,
+        Result<futures::stream::BoxStream<'static, Result<raijin_lmstudio::ResponseStreamEvent>>>,
     > {
         let http_client = self.http_client.clone();
         let (api_key, api_url) = self.state.read_with(cx, |state, cx| {
@@ -424,7 +424,7 @@ impl LmStudioLanguageModel {
         });
 
         let future = self.request_limiter.stream(async move {
-            let stream = lmstudio::stream_chat_completion(
+            let stream = raijin_lmstudio::stream_chat_completion(
                 http_client.as_ref(),
                 &api_url,
                 api_key.as_deref(),
@@ -530,7 +530,7 @@ impl LmStudioEventMapper {
 
     pub fn map_stream(
         mut self,
-        events: Pin<Box<dyn Send + Stream<Item = Result<lmstudio::ResponseStreamEvent>>>>,
+        events: Pin<Box<dyn Send + Stream<Item = Result<raijin_lmstudio::ResponseStreamEvent>>>>,
     ) -> impl Stream<Item = Result<LanguageModelCompletionEvent, LanguageModelCompletionError>>
     {
         events.flat_map(move |event| {
@@ -543,7 +543,7 @@ impl LmStudioEventMapper {
 
     pub fn map_event(
         &mut self,
-        event: lmstudio::ResponseStreamEvent,
+        event: raijin_lmstudio::ResponseStreamEvent,
     ) -> Vec<Result<LanguageModelCompletionEvent, LanguageModelCompletionError>> {
         let Some(choice) = event.choices.into_iter().next() else {
             return vec![Err(LanguageModelCompletionError::from(anyhow!(
@@ -646,33 +646,33 @@ struct RawToolCall {
 }
 
 fn add_message_content_part(
-    new_part: lmstudio::MessagePart,
+    new_part: raijin_lmstudio::MessagePart,
     role: Role,
-    messages: &mut Vec<lmstudio::ChatMessage>,
+    messages: &mut Vec<raijin_lmstudio::ChatMessage>,
 ) {
     match (role, messages.last_mut()) {
-        (Role::User, Some(lmstudio::ChatMessage::User { content }))
+        (Role::User, Some(raijin_lmstudio::ChatMessage::User { content }))
         | (
             Role::Assistant,
-            Some(lmstudio::ChatMessage::Assistant {
+            Some(raijin_lmstudio::ChatMessage::Assistant {
                 content: Some(content),
                 ..
             }),
         )
-        | (Role::System, Some(lmstudio::ChatMessage::System { content })) => {
+        | (Role::System, Some(raijin_lmstudio::ChatMessage::System { content })) => {
             content.push_part(new_part);
         }
         _ => {
             messages.push(match role {
-                Role::User => lmstudio::ChatMessage::User {
-                    content: lmstudio::MessageContent::from(vec![new_part]),
+                Role::User => raijin_lmstudio::ChatMessage::User {
+                    content: raijin_lmstudio::MessageContent::from(vec![new_part]),
                 },
-                Role::Assistant => lmstudio::ChatMessage::Assistant {
-                    content: Some(lmstudio::MessageContent::from(vec![new_part])),
+                Role::Assistant => raijin_lmstudio::ChatMessage::Assistant {
+                    content: Some(raijin_lmstudio::MessageContent::from(vec![new_part])),
                     tool_calls: Vec::new(),
                 },
-                Role::System => lmstudio::ChatMessage::System {
-                    content: lmstudio::MessageContent::from(vec![new_part]),
+                Role::System => raijin_lmstudio::ChatMessage::System {
+                    content: raijin_lmstudio::MessageContent::from(vec![new_part]),
                 },
             });
         }
@@ -724,7 +724,7 @@ impl ConfigurationView {
         });
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;
@@ -829,7 +829,7 @@ impl ConfigurationView {
                 .into_any_element()
         } else {
             v_flex()
-                .on_action(cx.listener(|this, _: &menu::Confirm, _window, cx| {
+                .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, _window, cx| {
                     this.save_api_url(cx);
                     cx.notify();
                 }))
@@ -915,7 +915,7 @@ impl Render for ConfigurationView {
                                 if is_authenticated {
                                     this.child(
                                         Button::new("lmstudio-site", "LM Studio")
-                                            .style(ButtonStyle::Subtle)
+                                            .style(ButtonStyle::SUBTLE)
                                             .end_icon(
                                                 Icon::new(IconName::ArrowUpRight)
                                                     .size(IconSize::Small)
@@ -932,7 +932,7 @@ impl Render for ConfigurationView {
                                             "download_lmstudio_button",
                                             "Download LM Studio",
                                         )
-                                        .style(ButtonStyle::Subtle)
+                                        .style(ButtonStyle::SUBTLE)
                                         .end_icon(
                                             Icon::new(IconName::ArrowUpRight)
                                                 .size(IconSize::Small)
@@ -947,7 +947,7 @@ impl Render for ConfigurationView {
                             })
                             .child(
                                 Button::new("view-models", "Model Catalog")
-                                    .style(ButtonStyle::Subtle)
+                                    .style(ButtonStyle::SUBTLE)
                                     .end_icon(
                                         Icon::new(IconName::ArrowUpRight)
                                             .size(IconSize::Small)

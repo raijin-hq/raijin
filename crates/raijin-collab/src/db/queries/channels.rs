@@ -302,7 +302,7 @@ impl Database {
             let notifications = self
                 .create_notification(
                     invitee_id,
-                    rpc::Notification::ChannelInvitation {
+                    raijin_rpc::Notification::ChannelInvitation {
                         channel_id: channel_id.to_proto(),
                         channel_name: channel.name.clone(),
                         inviter_id: inviter_id.to_proto(),
@@ -410,7 +410,7 @@ impl Database {
                 notifications: self
                     .mark_notification_as_read_with_response(
                         user_id,
-                        &rpc::Notification::ChannelInvitation {
+                        &raijin_rpc::Notification::ChannelInvitation {
                             channel_id: channel_id.to_proto(),
                             channel_name: Default::default(),
                             inviter_id: Default::default(),
@@ -486,7 +486,7 @@ impl Database {
                 notification_id: self
                     .remove_notification(
                         member_id,
-                        rpc::Notification::ChannelInvitation {
+                        raijin_rpc::Notification::ChannelInvitation {
                             channel_id: channel_id.to_proto(),
                             channel_name: Default::default(),
                             inviter_id: Default::default(),

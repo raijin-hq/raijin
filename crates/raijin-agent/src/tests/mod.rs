@@ -21,7 +21,7 @@ use futures::{
 };
 use inazuma::{
     App, AppContext, AsyncApp, Entity, Task, TestAppContext, UpdateGlobal,
-    http_client::FakeHttpClient,
+    raijin_http_client::FakeHttpClient,
 };
 use indoc::indoc;
 use raijin_language_model::{
@@ -258,9 +258,9 @@ impl crate::ThreadEnvironment for MultiTerminalEnvironment {
 
 fn always_allow_tools(cx: &mut TestAppContext) {
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-        settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-        agent_settings::AgentSettings::override_global(settings, cx);
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+        settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 }
 
@@ -840,7 +840,7 @@ async fn test_tool_authorization(cx: &mut TestAppContext) {
     // Approve the first - send "allow" option_id (UI transforms "once" to "allow")
     tool_call_auth_1
         .response
-        .send(acp_thread::SelectedPermissionOutcome::new(
+        .send(raijin_acp_thread::SelectedPermissionOutcome::new(
             acp::PermissionOptionId::new("allow"),
             acp::PermissionOptionKind::AllowOnce,
         ))
@@ -850,7 +850,7 @@ async fn test_tool_authorization(cx: &mut TestAppContext) {
     // Reject the second - send "deny" option_id directly since Deny is now a button
     tool_call_auth_2
         .response
-        .send(acp_thread::SelectedPermissionOutcome::new(
+        .send(raijin_acp_thread::SelectedPermissionOutcome::new(
             acp::PermissionOptionId::new("deny"),
             acp::PermissionOptionKind::RejectOnce,
         ))
@@ -862,14 +862,14 @@ async fn test_tool_authorization(cx: &mut TestAppContext) {
     assert_eq!(
         message.content,
         vec![
-            language_model::MessageContent::ToolResult(LanguageModelToolResult {
+            raijin_language_model::MessageContent::ToolResult(LanguageModelToolResult {
                 tool_use_id: tool_call_auth_1.tool_call.tool_call_id.0.to_string().into(),
                 tool_name: ToolRequiringPermission::NAME.into(),
                 is_error: false,
                 content: "Allowed".into(),
                 output: Some("Allowed".into())
             }),
-            language_model::MessageContent::ToolResult(LanguageModelToolResult {
+            raijin_language_model::MessageContent::ToolResult(LanguageModelToolResult {
                 tool_use_id: tool_call_auth_2.tool_call.tool_call_id.0.to_string().into(),
                 tool_name: ToolRequiringPermission::NAME.into(),
                 is_error: true,
@@ -897,7 +897,7 @@ async fn test_tool_authorization(cx: &mut TestAppContext) {
     let tool_call_auth_3 = next_tool_call_authorization(&mut events).await;
     tool_call_auth_3
         .response
-        .send(acp_thread::SelectedPermissionOutcome::new(
+        .send(raijin_acp_thread::SelectedPermissionOutcome::new(
             acp::PermissionOptionId::new("always_allow:tool_requiring_permission"),
             acp::PermissionOptionKind::AllowAlways,
         ))
@@ -907,7 +907,7 @@ async fn test_tool_authorization(cx: &mut TestAppContext) {
     let message = completion.messages.last().unwrap();
     assert_eq!(
         message.content,
-        vec![language_model::MessageContent::ToolResult(
+        vec![raijin_language_model::MessageContent::ToolResult(
             LanguageModelToolResult {
                 tool_use_id: tool_call_auth_3.tool_call.tool_call_id.0.to_string().into(),
                 tool_name: ToolRequiringPermission::NAME.into(),
@@ -935,7 +935,7 @@ async fn test_tool_authorization(cx: &mut TestAppContext) {
     let message = completion.messages.last().unwrap();
     assert_eq!(
         message.content,
-        vec![language_model::MessageContent::ToolResult(
+        vec![raijin_language_model::MessageContent::ToolResult(
             LanguageModelToolResult {
                 tool_use_id: "tool_id_4".into(),
                 tool_name: ToolRequiringPermission::NAME.into(),
@@ -1000,7 +1000,7 @@ async fn expect_tool_call_update_fields(
         .expect("no tool call authorization event received")
         .unwrap();
     match event {
-        ThreadEvent::ToolCallUpdate(acp_thread::ToolCallUpdate::UpdateFields(update)) => update,
+        ThreadEvent::ToolCallUpdate(raijin_acp_thread::ToolCallUpdate::UpdateFields(update)) => update,
         event => {
             panic!("Unexpected event {event:?}");
         }
@@ -1347,7 +1347,7 @@ async fn test_profiles(cx: &mut TestAppContext) {
 
     // Override profiles and wait for settings to be loaded.
     fs.insert_file(
-        paths::settings_file(),
+        raijin_paths::settings_file(),
         json!({
             "agent": {
                 "profiles": {
@@ -1425,7 +1425,7 @@ async fn test_mcp_tools(cx: &mut TestAppContext) {
 
     // Override profiles and wait for settings to be loaded.
     fs.insert_file(
-        paths::settings_file(),
+        raijin_paths::settings_file(),
         json!({
             "agent": {
                 "tool_permissions": { "default": "allow" },
@@ -1451,7 +1451,7 @@ async fn test_mcp_tools(cx: &mut TestAppContext) {
 
     let mut mcp_tool_calls = setup_context_server(
         "test_server",
-        vec![context_server::types::Tool {
+        vec![raijin_context_server::types::Tool {
             name: "echo".into(),
             description: None,
             input_schema: serde_json::to_value(EchoTool::input_schema(
@@ -1490,8 +1490,8 @@ async fn test_mcp_tools(cx: &mut TestAppContext) {
     assert_eq!(tool_call_params.name, "echo");
     assert_eq!(tool_call_params.arguments, Some(json!({"text": "test"})));
     tool_call_response
-        .send(context_server::types::CallToolResponse {
-            content: vec![context_server::types::ToolResponseContent::Text {
+        .send(raijin_context_server::types::CallToolResponse {
+            content: vec![raijin_context_server::types::ToolResponseContent::Text {
                 text: "test".into(),
             }],
             is_error: None,
@@ -1544,8 +1544,8 @@ async fn test_mcp_tools(cx: &mut TestAppContext) {
     assert_eq!(tool_call_params.name, "echo");
     assert_eq!(tool_call_params.arguments, Some(json!({"text": "mcp"})));
     tool_call_response
-        .send(context_server::types::CallToolResponse {
-            content: vec![context_server::types::ToolResponseContent::Text { text: "mcp".into() }],
+        .send(raijin_context_server::types::CallToolResponse {
+            content: vec![raijin_context_server::types::ToolResponseContent::Text { text: "mcp".into() }],
             is_error: None,
             meta: None,
             structured_content: None,
@@ -1591,7 +1591,7 @@ async fn test_mcp_tool_result_displayed_when_server_disconnected(cx: &mut TestAp
 
     // Setup settings to allow MCP tools
     fs.insert_file(
-        paths::settings_file(),
+        raijin_paths::settings_file(),
         json!({
             "agent": {
                 "always_allow_tool_actions": true,
@@ -1616,7 +1616,7 @@ async fn test_mcp_tool_result_displayed_when_server_disconnected(cx: &mut TestAp
     // Setup a context server with a tool
     let mut mcp_tool_calls = setup_context_server(
         "github_server",
-        vec![context_server::types::Tool {
+        vec![raijin_context_server::types::Tool {
             name: "issue_read".into(),
             description: Some("Read a GitHub issue".into()),
             input_schema: json!({
@@ -1668,8 +1668,8 @@ async fn test_mcp_tool_result_displayed_when_server_disconnected(cx: &mut TestAp
     let (tool_call_params, tool_call_response) = mcp_tool_calls.next().await.unwrap();
     assert_eq!(tool_call_params.name, "issue_read");
     tool_call_response
-        .send(context_server::types::CallToolResponse {
-            content: vec![context_server::types::ToolResponseContent::Text {
+        .send(raijin_context_server::types::CallToolResponse {
+            content: vec![raijin_context_server::types::ToolResponseContent::Text {
                 text: expected_tool_output.into(),
             }],
             is_error: None,
@@ -1723,7 +1723,7 @@ async fn test_mcp_tool_result_displayed_when_server_disconnected(cx: &mut TestAp
             ThreadEvent::ToolCall(tc) if tc.tool_call_id.to_string() == "tool_1" => {
                 found_tool_call = Some(tc.clone());
             }
-            ThreadEvent::ToolCallUpdate(acp_thread::ToolCallUpdate::UpdateFields(update))
+            ThreadEvent::ToolCallUpdate(raijin_acp_thread::ToolCallUpdate::UpdateFields(update))
                 if update.tool_call_id.to_string() == "tool_1" =>
             {
                 if update.fields.raw_output.is_some() {
@@ -1773,7 +1773,7 @@ async fn test_mcp_tool_truncation(cx: &mut TestAppContext) {
 
     // Set up a profile with all tools enabled
     fs.insert_file(
-        paths::settings_file(),
+        raijin_paths::settings_file(),
         json!({
             "agent": {
                 "profiles": {
@@ -1810,7 +1810,7 @@ async fn test_mcp_tool_truncation(cx: &mut TestAppContext) {
     let _server1_calls = setup_context_server(
         "xxx",
         vec![
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "echo".into(), // Conflicts with native EchoTool
                 description: None,
                 input_schema: serde_json::to_value(EchoTool::input_schema(
@@ -1820,7 +1820,7 @@ async fn test_mcp_tool_truncation(cx: &mut TestAppContext) {
                 output_schema: None,
                 annotations: None,
             },
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "unique_tool_1".into(),
                 description: None,
                 input_schema: json!({"type": "object", "properties": {}}),
@@ -1835,7 +1835,7 @@ async fn test_mcp_tool_truncation(cx: &mut TestAppContext) {
     let _server2_calls = setup_context_server(
         "yyy",
         vec![
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "echo".into(), // Also conflicts with native EchoTool
                 description: None,
                 input_schema: serde_json::to_value(EchoTool::input_schema(
@@ -1845,21 +1845,21 @@ async fn test_mcp_tool_truncation(cx: &mut TestAppContext) {
                 output_schema: None,
                 annotations: None,
             },
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "unique_tool_2".into(),
                 description: None,
                 input_schema: json!({"type": "object", "properties": {}}),
                 output_schema: None,
                 annotations: None,
             },
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "a".repeat(MAX_TOOL_NAME_LENGTH - 2),
                 description: None,
                 input_schema: json!({"type": "object", "properties": {}}),
                 output_schema: None,
                 annotations: None,
             },
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "b".repeat(MAX_TOOL_NAME_LENGTH - 1),
                 description: None,
                 input_schema: json!({"type": "object", "properties": {}}),
@@ -1873,21 +1873,21 @@ async fn test_mcp_tool_truncation(cx: &mut TestAppContext) {
     let _server3_calls = setup_context_server(
         "zzz",
         vec![
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "a".repeat(MAX_TOOL_NAME_LENGTH - 2),
                 description: None,
                 input_schema: json!({"type": "object", "properties": {}}),
                 output_schema: None,
                 annotations: None,
             },
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "b".repeat(MAX_TOOL_NAME_LENGTH - 1),
                 description: None,
                 input_schema: json!({"type": "object", "properties": {}}),
                 output_schema: None,
                 annotations: None,
             },
-            context_server::types::Tool {
+            raijin_context_server::types::Tool {
                 name: "c".repeat(MAX_TOOL_NAME_LENGTH + 1),
                 description: None,
                 input_schema: json!({"type": "object", "properties": {}}),
@@ -1902,7 +1902,7 @@ async fn test_mcp_tool_truncation(cx: &mut TestAppContext) {
     // Server with spaces in name - tests snake_case conversion for API compatibility
     let _server4_calls = setup_context_server(
         "Azure DevOps",
-        vec![context_server::types::Tool {
+        vec![raijin_context_server::types::Tool {
             name: "echo".into(), // Also conflicts - will be disambiguated as azure_dev_ops_echo
             description: None,
             input_schema: serde_json::to_value(EchoTool::input_schema(
@@ -1973,7 +1973,7 @@ async fn test_cancellation(cx: &mut TestAppContext) {
                     echo_id = Some(tool_call.tool_call_id);
                 }
             }
-            ThreadEvent::ToolCallUpdate(acp_thread::ToolCallUpdate::UpdateFields(
+            ThreadEvent::ToolCallUpdate(raijin_acp_thread::ToolCallUpdate::UpdateFields(
                 acp::ToolCallUpdate {
                     tool_call_id,
                     fields:
@@ -2107,7 +2107,7 @@ async fn test_terminal_tool_cancellation_captures_output(cx: &mut TestAppContext
             .expect("expected tool result");
 
         let result_text = match &tool_result.content {
-            language_model::LanguageModelToolResultContent::Text(text) => text.to_string(),
+            raijin_language_model::LanguageModelToolResultContent::Text(text) => text.to_string(),
             _ => panic!("expected text content in tool result"),
         };
 
@@ -2265,7 +2265,7 @@ async fn wait_for_terminal_tool_started(
         cx.run_until_parked();
 
         while let Some(Some(event)) = events.next().now_or_never() {
-            if let Ok(ThreadEvent::ToolCallUpdate(acp_thread::ToolCallUpdate::UpdateFields(
+            if let Ok(ThreadEvent::ToolCallUpdate(raijin_acp_thread::ToolCallUpdate::UpdateFields(
                 update,
             ))) = &event
             {
@@ -2430,7 +2430,7 @@ async fn test_cancel_multiple_concurrent_terminal_tools(cx: &mut TestAppContext)
         cx.run_until_parked();
 
         while let Some(Some(event)) = events.next().now_or_never() {
-            if let Ok(ThreadEvent::ToolCallUpdate(acp_thread::ToolCallUpdate::UpdateFields(
+            if let Ok(ThreadEvent::ToolCallUpdate(raijin_acp_thread::ToolCallUpdate::UpdateFields(
                 update,
             ))) = &event
             {
@@ -2572,7 +2572,7 @@ async fn test_terminal_tool_stopped_via_terminal_card_button(cx: &mut TestAppCon
             .expect("expected tool result");
 
         let result_text = match &tool_result.content {
-            language_model::LanguageModelToolResultContent::Text(text) => text.to_string(),
+            raijin_language_model::LanguageModelToolResultContent::Text(text) => text.to_string(),
             _ => panic!("expected text content in tool result"),
         };
 
@@ -2667,7 +2667,7 @@ async fn test_terminal_tool_timeout_expires(cx: &mut TestAppContext) {
             .expect("expected tool result");
 
         let result_text = match &tool_result.content {
-            language_model::LanguageModelToolResultContent::Text(text) => text.to_string(),
+            raijin_language_model::LanguageModelToolResultContent::Text(text) => text.to_string(),
             _ => panic!("expected text content in tool result"),
         };
 
@@ -2735,7 +2735,7 @@ async fn test_retry_cancelled_promptly_on_new_send(cx: &mut TestAppContext) {
     model_a.send_last_completion_stream_error(
         LanguageModelCompletionError::UpstreamProviderError {
             message: "Internal server error".to_string(),
-            status: http_client::StatusCode::INTERNAL_SERVER_ERROR,
+            status: raijin_http_client::StatusCode::INTERNAL_SERVER_ERROR,
             retry_after: None,
         },
     );
@@ -2899,7 +2899,7 @@ async fn test_truncate_first_message(cx: &mut TestAppContext) {
 
     fake_model.send_last_completion_stream_text_chunk("Hey!");
     fake_model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-        language_model::TokenUsage {
+        raijin_language_model::TokenUsage {
             input_tokens: 32_000,
             output_tokens: 16_000,
             cache_creation_input_tokens: 0,
@@ -2922,7 +2922,7 @@ async fn test_truncate_first_message(cx: &mut TestAppContext) {
         );
         assert_eq!(
             thread.latest_token_usage(),
-            Some(acp_thread::TokenUsage {
+            Some(raijin_acp_thread::TokenUsage {
                 used_tokens: 32_000 + 16_000,
                 max_tokens: 1_000_000,
                 max_output_tokens: None,
@@ -2960,7 +2960,7 @@ async fn test_truncate_first_message(cx: &mut TestAppContext) {
     cx.run_until_parked();
     fake_model.send_last_completion_stream_text_chunk("Ahoy!");
     fake_model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-        language_model::TokenUsage {
+        raijin_language_model::TokenUsage {
             input_tokens: 40_000,
             output_tokens: 20_000,
             cache_creation_input_tokens: 0,
@@ -2984,7 +2984,7 @@ async fn test_truncate_first_message(cx: &mut TestAppContext) {
 
         assert_eq!(
             thread.latest_token_usage(),
-            Some(acp_thread::TokenUsage {
+            Some(raijin_acp_thread::TokenUsage {
                 used_tokens: 40_000 + 20_000,
                 max_tokens: 1_000_000,
                 max_output_tokens: None,
@@ -3008,7 +3008,7 @@ async fn test_truncate_second_message(cx: &mut TestAppContext) {
     cx.run_until_parked();
     fake_model.send_last_completion_stream_text_chunk("Message 1 response");
     fake_model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-        language_model::TokenUsage {
+        raijin_language_model::TokenUsage {
             input_tokens: 32_000,
             output_tokens: 16_000,
             cache_creation_input_tokens: 0,
@@ -3035,7 +3035,7 @@ async fn test_truncate_second_message(cx: &mut TestAppContext) {
 
             assert_eq!(
                 thread.latest_token_usage(),
-                Some(acp_thread::TokenUsage {
+                Some(raijin_acp_thread::TokenUsage {
                     used_tokens: 32_000 + 16_000,
                     max_tokens: 1_000_000,
                     max_output_tokens: None,
@@ -3058,7 +3058,7 @@ async fn test_truncate_second_message(cx: &mut TestAppContext) {
 
     fake_model.send_last_completion_stream_text_chunk("Message 2 response");
     fake_model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-        language_model::TokenUsage {
+        raijin_language_model::TokenUsage {
             input_tokens: 40_000,
             output_tokens: 20_000,
             cache_creation_input_tokens: 0,
@@ -3092,7 +3092,7 @@ async fn test_truncate_second_message(cx: &mut TestAppContext) {
 
         assert_eq!(
             thread.latest_token_usage(),
-            Some(acp_thread::TokenUsage {
+            Some(raijin_acp_thread::TokenUsage {
                 used_tokens: 40_000 + 20_000,
                 max_tokens: 1_000_000,
                 max_output_tokens: None,
@@ -3242,7 +3242,7 @@ async fn test_building_request_with_pending_tools(cx: &mut TestAppContext) {
 
 #[inazuma::test]
 async fn test_agent_connection(cx: &mut TestAppContext) {
-    cx.update(settings::init);
+    cx.update(inazuma_settings_framework::init);
     let templates = Templates::new();
 
     // Initialize language model system with test provider
@@ -3250,17 +3250,17 @@ async fn test_agent_connection(cx: &mut TestAppContext) {
         gpui_tokio::init(cx);
 
         let http_client = FakeHttpClient::with_404_response();
-        let clock = Arc::new(clock::FakeSystemClock::new());
+        let clock = Arc::new(inazuma_clock::FakeSystemClock::new());
         let client = Client::new(clock, http_client, cx);
         let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
-        language_model::init(user_store.clone(), client.clone(), cx);
-        language_models::init(user_store, client.clone(), cx);
+        raijin_language_model::init(user_store.clone(), client.clone(), cx);
+        raijin_language_models::init(user_store, client.clone(), cx);
         LanguageModelRegistry::test(cx);
     });
     cx.executor().forbid_parking();
 
     // Create a project for new_thread
-    let fake_fs = cx.update(|cx| fs::FakeFs::new(cx.background_executor().clone()));
+    let fake_fs = cx.update(|cx| raijin_fs::FakeFs::new(cx.background_executor().clone()));
     fake_fs.insert_tree(path!("/test"), json!({})).await;
     let project = Project::test(fake_fs.clone(), [Path::new("/test")], cx).await;
     let cwd = PathList::new(&[Path::new("/test")]);
@@ -3349,7 +3349,7 @@ async fn test_agent_connection(cx: &mut TestAppContext) {
     let result = cx
         .update(|cx| {
             connection.prompt(
-                Some(acp_thread::UserMessageId::new()),
+                Some(raijin_acp_thread::UserMessageId::new()),
                 acp::PromptRequest::new(session_id.clone(), vec!["ghi".into()]),
                 cx,
             )
@@ -3637,7 +3637,7 @@ async fn test_send_retry_on_error(cx: &mut TestAppContext) {
     assert_eq!(retry_events.len(), 1);
     assert!(matches!(
         retry_events[0],
-        acp_thread::RetryStatus { attempt: 1, .. }
+        raijin_acp_thread::RetryStatus { attempt: 1, .. }
     ));
     thread.read_with(cx, |thread, _cx| {
         assert_eq!(
@@ -3704,13 +3704,13 @@ async fn test_send_retry_finishes_tool_calls_on_error(cx: &mut TestAppContext) {
             },
             LanguageModelRequestMessage {
                 role: Role::Assistant,
-                content: vec![language_model::MessageContent::ToolUse(tool_use_1.clone())],
+                content: vec![raijin_language_model::MessageContent::ToolUse(tool_use_1.clone())],
                 cache: false,
                 reasoning_details: None,
             },
             LanguageModelRequestMessage {
                 role: Role::User,
-                content: vec![language_model::MessageContent::ToolResult(
+                content: vec![raijin_language_model::MessageContent::ToolResult(
                     LanguageModelToolResult {
                         tool_use_id: tool_use_1.id.clone(),
                         tool_name: tool_use_1.name.clone(),
@@ -3837,7 +3837,7 @@ async fn test_streaming_tool_completes_when_llm_stream_ends_without_final_input(
     fake_model.send_last_completion_stream_error(
         LanguageModelCompletionError::UpstreamProviderError {
             message: "Internal server error".to_string(),
-            status: http_client::StatusCode::INTERNAL_SERVER_ERROR,
+            status: raijin_http_client::StatusCode::INTERNAL_SERVER_ERROR,
             retry_after: None,
         },
     );
@@ -3864,13 +3864,13 @@ async fn test_streaming_tool_completes_when_llm_stream_ends_without_final_input(
             },
             LanguageModelRequestMessage {
                 role: Role::Assistant,
-                content: vec![language_model::MessageContent::ToolUse(tool_use.clone())],
+                content: vec![raijin_language_model::MessageContent::ToolUse(tool_use.clone())],
                 cache: false,
                 reasoning_details: None,
             },
             LanguageModelRequestMessage {
                 role: Role::User,
-                content: vec![language_model::MessageContent::ToolResult(
+                content: vec![raijin_language_model::MessageContent::ToolResult(
                     LanguageModelToolResult {
                         tool_use_id: tool_use.id.clone(),
                         tool_name: tool_use.name,
@@ -3939,11 +3939,11 @@ async fn setup(cx: &mut TestAppContext, model: TestModel) -> ThreadTest {
     cx.executor().allow_parking();
 
     let fs = FakeFs::new(cx.background_executor.clone());
-    fs.create_dir(paths::settings_file().parent().unwrap())
+    fs.create_dir(raijin_paths::settings_file().parent().unwrap())
         .await
         .unwrap();
     fs.insert_file(
-        paths::settings_file(),
+        raijin_paths::settings_file(),
         json!({
             "agent": {
                 "default_profile": "test-profile",
@@ -3972,7 +3972,7 @@ async fn setup(cx: &mut TestAppContext, model: TestModel) -> ThreadTest {
     .await;
 
     cx.update(|cx| {
-        settings::init(cx);
+        inazuma_settings_framework::init(cx);
 
         match model {
             TestModel::Fake => {}
@@ -3982,8 +3982,8 @@ async fn setup(cx: &mut TestAppContext, model: TestModel) -> ThreadTest {
                 cx.set_http_client(Arc::new(http_client));
                 let client = Client::production(cx);
                 let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
-                language_model::init(user_store.clone(), client.clone(), cx);
-                language_models::init(user_store, client.clone(), cx);
+                raijin_language_model::init(user_store.clone(), client.clone(), cx);
+                raijin_language_models::init(user_store, client.clone(), cx);
             }
         };
 
@@ -4053,10 +4053,10 @@ fn watch_settings(fs: Arc<dyn Fs>, cx: &mut App) {
     let fs = fs.clone();
     cx.spawn({
         async move |cx| {
-            let (mut new_settings_content_rx, watcher_task) = settings::watch_config_file(
+            let (mut new_settings_content_rx, watcher_task) = inazuma_settings_framework::watch_config_file(
                 cx.background_executor(),
                 fs,
-                paths::settings_file().clone(),
+                raijin_paths::settings_file().clone(),
             );
             let _watcher_task = watcher_task;
 
@@ -4083,18 +4083,18 @@ fn tool_names_for_completion(completion: &LanguageModelRequest) -> Vec<String> {
 
 fn setup_context_server(
     name: &'static str,
-    tools: Vec<context_server::types::Tool>,
+    tools: Vec<raijin_context_server::types::Tool>,
     context_server_store: &Entity<ContextServerStore>,
     cx: &mut TestAppContext,
 ) -> mpsc::UnboundedReceiver<(
-    context_server::types::CallToolParams,
-    oneshot::Sender<context_server::types::CallToolResponse>,
+    raijin_context_server::types::CallToolParams,
+    oneshot::Sender<raijin_context_server::types::CallToolResponse>,
 )> {
     cx.update(|cx| {
         let mut settings = ProjectSettings::get_global(cx).clone();
         settings.context_servers.insert(
             name.into(),
-            project::project_settings::ContextServerSettings::Stdio {
+            raijin_project::project_settings::ContextServerSettings::Stdio {
                 enabled: true,
                 remote: false,
                 command: ContextServerCommand {
@@ -4109,18 +4109,18 @@ fn setup_context_server(
     });
 
     let (mcp_tool_calls_tx, mcp_tool_calls_rx) = mpsc::unbounded();
-    let fake_transport = context_server::test::create_fake_transport(name, cx.executor())
-        .on_request::<context_server::types::requests::Initialize, _>(move |_params| async move {
-            context_server::types::InitializeResponse {
-                protocol_version: context_server::types::ProtocolVersion(
-                    context_server::types::LATEST_PROTOCOL_VERSION.to_string(),
+    let fake_transport = raijin_context_server::test::create_fake_transport(name, cx.executor())
+        .on_request::<raijin_context_server::types::requests::Initialize, _>(move |_params| async move {
+            raijin_context_server::types::InitializeResponse {
+                protocol_version: raijin_context_server::types::ProtocolVersion(
+                    raijin_context_server::types::LATEST_PROTOCOL_VERSION.to_string(),
                 ),
-                server_info: context_server::types::Implementation {
+                server_info: raijin_context_server::types::Implementation {
                     name: name.into(),
                     version: "1.0.0".to_string(),
                 },
-                capabilities: context_server::types::ServerCapabilities {
-                    tools: Some(context_server::types::ToolsCapabilities {
+                capabilities: raijin_context_server::types::ServerCapabilities {
+                    tools: Some(raijin_context_server::types::ToolsCapabilities {
                         list_changed: Some(true),
                     }),
                     ..Default::default()
@@ -4128,17 +4128,17 @@ fn setup_context_server(
                 meta: None,
             }
         })
-        .on_request::<context_server::types::requests::ListTools, _>(move |_params| {
+        .on_request::<raijin_context_server::types::requests::ListTools, _>(move |_params| {
             let tools = tools.clone();
             async move {
-                context_server::types::ListToolsResponse {
+                raijin_context_server::types::ListToolsResponse {
                     tools,
                     next_cursor: None,
                     meta: None,
                 }
             }
         })
-        .on_request::<context_server::types::requests::CallTool, _>(move |params| {
+        .on_request::<raijin_context_server::types::requests::CallTool, _>(move |params| {
             let mcp_tool_calls_tx = mcp_tool_calls_tx.clone();
             async move {
                 let (response_tx, response_rx) = oneshot::channel();
@@ -4187,7 +4187,7 @@ async fn test_tokens_before_message(cx: &mut TestAppContext) {
     // Complete first message with usage
     fake_model.send_last_completion_stream_text_chunk("Response 1");
     fake_model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-        language_model::TokenUsage {
+        raijin_language_model::TokenUsage {
             input_tokens: 100,
             output_tokens: 50,
             cache_creation_input_tokens: 0,
@@ -4227,7 +4227,7 @@ async fn test_tokens_before_message(cx: &mut TestAppContext) {
     // Complete second message
     fake_model.send_last_completion_stream_text_chunk("Response 2");
     fake_model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-        language_model::TokenUsage {
+        raijin_language_model::TokenUsage {
             input_tokens: 250, // Total for this request (includes previous context)
             output_tokens: 75,
             cache_creation_input_tokens: 0,
@@ -4283,7 +4283,7 @@ async fn test_tokens_before_message_after_truncate(cx: &mut TestAppContext) {
     cx.run_until_parked();
     fake_model.send_last_completion_stream_text_chunk("Response 1");
     fake_model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-        language_model::TokenUsage {
+        raijin_language_model::TokenUsage {
             input_tokens: 100,
             output_tokens: 50,
             cache_creation_input_tokens: 0,
@@ -4302,7 +4302,7 @@ async fn test_tokens_before_message_after_truncate(cx: &mut TestAppContext) {
     cx.run_until_parked();
     fake_model.send_last_completion_stream_text_chunk("Response 2");
     fake_model.send_last_completion_stream_event(LanguageModelCompletionEvent::UsageUpdate(
-        language_model::TokenUsage {
+        raijin_language_model::TokenUsage {
             input_tokens: 250,
             output_tokens: 75,
             cache_creation_input_tokens: 0,
@@ -4354,20 +4354,20 @@ async fn test_terminal_tool_permission_rules(cx: &mut TestAppContext) {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Confirm),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Confirm),
                     always_allow: vec![],
                     always_deny: vec![
-                        agent_settings::CompiledRegex::new(r"rm\s+-rf", false).unwrap(),
+                        raijin_agent_settings::CompiledRegex::new(r"rm\s+-rf", false).unwrap(),
                     ],
                     always_confirm: vec![],
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -4406,20 +4406,20 @@ async fn test_terminal_tool_permission_rules(cx: &mut TestAppContext) {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     always_allow: vec![
-                        agent_settings::CompiledRegex::new(r"^echo\s", false).unwrap(),
+                        raijin_agent_settings::CompiledRegex::new(r"^echo\s", false).unwrap(),
                     ],
                     always_deny: vec![],
                     always_confirm: vec![],
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -4463,21 +4463,21 @@ async fn test_terminal_tool_permission_rules(cx: &mut TestAppContext) {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Allow),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                     always_allow: vec![],
                     always_deny: vec![],
                     always_confirm: vec![
-                        agent_settings::CompiledRegex::new(r"sudo", false).unwrap(),
+                        raijin_agent_settings::CompiledRegex::new(r"sudo", false).unwrap(),
                     ],
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -4512,19 +4512,19 @@ async fn test_terminal_tool_permission_rules(cx: &mut TestAppContext) {
         }));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
             settings.tool_permissions.tools.insert(
                 TerminalTool::NAME.into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     always_allow: vec![],
                     always_deny: vec![],
                     always_confirm: vec![],
                     invalid_patterns: vec![],
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         #[allow(clippy::arc_with_non_send_sync)]
@@ -5722,18 +5722,18 @@ async fn test_edit_file_tool_deny_rule_blocks_edit(cx: &mut TestAppContext) {
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             EditFileTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
-                always_deny: vec![agent_settings::CompiledRegex::new(r"sensitive", false).unwrap()],
+                always_deny: vec![raijin_agent_settings::CompiledRegex::new(r"sensitive", false).unwrap()],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     let context_server_registry =
@@ -5743,7 +5743,7 @@ async fn test_edit_file_tool_deny_rule_blocks_edit(cx: &mut TestAppContext) {
     let thread = cx.new(|cx| {
         crate::Thread::new(
             project.clone(),
-            cx.new(|_cx| prompt_store::ProjectContext::default()),
+            cx.new(|_cx| raijin_prompt_store::ProjectContext::default()),
             context_server_registry,
             templates.clone(),
             None,
@@ -5790,21 +5790,21 @@ async fn test_delete_path_tool_deny_rule_blocks_deletion(cx: &mut TestAppContext
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             DeletePathTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
-                always_deny: vec![agent_settings::CompiledRegex::new(r"important", false).unwrap()],
+                always_deny: vec![raijin_agent_settings::CompiledRegex::new(r"important", false).unwrap()],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
-    let action_log = cx.new(|_cx| action_log::ActionLog::new(project.clone()));
+    let action_log = cx.new(|_cx| raijin_action_log::ActionLog::new(project.clone()));
 
     #[allow(clippy::arc_with_non_send_sync)]
     let tool = Arc::new(crate::DeletePathTool::new(project, action_log));
@@ -5844,18 +5844,18 @@ async fn test_move_path_tool_denies_if_destination_denied(cx: &mut TestAppContex
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             MovePathTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
-                always_deny: vec![agent_settings::CompiledRegex::new(r"protected", false).unwrap()],
+                always_deny: vec![raijin_agent_settings::CompiledRegex::new(r"protected", false).unwrap()],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     #[allow(clippy::arc_with_non_send_sync)]
@@ -5900,18 +5900,18 @@ async fn test_move_path_tool_denies_if_source_denied(cx: &mut TestAppContext) {
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             MovePathTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
-                always_deny: vec![agent_settings::CompiledRegex::new(r"secret", false).unwrap()],
+                always_deny: vec![raijin_agent_settings::CompiledRegex::new(r"secret", false).unwrap()],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     #[allow(clippy::arc_with_non_send_sync)]
@@ -5956,20 +5956,20 @@ async fn test_copy_path_tool_deny_rule_blocks_copy(cx: &mut TestAppContext) {
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             CopyPathTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
                 always_deny: vec![
-                    agent_settings::CompiledRegex::new(r"confidential", false).unwrap(),
+                    raijin_agent_settings::CompiledRegex::new(r"confidential", false).unwrap(),
                 ],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     #[allow(clippy::arc_with_non_send_sync)]
@@ -6013,18 +6013,18 @@ async fn test_save_file_tool_denies_if_any_path_denied(cx: &mut TestAppContext) 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             SaveFileTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
-                always_deny: vec![agent_settings::CompiledRegex::new(r"readonly", false).unwrap()],
+                always_deny: vec![raijin_agent_settings::CompiledRegex::new(r"readonly", false).unwrap()],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     #[allow(clippy::arc_with_non_send_sync)]
@@ -6065,18 +6065,18 @@ async fn test_save_file_tool_respects_deny_rules(cx: &mut TestAppContext) {
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             SaveFileTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
-                always_deny: vec![agent_settings::CompiledRegex::new(r"\.secret$", false).unwrap()],
+                always_deny: vec![raijin_agent_settings::CompiledRegex::new(r"\.secret$", false).unwrap()],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     #[allow(clippy::arc_with_non_send_sync)]
@@ -6106,20 +6106,20 @@ async fn test_web_search_tool_deny_rule_blocks_search(cx: &mut TestAppContext) {
     init_test(cx);
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             WebSearchTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
                 always_deny: vec![
-                    agent_settings::CompiledRegex::new(r"internal\.company", false).unwrap(),
+                    raijin_agent_settings::CompiledRegex::new(r"internal\.company", false).unwrap(),
                 ],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     #[allow(clippy::arc_with_non_send_sync)]
@@ -6154,18 +6154,18 @@ async fn test_edit_file_tool_allow_rule_skips_confirmation(cx: &mut TestAppConte
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             EditFileTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Confirm),
-                always_allow: vec![agent_settings::CompiledRegex::new(r"\.md$", false).unwrap()],
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Confirm),
+                always_allow: vec![raijin_agent_settings::CompiledRegex::new(r"\.md$", false).unwrap()],
                 always_deny: vec![],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     let context_server_registry =
@@ -6175,7 +6175,7 @@ async fn test_edit_file_tool_allow_rule_skips_confirmation(cx: &mut TestAppConte
     let thread = cx.new(|cx| {
         crate::Thread::new(
             project.clone(),
-            cx.new(|_cx| prompt_store::ProjectContext::default()),
+            cx.new(|_cx| raijin_prompt_store::ProjectContext::default()),
             context_server_registry,
             templates.clone(),
             None,
@@ -6231,9 +6231,9 @@ async fn test_edit_file_tool_allow_still_prompts_for_local_settings(cx: &mut Tes
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-        settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-        agent_settings::AgentSettings::override_global(settings, cx);
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+        settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     let context_server_registry =
@@ -6243,7 +6243,7 @@ async fn test_edit_file_tool_allow_still_prompts_for_local_settings(cx: &mut Tes
     let thread = cx.new(|cx| {
         crate::Thread::new(
             project.clone(),
-            cx.new(|_cx| prompt_store::ProjectContext::default()),
+            cx.new(|_cx| raijin_prompt_store::ProjectContext::default()),
             context_server_registry,
             templates.clone(),
             None,
@@ -6283,20 +6283,20 @@ async fn test_fetch_tool_deny_rule_blocks_url(cx: &mut TestAppContext) {
     init_test(cx);
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             FetchTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Allow),
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Allow),
                 always_allow: vec![],
                 always_deny: vec![
-                    agent_settings::CompiledRegex::new(r"internal\.company\.com", false).unwrap(),
+                    raijin_agent_settings::CompiledRegex::new(r"internal\.company\.com", false).unwrap(),
                 ],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     let http_client = inazuma::http_client::FakeHttpClient::with_200_response();
@@ -6323,18 +6323,18 @@ async fn test_fetch_tool_allow_rule_skips_confirmation(cx: &mut TestAppContext) 
     init_test(cx);
 
     cx.update(|cx| {
-        let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+        let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
         settings.tool_permissions.tools.insert(
             FetchTool::NAME.into(),
-            agent_settings::ToolRules {
-                default: Some(settings::ToolPermissionMode::Confirm),
-                always_allow: vec![agent_settings::CompiledRegex::new(r"docs\.rs", false).unwrap()],
+            raijin_agent_settings::ToolRules {
+                default: Some(inazuma_settings_framework::ToolPermissionMode::Confirm),
+                always_allow: vec![raijin_agent_settings::CompiledRegex::new(r"docs\.rs", false).unwrap()],
                 always_deny: vec![],
                 always_confirm: vec![],
                 invalid_patterns: vec![],
             },
         );
-        agent_settings::AgentSettings::override_global(settings, cx);
+        raijin_agent_settings::AgentSettings::override_global(settings, cx);
     });
 
     let http_client = inazuma::http_client::FakeHttpClient::with_200_response();
@@ -6495,13 +6495,13 @@ async fn test_streaming_tool_error_breaks_stream_loop_immediately(cx: &mut TestA
             },
             LanguageModelRequestMessage {
                 role: Role::Assistant,
-                content: vec![language_model::MessageContent::ToolUse(tool_use.clone())],
+                content: vec![raijin_language_model::MessageContent::ToolUse(tool_use.clone())],
                 cache: false,
                 reasoning_details: None,
             },
             LanguageModelRequestMessage {
                 role: Role::User,
-                content: vec![language_model::MessageContent::ToolResult(
+                content: vec![raijin_language_model::MessageContent::ToolResult(
                     LanguageModelToolResult {
                         tool_use_id: tool_use.id.clone(),
                         tool_name: tool_use.name,
@@ -6604,8 +6604,8 @@ async fn test_streaming_tool_error_waits_for_prior_tools_to_complete(cx: &mut Te
             LanguageModelRequestMessage {
                 role: Role::Assistant,
                 content: vec![
-                    language_model::MessageContent::ToolUse(first_tool_use.clone()),
-                    language_model::MessageContent::ToolUse(second_tool_use.clone())
+                    raijin_language_model::MessageContent::ToolUse(first_tool_use.clone()),
+                    raijin_language_model::MessageContent::ToolUse(second_tool_use.clone())
                 ],
                 cache: false,
                 reasoning_details: None,
@@ -6613,14 +6613,14 @@ async fn test_streaming_tool_error_waits_for_prior_tools_to_complete(cx: &mut Te
             LanguageModelRequestMessage {
                 role: Role::User,
                 content: vec![
-                    language_model::MessageContent::ToolResult(LanguageModelToolResult {
+                    raijin_language_model::MessageContent::ToolResult(LanguageModelToolResult {
                         tool_use_id: second_tool_use.id.clone(),
                         tool_name: second_tool_use.name,
                         is_error: true,
                         content: "failed".into(),
                         output: Some("failed".into()),
                     }),
-                    language_model::MessageContent::ToolResult(LanguageModelToolResult {
+                    raijin_language_model::MessageContent::ToolResult(LanguageModelToolResult {
                         tool_use_id: first_tool_use.id.clone(),
                         tool_name: first_tool_use.name,
                         is_error: false,
@@ -6649,7 +6649,7 @@ async fn test_mid_turn_model_and_settings_refresh(cx: &mut TestAppContext) {
 
     // Set up two profiles: profile-a has both tools, profile-b has only DelayTool.
     fs.insert_file(
-        paths::settings_file(),
+        raijin_paths::settings_file(),
         json!({
             "agent": {
                 "profiles": {

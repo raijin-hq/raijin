@@ -391,7 +391,7 @@ impl TitleBar {
                 .gap_1()
                 .child(
                     IconButton::new("leave-call", IconName::Exit)
-                        .style(ButtonStyle::Subtle)
+                        .style(ButtonStyle::Ghost)
                         .tooltip(Tooltip::text("Leave Call"))
                         .icon_size(IconSize::Small)
                         .on_click(move |_, _window, cx| {
@@ -458,8 +458,8 @@ impl TitleBar {
                 } else {
                     "Share project with call participants"
                 }))
-                .style(ButtonStyle::Subtle)
-                .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                .style(ButtonStyle::Ghost)
+                .selected_style(ButtonStyle::tinted(TintColor::Accent))
                 .toggle_state(is_shared)
                 .label_size(LabelSize::Small)
                 .when(is_sharing_disabled, |parent| {
@@ -504,10 +504,10 @@ impl TitleBar {
                         Tooltip::simple("Mute Microphone", cx)
                     }
                 })
-                .style(ButtonStyle::Subtle)
+                .style(ButtonStyle::Ghost)
                 .icon_size(IconSize::Small)
                 .toggle_state(is_muted)
-                .selected_style(ButtonStyle::Tinted(TintColor::Error))
+                .selected_style(ButtonStyle::tinted(TintColor::Error))
                 .on_click(move |_, _window, cx| toggle_mute(cx))
                 .into_any_element(),
             );
@@ -522,8 +522,8 @@ impl TitleBar {
                     IconName::AudioOn
                 },
             )
-            .style(ButtonStyle::Subtle)
-            .selected_style(ButtonStyle::Tinted(TintColor::Error))
+            .style(ButtonStyle::Ghost)
+            .selected_style(ButtonStyle::tinted(TintColor::Error))
             .icon_size(IconSize::Small)
             .toggle_state(is_deafened)
             .tooltip(move |_window, cx| {
@@ -556,10 +556,10 @@ impl TitleBar {
             let is_wayland = false;
 
             let trigger = IconButton::new("screen-share", IconName::Screen)
-                .style(ButtonStyle::Subtle)
+                .style(ButtonStyle::Ghost)
                 .icon_size(IconSize::Small)
                 .toggle_state(is_screen_sharing)
-                .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                .selected_style(ButtonStyle::tinted(TintColor::Accent))
                 .tooltip(Tooltip::text(if is_screen_sharing {
                     "Stop Sharing Screen"
                 } else {

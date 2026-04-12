@@ -71,6 +71,7 @@ where
         }
     }
 
+    #[cfg(test)]
     fn least_index(&self, tick: f32) -> usize {
         if self.domain.is_empty() {
             return 0;

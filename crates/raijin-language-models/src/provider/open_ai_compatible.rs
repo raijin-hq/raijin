@@ -176,7 +176,7 @@ impl LanguageModelProvider for OpenAiCompatibleLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -203,7 +203,7 @@ pub struct OpenAiCompatibleLanguageModel {
 impl OpenAiCompatibleLanguageModel {
     fn stream_completion(
         &self,
-        request: open_ai::Request,
+        request: raijin_open_ai::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,

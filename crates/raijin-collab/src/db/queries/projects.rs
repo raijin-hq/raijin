@@ -92,9 +92,9 @@ impl Database {
             }
 
             let replica_id = if is_ssh_project {
-                clock::ReplicaId::REMOTE_SERVER
+                inazuma_clock::ReplicaId::REMOTE_SERVER
             } else {
-                clock::ReplicaId::LOCAL
+                inazuma_clock::ReplicaId::LOCAL
             };
 
             project_collaborator::ActiveModel {
@@ -724,7 +724,7 @@ impl Database {
             .iter()
             .map(|c| c.replica_id)
             .collect::<HashSet<_>>();
-        let mut replica_id = ReplicaId(clock::ReplicaId::FIRST_COLLAB_ID.as_u16() as i32);
+        let mut replica_id = ReplicaId(inazuma_clock::ReplicaId::FIRST_COLLAB_ID.as_u16() as i32);
         while replica_ids.contains(&replica_id) {
             replica_id.0 += 1;
         }

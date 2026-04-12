@@ -8,7 +8,7 @@ use inazuma_collections::{BTreeMap, HashMap};
 use inazuma::Rgba;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use raijin_settings_json::parse_json_with_comments;
+use raijin_json_compat::parse_json_with_comments;
 use inazuma_settings_macros::{MergeFrom, with_fallible_options};
 use inazuma_util::serde::default_true;
 

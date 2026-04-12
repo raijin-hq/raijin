@@ -58,6 +58,7 @@ raijin-ui.workspace = true
 inazuma-util.workspace = true
 raijin-workspace.workspace = true
 raijin-actions.workspace = true
+inazuma-component-registry.workspace = true
 
 [dev-dependencies]
 raijin-fs = { workspace = true, features = ["test-support"] }

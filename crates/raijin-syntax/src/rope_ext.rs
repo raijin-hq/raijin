@@ -5,7 +5,7 @@ use ropey::{LineType, RopeSlice};
 use inazuma_sum_tree::Bias;
 
 #[cfg(not(target_family = "wasm"))]
-pub use tree_sitter::{InputEdit, Point};
+pub use tree_sitter::Point;
 
 #[cfg(target_family = "wasm")]
 /// Stub type for tree-sitter Point on WASM (tree-sitter not available).

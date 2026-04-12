@@ -104,7 +104,7 @@ fn is_within_any_worktree(canonical_path: &Path, canonical_worktree_roots: &[Pat
 /// Returns the kind of sensitive settings location this path targets, if any:
 /// either inside a `.zed/` local-settings directory or inside the global config dir.
 pub async fn sensitive_settings_kind(path: &Path, fs: &dyn Fs) -> Option<SensitiveSettingsKind> {
-    let local_settings_folder = paths::local_settings_folder_name();
+    let local_settings_folder = raijin_paths::local_settings_folder_name();
     if path.components().any(|component| {
         component.as_os_str() == <_ as AsRef<OsStr>>::as_ref(&local_settings_folder)
     }) {
@@ -113,9 +113,9 @@ pub async fn sensitive_settings_kind(path: &Path, fs: &dyn Fs) -> Option<Sensiti
 
     if let Some(canonical_path) = canonicalize_with_ancestors(path, fs).await {
         let config_dir = fs
-            .canonicalize(paths::config_dir())
+            .canonicalize(raijin_paths::config_dir())
             .await
-            .unwrap_or_else(|_| paths::config_dir().to_path_buf());
+            .unwrap_or_else(|_| raijin_paths::config_dir().to_path_buf());
         if canonical_path.starts_with(&config_dir) {
             return Some(SensitiveSettingsKind::Global);
         }
@@ -370,7 +370,7 @@ pub fn authorize_file_edit(
 ) -> Task<Result<()>> {
     let path_str = path.to_string_lossy();
 
-    let settings = agent_settings::AgentSettings::get_global(cx);
+    let settings = raijin_agent_settings::AgentSettings::get_global(cx);
     let decision = decide_permission_for_path(tool_name, &path_str, settings);
 
     if let ToolPermissionDecision::Deny(reason) = decision {
@@ -385,7 +385,7 @@ pub fn authorize_file_edit(
 
     // The local settings folder check is synchronous (pure path inspection),
     // so we can handle this common case without spawning.
-    let local_settings_folder = paths::local_settings_folder_name();
+    let local_settings_folder = raijin_paths::local_settings_folder_name();
     let is_local_settings = path.components().any(|component| {
         component.as_os_str() == <_ as AsRef<OsStr>>::as_ref(&local_settings_folder)
     });

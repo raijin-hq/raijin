@@ -330,6 +330,38 @@ pub fn set_mode(content: &mut SettingsContent, mode: ThemeAppearanceMode) {
     }
 }
 
+/// Sets the theme name on the theme selection in the settings content.
+///
+/// If the current selection is static, it replaces the theme name directly.
+/// If dynamic, it updates the appropriate light/dark slot based on the
+/// theme's appearance and the system appearance.
+pub fn set_theme(
+    content: &mut SettingsContent,
+    theme_name: impl Into<Arc<str>>,
+    theme_appearance: Appearance,
+    _system_appearance: Appearance,
+) {
+    let theme_name = ThemeName(theme_name.into());
+    let theme = content.theme.as_mut();
+
+    let Some(selection) = theme.theme.as_mut() else {
+        theme.theme = Some(inazuma_settings_content::ThemeSelection::Static(theme_name));
+        return;
+    };
+
+    match selection {
+        inazuma_settings_content::ThemeSelection::Static(name) => {
+            *name = theme_name;
+        }
+        inazuma_settings_content::ThemeSelection::Dynamic { light, dark, .. } => {
+            match theme_appearance {
+                Appearance::Light => *light = theme_name,
+                Appearance::Dark => *dark = theme_name,
+            }
+        }
+    }
+}
+
 fn font_fallbacks_from_settings(
     fallbacks: Option<Vec<FontFamilyName>>,
 ) -> Option<FontFallbacks> {

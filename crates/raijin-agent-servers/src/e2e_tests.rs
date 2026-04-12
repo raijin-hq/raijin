@@ -19,9 +19,9 @@ use inazuma_util::path_list::PathList;
 pub async fn test_basic<T, F>(server: F, cx: &mut TestAppContext)
 where
     T: AgentServer + 'static,
-    F: AsyncFn(&Arc<dyn fs::Fs>, &mut TestAppContext) -> T,
+    F: AsyncFn(&Arc<dyn raijin_fs::Fs>, &mut TestAppContext) -> T,
 {
-    let fs = init_test(cx).await as Arc<dyn fs::Fs>;
+    let fs = init_test(cx).await as Arc<dyn raijin_fs::Fs>;
     let project = Project::test(fs.clone(), [], cx).await;
     let thread = new_test_thread(server(&fs, cx).await, project.clone(), "/private/tmp", cx).await;
 
@@ -50,7 +50,7 @@ where
 pub async fn test_path_mentions<T, F>(server: F, cx: &mut TestAppContext)
 where
     T: AgentServer + 'static,
-    F: AsyncFn(&Arc<dyn fs::Fs>, &mut TestAppContext) -> T,
+    F: AsyncFn(&Arc<dyn raijin_fs::Fs>, &mut TestAppContext) -> T,
 {
     let fs = init_test(cx).await as _;
 
@@ -108,7 +108,7 @@ where
 pub async fn test_tool_call<T, F>(server: F, cx: &mut TestAppContext)
 where
     T: AgentServer + 'static,
-    F: AsyncFn(&Arc<dyn fs::Fs>, &mut TestAppContext) -> T,
+    F: AsyncFn(&Arc<dyn raijin_fs::Fs>, &mut TestAppContext) -> T,
 {
     let fs = init_test(cx).await as _;
 
@@ -157,9 +157,9 @@ pub async fn test_tool_call_with_permission<T, F>(
     cx: &mut TestAppContext,
 ) where
     T: AgentServer + 'static,
-    F: AsyncFn(&Arc<dyn fs::Fs>, &mut TestAppContext) -> T,
+    F: AsyncFn(&Arc<dyn raijin_fs::Fs>, &mut TestAppContext) -> T,
 {
-    let fs = init_test(cx).await as Arc<dyn fs::Fs>;
+    let fs = init_test(cx).await as Arc<dyn raijin_fs::Fs>;
     let project = Project::test(fs.clone(), [path!("/private/tmp").as_ref()], cx).await;
     let thread = new_test_thread(server(&fs, cx).await, project.clone(), "/private/tmp", cx).await;
     let full_turn = thread.update(cx, |thread, cx| {
@@ -208,7 +208,7 @@ pub async fn test_tool_call_with_permission<T, F>(
     thread.update(cx, |thread, cx| {
         thread.authorize_tool_call(
             tool_call_id,
-            acp_thread::SelectedPermissionOutcome::new(
+            raijin_acp_thread::SelectedPermissionOutcome::new(
                 allow_option_id,
                 acp::PermissionOptionKind::AllowOnce,
             ),
@@ -254,9 +254,9 @@ pub async fn test_tool_call_with_permission<T, F>(
 pub async fn test_cancel<T, F>(server: F, cx: &mut TestAppContext)
 where
     T: AgentServer + 'static,
-    F: AsyncFn(&Arc<dyn fs::Fs>, &mut TestAppContext) -> T,
+    F: AsyncFn(&Arc<dyn raijin_fs::Fs>, &mut TestAppContext) -> T,
 {
-    let fs = init_test(cx).await as Arc<dyn fs::Fs>;
+    let fs = init_test(cx).await as Arc<dyn raijin_fs::Fs>;
 
     let project = Project::test(fs.clone(), [path!("/private/tmp").as_ref()], cx).await;
     let thread = new_test_thread(server(&fs, cx).await, project.clone(), "/private/tmp", cx).await;
@@ -327,9 +327,9 @@ where
 pub async fn test_thread_drop<T, F>(server: F, cx: &mut TestAppContext)
 where
     T: AgentServer + 'static,
-    F: AsyncFn(&Arc<dyn fs::Fs>, &mut TestAppContext) -> T,
+    F: AsyncFn(&Arc<dyn raijin_fs::Fs>, &mut TestAppContext) -> T,
 {
-    let fs = init_test(cx).await as Arc<dyn fs::Fs>;
+    let fs = init_test(cx).await as Arc<dyn raijin_fs::Fs>;
     let project = Project::test(fs.clone(), [], cx).await;
     let thread = new_test_thread(server(&fs, cx).await, project.clone(), "/private/tmp", cx).await;
 
@@ -406,18 +406,18 @@ pub async fn init_test(cx: &mut TestAppContext) -> Arc<FakeFs> {
     env_logger::try_init().ok();
 
     cx.update(|cx| {
-        let settings_store = settings::SettingsStore::test(cx);
+        let settings_store = inazuma_settings_framework::SettingsStore::test(cx);
         cx.set_global(settings_store);
-        gpui_tokio::init(cx);
-        let http_client = reqwest_client::ReqwestClient::user_agent("agent tests").unwrap();
+        inazuma_tokio::init(cx);
+        let http_client = raijin_reqwest_client::ReqwestClient::user_agent("agent tests").unwrap();
         cx.set_http_client(Arc::new(http_client));
-        let client = client::Client::production(cx);
-        let user_store = cx.new(|cx| client::UserStore::new(client.clone(), cx));
-        language_model::init(user_store, client, cx);
+        let client = raijin_client::Client::production(cx);
+        let user_store = cx.new(|cx| raijin_client::UserStore::new(client.clone(), cx));
+        raijin_language_model::init(user_store, client, cx);
 
         #[cfg(test)]
-        project::agent_server_store::AllAgentServersSettings::override_global(
-            project::agent_server_store::AllAgentServersSettings(collections::HashMap::default()),
+        raijin_project::agent_server_store::AllAgentServersSettings::override_global(
+            raijin_project::agent_server_store::AllAgentServersSettings(inazuma_collections::HashMap::default()),
             cx,
         );
     });

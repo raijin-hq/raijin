@@ -1,16 +1,14 @@
 use inazuma::{
-    App, AppContext, Context, Corner, DismissEvent, Empty, EventEmitter, Focusable,
-    InteractiveElement as _, IntoElement, ParentElement, Render, StatefulInteractiveElement,
-    StyleRefinement, Styled, Window, div, prelude::FluentBuilder, px, relative, rems,
+    AppContext, Context, Corner, DismissEvent, Empty, EventEmitter, Focusable,
+    Render, StatefulInteractiveElement,
+    StyleRefinement, Window, div, px, relative, rems,
 };
 use raijin_i18n::t;
 
+use crate::prelude::*;
 use crate::{
-    ActiveTheme, IconName, Placement, Selectable, Sizable, Tooltip,
-    Button, ButtonCommon as _, ButtonVariants as _,
-    h_flex,
+    Placement, Tooltip,
     Tab, TabBar,
-    v_flex,
 };
 
 use super::{
@@ -75,7 +73,7 @@ impl TabPanel {
                     .xsmall()
                     .ghost()
                     .tab_stop(false)
-                    .dropdown_menu({
+                    .popup_menu({
                         let zoomable = state.zoomable.map_or(false, |v| v.menu_visible());
                         let closable = state.closable;
 

@@ -33,8 +33,8 @@ use inazuma_util::ResultExt;
 
 use raijin_language_model::ApiKeyState;
 
-const PROVIDER_ID: LanguageModelProviderId = language_model::GOOGLE_PROVIDER_ID;
-const PROVIDER_NAME: LanguageModelProviderName = language_model::GOOGLE_PROVIDER_NAME;
+const PROVIDER_ID: LanguageModelProviderId = raijin_language_model::GOOGLE_PROVIDER_ID;
+const PROVIDER_NAME: LanguageModelProviderName = raijin_language_model::GOOGLE_PROVIDER_NAME;
 
 #[derive(Default, Clone, Debug, PartialEq)]
 pub struct GoogleSettings {
@@ -106,7 +106,7 @@ impl GoogleLanguageModelProvider {
         Self { http_client, state }
     }
 
-    fn create_language_model(&self, model: google_ai::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_google_ai::Model) -> Arc<dyn LanguageModel> {
         Arc::new(GoogleLanguageModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -123,7 +123,7 @@ impl GoogleLanguageModelProvider {
     fn api_url(cx: &App) -> SharedString {
         let api_url = &Self::settings(cx).api_url;
         if api_url.is_empty() {
-            google_ai::API_URL.into()
+            raijin_google_ai::API_URL.into()
         } else {
             SharedString::new(api_url.as_str())
         }
@@ -152,19 +152,19 @@ impl LanguageModelProvider for GoogleLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(google_ai::Model::default()))
+        Some(self.create_language_model(raijin_google_ai::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(google_ai::Model::default_fast()))
+        Some(self.create_language_model(raijin_google_ai::Model::default_fast()))
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        // Add base models from google_ai::Model::iter()
-        for model in google_ai::Model::iter() {
-            if !matches!(model, google_ai::Model::Custom { .. }) {
+        // Add base models from raijin_google_ai::Model::iter()
+        for model in raijin_google_ai::Model::iter() {
+            if !matches!(model, raijin_google_ai::Model::Custom { .. }) {
                 models.insert(model.id().to_string(), model);
             }
         }
@@ -173,7 +173,7 @@ impl LanguageModelProvider for GoogleLanguageModelProvider {
         for model in &GoogleLanguageModelProvider::settings(cx).available_models {
             models.insert(
                 model.name.clone(),
-                google_ai::Model::Custom {
+                raijin_google_ai::Model::Custom {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
@@ -206,7 +206,7 @@ impl LanguageModelProvider for GoogleLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        target_agent: language_model::ConfigurationViewTargetAgent,
+        target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -222,7 +222,7 @@ impl LanguageModelProvider for GoogleLanguageModelProvider {
 
 pub struct GoogleLanguageModel {
     id: LanguageModelId,
-    model: google_ai::Model,
+    model: raijin_google_ai::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
@@ -231,7 +231,7 @@ pub struct GoogleLanguageModel {
 impl GoogleLanguageModel {
     fn stream_completion(
         &self,
-        request: google_ai::GenerateContentRequest,
+        request: raijin_google_ai::GenerateContentRequest,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
@@ -246,7 +246,7 @@ impl GoogleLanguageModel {
 
         async move {
             let api_key = api_key.context("Missing Google API key")?;
-            let request = google_ai::stream_generate_content(
+            let request = raijin_google_ai::stream_generate_content(
                 http_client.as_ref(),
                 &api_url,
                 &api_key,
@@ -329,11 +329,11 @@ impl LanguageModel for GoogleLanguageModel {
                 }
                 .into());
             };
-            let response = google_ai::count_tokens(
+            let response = raijin_google_ai::count_tokens(
                 http_client.as_ref(),
                 &api_url,
                 &api_key,
-                google_ai::CountTokensRequest {
+                raijin_google_ai::CountTokensRequest {
                     generate_content_request: request,
                 },
             )
@@ -375,24 +375,24 @@ pub fn into_google(
     mut request: LanguageModelRequest,
     model_id: String,
     mode: GoogleModelMode,
-) -> google_ai::GenerateContentRequest {
+) -> raijin_google_ai::GenerateContentRequest {
     fn map_content(content: Vec<MessageContent>) -> Vec<Part> {
         content
             .into_iter()
             .flat_map(|content| match content {
-                language_model::MessageContent::Text(text) => {
+                raijin_language_model::MessageContent::Text(text) => {
                     if !text.is_empty() {
-                        vec![Part::TextPart(google_ai::TextPart { text })]
+                        vec![Part::TextPart(raijin_google_ai::TextPart { text })]
                     } else {
                         vec![]
                     }
                 }
-                language_model::MessageContent::Thinking {
+                raijin_language_model::MessageContent::Thinking {
                     text: _,
                     signature: Some(signature),
                 } => {
                     if !signature.is_empty() {
-                        vec![Part::ThoughtPart(google_ai::ThoughtPart {
+                        vec![Part::ThoughtPart(raijin_google_ai::ThoughtPart {
                             thought: true,
                             thought_signature: signature,
                         })]
@@ -400,36 +400,36 @@ pub fn into_google(
                         vec![]
                     }
                 }
-                language_model::MessageContent::Thinking { .. } => {
+                raijin_language_model::MessageContent::Thinking { .. } => {
                     vec![]
                 }
-                language_model::MessageContent::RedactedThinking(_) => vec![],
-                language_model::MessageContent::Image(image) => {
-                    vec![Part::InlineDataPart(google_ai::InlineDataPart {
-                        inline_data: google_ai::GenerativeContentBlob {
+                raijin_language_model::MessageContent::RedactedThinking(_) => vec![],
+                raijin_language_model::MessageContent::Image(image) => {
+                    vec![Part::InlineDataPart(raijin_google_ai::InlineDataPart {
+                        inline_data: raijin_google_ai::GenerativeContentBlob {
                             mime_type: "image/png".to_string(),
                             data: image.source.to_string(),
                         },
                     })]
                 }
-                language_model::MessageContent::ToolUse(tool_use) => {
+                raijin_language_model::MessageContent::ToolUse(tool_use) => {
                     // Normalize empty string signatures to None
                     let thought_signature = tool_use.thought_signature.filter(|s| !s.is_empty());
 
-                    vec![Part::FunctionCallPart(google_ai::FunctionCallPart {
-                        function_call: google_ai::FunctionCall {
+                    vec![Part::FunctionCallPart(raijin_google_ai::FunctionCallPart {
+                        function_call: raijin_google_ai::FunctionCall {
                             name: tool_use.name.to_string(),
                             args: tool_use.input,
                         },
                         thought_signature,
                     })]
                 }
-                language_model::MessageContent::ToolResult(tool_result) => {
+                raijin_language_model::MessageContent::ToolResult(tool_result) => {
                     match tool_result.content {
-                        language_model::LanguageModelToolResultContent::Text(text) => {
+                        raijin_language_model::LanguageModelToolResultContent::Text(text) => {
                             vec![Part::FunctionResponsePart(
-                                google_ai::FunctionResponsePart {
-                                    function_response: google_ai::FunctionResponse {
+                                raijin_google_ai::FunctionResponsePart {
+                                    function_response: raijin_google_ai::FunctionResponse {
                                         name: tool_result.tool_name.to_string(),
                                         // The API expects a valid JSON object
                                         response: serde_json::json!({
@@ -439,10 +439,10 @@ pub fn into_google(
                                 },
                             )]
                         }
-                        language_model::LanguageModelToolResultContent::Image(image) => {
+                        raijin_language_model::LanguageModelToolResultContent::Image(image) => {
                             vec![
-                                Part::FunctionResponsePart(google_ai::FunctionResponsePart {
-                                    function_response: google_ai::FunctionResponse {
+                                Part::FunctionResponsePart(raijin_google_ai::FunctionResponsePart {
+                                    function_response: raijin_google_ai::FunctionResponse {
                                         name: tool_result.tool_name.to_string(),
                                         // The API expects a valid JSON object
                                         response: serde_json::json!({
@@ -450,8 +450,8 @@ pub fn into_google(
                                         }),
                                     },
                                 }),
-                                Part::InlineDataPart(google_ai::InlineDataPart {
-                                    inline_data: google_ai::GenerativeContentBlob {
+                                Part::InlineDataPart(raijin_google_ai::InlineDataPart {
+                                    inline_data: raijin_google_ai::GenerativeContentBlob {
                                         mime_type: "image/png".to_string(),
                                         data: image.source.to_string(),
                                     },
@@ -477,8 +477,8 @@ pub fn into_google(
         None
     };
 
-    google_ai::GenerateContentRequest {
-        model: google_ai::ModelName { model_id },
+    raijin_google_ai::GenerateContentRequest {
+        model: raijin_google_ai::ModelName { model_id },
         system_instruction: system_instructions,
         contents: request
             .messages
@@ -488,18 +488,18 @@ pub fn into_google(
                 if parts.is_empty() {
                     None
                 } else {
-                    Some(google_ai::Content {
+                    Some(raijin_google_ai::Content {
                         parts,
                         role: match message.role {
-                            Role::User => google_ai::Role::User,
-                            Role::Assistant => google_ai::Role::Model,
-                            Role::System => google_ai::Role::User, // Google AI doesn't have a system role
+                            Role::User => raijin_google_ai::Role::User,
+                            Role::Assistant => raijin_google_ai::Role::Model,
+                            Role::System => raijin_google_ai::Role::User, // Google AI doesn't have a system role
                         },
                     })
                 }
             })
             .collect(),
-        generation_config: Some(google_ai::GenerationConfig {
+        generation_config: Some(raijin_google_ai::GenerationConfig {
             candidate_count: Some(1),
             stop_sequences: Some(request.stop),
             max_output_tokens: None,
@@ -515,7 +515,7 @@ pub fn into_google(
         }),
         safety_settings: None,
         tools: (!request.tools.is_empty()).then(|| {
-            vec![google_ai::Tool {
+            vec![raijin_google_ai::Tool {
                 function_declarations: request
                     .tools
                     .into_iter()
@@ -527,12 +527,12 @@ pub fn into_google(
                     .collect(),
             }]
         }),
-        tool_config: request.tool_choice.map(|choice| google_ai::ToolConfig {
-            function_calling_config: google_ai::FunctionCallingConfig {
+        tool_config: request.tool_choice.map(|choice| raijin_google_ai::ToolConfig {
+            function_calling_config: raijin_google_ai::FunctionCallingConfig {
                 mode: match choice {
-                    LanguageModelToolChoice::Auto => google_ai::FunctionCallingMode::Auto,
-                    LanguageModelToolChoice::Any => google_ai::FunctionCallingMode::Any,
-                    LanguageModelToolChoice::None => google_ai::FunctionCallingMode::None,
+                    LanguageModelToolChoice::Auto => raijin_google_ai::FunctionCallingMode::Auto,
+                    LanguageModelToolChoice::Any => raijin_google_ai::FunctionCallingMode::Any,
+                    LanguageModelToolChoice::None => raijin_google_ai::FunctionCallingMode::None,
                 },
                 allowed_function_names: None,
             },
@@ -720,13 +720,13 @@ fn update_usage(usage: &mut UsageMetadata, new: &UsageMetadata) {
     }
 }
 
-fn convert_usage(usage: &UsageMetadata) -> language_model::TokenUsage {
+fn convert_usage(usage: &UsageMetadata) -> raijin_language_model::TokenUsage {
     let prompt_tokens = usage.prompt_token_count.unwrap_or(0);
     let cached_tokens = usage.cached_content_token_count.unwrap_or(0);
     let input_tokens = prompt_tokens - cached_tokens;
     let output_tokens = usage.candidates_token_count.unwrap_or(0);
 
-    language_model::TokenUsage {
+    raijin_language_model::TokenUsage {
         input_tokens,
         output_tokens,
         cache_read_input_tokens: cached_tokens,
@@ -737,14 +737,14 @@ fn convert_usage(usage: &UsageMetadata) -> language_model::TokenUsage {
 struct ConfigurationView {
     api_key_editor: Entity<InputField>,
     state: Entity<State>,
-    target_agent: language_model::ConfigurationViewTargetAgent,
+    target_agent: raijin_language_model::ConfigurationViewTargetAgent,
     load_credentials_task: Option<Task<()>>,
 }
 
 impl ConfigurationView {
     fn new(
         state: Entity<State>,
-        target_agent: language_model::ConfigurationViewTargetAgent,
+        target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
@@ -776,7 +776,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;
@@ -823,7 +823,7 @@ impl Render for ConfigurationView {
             )
         } else {
             let api_url = GoogleLanguageModelProvider::api_url(cx);
-            if api_url == google_ai::API_URL {
+            if api_url == raijin_google_ai::API_URL {
                 "API key configured".to_string()
             } else {
                 format!("API key configured for {}", api_url)
@@ -1050,7 +1050,7 @@ mod tests {
 
     #[test]
     fn test_tool_use_with_signature_converts_to_function_call_part() {
-        let tool_use = language_model::LanguageModelToolUse {
+        let tool_use = raijin_language_model::LanguageModelToolUse {
             id: LanguageModelToolUseId::from("test_id"),
             name: "test_function".into(),
             raw_input: json!({"arg": "value"}).to_string(),
@@ -1061,7 +1061,7 @@ mod tests {
 
         let request = super::into_google(
             LanguageModelRequest {
-                messages: vec![language_model::LanguageModelRequestMessage {
+                messages: vec![raijin_language_model::LanguageModelRequestMessage {
                     role: Role::Assistant,
                     content: vec![MessageContent::ToolUse(tool_use)],
                     cache: false,
@@ -1087,7 +1087,7 @@ mod tests {
 
     #[test]
     fn test_tool_use_without_signature_omits_field() {
-        let tool_use = language_model::LanguageModelToolUse {
+        let tool_use = raijin_language_model::LanguageModelToolUse {
             id: LanguageModelToolUseId::from("test_id"),
             name: "test_function".into(),
             raw_input: json!({"arg": "value"}).to_string(),
@@ -1098,7 +1098,7 @@ mod tests {
 
         let request = super::into_google(
             LanguageModelRequest {
-                messages: vec![language_model::LanguageModelRequestMessage {
+                messages: vec![raijin_language_model::LanguageModelRequestMessage {
                     role: Role::Assistant,
                     content: vec![MessageContent::ToolUse(tool_use)],
                     cache: false,
@@ -1120,7 +1120,7 @@ mod tests {
 
     #[test]
     fn test_empty_signature_in_tool_use_normalized_to_none() {
-        let tool_use = language_model::LanguageModelToolUse {
+        let tool_use = raijin_language_model::LanguageModelToolUse {
             id: LanguageModelToolUseId::from("test_id"),
             name: "test_function".into(),
             raw_input: json!({"arg": "value"}).to_string(),
@@ -1131,7 +1131,7 @@ mod tests {
 
         let request = super::into_google(
             LanguageModelRequest {
-                messages: vec![language_model::LanguageModelRequestMessage {
+                messages: vec![raijin_language_model::LanguageModelRequestMessage {
                     role: Role::Assistant,
                     content: vec![MessageContent::ToolUse(tool_use)],
                     cache: false,
@@ -1188,7 +1188,7 @@ mod tests {
         // Convert back to Google format
         let request = super::into_google(
             LanguageModelRequest {
-                messages: vec![language_model::LanguageModelRequestMessage {
+                messages: vec![raijin_language_model::LanguageModelRequestMessage {
                     role: Role::Assistant,
                     content: vec![MessageContent::ToolUse(tool_use)],
                     cache: false,

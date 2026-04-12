@@ -10,7 +10,6 @@ mod state_render;
 mod table;
 
 pub use column::*;
-pub use data_table::*;
 pub use delegate::*;
 pub use state::*;
 pub use table::*;

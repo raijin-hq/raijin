@@ -577,7 +577,7 @@ mod tests {
         let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
 
         project.update(cx, |project, _cx| {
-            project.languages().add(language::rust_lang())
+            project.languages().add(raijin_language::rust_lang())
         });
 
         project

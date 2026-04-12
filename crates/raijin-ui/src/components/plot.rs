@@ -3,7 +3,6 @@ mod grid;
 pub mod label;
 pub mod scale;
 pub mod shape;
-pub mod tooltip;
 
 pub use raijin_ui_macros::IntoPlot;
 

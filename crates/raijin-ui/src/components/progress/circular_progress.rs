@@ -222,7 +222,7 @@ impl Component for CircularProgress {
         Some(CircularProgress::DOCS)
     }
 
-    fn preview(_window: &mut Window, cx: &mut App) -> Option<AnyElement> {
+    fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
         let container = || v_flex().items_center().gap_1();
 
         Some(

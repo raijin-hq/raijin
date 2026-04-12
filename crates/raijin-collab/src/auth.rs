@@ -5,7 +5,7 @@ use axum::{
     middleware::Next,
     response::IntoResponse,
 };
-use cloud_api_types::GetAuthenticatedUserResponse;
+use raijin_cloud_api_types::GetAuthenticatedUserResponse;
 pub use raijin_rpc::auth::random_token;
 use std::sync::Arc;
 

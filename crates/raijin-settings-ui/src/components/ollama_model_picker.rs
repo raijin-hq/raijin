@@ -27,7 +27,7 @@ impl OllamaModelPickerDelegate {
         on_model_changed: impl Fn(SharedString, &mut Window, &mut App) + 'static,
         cx: &mut Context<OllamaModelPicker>,
     ) -> Self {
-        let mut models = edit_prediction::ollama::fetch_models(cx);
+        let mut models = raijin_edit_prediction::ollama::fetch_models(cx);
 
         let current_in_list = models.contains(&current_model);
         if !current_model.is_empty() && !current_in_list {
@@ -153,7 +153,7 @@ impl PickerDelegate for OllamaModelPickerDelegate {
 }
 
 pub fn render_ollama_model_picker(
-    field: SettingField<settings::OllamaModelName>,
+    field: SettingField<inazuma_settings_framework::OllamaModelName>,
     file: SettingsUiFile,
     _metadata: Option<&SettingsFieldMetadata>,
     _window: &mut Window,
@@ -188,7 +188,7 @@ pub fn render_ollama_model_picker(
                             move |settings, _cx| {
                                 (field.write)(
                                     settings,
-                                    Some(settings::OllamaModelName(model_name.to_string())),
+                                    Some(inazuma_settings_framework::OllamaModelName(model_name.to_string())),
                                 );
                             },
                         )
@@ -208,6 +208,6 @@ pub fn render_ollama_model_picker(
             x: px(0.0),
             y: px(2.0),
         })
-        .with_handle(ui::PopoverMenuHandle::default())
+        .with_handle(raijin_ui::PopoverMenuHandle::default())
         .into_any_element()
 }

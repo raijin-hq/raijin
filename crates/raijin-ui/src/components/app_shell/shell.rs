@@ -6,12 +6,10 @@ use inazuma::{
 use raijin_theme::ActiveTheme;
 
 use crate::StyledExt as _;
-use crate::utils::focus_trap::FocusTrapManager;
 use crate::utils::window_border::{self, window_border};
 
 use super::dialog_layer::ActiveDialog;
 use super::sheet_layer::ActiveSheet;
-use super::notification_layer;
 
 actions!(app_shell, [Tab, TabPrev]);
 
@@ -33,7 +31,6 @@ pub struct AppShell {
     pub(super) active_dialogs: Vec<ActiveDialog>,
     pub(super) focused_input: Option<Entity<crate::input::InputState>>,
     pub(super) notification: Entity<crate::components::notification::NotificationList>,
-    pub(super) sheet_size: Option<inazuma::DefiniteLength>,
     pub(super) window_shadow_size: Pixels,
     pub(super) pending_focus_restore: Option<inazuma::WeakFocusHandle>,
 }
@@ -47,7 +44,6 @@ impl AppShell {
             active_dialogs: Vec::new(),
             focused_input: None,
             notification: cx.new(|cx| crate::components::notification::NotificationList::new(window, cx)),
-            sheet_size: None,
             window_shadow_size: window_border::SHADOW_SIZE,
             pending_focus_restore: None,
         }

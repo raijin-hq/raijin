@@ -124,13 +124,14 @@ pub struct TerminalPane {
 
 impl TerminalPane {
     pub fn new(window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let config = cx.global::<raijin_settings::RaijinSettings>().clone();
-        let cwd = config.resolve_working_directory();
-        let input_mode = match config.general.input_mode {
+        use inazuma_settings_framework::Settings;
+        let general = raijin_settings::GeneralSettings::get_global(cx);
+        let cwd = general.resolve_working_directory();
+        let input_mode = match general.input_mode {
             raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
             raijin_settings::InputMode::ShellPs1 => raijin_terminal::InputMode::ShellPs1,
         };
-        let scrollback = config.terminal.scrollback_history as usize;
+        let scrollback = general.scrollback_history;
         let terminal = Terminal::new(24, 80, &cwd, input_mode, scrollback)
             .expect("failed to create terminal");
 
@@ -272,6 +273,9 @@ impl TerminalPane {
             TerminalEvent::ShellMarker(marker) => {
                 self.handle_shell_marker(marker, window, cx);
             }
+            TerminalEvent::BreadcrumbsChanged => {
+                cx.notify();
+            }
         }
     }
 
@@ -285,8 +289,20 @@ impl TerminalPane {
         if let raijin_terminal::ShellMarker::Metadata(ref json) = marker {
             match serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json) {
                 Ok(payload) => {
+                    let new_cwd = std::path::PathBuf::from(&payload.cwd);
                     self.shell_context.update_from_metadata(&payload);
-                    self.shell_completion.update_cwd(std::path::PathBuf::from(&payload.cwd));
+                    self.shell_completion.update_cwd(new_cwd.clone());
+
+                    // Update project worktree when CWD changes (lazy scan)
+                    if let Some(workspace) = self.workspace.as_ref().and_then(|w| w.upgrade()) {
+                        workspace.update(cx, |ws, cx| {
+                            ws.project().update(cx, |project, cx| {
+                                project
+                                    .find_or_create_worktree(&new_cwd, true, cx)
+                                    .detach_and_log_err(cx);
+                            });
+                        });
+                    }
                     if let Some(duration_ms) = payload.last_duration_ms {
                         let handle = self.terminal.handle();
                         let mut term = handle.lock();
@@ -639,13 +655,14 @@ impl TerminalPane {
             None => return,
         };
         let shell_name = &shell.name;
-        let config = cx.global::<raijin_settings::RaijinSettings>().clone();
+        use inazuma_settings_framework::Settings;
+        let general = raijin_settings::GeneralSettings::get_global(cx);
         let cwd = std::path::PathBuf::from(&self.shell_context.cwd);
-        let input_mode = match config.general.input_mode {
+        let input_mode = match general.input_mode {
             raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
             raijin_settings::InputMode::ShellPs1 => raijin_terminal::InputMode::ShellPs1,
         };
-        let scrollback = config.terminal.scrollback_history as usize;
+        let scrollback = general.scrollback_history;
 
         let new_terminal = Terminal::with_shell(
             self.last_terminal_rows.max(24),
@@ -732,7 +749,7 @@ impl TerminalPane {
             .border_color(oklcha(0.30, 0.0, 0.0, 1.0))
             .rounded_lg()
             .shadow_lg()
-            .trigger(Chip::new(&current, rgb(0xa78bfa).into()).interactive())
+            .trigger(Chip::new(&current).bg_color(rgb(0xa78bfa).into()).interactive())
             .content(move |_state, _window, cx| {
                 let popover_entity = cx.entity();
                 let mut list = v_flex().min_w(px(180.0));
@@ -837,15 +854,15 @@ impl TerminalPane {
             .px_4()
             .pt_2()
             .flex_wrap()
-            .child(Chip::new(&self.shell_context.username, rgb(0x00BFFF).into()))
-            .child(Chip::new(&self.shell_context.hostname, rgb(0xc8c8c8).into()))
+            .child(Chip::new(&self.shell_context.username).bg_color(rgb(0x00BFFF).into()))
+            .child(Chip::new(&self.shell_context.hostname).bg_color(rgb(0xc8c8c8).into()))
             .child(
-                Chip::new(&self.shell_context.cwd_short, rgb(0x6ee7b7).into())
+                Chip::new(&self.shell_context.cwd_short).bg_color(rgb(0x6ee7b7).into())
                     .icon(IconName::Folder),
             )
             .child(
-                Chip::new(&time_str, rgb(0xff5f5f).into())
-                    .icon(IconName::Clock),
+                Chip::new(&time_str).bg_color(rgb(0xff5f5f).into())
+                    .icon(IconName::CountdownTimer),
             )
             .child(self.render_shell_selector_chip());
 
@@ -1005,10 +1022,13 @@ impl Render for TerminalPane {
 
         // Terminal output + resize logic
         let handle = self.terminal.handle();
-        let config = cx.global::<raijin_settings::RaijinSettings>();
-        let font_family = config.appearance.font_family.clone();
-        let font_size = config.appearance.font_size as f32;
-        let line_height_multiplier = config.appearance.line_height as f32;
+        let appearance = {
+            use inazuma_settings_framework::Settings;
+            raijin_settings::AppearanceSettings::get_global(cx).clone()
+        };
+        let font_family = appearance.font_family.clone();
+        let font_size = appearance.font_size;
+        let line_height_multiplier = appearance.line_height;
 
         {
             let font = inazuma::Font {
@@ -1122,12 +1142,15 @@ impl Item for TerminalPane {
             .iter()
             .find(|s| s.name == shell_name)
             .and_then(|s| s.path.clone());
-        let config = cx.global::<raijin_settings::RaijinSettings>().clone();
-        let input_mode = match config.general.input_mode {
+        let general = {
+            use inazuma_settings_framework::Settings;
+            raijin_settings::GeneralSettings::get_global(cx).clone()
+        };
+        let input_mode = match general.input_mode {
             raijin_settings::InputMode::Raijin => raijin_terminal::InputMode::Raijin,
             raijin_settings::InputMode::ShellPs1 => raijin_terminal::InputMode::ShellPs1,
         };
-        let scrollback = config.terminal.scrollback_history as usize;
+        let scrollback = general.scrollback_history;
 
         // Try to spawn the terminal BEFORE creating the entity — if it fails,
         // we return None without creating anything.

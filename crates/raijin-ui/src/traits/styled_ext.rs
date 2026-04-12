@@ -1,6 +1,6 @@
 use inazuma::{
     App, BoxShadow, Corners, DefiniteLength, Edges, FocusHandle, Pixels, Styled, Window, oklch,
-    point, px,
+    point,
 };
 use raijin_theme::ActiveTheme;
 

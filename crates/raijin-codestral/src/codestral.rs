@@ -82,7 +82,7 @@ impl CurrentCompletion {
     /// Attempts to adjust the edits based on changes made to the buffer since the completion was generated.
     /// Returns None if the user's edits conflict with the predicted edits.
     fn interpolate(&self, new_snapshot: &BufferSnapshot) -> Option<Vec<(Range<Anchor>, Arc<str>)>> {
-        edit_prediction_types::interpolate_edits(&self.snapshot, new_snapshot, &self.edits)
+        raijin_edit_prediction_types::interpolate_edits(&self.snapshot, new_snapshot, &self.edits)
     }
 }
 
@@ -219,7 +219,7 @@ impl EditPredictionDelegate for CodestralEditPredictionDelegate {
     fn refresh(
         &mut self,
         buffer: Entity<Buffer>,
-        cursor_position: language::Anchor,
+        cursor_position: raijin_language::Anchor,
         debounce: bool,
         cx: &mut Context<Self>,
     ) {

@@ -67,7 +67,7 @@ impl EditPredictionDelegate for CopilotEditPredictionDelegate {
     fn is_enabled(
         &self,
         _buffer: &Entity<Buffer>,
-        _cursor_position: language::Anchor,
+        _cursor_position: Anchor,
         cx: &App,
     ) -> bool {
         self.copilot.read(cx).status().is_authorized()
@@ -76,7 +76,7 @@ impl EditPredictionDelegate for CopilotEditPredictionDelegate {
     fn refresh(
         &mut self,
         buffer: Entity<Buffer>,
-        cursor_position: language::Anchor,
+        cursor_position: Anchor,
         debounce: bool,
         cx: &mut Context<Self>,
     ) {
@@ -136,7 +136,7 @@ impl EditPredictionDelegate for CopilotEditPredictionDelegate {
     fn suggest(
         &mut self,
         buffer: &Entity<Buffer>,
-        _: language::Anchor,
+        _: Anchor,
         cx: &mut Context<Self>,
     ) -> Option<EditPrediction> {
         let buffer_id = buffer.entity_id();
@@ -171,11 +171,11 @@ impl EditPredictionDelegate for CopilotEditPredictionDelegate {
                         _ = server.lsp.notify::<DidShowCompletion>(DidShowCompletionParams {
                             item: InlineCompletionItem {
                                 insert_text: completion.text.clone(),
-                                range: lsp::Range::new(
-                                    language::point_to_lsp(
+                                range: raijin_lsp::Range::new(
+                                    raijin_language::point_to_lsp(
                                         completion.range.start.to_point_utf16(&completion.snapshot),
                                     ),
-                                    language::point_to_lsp(
+                                    raijin_language::point_to_lsp(
                                         completion.range.end.to_point_utf16(&completion.snapshot),
                                     ),
                                 ),
@@ -270,8 +270,8 @@ mod tests {
 
         let (copilot, copilot_lsp) = Copilot::fake(cx);
         let mut cx = EditorLspTestContext::new_rust(
-            lsp::ServerCapabilities {
-                completion_provider: Some(lsp::CompletionOptions {
+            raijin_lsp::ServerCapabilities {
+                completion_provider: Some(raijin_lsp::CompletionOptions {
                     trigger_characters: Some(vec![".".to_string(), ":".to_string()]),
                     ..Default::default()
                 }),
@@ -304,9 +304,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "one.copilot1".into(),
-                range: lsp::Range::new(lsp::Position::new(0, 0), lsp::Position::new(0, 4)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(0, 0), raijin_lsp::Position::new(0, 4)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -353,9 +353,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "one.copilot1".into(),
-                range: lsp::Range::new(lsp::Position::new(0, 0), lsp::Position::new(0, 4)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(0, 0), raijin_lsp::Position::new(0, 4)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -385,9 +385,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "one.copilot2".into(),
-                range: lsp::Range::new(lsp::Position::new(0, 0), lsp::Position::new(0, 5)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(0, 0), raijin_lsp::Position::new(0, 5)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -478,8 +478,8 @@ mod tests {
 
         let (copilot, copilot_lsp) = Copilot::fake(cx);
         let mut cx = EditorLspTestContext::new_rust(
-            lsp::ServerCapabilities {
-                completion_provider: Some(lsp::CompletionOptions {
+            raijin_lsp::ServerCapabilities {
+                completion_provider: Some(raijin_lsp::CompletionOptions {
                     trigger_characters: Some(vec![".".to_string(), ":".to_string()]),
                     ..Default::default()
                 }),
@@ -513,9 +513,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "one.copilot1".into(),
-                range: lsp::Range::new(lsp::Position::new(0, 0), lsp::Position::new(0, 4)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(0, 0), raijin_lsp::Position::new(0, 4)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -560,9 +560,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "one.123. copilot\n 456".into(),
-                range: lsp::Range::new(lsp::Position::new(0, 0), lsp::Position::new(0, 4)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(0, 0), raijin_lsp::Position::new(0, 4)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -610,8 +610,8 @@ mod tests {
 
         let (copilot, copilot_lsp) = Copilot::fake(cx);
         let mut cx = EditorLspTestContext::new_rust(
-            lsp::ServerCapabilities {
-                completion_provider: Some(lsp::CompletionOptions {
+            raijin_lsp::ServerCapabilities {
+                completion_provider: Some(raijin_lsp::CompletionOptions {
                     trigger_characters: Some(vec![".".to_string(), ":".to_string()]),
                     ..Default::default()
                 }),
@@ -635,9 +635,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "two.foo()".into(),
-                range: lsp::Range::new(lsp::Position::new(1, 0), lsp::Position::new(1, 2)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(1, 0), raijin_lsp::Position::new(1, 2)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -692,7 +692,7 @@ mod tests {
         let buffer_1 = cx.new(|cx| Buffer::local("a = 1\nb = 2\n", cx));
         let buffer_2 = cx.new(|cx| Buffer::local("c = 3\nd = 4\n", cx));
         let multibuffer = cx.new(|cx| {
-            let mut multibuffer = MultiBuffer::new(language::Capability::ReadWrite);
+            let mut multibuffer = MultiBuffer::new(raijin_language::Capability::ReadWrite);
             multibuffer.set_excerpts_for_path(
                 PathKey::sorted(0),
                 buffer_1.clone(),
@@ -724,9 +724,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "b = 2 + a".into(),
-                range: lsp::Range::new(lsp::Position::new(1, 0), lsp::Position::new(1, 5)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(1, 0), raijin_lsp::Position::new(1, 5)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -761,9 +761,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "d = 4 + c".into(),
-                range: lsp::Range::new(lsp::Position::new(1, 0), lsp::Position::new(1, 6)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(1, 0), raijin_lsp::Position::new(1, 6)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -835,12 +835,12 @@ mod tests {
 
         let (copilot, copilot_lsp) = Copilot::fake(cx);
         let mut cx = EditorLspTestContext::new_rust(
-            lsp::ServerCapabilities {
-                completion_provider: Some(lsp::CompletionOptions {
+            raijin_lsp::ServerCapabilities {
+                completion_provider: Some(raijin_lsp::CompletionOptions {
                     trigger_characters: Some(vec![".".to_string(), ":".to_string()]),
-                    ..lsp::CompletionOptions::default()
+                    ..raijin_lsp::CompletionOptions::default()
                 }),
-                ..lsp::ServerCapabilities::default()
+                ..raijin_lsp::ServerCapabilities::default()
             },
             cx,
         )
@@ -869,9 +869,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "two.foo()".into(),
-                range: lsp::Range::new(lsp::Position::new(1, 0), lsp::Position::new(1, 2)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(1, 0), raijin_lsp::Position::new(1, 2)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -902,9 +902,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "two.foo()".into(),
-                range: lsp::Range::new(lsp::Position::new(1, 0), lsp::Position::new(1, 3)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(1, 0), raijin_lsp::Position::new(1, 3)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -932,9 +932,9 @@ mod tests {
             &copilot_lsp,
             vec![crate::request::NextEditSuggestion {
                 text: "two.foo()".into(),
-                range: lsp::Range::new(lsp::Position::new(1, 0), lsp::Position::new(1, 4)),
+                range: raijin_lsp::Range::new(raijin_lsp::Position::new(1, 0), raijin_lsp::Position::new(1, 4)),
                 command: None,
-                text_document: lsp::VersionedTextDocumentIdentifier {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                     uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                     version: 0,
                 },
@@ -985,7 +985,7 @@ mod tests {
             .unwrap();
 
         let multibuffer = cx.new(|cx| {
-            let mut multibuffer = MultiBuffer::new(language::Capability::ReadWrite);
+            let mut multibuffer = MultiBuffer::new(raijin_language::Capability::ReadWrite);
             multibuffer.set_excerpts_for_path(
                 PathKey::sorted(0),
                 private_buffer.clone(),
@@ -1023,12 +1023,12 @@ mod tests {
                     Ok(crate::request::NextEditSuggestionsResult {
                         edits: vec![crate::request::NextEditSuggestion {
                             text: "next line".into(),
-                            range: lsp::Range::new(
-                                lsp::Position::new(1, 0),
-                                lsp::Position::new(1, 0),
+                            range: raijin_lsp::Range::new(
+                                raijin_lsp::Position::new(1, 0),
+                                raijin_lsp::Position::new(1, 0),
                             ),
                             command: None,
-                            text_document: lsp::VersionedTextDocumentIdentifier {
+                            text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                                 uri: Uri::from_file_path(path!("/root/dir/file.rs")).unwrap(),
                                 version: 0,
                             },
@@ -1059,7 +1059,7 @@ mod tests {
     }
 
     fn handle_copilot_completion_request(
-        lsp: &lsp::FakeLanguageServer,
+        lsp: &raijin_lsp::FakeLanguageServer,
         completions: Vec<crate::request::NextEditSuggestion>,
     ) {
         lsp.set_request_handler::<crate::request::NextEditSuggestions, _, _>(
@@ -1091,16 +1091,16 @@ mod tests {
             cx.to_lsp_range(MultiBufferOffset(range.start)..MultiBufferOffset(range.end));
 
         let mut request =
-            cx.set_request_handler::<lsp::request::Completion, _, _>(move |url, params, _| {
+            cx.set_request_handler::<raijin_lsp::request::Completion, _, _>(move |url, params, _| {
                 let completions = completions.clone();
                 async move {
                     assert_eq!(params.text_document_position.text_document.uri, url.clone());
-                    Ok(Some(lsp::CompletionResponse::Array(
+                    Ok(Some(raijin_lsp::CompletionResponse::Array(
                         completions
                             .iter()
-                            .map(|completion_text| lsp::CompletionItem {
+                            .map(|completion_text| raijin_lsp::CompletionItem {
                                 label: completion_text.to_string(),
-                                text_edit: Some(lsp::CompletionTextEdit::Edit(lsp::TextEdit {
+                                text_edit: Some(raijin_lsp::CompletionTextEdit::Edit(raijin_lsp::TextEdit {
                                     range: replace_range,
                                     new_text: completion_text.to_string(),
                                 })),

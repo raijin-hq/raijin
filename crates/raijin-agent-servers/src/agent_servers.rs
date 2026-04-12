@@ -21,13 +21,13 @@ pub use acp::{AcpConnection, GEMINI_TERMINAL_AUTH_METHOD_ID};
 
 pub struct AgentServerDelegate {
     store: Entity<AgentServerStore>,
-    new_version_available: Option<watch::Sender<Option<String>>>,
+    new_version_available: Option<raijin_watch::Sender<Option<String>>>,
 }
 
 impl AgentServerDelegate {
     pub fn new(
         store: Entity<AgentServerStore>,
-        new_version_tx: Option<watch::Sender<Option<String>>>,
+        new_version_tx: Option<raijin_watch::Sender<Option<String>>>,
     ) -> Self {
         Self {
             store,
@@ -37,7 +37,7 @@ impl AgentServerDelegate {
 }
 
 pub trait AgentServer: Send {
-    fn logo(&self) -> ui::IconName;
+    fn logo(&self) -> raijin_ui::IconName;
     fn agent_id(&self) -> AgentId;
     fn connect(
         &self,

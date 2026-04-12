@@ -7,7 +7,7 @@ use raijin_agent_settings::AgentSettings;
 use anyhow::{Context as _, Result, bail};
 use futures::{AsyncReadExt as _, FutureExt as _};
 use inazuma::{App, AppContext as _, Task};
-use html_to_markdown::{TagHandler, convert_html_to_markdown, markdown};
+use raijin_html_to_markdown::{TagHandler, convert_html_to_markdown, markdown};
 use raijin_http_client::{AsyncBody, HttpClientWithUrl};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -93,7 +93,7 @@ impl FetchTool {
                     Rc::new(RefCell::new(markdown::StyledTextHandler)),
                 ];
                 if url.contains("wikipedia.org") {
-                    use html_to_markdown::structure::wikipedia;
+                    use raijin_html_to_markdown::structure::wikipedia;
 
                     handlers.push(Rc::new(RefCell::new(wikipedia::WikipediaChromeRemover)));
                     handlers.push(Rc::new(RefCell::new(wikipedia::WikipediaInfoboxHandler)));

@@ -299,7 +299,7 @@ impl LicenseDetectionWatcher {
 
         let _worktree_subscription =
             cx.subscribe(worktree, move |_worktree, event, _cx| match event {
-                worktree::Event::UpdatedEntries(updated_entries) => {
+                raijin_worktree::Event::UpdatedEntries(updated_entries) => {
                     for updated_entry in updated_entries.iter() {
                         let rel_path = &updated_entry.0;
                         let path_bytes = rel_path.as_unix_str().as_bytes();
@@ -308,7 +308,7 @@ impl LicenseDetectionWatcher {
                         }
                     }
                 }
-                worktree::Event::DeletedEntry(_) | worktree::Event::UpdatedGitRepositories(_) => {}
+                raijin_worktree::Event::DeletedEntry(_) | raijin_worktree::Event::UpdatedGitRepositories(_) => {}
             });
 
         let worktree_snapshot = worktree.read(cx).snapshot();
@@ -836,7 +836,7 @@ mod tests {
 
         fs.remove_file(
             Path::new("/root/LICENSE-MIT"),
-            fs::RemoveOptions {
+            raijin_fs::RemoveOptions {
                 recursive: false,
                 ignore_if_not_exists: false,
             },

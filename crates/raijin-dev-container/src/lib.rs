@@ -533,7 +533,7 @@ impl PickerDelegate for FeaturePickerDelegate {
                 .toggle_state(selected)
                 .start_slot(Switch::new(
                     feature_entry.feature.id.clone(),
-                    feature_entry.toggle_state,
+                ).checked(feature_entry.toggle_state == raijin_ui::ToggleState::Selected,
                 ))
                 .child(Label::new(feature_entry.feature.name))
                 .into_any_element(),

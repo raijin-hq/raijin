@@ -3,8 +3,8 @@ use raijin_edit_prediction::{EditPrediction, EditPredictionRating, EditPredictio
 use raijin_editor::{Editor, Inlay, MultiBuffer};
 use raijin_feature_flags::FeatureFlag;
 use inazuma::{
-    App, BorderStyle, DismissEvent, EdgesRefinement, Entity, EventEmitter, FocusHandle, Focusable,
-    Length, StyleRefinement, TextStyleRefinement, Window, actions, prelude::*,
+    App, BorderStyle, DismissEvent, Edges, EdgesRefinement, Entity, EventEmitter, FocusHandle,
+    Focusable, Length, StyleRefinement, TextStyleRefinement, Window, actions, prelude::*,
 };
 use raijin_language::{Buffer, CodeLabel, LanguageRegistry, Point, ToOffset, language_settings};
 use raijin_markdown::{Markdown, MarkdownStyle};
@@ -86,7 +86,7 @@ impl RatePredictionsModal {
                 RatePredictionsModal::new(ep_store, language_registry, window, cx)
             });
 
-            telemetry::event!("Rate Prediction Modal Open", source = "Edit Prediction");
+            raijin_telemetry::event!("Rate Prediction Modal Open", source = "Edit Prediction");
         }
     }
 
@@ -106,7 +106,7 @@ impl RatePredictionsModal {
             active_prediction: None,
             _subscription: subscription,
             diff_editor: cx.new(|cx| {
-                let multibuffer = cx.new(|_| MultiBuffer::new(language::Capability::ReadOnly));
+                let multibuffer = cx.new(|_| MultiBuffer::new(raijin_language::Capability::ReadOnly));
                 let mut editor = Editor::for_multibuffer(multibuffer, None, window, cx);
                 editor.disable_inline_diagnostics();
                 editor.set_expand_all_diff_hunks(cx);
@@ -118,11 +118,11 @@ impl RatePredictionsModal {
         }
     }
 
-    fn dismiss(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn dismiss(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, _: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, _: &mut Window, cx: &mut Context<Self>) {
         self.selected_index += 1;
         self.selected_index = usize::min(
             self.selected_index,
@@ -133,7 +133,7 @@ impl RatePredictionsModal {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -180,12 +180,12 @@ impl RatePredictionsModal {
         cx.notify();
     }
 
-    fn select_first(&mut self, _: &menu::SelectFirst, _: &mut Window, cx: &mut Context<Self>) {
+    fn select_first(&mut self, _: &inazuma_menu::SelectFirst, _: &mut Window, cx: &mut Context<Self>) {
         self.selected_index = 0;
         cx.notify();
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
         self.selected_index = self.ep_store.read(cx).shown_completions_len() - 1;
         cx.notify();
     }
@@ -278,7 +278,7 @@ impl RatePredictionsModal {
         self.select_completion(completion, false, window, cx);
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let completion = self
             .ep_store
             .read(cx)
@@ -396,7 +396,7 @@ impl RatePredictionsModal {
 
             for event in &prediction.inputs.events {
                 formatted_inputs.push_str("```diff\n");
-                zeta_prompt::write_event(&mut formatted_inputs, event.as_ref());
+                raijin_zeta_prompt::write_event(&mut formatted_inputs, event.as_ref());
                 formatted_inputs.push_str("```\n\n");
             }
 
@@ -545,7 +545,7 @@ impl RatePredictionsModal {
                         .bg(cx.theme().colors().editor.background)
                         .overflow_scroll()
                         .child(if let Some(active_prediction) = &self.active_prediction {
-                            markdown::MarkdownElement::new(
+                            raijin_markdown::MarkdownElement::new(
                                 active_prediction.formatted_inputs.clone(),
                                 MarkdownStyle {
                                     base_text_style: window.text_style(),
@@ -585,7 +585,7 @@ impl RatePredictionsModal {
                                             right: Some(AbsoluteLength::Pixels(px(1.))),
                                             bottom: Some(AbsoluteLength::Pixels(px(1.))),
                                         },
-                                        border_color: Some(cx.theme().colors().border_variant),
+                                        border_colors: Some(Edges::all(Some(cx.theme().colors().border_variant))),
                                         background: Some(
                                             cx.theme().colors().editor.background.into(),
                                         ),
@@ -695,7 +695,7 @@ impl RatePredictionsModal {
                                         failure_mode_menu,
                                     )
                                     .handle(self.failure_mode_menu_handle.clone())
-                                    .style(ui::DropdownStyle::Outlined)
+                                    .style(raijin_ui::DropdownStyle::Outlined)
                                     .trigger_size(ButtonSize::Compact),
                             )
                             .child(
@@ -988,13 +988,13 @@ impl FeedbackCompletionProvider {
     ];
 }
 
-impl editor::CompletionProvider for FeedbackCompletionProvider {
+impl raijin_editor::CompletionProvider for FeedbackCompletionProvider {
     fn completions(
         &self,
-        _excerpt_id: editor::ExcerptId,
+        _excerpt_id: raijin_editor::ExcerptId,
         buffer: &Entity<Buffer>,
-        buffer_position: language::Anchor,
-        _trigger: editor::CompletionContext,
+        buffer_position: raijin_language::Anchor,
+        _trigger: raijin_editor::CompletionContext,
         _window: &mut Window,
         cx: &mut Context<Editor>,
     ) -> inazuma::Task<anyhow::Result<Vec<CompletionResponse>>> {
@@ -1060,7 +1060,7 @@ impl editor::CompletionProvider for FeedbackCompletionProvider {
     fn is_completion_trigger(
         &self,
         _buffer: &Entity<Buffer>,
-        _position: language::Anchor,
+        _position: raijin_language::Anchor,
         text: &str,
         _trigger_in_words: bool,
         _cx: &mut Context<Editor>,

@@ -1,14 +1,10 @@
 #![allow(missing_docs)]
 
-use inazuma::{App, Oklch, Pixels, SharedString, WindowBackgroundAppearance, px};
+use inazuma::{App, Oklch, Pixels, SharedString, px};
 use inazuma_refineable::Refineable;
-use std::sync::Arc;
 use strum::{AsRefStr, EnumIter, IntoEnumIterator};
 
-use crate::{
-    AccentColors, ActiveTheme, PlayerColors, StatusColors, StatusColorsRefinement, SyntaxTheme,
-    SystemColors,
-};
+use crate::ActiveTheme;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sub-Structs
@@ -827,29 +823,6 @@ pub fn all_theme_colors(cx: &mut App) -> Vec<(Oklch, SharedString)> {
             (color, SharedString::from(name))
         })
         .collect()
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// ThemeStyles (kept here alongside ThemeColors for derive macro proximity)
-// ─────────────────────────────────────────────────────────────────────────────
-
-#[derive(Refineable, Clone, Debug, PartialEq)]
-pub struct ThemeStyles {
-    /// The background appearance of the window.
-    pub window_background_appearance: WindowBackgroundAppearance,
-    pub system: SystemColors,
-    /// An array of colors used for theme elements that iterate through a series of colors.
-    pub accents: AccentColors,
-
-    #[refineable]
-    pub colors: ThemeColors,
-
-    #[refineable]
-    pub status: StatusColors,
-
-    pub player: PlayerColors,
-
-    pub syntax: Arc<SyntaxTheme>,
 }
 
 #[cfg(test)]

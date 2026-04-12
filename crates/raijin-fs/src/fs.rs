@@ -720,17 +720,14 @@ impl Fs for RealFs {
 
     #[cfg(target_os = "macos")]
     async fn trash_file(&self, path: &Path, _options: RemoveOptions) -> Result<()> {
-        use objc2::rc::Retained;
         use objc2_foundation::{NSArray, NSString, NSURL};
         use objc2_app_kit::NSWorkspace;
 
-        unsafe {
-            let path_str = NSString::from_str(&path.to_string_lossy());
-            let url = NSURL::fileURLWithPath(&path_str);
-            let array = NSArray::from_retained_slice(&[url]);
-            let workspace = NSWorkspace::sharedWorkspace();
-            workspace.recycleURLs_completionHandler(&array, None);
-        }
+        let path_str = NSString::from_str(&path.to_string_lossy());
+        let url = NSURL::fileURLWithPath(&path_str);
+        let array = NSArray::from_retained_slice(&[url]);
+        let workspace = NSWorkspace::sharedWorkspace();
+        workspace.recycleURLs_completionHandler(&array, None);
         Ok(())
     }
 

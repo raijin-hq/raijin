@@ -1,8 +1,8 @@
-use crate::db::{self, ChannelRole, NewUserParams};
+use crate::db::{ChannelRole, NewUserParams};
 
 use anyhow::Context as _;
 use chrono::{DateTime, Utc};
-use raijin_db::Database;
+use crate::db::Database;
 use serde::{Deserialize, de::DeserializeOwned};
 use std::{fs, path::Path};
 

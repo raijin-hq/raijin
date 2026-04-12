@@ -1,0 +1,251 @@
+_version: 2
+Calendar:
+  week.0:
+    en: Su
+    de: So
+    zh-CN: 日
+    zh-HK: 日
+  week.1:
+    en: Mo
+    de: Mo
+    zh-CN: 一
+    zh-HK: 一
+  week.2:
+    en: Tu
+    de: Di
+    zh-CN: 二
+    zh-HK: 二
+  week.3:
+    en: We
+    de: Mi
+    zh-CN: 三
+    zh-HK: 三
+  week.4:
+    en: Th
+    de: Do
+    zh-CN: 四
+    zh-HK: 四
+  week.5:
+    en: Fr
+    de: Fr
+    zh-CN: 五
+    zh-HK: 五
+  week.6:
+    en: Sa
+    de: Sa
+    zh-CN: 六
+    zh-HK: 六
+  month.January:
+    en: January
+    de: Januar
+    zh-CN: 一月
+    zh-HK: 一月
+  month.February:
+    en: February
+    de: Februar
+    zh-CN: 二月
+    zh-HK: 二月
+  month.March:
+    en: March
+    de: März
+    zh-CN: 三月
+    zh-HK: 三月
+  month.April:
+    en: April
+    de: April
+    zh-CN: 四月
+    zh-HK: 四月
+  month.May:
+    en: May
+    de: Mai
+    zh-CN: 五月
+    zh-HK: 五月
+  month.June:
+    en: June
+    de: Juni
+    zh-CN: 六月
+    zh-HK: 六月
+  month.July:
+    en: July
+    de: Juli
+    zh-CN: 七月
+    zh-HK: 七月
+  month.August:
+    en: August
+    de: August
+    zh-CN: 八月
+    zh-HK: 八月
+  month.September:
+    en: September
+    de: September
+    zh-CN: 九月
+    zh-HK: 九月
+  month.October:
+    en: October
+    de: Oktober
+    zh-CN: 十月
+    zh-HK: 十月
+  month.November:
+    en: November
+    de: November
+    zh-CN: 十一月
+    zh-HK: 十一月
+  month.December:
+    en: December
+    de: Dezember
+    zh-CN: 十二月
+    zh-HK: 十二月
+DatePicker:
+  placeholder:
+    en: Select date
+    de: Datum auswählen
+    zh-CN: 选择日期
+    zh-HK: 選擇日期
+Select:
+  placeholder:
+    en: Please select
+    de: Bitte auswählen
+    zh-CN: 请选择
+    zh-HK: 請選擇
+Dock:
+  Unnamed:
+    en: Unnamed
+    de: Unbenannt
+    zh-CN: 未命名
+    zh-HK: 未命名
+  Close:
+    en: Close
+    de: Schließen
+    zh-CN: 关闭
+    zh-HK: 關閉
+  Zoom In:
+    en: Zoom In
+    de: Vergrößern
+    zh-CN: 放大
+    zh-HK: 放大
+  Zoom Out:
+    en: Zoom Out
+    de: Verkleinern
+    zh-CN: 缩小
+    zh-HK: 縮小
+  Collapse:
+    en: Collapse
+    de: Einklappen
+    zh-CN: 隐藏
+    zh-HK: 隱藏
+  Expand:
+    en: Expand
+    de: Ausklappen
+    zh-CN: 展开
+    zh-HK: 展開
+ColorPicker:
+  Palette:
+    en: Palette
+    de: Farbpalette
+    zh-CN: 调色板
+    zh-HK: 調色板
+  HSLA:
+    en: HSLA
+    de: HSLA
+    zh-CN: HSLA
+    zh-HK: HSLA
+  Hue:
+    en: Hue
+    de: Farbton
+    zh-CN: 色相
+    zh-HK: 色相
+  Saturation:
+    en: Saturation
+    de: Sättigung
+    zh-CN: 饱和度
+    zh-HK: 飽和度
+  Lightness:
+    en: Lightness
+    de: Helligkeit
+    zh-CN: 亮度
+    zh-HK: 亮度
+  Alpha:
+    en: Alpha
+    de: Transparenz
+    zh-CN: 透明度
+    zh-HK: 透明度
+Dialog:
+  ok:
+    en: OK
+    de: OK
+    zh-CN: 确定
+    zh-HK: 確定
+  cancel:
+    en: Cancel
+    de: Abbrechen
+    zh-CN: 取消
+    zh-HK: 取消
+List:
+  search_placeholder:
+    en: Search...
+    de: Suchen...
+    zh-CN: 搜索...
+    zh-HK: 搜索...
+Input:
+  Replace:
+    en: Replace
+    de: Ersetzen
+    zh-CN: 替换
+    zh-HK: 替換
+  Replace All:
+    en: Replace All
+    de: Alle ersetzen
+    zh-CN: 全部替换
+    zh-HK: 全部替換
+  Cut:
+    en: Cut
+    de: Ausschneiden
+    zh-CN: 剪切
+    zh-HK: 剪切
+  Copy:
+    en: Copy
+    de: Kopieren
+    zh-CN: 复制
+    zh-HK: 複製
+  Paste:
+    en: Paste
+    de: Einfügen
+    zh-CN: 粘贴
+    zh-HK: 貼上
+  Select All:
+    en: Select All
+    de: Alles auswählen
+    zh-CN: 全选
+    zh-HK: 全選
+  Go to Definition:
+    en: Go to Definition
+    de: Zur Definition springen
+    zh-CN: 跳转到定义
+    zh-HK: 跳轉到定義
+  Show Code Actions:
+    en: Show Code Actions
+    de: Code-Aktionen anzeigen
+    zh-CN: 显示代码操作
+    zh-HK: 顯示代碼操作
+Settings:
+  search_placeholder:
+    en: Search...
+    de: Suchen...
+    zh-CN: 搜索...
+    zh-HK: 搜索...
+  Reset All:
+    en: Reset All
+    de: Alle zurücksetzen
+    zh-CN: 重置全部
+    zh-HK: 重置全部
+Pagination:
+  previous:
+    en: Previous
+    de: Zurück
+    zh-CN: 上一页
+    zh-HK: 上一頁
+  next:
+    en: Next
+    de: Weiter
+    zh-CN: 下一页
+    zh-HK: 下一頁

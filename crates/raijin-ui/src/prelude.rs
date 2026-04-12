@@ -34,4 +34,5 @@ pub use crate::{
     h_group, h_group_lg, h_group_sm, h_group_xl, v_group, v_group_lg, v_group_sm, v_group_xl,
 };
 pub use crate::animation::cubic_bezier;
+pub use crate::PopupMenuExt;
 pub use raijin_theme::ActiveTheme;

@@ -340,7 +340,7 @@ impl Render for CommitTooltip {
                                                     Icon::new(IconName::PullRequest)
                                                         .color(Color::Muted),
                                                 )
-                                                .style(ButtonStyle::Subtle)
+                                                .style(ButtonStyle::SUBTLE)
                                                 .on_click(move |_, _, cx| {
                                                     cx.stop_propagation();
                                                     cx.open_url(pr.url.as_str())
@@ -353,7 +353,7 @@ impl Render for CommitTooltip {
                                                 "commit-sha-button",
                                                 short_commit_id.clone(),
                                             )
-                                            .style(ButtonStyle::Subtle)
+                                            .style(ButtonStyle::SUBTLE)
                                             .color(Color::Muted)
                                             .start_icon(
                                                 Icon::new(IconName::FileGit).color(Color::Muted),

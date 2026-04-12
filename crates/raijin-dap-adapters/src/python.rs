@@ -20,7 +20,7 @@ use std::{
     ffi::OsStr,
     path::{Path, PathBuf},
 };
-use inazuma_inazuma_util::command::new_command;
+use inazuma_util::command::new_command;
 use inazuma_util::{ResultExt, paths::PathStyle, rel_path::RelPath};
 
 enum DebugpyLaunchMode<'a> {

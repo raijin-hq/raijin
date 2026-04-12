@@ -53,8 +53,8 @@ use crate::provider::open_ai::{
 };
 use crate::provider::x_ai::count_xai_tokens;
 
-const PROVIDER_ID: LanguageModelProviderId = language_model::ZED_CLOUD_PROVIDER_ID;
-const PROVIDER_NAME: LanguageModelProviderName = language_model::ZED_CLOUD_PROVIDER_NAME;
+const PROVIDER_ID: LanguageModelProviderId = raijin_language_model::ZED_CLOUD_PROVIDER_ID;
+const PROVIDER_NAME: LanguageModelProviderName = raijin_language_model::ZED_CLOUD_PROVIDER_NAME;
 
 #[derive(Default, Clone, Debug, PartialEq)]
 pub struct ZedDotDevSettings {
@@ -90,11 +90,11 @@ pub struct State {
     client: Arc<Client>,
     llm_api_token: LlmApiToken,
     user_store: Entity<UserStore>,
-    status: client::Status,
-    models: Vec<Arc<cloud_llm_client::LanguageModel>>,
-    default_model: Option<Arc<cloud_llm_client::LanguageModel>>,
-    default_fast_model: Option<Arc<cloud_llm_client::LanguageModel>>,
-    recommended_models: Vec<Arc<cloud_llm_client::LanguageModel>>,
+    status: raijin_client::Status,
+    models: Vec<Arc<raijin_cloud_llm_client::LanguageModel>>,
+    default_model: Option<Arc<raijin_cloud_llm_client::LanguageModel>>,
+    default_fast_model: Option<Arc<raijin_cloud_llm_client::LanguageModel>>,
+    recommended_models: Vec<Arc<raijin_cloud_llm_client::LanguageModel>>,
     _user_store_subscription: Subscription,
     _settings_subscription: Subscription,
     _llm_token_subscription: Subscription,
@@ -104,7 +104,7 @@ impl State {
     fn new(
         client: Arc<Client>,
         user_store: Entity<UserStore>,
-        status: client::Status,
+        status: raijin_client::Status,
         cx: &mut Context<Self>,
     ) -> Self {
         let refresh_llm_token_listener = RefreshLlmTokenListener::global(cx);
@@ -121,7 +121,7 @@ impl State {
             _user_store_subscription: cx.subscribe(
                 &user_store,
                 move |this, _user_store, event, cx| match event {
-                    client::user::Event::PrivateUserInfoUpdated => {
+                    raijin_client::user::Event::PrivateUserInfoUpdated => {
                         let status = *client.status().borrow();
                         if status.is_signed_out() {
                             return;
@@ -225,7 +225,7 @@ impl State {
         let http_client = &client.http_client();
         let token = llm_api_token.acquire(&client, organization_id).await?;
 
-        let request = http_client::Request::builder()
+        let request = raijin_http_client::Request::builder()
             .method(Method::GET)
             .header(CLIENT_SUPPORTS_X_AI_HEADER_NAME, "true")
             .uri(http_client.build_zed_llm_url("/models", &[])?.as_ref())
@@ -283,7 +283,7 @@ impl CloudLanguageModelProvider {
 
     fn create_language_model(
         &self,
-        model: Arc<cloud_llm_client::LanguageModel>,
+        model: Arc<raijin_cloud_llm_client::LanguageModel>,
         llm_api_token: LlmApiToken,
         user_store: Entity<UserStore>,
     ) -> Arc<dyn LanguageModel> {
@@ -374,7 +374,7 @@ impl LanguageModelProvider for CloudLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         _: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -389,7 +389,7 @@ impl LanguageModelProvider for CloudLanguageModelProvider {
 
 pub struct CloudLanguageModel {
     id: LanguageModelId,
-    model: Arc<cloud_llm_client::LanguageModel>,
+    model: Arc<raijin_cloud_llm_client::LanguageModel>,
     llm_api_token: LlmApiToken,
     user_store: Entity<UserStore>,
     client: Arc<Client>,
@@ -417,7 +417,7 @@ impl CloudLanguageModel {
         let mut refreshed_token = false;
 
         loop {
-            let request = http_client::Request::builder()
+            let request = raijin_http_client::Request::builder()
                 .method(Method::POST)
                 .uri(http_client.build_zed_llm_url("/completions", &[])?.as_ref())
                 .when_some(app_version.as_ref(), |builder, app_version| {
@@ -568,20 +568,20 @@ impl LanguageModel for CloudLanguageModel {
     fn upstream_provider_id(&self) -> LanguageModelProviderId {
         use raijin_cloud_llm_client::LanguageModelProvider::*;
         match self.model.provider {
-            Anthropic => language_model::ANTHROPIC_PROVIDER_ID,
-            OpenAi => language_model::OPEN_AI_PROVIDER_ID,
-            Google => language_model::GOOGLE_PROVIDER_ID,
-            XAi => language_model::X_AI_PROVIDER_ID,
+            Anthropic => raijin_language_model::ANTHROPIC_PROVIDER_ID,
+            OpenAi => raijin_language_model::OPEN_AI_PROVIDER_ID,
+            Google => raijin_language_model::GOOGLE_PROVIDER_ID,
+            XAi => raijin_language_model::X_AI_PROVIDER_ID,
         }
     }
 
     fn upstream_provider_name(&self) -> LanguageModelProviderName {
         use raijin_cloud_llm_client::LanguageModelProvider::*;
         match self.model.provider {
-            Anthropic => language_model::ANTHROPIC_PROVIDER_NAME,
-            OpenAi => language_model::OPEN_AI_PROVIDER_NAME,
-            Google => language_model::GOOGLE_PROVIDER_NAME,
-            XAi => language_model::X_AI_PROVIDER_NAME,
+            Anthropic => raijin_language_model::ANTHROPIC_PROVIDER_NAME,
+            OpenAi => raijin_language_model::OPEN_AI_PROVIDER_NAME,
+            Google => raijin_language_model::GOOGLE_PROVIDER_NAME,
+            XAi => raijin_language_model::X_AI_PROVIDER_NAME,
         }
     }
 
@@ -640,12 +640,12 @@ impl LanguageModel for CloudLanguageModel {
 
     fn tool_input_format(&self) -> LanguageModelToolSchemaFormat {
         match self.model.provider {
-            cloud_llm_client::LanguageModelProvider::Anthropic
-            | cloud_llm_client::LanguageModelProvider::OpenAi => {
+            raijin_cloud_llm_client::LanguageModelProvider::Anthropic
+            | raijin_cloud_llm_client::LanguageModelProvider::OpenAi => {
                 LanguageModelToolSchemaFormat::JsonSchema
             }
-            cloud_llm_client::LanguageModelProvider::Google
-            | cloud_llm_client::LanguageModelProvider::XAi => {
+            raijin_cloud_llm_client::LanguageModelProvider::Google
+            | raijin_cloud_llm_client::LanguageModelProvider::XAi => {
                 LanguageModelToolSchemaFormat::JsonSchemaSubset
             }
         }
@@ -661,16 +661,16 @@ impl LanguageModel for CloudLanguageModel {
 
     fn cache_configuration(&self) -> Option<LanguageModelCacheConfiguration> {
         match &self.model.provider {
-            cloud_llm_client::LanguageModelProvider::Anthropic => {
+            raijin_cloud_llm_client::LanguageModelProvider::Anthropic => {
                 Some(LanguageModelCacheConfiguration {
                     min_total_token: 2_048,
                     should_speculate: true,
                     max_cache_anchors: 4,
                 })
             }
-            cloud_llm_client::LanguageModelProvider::OpenAi
-            | cloud_llm_client::LanguageModelProvider::XAi
-            | cloud_llm_client::LanguageModelProvider::Google => None,
+            raijin_cloud_llm_client::LanguageModelProvider::OpenAi
+            | raijin_cloud_llm_client::LanguageModelProvider::XAi
+            | raijin_cloud_llm_client::LanguageModelProvider::Google => None,
         }
     }
 
@@ -680,24 +680,24 @@ impl LanguageModel for CloudLanguageModel {
         cx: &App,
     ) -> BoxFuture<'static, Result<u64>> {
         match self.model.provider {
-            cloud_llm_client::LanguageModelProvider::Anthropic => cx
+            raijin_cloud_llm_client::LanguageModelProvider::Anthropic => cx
                 .background_spawn(async move { count_anthropic_tokens_with_tiktoken(request) })
                 .boxed(),
-            cloud_llm_client::LanguageModelProvider::OpenAi => {
-                let model = match open_ai::Model::from_id(&self.model.id.0) {
+            raijin_cloud_llm_client::LanguageModelProvider::OpenAi => {
+                let model = match raijin_open_ai::Model::from_id(&self.model.id.0) {
                     Ok(model) => model,
                     Err(err) => return async move { Err(anyhow!(err)) }.boxed(),
                 };
                 count_open_ai_tokens(request, model, cx)
             }
-            cloud_llm_client::LanguageModelProvider::XAi => {
-                let model = match x_ai::Model::from_id(&self.model.id.0) {
+            raijin_cloud_llm_client::LanguageModelProvider::XAi => {
+                let model = match raijin_x_ai::Model::from_id(&self.model.id.0) {
                     Ok(model) => model,
                     Err(err) => return async move { Err(anyhow!(err)) }.boxed(),
                 };
                 count_xai_tokens(request, model, cx)
             }
-            cloud_llm_client::LanguageModelProvider::Google => {
+            raijin_cloud_llm_client::LanguageModelProvider::Google => {
                 let client = self.client.clone();
                 let llm_api_token = self.llm_api_token.clone();
                 let organization_id = self
@@ -713,13 +713,13 @@ impl LanguageModel for CloudLanguageModel {
                     let token = llm_api_token.acquire(&client, organization_id).await?;
 
                     let request_body = CountTokensBody {
-                        provider: cloud_llm_client::LanguageModelProvider::Google,
+                        provider: raijin_cloud_llm_client::LanguageModelProvider::Google,
                         model: model_id,
-                        provider_request: serde_json::to_value(&google_ai::CountTokensRequest {
+                        provider_request: serde_json::to_value(&raijin_google_ai::CountTokensRequest {
                             generate_content_request,
                         })?,
                     };
-                    let request = http_client::Request::builder()
+                    let request = raijin_http_client::Request::builder()
                         .method(Method::POST)
                         .uri(
                             http_client
@@ -781,11 +781,11 @@ impl LanguageModel for CloudLanguageModel {
         let enable_thinking = thinking_allowed && self.model.supports_thinking;
         let provider_name = provider_name(&self.model.provider);
         match self.model.provider {
-            cloud_llm_client::LanguageModelProvider::Anthropic => {
+            raijin_cloud_llm_client::LanguageModelProvider::Anthropic => {
                 let effort = request
                     .thinking_effort
                     .as_ref()
-                    .and_then(|effort| anthropic::Effort::from_str(effort).ok());
+                    .and_then(|effort| raijin_anthropic::Effort::from_str(effort).ok());
 
                 let mut request = into_anthropic(
                     request,
@@ -802,8 +802,8 @@ impl LanguageModel for CloudLanguageModel {
                 );
 
                 if enable_thinking && effort.is_some() {
-                    request.thinking = Some(anthropic::Thinking::Adaptive);
-                    request.output_config = Some(anthropic::OutputConfig { effort });
+                    request.thinking = Some(raijin_anthropic::Thinking::Adaptive);
+                    request.output_config = Some(raijin_anthropic::OutputConfig { effort });
                 }
 
                 let client = self.client.clone();
@@ -821,7 +821,7 @@ impl LanguageModel for CloudLanguageModel {
                         CompletionBody {
                             thread_id,
                             prompt_id,
-                            provider: cloud_llm_client::LanguageModelProvider::Anthropic,
+                            provider: raijin_cloud_llm_client::LanguageModelProvider::Anthropic,
                             model: request.model.clone(),
                             provider_request: serde_json::to_value(&request)
                                 .map_err(|e| anyhow!(e))?,
@@ -842,14 +842,14 @@ impl LanguageModel for CloudLanguageModel {
                 });
                 async move { Ok(future.await?.boxed()) }.boxed()
             }
-            cloud_llm_client::LanguageModelProvider::OpenAi => {
+            raijin_cloud_llm_client::LanguageModelProvider::OpenAi => {
                 let client = self.client.clone();
                 let llm_api_token = self.llm_api_token.clone();
                 let organization_id = organization_id.clone();
                 let effort = request
                     .thinking_effort
                     .as_ref()
-                    .and_then(|effort| open_ai::ReasoningEffort::from_str(effort).ok());
+                    .and_then(|effort| raijin_open_ai::ReasoningEffort::from_str(effort).ok());
 
                 let mut request = into_open_ai_response(
                     request,
@@ -861,9 +861,9 @@ impl LanguageModel for CloudLanguageModel {
                 );
 
                 if enable_thinking && let Some(effort) = effort {
-                    request.reasoning = Some(open_ai::responses::ReasoningConfig {
+                    request.reasoning = Some(raijin_open_ai::responses::ReasoningConfig {
                         effort,
-                        summary: Some(open_ai::responses::ReasoningSummaryMode::Auto),
+                        summary: Some(raijin_open_ai::responses::ReasoningSummaryMode::Auto),
                     });
                 }
 
@@ -879,7 +879,7 @@ impl LanguageModel for CloudLanguageModel {
                         CompletionBody {
                             thread_id,
                             prompt_id,
-                            provider: cloud_llm_client::LanguageModelProvider::OpenAi,
+                            provider: raijin_cloud_llm_client::LanguageModelProvider::OpenAi,
                             model: request.model.clone(),
                             provider_request: serde_json::to_value(&request)
                                 .map_err(|e| anyhow!(e))?,
@@ -896,7 +896,7 @@ impl LanguageModel for CloudLanguageModel {
                 });
                 async move { Ok(future.await?.boxed()) }.boxed()
             }
-            cloud_llm_client::LanguageModelProvider::XAi => {
+            raijin_cloud_llm_client::LanguageModelProvider::XAi => {
                 let client = self.client.clone();
                 let request = into_open_ai(
                     request,
@@ -920,7 +920,7 @@ impl LanguageModel for CloudLanguageModel {
                         CompletionBody {
                             thread_id,
                             prompt_id,
-                            provider: cloud_llm_client::LanguageModelProvider::XAi,
+                            provider: raijin_cloud_llm_client::LanguageModelProvider::XAi,
                             model: request.model.clone(),
                             provider_request: serde_json::to_value(&request)
                                 .map_err(|e| anyhow!(e))?,
@@ -937,7 +937,7 @@ impl LanguageModel for CloudLanguageModel {
                 });
                 async move { Ok(future.await?.boxed()) }.boxed()
             }
-            cloud_llm_client::LanguageModelProvider::Google => {
+            raijin_cloud_llm_client::LanguageModelProvider::Google => {
                 let client = self.client.clone();
                 let request =
                     into_google(request, self.model.id.to_string(), GoogleModelMode::Default);
@@ -954,7 +954,7 @@ impl LanguageModel for CloudLanguageModel {
                         CompletionBody {
                             thread_id,
                             prompt_id,
-                            provider: cloud_llm_client::LanguageModelProvider::Google,
+                            provider: raijin_cloud_llm_client::LanguageModelProvider::Google,
                             model: request.model.model_id.clone(),
                             provider_request: serde_json::to_value(&request)
                                 .map_err(|e| anyhow!(e))?,
@@ -1045,14 +1045,14 @@ where
     .boxed()
 }
 
-fn provider_name(provider: &cloud_llm_client::LanguageModelProvider) -> LanguageModelProviderName {
+fn provider_name(provider: &raijin_cloud_llm_client::LanguageModelProvider) -> LanguageModelProviderName {
     match provider {
-        cloud_llm_client::LanguageModelProvider::Anthropic => {
-            language_model::ANTHROPIC_PROVIDER_NAME
+        raijin_cloud_llm_client::LanguageModelProvider::Anthropic => {
+            raijin_language_model::ANTHROPIC_PROVIDER_NAME
         }
-        cloud_llm_client::LanguageModelProvider::OpenAi => language_model::OPEN_AI_PROVIDER_NAME,
-        cloud_llm_client::LanguageModelProvider::Google => language_model::GOOGLE_PROVIDER_NAME,
-        cloud_llm_client::LanguageModelProvider::XAi => language_model::X_AI_PROVIDER_NAME,
+        raijin_cloud_llm_client::LanguageModelProvider::OpenAi => raijin_language_model::OPEN_AI_PROVIDER_NAME,
+        raijin_cloud_llm_client::LanguageModelProvider::Google => raijin_language_model::GOOGLE_PROVIDER_NAME,
+        raijin_cloud_llm_client::LanguageModelProvider::XAi => raijin_language_model::X_AI_PROVIDER_NAME,
     }
 }
 
@@ -1123,19 +1123,19 @@ impl RenderOnce for ZedAiConfiguration {
             Button::new("manage_settings", "Manage Subscription")
                 .full_width()
                 .label_size(LabelSize::Small)
-                .style(ButtonStyle::Tinted(TintColor::Accent))
+                .style(ButtonStyle::tinted(TintColor::Accent))
                 .on_click(|_, _, cx| cx.open_url(&zed_urls::account_url(cx)))
                 .into_any_element()
         } else if self.plan.is_none() || self.eligible_for_trial {
             Button::new("start_trial", "Start 14-day Free Pro Trial")
                 .full_width()
-                .style(ui::ButtonStyle::Tinted(ui::TintColor::Accent))
+                .style(raijin_ui::ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                 .on_click(|_, _, cx| cx.open_url(&zed_urls::start_trial_url(cx)))
                 .into_any_element()
         } else {
             Button::new("upgrade", "Upgrade to Pro")
                 .full_width()
-                .style(ui::ButtonStyle::Tinted(ui::TintColor::Accent))
+                .style(raijin_ui::ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                 .on_click(|_, _, cx| cx.open_url(&zed_urls::upgrade_to_zed_pro_url(cx)))
                 .into_any_element()
         };
@@ -1159,7 +1159,7 @@ impl RenderOnce for ZedAiConfiguration {
             if self.account_too_young {
                 this.child(YoungAccountBanner).child(
                     Button::new("upgrade", "Upgrade to Pro")
-                        .style(ui::ButtonStyle::Tinted(ui::TintColor::Accent))
+                        .style(raijin_ui::ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                         .full_width()
                         .on_click(|_, _, cx| cx.open_url(&zed_urls::upgrade_to_zed_pro_url(cx))),
                 )

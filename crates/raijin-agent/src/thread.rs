@@ -7,7 +7,7 @@ use crate::{
     UpdatePlanTool, WebSearchTool, decide_permission_from_settings,
 };
 use raijin_acp_thread::{MentionUri, UserMessageId};
-use action_log::ActionLog;
+use raijin_action_log::ActionLog;
 use raijin_feature_flags::{
     FeatureFlagAppExt as _, StreamingEditFileToolFeatureFlag, UpdatePlanToolFeatureFlag,
 };
@@ -19,7 +19,7 @@ use raijin_agent_settings::{
 use anyhow::{Context as _, Result, anyhow};
 use chrono::{DateTime, Utc};
 use raijin_client::UserStore;
-use cloud_api_types::Plan;
+use raijin_cloud_api_types::Plan;
 use inazuma_collections::{HashMap, HashSet, IndexMap};
 use raijin_fs::Fs;
 use futures::stream;
@@ -235,10 +235,10 @@ impl UserMessage {
         for chunk in &self.content {
             let chunk = match chunk {
                 UserMessageContent::Text(text) => {
-                    language_model::MessageContent::Text(text.clone())
+                    raijin_language_model::MessageContent::Text(text.clone())
                 }
                 UserMessageContent::Image(value) => {
-                    language_model::MessageContent::Image(value.clone())
+                    raijin_language_model::MessageContent::Image(value.clone())
                 }
                 UserMessageContent::Mention { uri, content } => {
                     match uri {
@@ -352,7 +352,7 @@ impl UserMessage {
                         }
                     }
 
-                    language_model::MessageContent::Text(uri.as_link().to_string())
+                    raijin_language_model::MessageContent::Text(uri.as_link().to_string())
                 }
             };
 
@@ -365,80 +365,80 @@ impl UserMessage {
             file_context.push_str("</files>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(file_context));
+                .push(raijin_language_model::MessageContent::Text(file_context));
         }
 
         if directory_context.len() > OPEN_DIRECTORIES_TAG.len() {
             directory_context.push_str("</directories>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(directory_context));
+                .push(raijin_language_model::MessageContent::Text(directory_context));
         }
 
         if symbol_context.len() > OPEN_SYMBOLS_TAG.len() {
             symbol_context.push_str("</symbols>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(symbol_context));
+                .push(raijin_language_model::MessageContent::Text(symbol_context));
         }
 
         if selection_context.len() > OPEN_SELECTIONS_TAG.len() {
             selection_context.push_str("</selections>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(selection_context));
+                .push(raijin_language_model::MessageContent::Text(selection_context));
         }
 
         if diffs_context.len() > OPEN_DIFFS_TAG.len() {
             diffs_context.push_str("</diffs>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(diffs_context));
+                .push(raijin_language_model::MessageContent::Text(diffs_context));
         }
 
         if thread_context.len() > OPEN_THREADS_TAG.len() {
             thread_context.push_str("</threads>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(thread_context));
+                .push(raijin_language_model::MessageContent::Text(thread_context));
         }
 
         if fetch_context.len() > OPEN_FETCH_TAG.len() {
             fetch_context.push_str("</fetched_urls>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(fetch_context));
+                .push(raijin_language_model::MessageContent::Text(fetch_context));
         }
 
         if rules_context.len() > OPEN_RULES_TAG.len() {
             rules_context.push_str("</user_rules>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(rules_context));
+                .push(raijin_language_model::MessageContent::Text(rules_context));
         }
 
         if diagnostics_context.len() > OPEN_DIAGNOSTICS_TAG.len() {
             diagnostics_context.push_str("</diagnostics>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(diagnostics_context));
+                .push(raijin_language_model::MessageContent::Text(diagnostics_context));
         }
 
         if merge_conflict_context.len() > MERGE_CONFLICT_TAG.len() {
             merge_conflict_context.push_str("</merge_conflicts>\n");
             message
                 .content
-                .push(language_model::MessageContent::Text(merge_conflict_context));
+                .push(raijin_language_model::MessageContent::Text(merge_conflict_context));
         }
 
         if message.content.len() > len_before_context {
             message.content.insert(
                 len_before_context,
-                language_model::MessageContent::Text(OPEN_CONTEXT.into()),
+                raijin_language_model::MessageContent::Text(OPEN_CONTEXT.into()),
             );
             message
                 .content
-                .push(language_model::MessageContent::Text("</context>".into()));
+                .push(raijin_language_model::MessageContent::Text("</context>".into()));
         }
 
         message
@@ -542,26 +542,26 @@ impl AgentMessage {
                 AgentMessageContent::Text(text) => {
                     assistant_message
                         .content
-                        .push(language_model::MessageContent::Text(text.clone()));
+                        .push(raijin_language_model::MessageContent::Text(text.clone()));
                 }
                 AgentMessageContent::Thinking { text, signature } => {
                     assistant_message
                         .content
-                        .push(language_model::MessageContent::Thinking {
+                        .push(raijin_language_model::MessageContent::Thinking {
                             text: text.clone(),
                             signature: signature.clone(),
                         });
                 }
                 AgentMessageContent::RedactedThinking(value) => {
                     assistant_message.content.push(
-                        language_model::MessageContent::RedactedThinking(value.clone()),
+                        raijin_language_model::MessageContent::RedactedThinking(value.clone()),
                     );
                 }
                 AgentMessageContent::ToolUse(tool_use) => {
                     if self.tool_results.contains_key(&tool_use.id) {
                         assistant_message
                             .content
-                            .push(language_model::MessageContent::ToolUse(tool_use.clone()));
+                            .push(raijin_language_model::MessageContent::ToolUse(tool_use.clone()));
                     }
                 }
             };
@@ -583,7 +583,7 @@ impl AgentMessage {
             }
             user_message
                 .content
-                .push(language_model::MessageContent::ToolResult(tool_result));
+                .push(raijin_language_model::MessageContent::ToolResult(tool_result));
         }
 
         let mut messages = Vec::new();
@@ -661,11 +661,11 @@ pub enum ThreadEvent {
     AgentText(String),
     AgentThinking(String),
     ToolCall(acp::ToolCall),
-    ToolCallUpdate(acp_thread::ToolCallUpdate),
+    ToolCallUpdate(raijin_acp_thread::ToolCallUpdate),
     Plan(acp::Plan),
     ToolCallAuthorization(ToolCallAuthorization),
     SubagentSpawned(acp::SessionId),
-    Retry(acp_thread::RetryStatus),
+    Retry(raijin_acp_thread::RetryStatus),
     Stop(acp::StopReason),
 }
 
@@ -674,7 +674,7 @@ pub struct NewTerminal {
     pub command: String,
     pub output_byte_limit: Option<u64>,
     pub cwd: Option<PathBuf>,
-    pub response: oneshot::Sender<Result<Entity<acp_thread::Terminal>>>,
+    pub response: oneshot::Sender<Result<Entity<raijin_acp_thread::Terminal>>>,
 }
 
 #[derive(Debug, Clone)]
@@ -731,14 +731,14 @@ impl ToolPermissionContext {
     /// For unsupported shells, we hide the "Always allow" UI options entirely, and if
     /// the user has `always_allow` rules configured in settings, `ToolPermissionDecision::from_input`
     /// will return a `Deny` with an explanatory error message.
-    pub fn build_permission_options(&self) -> acp_thread::PermissionOptions {
+    pub fn build_permission_options(&self) -> raijin_acp_thread::PermissionOptions {
         use crate::pattern_extraction::*;
         use inazuma_util::shell::ShellKind;
 
         let tool_name = &self.tool_name;
         let input_values = &self.input_values;
         if self.scope == ToolPermissionScope::SymlinkTarget {
-            return acp_thread::PermissionOptions::Flat(vec![
+            return raijin_acp_thread::PermissionOptions::Flat(vec![
                 acp::PermissionOption::new(
                     acp::PermissionOptionId::new("allow"),
                     "Yes",
@@ -767,7 +767,7 @@ impl ToolPermissionContext {
                 let all_patterns = extract_all_terminal_patterns(input);
                 if all_patterns.len() > 1 {
                     let mut choices = Vec::new();
-                    choices.push(acp_thread::PermissionOptionChoice {
+                    choices.push(raijin_acp_thread::PermissionOptionChoice {
                         allow: acp::PermissionOption::new(
                             acp::PermissionOptionId::new(format!("always_allow:{}", tool_name)),
                             format!("Always for {}", tool_name.replace('_', " ")),
@@ -780,7 +780,7 @@ impl ToolPermissionContext {
                         ),
                         sub_patterns: vec![],
                     });
-                    choices.push(acp_thread::PermissionOptionChoice {
+                    choices.push(raijin_acp_thread::PermissionOptionChoice {
                         allow: acp::PermissionOption::new(
                             acp::PermissionOptionId::new("allow"),
                             "Only this time",
@@ -793,7 +793,7 @@ impl ToolPermissionContext {
                         ),
                         sub_patterns: vec![],
                     });
-                    return acp_thread::PermissionOptions::DropdownWithPatterns {
+                    return raijin_acp_thread::PermissionOptions::DropdownWithPatterns {
                         choices,
                         patterns: all_patterns,
                         tool_name: tool_name.clone(),
@@ -852,7 +852,7 @@ impl ToolPermissionContext {
 
         let mut push_choice =
             |label: String, allow_id, deny_id, allow_kind, deny_kind, sub_patterns: Vec<String>| {
-                choices.push(acp_thread::PermissionOptionChoice {
+                choices.push(raijin_acp_thread::PermissionOptionChoice {
                     allow: acp::PermissionOption::new(
                         acp::PermissionOptionId::new(allow_id),
                         label.clone(),
@@ -903,15 +903,15 @@ impl ToolPermissionContext {
             vec![],
         );
 
-        acp_thread::PermissionOptions::Dropdown(choices)
+        raijin_acp_thread::PermissionOptions::Dropdown(choices)
     }
 }
 
 #[derive(Debug)]
 pub struct ToolCallAuthorization {
     pub tool_call: acp::ToolCallUpdate,
-    pub options: acp_thread::PermissionOptions,
-    pub response: oneshot::Sender<acp_thread::SelectedPermissionOutcome>,
+    pub options: raijin_acp_thread::PermissionOptions,
+    pub response: oneshot::Sender<raijin_acp_thread::SelectedPermissionOutcome>,
     pub context: Option<ToolPermissionContext>,
 }
 
@@ -944,7 +944,7 @@ pub struct Thread {
     has_queued_message: bool,
     pending_message: Option<AgentMessage>,
     pub(crate) tools: BTreeMap<SharedString, Arc<dyn AnyAgentTool>>,
-    request_token_usage: HashMap<UserMessageId, language_model::TokenUsage>,
+    request_token_usage: HashMap<UserMessageId, raijin_language_model::TokenUsage>,
     #[allow(unused)]
     cumulative_token_usage: TokenUsage,
     #[allow(unused)]
@@ -958,8 +958,8 @@ pub struct Thread {
     thinking_enabled: bool,
     thinking_effort: Option<String>,
     speed: Option<Speed>,
-    prompt_capabilities_tx: watch::Sender<acp::PromptCapabilities>,
-    pub(crate) prompt_capabilities_rx: watch::Receiver<acp::PromptCapabilities>,
+    prompt_capabilities_tx: raijin_watch::Sender<acp::PromptCapabilities>,
+    pub(crate) prompt_capabilities_rx: raijin_watch::Receiver<acp::PromptCapabilities>,
     pub(crate) project: Entity<Project>,
     pub(crate) action_log: Entity<ActionLog>,
     /// True if this thread was imported from a shared thread and can be synced.
@@ -1045,7 +1045,7 @@ impl Thread {
             .as_ref()
             .and_then(|model| model.effort.clone());
         let (prompt_capabilities_tx, prompt_capabilities_rx) =
-            watch::channel(Self::prompt_capabilities(model.as_deref()));
+            raijin_watch::channel(Self::prompt_capabilities(model.as_deref()));
         Self {
             id: acp::SessionId::new(uuid::Uuid::new_v4().to_string()),
             prompt_id: PromptId::new(),
@@ -1201,7 +1201,7 @@ impl Thread {
 
         if let Some(output) = output.clone() {
             // For replay, we use a dummy cancellation receiver since the tool already completed
-            let (_cancellation_tx, cancellation_rx) = watch::channel(false);
+            let (_cancellation_tx, cancellation_rx) = raijin_watch::channel(false);
             let tool_event_stream = ToolCallEventStream::new(
                 tool_use.id.clone(),
                 stream.clone(),
@@ -1259,7 +1259,7 @@ impl Thread {
         }
 
         let (prompt_capabilities_tx, prompt_capabilities_rx) =
-            watch::channel(Self::prompt_capabilities(model.as_deref()));
+            raijin_watch::channel(Self::prompt_capabilities(model.as_deref()));
 
         let action_log = cx.new(|_| ActionLog::new(project.clone()));
 
@@ -1349,7 +1349,7 @@ impl Thread {
         project: Entity<Project>,
         cx: &mut Context<Self>,
     ) -> Task<Arc<ProjectSnapshot>> {
-        let task = project::telemetry_snapshot::TelemetrySnapshot::new(&project, cx);
+        let task = raijin_project::telemetry_snapshot::TelemetrySnapshot::new(&project, cx);
         cx.spawn(async move |_, _| {
             let snapshot = task.await;
 
@@ -1617,7 +1617,7 @@ impl Thread {
         self.has_queued_message
     }
 
-    fn update_token_usage(&mut self, update: language_model::TokenUsage, cx: &mut Context<Self>) {
+    fn update_token_usage(&mut self, update: raijin_language_model::TokenUsage, cx: &mut Context<Self>) {
         let Some(last_user_message) = self.last_user_message() else {
             return;
         };
@@ -1652,16 +1652,16 @@ impl Thread {
         Ok(())
     }
 
-    pub fn latest_request_token_usage(&self) -> Option<language_model::TokenUsage> {
+    pub fn latest_request_token_usage(&self) -> Option<raijin_language_model::TokenUsage> {
         let last_user_message = self.last_user_message()?;
         let tokens = self.request_token_usage.get(&last_user_message.id)?;
         Some(*tokens)
     }
 
-    pub fn latest_token_usage(&self) -> Option<acp_thread::TokenUsage> {
+    pub fn latest_token_usage(&self) -> Option<raijin_acp_thread::TokenUsage> {
         let usage = self.latest_request_token_usage()?;
         let model = self.model.clone()?;
-        Some(acp_thread::TokenUsage {
+        Some(raijin_acp_thread::TokenUsage {
             max_tokens: model.max_token_count(),
             max_output_tokens: model.max_output_tokens(),
             used_tokens: usage.total_tokens(),
@@ -1826,7 +1826,7 @@ impl Thread {
         let event_stream = ThreadEventStream(events_tx);
         let message_ix = self.messages.len().saturating_sub(1);
         self.clear_summary();
-        let (cancellation_tx, mut cancellation_rx) = watch::channel(false);
+        let (cancellation_tx, mut cancellation_rx) = raijin_watch::channel(false);
         self.running_turn = Some(RunningTurn {
             event_stream: event_stream.clone(),
             tools: self.enabled_tools(cx),
@@ -1880,7 +1880,7 @@ impl Thread {
     async fn run_turn_internal(
         this: &WeakEntity<Self>,
         event_stream: &ThreadEventStream,
-        mut cancellation_rx: watch::Receiver<bool>,
+        mut cancellation_rx: raijin_watch::Receiver<bool>,
         cx: &mut AsyncApp,
     ) -> Result<()> {
         let mut attempt = 0;
@@ -1896,7 +1896,7 @@ impl Thread {
                 anyhow::Ok((model, request))
             })??;
 
-            telemetry::event!(
+            raijin_telemetry::event!(
                 "Agent Thread Completion",
                 thread_id = this.read_with(cx, |this, _| this.id.to_string())?,
                 parent_thread_id = this.read_with(cx, |this, _| this
@@ -2116,7 +2116,7 @@ impl Thread {
         error: LanguageModelCompletionError,
         attempt: u8,
         plan: Option<Plan>,
-    ) -> Result<acp_thread::RetryStatus> {
+    ) -> Result<raijin_acp_thread::RetryStatus> {
         let Some(model) = self.model.as_ref() else {
             return Err(anyhow!(error));
         };
@@ -2153,7 +2153,7 @@ impl Thread {
         };
         log::debug!("Retry attempt {attempt} with delay {delay:?}");
 
-        Ok(acp_thread::RetryStatus {
+        Ok(raijin_acp_thread::RetryStatus {
             last_error: error.to_string().into(),
             attempt: attempt as usize,
             max_attempts: max_attempts as usize,
@@ -2169,7 +2169,7 @@ impl Thread {
         &mut self,
         event: LanguageModelCompletionEvent,
         event_stream: &ThreadEventStream,
-        cancellation_rx: watch::Receiver<bool>,
+        cancellation_rx: raijin_watch::Receiver<bool>,
         cx: &mut Context<Self>,
     ) -> Result<Option<Task<LanguageModelToolResult>>> {
         log::trace!("Handling streamed completion event: {:?}", event);
@@ -2217,7 +2217,7 @@ impl Thread {
                 )));
             }
             UsageUpdate(usage) => {
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Agent Thread Completion Usage Updated",
                     thread_id = self.id.to_string(),
                     parent_thread_id = self.parent_thread_id().map(|id| id.to_string()),
@@ -2286,7 +2286,7 @@ impl Thread {
         &mut self,
         tool_use: LanguageModelToolUse,
         event_stream: &ThreadEventStream,
-        cancellation_rx: watch::Receiver<bool>,
+        cancellation_rx: raijin_watch::Receiver<bool>,
         cx: &mut Context<Self>,
     ) -> Option<Task<LanguageModelToolResult>> {
         cx.notify();
@@ -2372,7 +2372,7 @@ impl Thread {
         tool_use_id: LanguageModelToolUseId,
         tool_name: Arc<str>,
         event_stream: &ThreadEventStream,
-        cancellation_rx: watch::Receiver<bool>,
+        cancellation_rx: raijin_watch::Receiver<bool>,
         cx: &mut Context<Self>,
     ) -> Task<LanguageModelToolResult> {
         let fs = self.project.read(cx).fs().clone();
@@ -3070,7 +3070,7 @@ impl Thread {
                     max_attempts: 3,
                 })
             }
-            Other(err) if err.is::<language_model::PaymentRequiredError>() => {
+            Other(err) if err.is::<raijin_language_model::PaymentRequiredError>() => {
                 // Retrying won't help for Payment Required errors.
                 None
             }
@@ -3096,7 +3096,7 @@ struct RunningTurn {
     tools: BTreeMap<SharedString, Arc<dyn AnyAgentTool>>,
     /// Sender to signal tool cancellation. When cancel is called, this is
     /// set to true so all tools can detect user-initiated cancellation.
-    cancellation_tx: watch::Sender<bool>,
+    cancellation_tx: raijin_watch::Sender<bool>,
     /// Senders for tools that support input streaming and have already been
     /// started but are still receiving input from the LLM.
     streaming_tool_inputs: HashMap<LanguageModelToolUseId, ToolInputSender>,
@@ -3111,7 +3111,7 @@ impl RunningTurn {
     }
 }
 
-pub struct TokenUsageUpdated(pub Option<acp_thread::TokenUsage>);
+pub struct TokenUsageUpdated(pub Option<raijin_acp_thread::TokenUsage>);
 
 impl EventEmitter<TokenUsageUpdated> for Thread {}
 
@@ -3250,7 +3250,7 @@ where
 
     /// Returns the JSON schema that describes the tool's input.
     fn input_schema(format: LanguageModelToolSchemaFormat) -> Schema {
-        language_model::tool_schema::root_schema_for::<Self::Input>(format)
+        raijin_language_model::tool_schema::root_schema_for::<Self::Input>(format)
     }
 
     /// Returns whether the tool supports streaming of tool use parameters.
@@ -3367,7 +3367,7 @@ where
 
     fn input_schema(&self, format: LanguageModelToolSchemaFormat) -> Result<serde_json::Value> {
         let mut json = serde_json::to_value(T::input_schema(format))?;
-        language_model::tool_schema::adapt_schema_to_format(&mut json, format)?;
+        raijin_language_model::tool_schema::adapt_schema_to_format(&mut json, format)?;
         Ok(json)
     }
 
@@ -3470,7 +3470,7 @@ impl ThreadEventStream {
         acp::ToolCall::new(id.to_string(), title)
             .kind(kind)
             .raw_input(input)
-            .meta(acp_thread::meta_with_tool_name(tool_name))
+            .meta(raijin_acp_thread::meta_with_tool_name(tool_name))
     }
 
     fn update_tool_call_fields(
@@ -3492,7 +3492,7 @@ impl ThreadEventStream {
         self.0.unbounded_send(Ok(ThreadEvent::Plan(plan))).ok();
     }
 
-    fn send_retry(&self, status: acp_thread::RetryStatus) {
+    fn send_retry(&self, status: raijin_acp_thread::RetryStatus) {
         self.0.unbounded_send(Ok(ThreadEvent::Retry(status))).ok();
     }
 
@@ -3516,7 +3516,7 @@ pub struct ToolCallEventStream {
     tool_use_id: LanguageModelToolUseId,
     stream: ThreadEventStream,
     fs: Option<Arc<dyn Fs>>,
-    cancellation_rx: watch::Receiver<bool>,
+    cancellation_rx: raijin_watch::Receiver<bool>,
 }
 
 impl ToolCallEventStream {
@@ -3527,9 +3527,9 @@ impl ToolCallEventStream {
     }
 
     #[cfg(any(test, feature = "test-support"))]
-    pub fn test_with_cancellation() -> (Self, ToolCallEventStreamReceiver, watch::Sender<bool>) {
+    pub fn test_with_cancellation() -> (Self, ToolCallEventStreamReceiver, raijin_watch::Sender<bool>) {
         let (events_tx, events_rx) = mpsc::unbounded::<Result<ThreadEvent>>();
-        let (cancellation_tx, cancellation_rx) = watch::channel(false);
+        let (cancellation_tx, cancellation_rx) = raijin_watch::channel(false);
 
         let stream = ToolCallEventStream::new(
             "test_id".into(),
@@ -3547,7 +3547,7 @@ impl ToolCallEventStream {
 
     /// Signal cancellation for this event stream. Only available in tests.
     #[cfg(any(test, feature = "test-support"))]
-    pub fn signal_cancellation_with_sender(cancellation_tx: &mut watch::Sender<bool>) {
+    pub fn signal_cancellation_with_sender(cancellation_tx: &mut raijin_watch::Sender<bool>) {
         cancellation_tx.send(true).ok();
     }
 
@@ -3555,7 +3555,7 @@ impl ToolCallEventStream {
         tool_use_id: LanguageModelToolUseId,
         stream: ThreadEventStream,
         fs: Option<Arc<dyn Fs>>,
-        cancellation_rx: watch::Receiver<bool>,
+        cancellation_rx: raijin_watch::Receiver<bool>,
     ) -> Self {
         Self {
             tool_use_id,
@@ -3607,11 +3607,11 @@ impl ToolCallEventStream {
             .update_tool_call_fields(&self.tool_use_id, fields, meta);
     }
 
-    pub fn update_diff(&self, diff: Entity<acp_thread::Diff>) {
+    pub fn update_diff(&self, diff: Entity<raijin_acp_thread::Diff>) {
         self.stream
             .0
             .unbounded_send(Ok(ThreadEvent::ToolCallUpdate(
-                acp_thread::ToolCallUpdateDiff {
+                raijin_acp_thread::ToolCallUpdateDiff {
                     id: acp::ToolCallId::new(self.tool_use_id.to_string()),
                     diff,
                 }
@@ -3646,7 +3646,7 @@ impl ToolCallEventStream {
         display_name: String,
         cx: &mut App,
     ) -> Task<Result<()>> {
-        let settings = agent_settings::AgentSettings::get_global(cx);
+        let settings = raijin_agent_settings::AgentSettings::get_global(cx);
 
         let decision = decide_permission_from_settings(&tool_id, &[String::new()], &settings);
 
@@ -3666,8 +3666,8 @@ impl ToolCallEventStream {
                         self.tool_use_id.to_string(),
                         acp::ToolCallUpdateFields::new().title(title.into()),
                     ),
-                    options: acp_thread::PermissionOptions::Dropdown(vec![
-                        acp_thread::PermissionOptionChoice {
+                    options: raijin_acp_thread::PermissionOptions::Dropdown(vec![
+                        raijin_acp_thread::PermissionOptionChoice {
                             allow: acp::PermissionOption::new(
                                 acp::PermissionOptionId::new(format!(
                                     "always_allow_mcp:{}",
@@ -3686,7 +3686,7 @@ impl ToolCallEventStream {
                             ),
                             sub_patterns: vec![],
                         },
-                        acp_thread::PermissionOptionChoice {
+                        raijin_acp_thread::PermissionOptionChoice {
                             allow: acp::PermissionOption::new(
                                 acp::PermissionOptionId::new("allow"),
                                 "Only this time",
@@ -3768,7 +3768,7 @@ impl ToolCallEventStream {
     /// Interprets a `SelectedPermissionOutcome` and persists any settings changes.
     /// Returns `true` if the tool call should be allowed, `false` if denied.
     fn persist_permission_outcome(
-        outcome: &acp_thread::SelectedPermissionOutcome,
+        outcome: &raijin_acp_thread::SelectedPermissionOutcome,
         fs: Option<Arc<dyn Fs>>,
         cx: &AsyncApp,
     ) -> bool {
@@ -3817,7 +3817,7 @@ impl ToolCallEventStream {
     fn persist_always_permission(
         tool: &str,
         mode: ToolPermissionMode,
-        params: Option<&acp_thread::SelectedPermissionParams>,
+        params: Option<&raijin_acp_thread::SelectedPermissionParams>,
         fs: Option<Arc<dyn Fs>>,
         cx: &AsyncApp,
     ) {
@@ -3826,7 +3826,7 @@ impl ToolCallEventStream {
         };
 
         match params {
-            Some(acp_thread::SelectedPermissionParams::Terminal {
+            Some(raijin_acp_thread::SelectedPermissionParams::Terminal {
                 patterns: sub_patterns,
             }) => {
                 debug_assert!(
@@ -3886,7 +3886,7 @@ impl ToolCallEventStreamReceiver {
 
     pub async fn expect_update_fields(&mut self) -> acp::ToolCallUpdateFields {
         let event = self.0.next().await;
-        if let Some(Ok(ThreadEvent::ToolCallUpdate(acp_thread::ToolCallUpdate::UpdateFields(
+        if let Some(Ok(ThreadEvent::ToolCallUpdate(raijin_acp_thread::ToolCallUpdate::UpdateFields(
             update,
         )))) = event
         {
@@ -3896,9 +3896,9 @@ impl ToolCallEventStreamReceiver {
         }
     }
 
-    pub async fn expect_diff(&mut self) -> Entity<acp_thread::Diff> {
+    pub async fn expect_diff(&mut self) -> Entity<raijin_acp_thread::Diff> {
         let event = self.0.next().await;
-        if let Some(Ok(ThreadEvent::ToolCallUpdate(acp_thread::ToolCallUpdate::UpdateDiff(
+        if let Some(Ok(ThreadEvent::ToolCallUpdate(raijin_acp_thread::ToolCallUpdate::UpdateDiff(
             update,
         )))) = event
         {
@@ -3908,9 +3908,9 @@ impl ToolCallEventStreamReceiver {
         }
     }
 
-    pub async fn expect_terminal(&mut self) -> Entity<acp_thread::Terminal> {
+    pub async fn expect_terminal(&mut self) -> Entity<raijin_acp_thread::Terminal> {
         let event = self.0.next().await;
-        if let Some(Ok(ThreadEvent::ToolCallUpdate(acp_thread::ToolCallUpdate::UpdateTerminal(
+        if let Some(Ok(ThreadEvent::ToolCallUpdate(raijin_acp_thread::ToolCallUpdate::UpdateTerminal(
             update,
         )))) = event
         {
@@ -4049,16 +4049,16 @@ mod tests {
 
     async fn setup_thread_for_test(cx: &mut TestAppContext) -> (Entity<Thread>, ThreadEventStream) {
         cx.update(|cx| {
-            let settings_store = settings::SettingsStore::test(cx);
+            let settings_store = inazuma_settings_framework::SettingsStore::test(cx);
             cx.set_global(settings_store);
         });
 
-        let fs = fs::FakeFs::new(cx.background_executor.clone());
+        let fs = raijin_fs::FakeFs::new(cx.background_executor.clone());
         let templates = Templates::new();
         let project = Project::test(fs.clone(), [], cx).await;
 
         cx.update(|cx| {
-            let project_context = cx.new(|_cx| prompt_store::ProjectContext::default());
+            let project_context = cx.new(|_cx| raijin_prompt_store::ProjectContext::default());
             let context_server_store = project.read(cx).context_server_store();
             let context_server_registry =
                 cx.new(|cx| ContextServerRegistry::new(context_server_store, cx));

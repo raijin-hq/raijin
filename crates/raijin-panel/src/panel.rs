@@ -50,15 +50,17 @@ impl RenderOnce for PanelTab {
 pub fn panel_button(label: impl Into<SharedString>) -> raijin_ui::Button {
     let label = label.into();
     let id = ElementId::Name(label.to_lowercase().replace(' ', "_").into());
-    raijin_ui::Button::new(id, label)
-        .label_size(raijin_ui::LabelSize::Small)
-        // TODO: Change this once we use on_surface_bg in button_like
-        .layer(raijin_ui::ElevationIndex::ModalSurface)
-        .size(raijin_ui::ButtonSize::Compact)
+    raijin_ui::ButtonCommon::size(
+        raijin_ui::Button::new(id, label)
+            .label_size(raijin_ui::LabelSize::Small)
+            // TODO: Change this once we use on_surface_bg in button_like
+            .layer(raijin_ui::ElevationIndex::ModalSurface),
+        raijin_ui::ButtonSize::Compact,
+    )
 }
 
 pub fn panel_filled_button(label: impl Into<SharedString>) -> raijin_ui::Button {
-    panel_button(label).style(raijin_ui::ButtonStyle::Filled)
+    panel_button(label).style(raijin_ui::ButtonStyle::Primary)
 }
 
 pub fn panel_icon_button(id: impl Into<SharedString>, icon: IconName) -> raijin_ui::IconButton {
@@ -70,5 +72,5 @@ pub fn panel_icon_button(id: impl Into<SharedString>, icon: IconName) -> raijin_
 }
 
 pub fn panel_filled_icon_button(id: impl Into<SharedString>, icon: IconName) -> raijin_ui::IconButton {
-    panel_icon_button(id, icon).style(raijin_ui::ButtonStyle::Filled)
+    panel_icon_button(id, icon).style(raijin_ui::ButtonStyle::Primary)
 }

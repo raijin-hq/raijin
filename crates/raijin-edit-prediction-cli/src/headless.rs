@@ -26,11 +26,11 @@ pub struct EpAppState {
 }
 
 pub fn init(cx: &mut App) -> EpAppState {
-    let app_commit_sha = option_env!("ZED_COMMIT_SHA").map(|s| AppCommitSha::new(s.to_owned()));
+    let app_commit_sha = option_env!("RAIJIN_COMMIT_SHA").map(|s| AppCommitSha::new(s.to_owned()));
 
     let app_version = AppVersion::load(
-        env!("ZED_PKG_VERSION"),
-        option_env!("ZED_BUILD_ID"),
+        env!("RAIJIN_PKG_VERSION"),
+        option_env!("RAIJIN_BUILD_ID"),
         app_commit_sha,
     );
     release_channel::init(app_version.clone(), cx);
@@ -41,7 +41,7 @@ pub fn init(cx: &mut App) -> EpAppState {
 
     // Set User-Agent so we can download language servers from GitHub
     let user_agent = format!(
-        "Zeta CLI/{} ({}; {})",
+        "Raijin Edit Prediction CLI/{} ({}; {})",
         app_version,
         std::env::consts::OS,
         std::env::consts::ARCH

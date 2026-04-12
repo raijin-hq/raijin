@@ -25,6 +25,7 @@ raijin-release-channel.workspace = true
 semver.workspace = true
 serde.workspace = true
 serde_json.workspace = true
+inazuma-settings-content.workspace = true
 inazuma-settings-framework.workspace = true
 smol.workspace = true
 tempfile.workspace = true

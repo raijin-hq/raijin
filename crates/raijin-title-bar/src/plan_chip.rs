@@ -18,14 +18,14 @@ impl RenderOnce for PlanChip {
         let free_chip_bg = cx
             .theme()
             .colors()
-            .editor_background
+            .editor.background
             .opacity(0.5)
             .blend(cx.theme().colors().text_accent.opacity(0.05));
 
         let pro_chip_bg = cx
             .theme()
             .colors()
-            .editor_background
+            .editor.background
             .opacity(0.5)
             .blend(cx.theme().colors().text_accent.opacity(0.2));
 

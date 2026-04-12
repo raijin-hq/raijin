@@ -41,3 +41,4 @@ pub use otp_input::*;
 pub use rope_ext::{InputEdit, Point, RopeExt, RopeLines};
 pub use ropey::Rope;
 pub use state::*;
+pub(crate) use state::init;

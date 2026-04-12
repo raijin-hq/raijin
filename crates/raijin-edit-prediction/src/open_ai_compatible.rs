@@ -1,8 +1,8 @@
 use anyhow::{Context as _, Result};
-use cloud_llm_client::predict_edits_v3::{RawCompletionRequest, RawCompletionResponse};
+use raijin_cloud_llm_client::predict_edits_v3::{RawCompletionRequest, RawCompletionResponse};
 use futures::AsyncReadExt as _;
 use inazuma::{App, AppContext as _, Entity, Global, SharedString, Task, http_client};
-use raijin_language::language_settings::{OpenAiCompatibleEditPredictionSettings, all_language_settings};
+use raijin_language::language_settings::{EditPredictionProvider, OpenAiCompatibleEditPredictionSettings, all_language_settings};
 use raijin_language_model::{ApiKeyState, EnvVar, env_var};
 use std::sync::Arc;
 
@@ -41,7 +41,7 @@ pub fn open_ai_compatible_api_token(cx: &mut App) -> Entity<ApiKeyState> {
 
 pub fn load_open_ai_compatible_api_token(
     cx: &mut App,
-) -> Task<Result<(), language_model::AuthenticateError>> {
+) -> Task<Result<(), raijin_language_model::AuthenticateError>> {
     let api_url = open_ai_compatible_api_url(cx);
     open_ai_compatible_api_token(cx).update(cx, |key_state, cx| {
         key_state.load_if_needed(api_url, |s| s, cx)
@@ -49,10 +49,10 @@ pub fn load_open_ai_compatible_api_token(
 }
 
 pub fn load_open_ai_compatible_api_key_if_needed(
-    provider: settings::EditPredictionProvider,
+    provider: EditPredictionProvider,
     cx: &mut App,
 ) -> Option<Arc<str>> {
-    if provider != settings::EditPredictionProvider::OpenAiCompatibleApi {
+    if provider != EditPredictionProvider::OpenAiCompatibleApi {
         return None;
     }
     _ = load_open_ai_compatible_api_token(cx);
@@ -61,7 +61,7 @@ pub fn load_open_ai_compatible_api_key_if_needed(
 }
 
 pub(crate) async fn send_custom_server_request(
-    provider: settings::EditPredictionProvider,
+    provider: EditPredictionProvider,
     settings: &OpenAiCompatibleEditPredictionSettings,
     prompt: String,
     max_tokens: u32,
@@ -70,7 +70,7 @@ pub(crate) async fn send_custom_server_request(
     http_client: &Arc<dyn http_client::HttpClient>,
 ) -> Result<(String, String)> {
     match provider {
-        settings::EditPredictionProvider::Ollama => {
+        EditPredictionProvider::Ollama => {
             let response = crate::ollama::make_request(
                 settings.clone(),
                 prompt,

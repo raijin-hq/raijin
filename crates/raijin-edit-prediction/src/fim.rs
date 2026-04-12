@@ -7,11 +7,11 @@ use anyhow::{Context as _, Result, anyhow};
 use inazuma::{App, AppContext as _, Entity, Task};
 use raijin_language::{
     Anchor, Buffer, BufferSnapshot, ToOffset, ToPoint as _,
-    language_settings::all_language_settings,
+    language_settings::{EditPredictionProvider, all_language_settings},
 };
 use inazuma_settings_framework::EditPredictionPromptFormat;
 use std::{path::Path, sync::Arc, time::Instant};
-use zeta_prompt::{ZetaPromptInput, compute_editable_and_context_ranges};
+use raijin_zeta_prompt::{ZetaPromptInput, compute_editable_and_context_ranges};
 
 const FIM_CONTEXT_TOKENS: usize = 512;
 
@@ -48,8 +48,8 @@ pub fn request_prediction(
     let request_start = cx.background_executor().now();
 
     let Some(settings) = (match provider {
-        settings::EditPredictionProvider::Ollama => settings.ollama.clone(),
-        settings::EditPredictionProvider::OpenAiCompatibleApi => {
+        EditPredictionProvider::Ollama => settings.ollama.clone(),
+        EditPredictionProvider::OpenAiCompatibleApi => {
             settings.open_ai_compatible_api.clone()
         }
         _ => None,

@@ -1,14 +1,13 @@
 use crate::component_prelude::*;
 use inazuma::{
     AnyElement, AnyView, ClickEvent, Context, Corner, Corners, CursorStyle, DefiniteLength, Edges,
-    IntoElement, ParentElement, RenderOnce, StyleRefinement, Styled, Window,
+    IntoElement, ParentElement, RenderOnce, Styled, Window,
 };
 use raijin_ui_macros::RegisterComponent;
-use smallvec::SmallVec;
 
 use crate::{
     ButtonCommon, ButtonLike, ButtonSize, ButtonStyle, Icon, Label,
-    PopupMenu, Selectable, Spinner, Tooltip,
+    PopupMenu, Selectable, Tooltip,
 };
 use crate::{
     Color, DynamicSpacing, ElevationIndex, IconName, IconSize, KeyBinding, KeybindingPosition, prelude::*,

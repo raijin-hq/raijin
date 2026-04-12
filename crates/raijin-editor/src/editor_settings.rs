@@ -10,7 +10,7 @@ pub use inazuma_settings_framework::{
     ScrollbarDiagnostics, SeedQuerySetting, ShowMinimap, SnippetSortOrder,
 };
 use inazuma_settings_framework::{RegisterSetting, RelativeLineNumbers, Settings};
-use raijin_ui::scrollbars::{ScrollbarVisibility, ShowScrollbar};
+use crate::scrollbar_types::{ScrollbarVisibility, ShowScrollbar};
 
 /// Imports from the VSCode settings at
 /// https://code.visualstudio.com/docs/reference/default-settings

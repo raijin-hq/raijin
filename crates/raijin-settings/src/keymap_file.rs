@@ -167,7 +167,7 @@ pub fn load_default_and_user_keymap(cx: &mut App) {
     }
 
     // Load user keymap from ~/.raijin/keymap.toml (if exists)
-    let user_keymap_path = super::RaijinSettings::keymap_path();
+    let user_keymap_path = raijin_paths::keymap_file().clone();
     if user_keymap_path.exists() {
         match std::fs::read_to_string(&user_keymap_path) {
             Ok(content) => match KeymapFile::load(&content) {

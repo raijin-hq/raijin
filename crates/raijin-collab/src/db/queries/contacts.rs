@@ -175,7 +175,7 @@ impl Database {
             Ok(self
                 .create_notification(
                     receiver_id,
-                    rpc::Notification::ContactRequest {
+                    raijin_rpc::Notification::ContactRequest {
                         sender_id: sender_id.to_proto(),
                     },
                     true,
@@ -226,7 +226,7 @@ impl Database {
                 deleted_notification_id = self
                     .remove_notification(
                         responder_id,
-                        rpc::Notification::ContactRequest {
+                        raijin_rpc::Notification::ContactRequest {
                             sender_id: requester_id.to_proto(),
                         },
                         &tx,
@@ -333,7 +333,7 @@ impl Database {
             notifications.extend(
                 self.mark_notification_as_read_with_response(
                     responder_id,
-                    &rpc::Notification::ContactRequest {
+                    &raijin_rpc::Notification::ContactRequest {
                         sender_id: requester_id.to_proto(),
                     },
                     accept,
@@ -346,7 +346,7 @@ impl Database {
                 notifications.extend(
                     self.create_notification(
                         requester_id,
-                        rpc::Notification::ContactRequestAccepted {
+                        raijin_rpc::Notification::ContactRequestAccepted {
                             responder_id: responder_id.to_proto(),
                         },
                         true,

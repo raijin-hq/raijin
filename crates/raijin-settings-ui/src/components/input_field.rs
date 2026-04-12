@@ -145,7 +145,7 @@ impl RenderOnce for SettingsInputField {
             })
         };
 
-        // When settings change externally (e.g. editing settings.json), the page
+        // When settings change externally (e.g. editing settings.toml), the page
         // re-renders but use_keyed_state returns the cached editor with stale text.
         // Reconcile with the expected initial_text when the editor is not focused,
         // so we don't clobber what the user is actively typing.
@@ -183,7 +183,7 @@ impl RenderOnce for SettingsInputField {
             .rounded_md()
             .border_1()
             .border_color(theme_colors.border)
-            .bg(theme_colors.editor_background)
+            .bg(theme_colors.editor.background)
             .when_some(self.tab_index, |this, tab_index| {
                 let focus_handle = editor.focus_handle(cx).tab_index(tab_index).tab_stop(true);
                 this.track_focus(&focus_handle)

@@ -24,11 +24,11 @@ impl AgentPanelOnboarding {
     ) -> Self {
         cx.subscribe(
             &LanguageModelRegistry::global(cx),
-            |this: &mut Self, _registry, event: &language_model::Event, cx| match event {
-                language_model::Event::ProviderStateChanged(_)
-                | language_model::Event::AddedProvider(_)
-                | language_model::Event::RemovedProvider(_)
-                | language_model::Event::ProvidersChanged => {
+            |this: &mut Self, _registry, event: &raijin_language_model::Event, cx| match event {
+                raijin_language_model::Event::ProviderStateChanged(_)
+                | raijin_language_model::Event::AddedProvider(_)
+                | raijin_language_model::Event::RemovedProvider(_)
+                | raijin_language_model::Event::ProvidersChanged => {
                     this.has_configured_providers = Self::has_configured_providers(cx)
                 }
                 _ => {}

@@ -85,6 +85,24 @@ mod tree;
 #[cfg(feature = "stories")]
 mod stories;
 
+/// Initialize all component keybindings and global state.
+pub(crate) fn init(cx: &mut inazuma::App) {
+    app_shell::init(cx);
+    color_picker::init(cx);
+    dialog::init(cx);
+    dock::init(cx);
+    input::init(cx);
+    list::init(cx);
+    menu::init(cx);
+    popover::init(cx);
+    select::init(cx);
+    sheet::init(cx);
+    table::init(cx);
+    text::init(cx);
+    time::init(cx);
+    tree::init(cx);
+}
+
 // ── Re-exports: existing raijin-ui ───────────────────────────────────────────
 pub use ai::*;
 pub use app_shell::*;
@@ -150,7 +168,10 @@ pub use menu::*;
 pub use modal_layer::*;
 pub use notification::*;
 pub use pagination::*;
-pub use plot::*;
+pub use plot::{
+    IntoPlot, Plot, StrokeStyle, origin_point, polygon,
+    AXIS_GAP, AxisText, PlotAxis, Grid, PlotLabel,
+};
 pub use radio::*;
 pub use rating::*;
 pub use resizable::*;

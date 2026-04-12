@@ -1,6 +1,6 @@
 use anyhow::{Context as _, Result};
 use raijin_client::proto::{
-    self, DapChecksum, DapChecksumAlgorithm, DapEvaluateContext, DapModule, DapScope,
+    DapChecksum, DapChecksumAlgorithm, DapEvaluateContext, DapModule, DapScope,
     DapScopePresentationHint, DapSource, DapSourcePresentationHint, DapStackFrame, DapVariable,
 };
 use dap_types::{OutputEventCategory, OutputEventGroup, ScopePresentationHint, Source};

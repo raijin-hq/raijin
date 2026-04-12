@@ -22,16 +22,5 @@ pub fn headless() -> inazuma::Application {
 
 /// Returns the platform implementation for the current OS.
 fn current_platform(headless: bool) -> Rc<dyn inazuma::Platform> {
-    #[cfg(target_os = "macos")]
-    {
-        Rc::new(inazuma::platform::mac::MacPlatform::new(headless))
-    }
-    #[cfg(target_os = "linux")]
-    {
-        Rc::new(inazuma::platform::linux::LinuxPlatform::new(headless))
-    }
-    #[cfg(target_os = "windows")]
-    {
-        Rc::new(inazuma::platform::windows::WindowsPlatform::new(headless))
-    }
+    inazuma::current_platform(headless)
 }

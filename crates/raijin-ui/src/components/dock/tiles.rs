@@ -5,7 +5,6 @@ use std::{
 };
 
 use crate::{
-    ActiveTheme,
     History, HistoryItem,
     ScrollbarShow,
 };
@@ -16,10 +15,8 @@ use super::{
 use inazuma::{
     App, Bounds, Context, Empty, EntityId, EventEmitter, FocusHandle,
     IntoElement, Pixels, Point, Render, ScrollHandle, Size, WeakEntity, Window,
-    actions, px, size,
+    px, size,
 };
-
-actions!(tiles, [Undo, Redo]);
 
 pub(super) const MINIMUM_SIZE: Size<Pixels> = size(px(100.), px(100.));
 pub(super) const DRAG_BAR_HEIGHT: Pixels = px(30.);
@@ -633,7 +630,7 @@ impl Tiles {
 }
 
 #[inline]
-pub(super) fn round_to_nearest_ten(value: Pixels, cx: &App) -> Pixels {
+pub(super) fn round_to_nearest_ten(value: Pixels, _cx: &App) -> Pixels {
     (value / px(4.)).round() * px(4.)
 }
 

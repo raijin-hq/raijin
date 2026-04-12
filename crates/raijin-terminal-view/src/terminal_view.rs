@@ -70,14 +70,6 @@ impl TerminalView {
         &self.terminal
     }
 
-    pub fn deploy(
-        _workspace: &mut Workspace,
-        _action: &workspace_actions::OpenTerminal,
-        _window: &mut Window,
-        _cx: &mut Context<Workspace>,
-    ) {
-    }
-
     pub fn set_block_below_cursor(
         &mut self,
         _block: Rc<BlockProperties>,
@@ -102,10 +94,25 @@ impl Render for TerminalView {
 }
 
 /// Initialize the terminal view system.
-pub fn init(_cx: &mut App) {}
-
-/// Workspace actions for terminal.
-mod workspace_actions {
-    use inazuma::actions;
-    actions!(terminal, [OpenTerminal]);
+///
+/// Registers action handlers on every new Workspace:
+/// - `workspace::NewTerminal` → creates a new TerminalPane tab
+pub fn init(cx: &mut App) {
+    cx.observe_new(
+        |workspace: &mut Workspace, _window, _cx: &mut inazuma::Context<Workspace>| {
+            workspace.register_action(|workspace, _action: &raijin_workspace::NewTerminal, window, cx| {
+                let terminal = cx.new(|cx| {
+                    crate::terminal_pane::TerminalPane::new(window, cx)
+                });
+                workspace.add_item_to_active_pane(
+                    Box::new(terminal),
+                    None,
+                    true,
+                    window,
+                    cx,
+                );
+            });
+        },
+    )
+    .detach();
 }

@@ -1,5 +1,5 @@
 use raijin_acp_thread::PermissionPattern;
-use shell_command_parser::{extract_commands, extract_terminal_command_prefix};
+use raijin_shell_command_parser::{extract_commands, extract_terminal_command_prefix};
 use std::path::{Path, PathBuf};
 use url::Url;
 

@@ -4,7 +4,7 @@ use inazuma::{
 };
 
 use crate::{ActiveTheme as _, Collapsible, Selectable, h_flex};
-use super::super::menu::DropdownMenu;
+use super::super::menu::PopupMenuExt;
 
 /// Footer for the [`super::Sidebar`].
 #[derive(IntoElement)]
@@ -65,7 +65,7 @@ impl InteractiveElement for SidebarFooter {
     }
 }
 
-impl DropdownMenu for SidebarFooter {}
+impl PopupMenuExt for SidebarFooter {}
 
 impl RenderOnce for SidebarFooter {
     fn render(self, _: &mut inazuma::Window, cx: &mut inazuma::App) -> impl inazuma::IntoElement {

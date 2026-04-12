@@ -1,14 +1,14 @@
 use std::{ops::Range, rc::Rc};
 
 use inazuma::{
-    App, ElementId, InteractiveElement, IntoElement, ParentElement, RenderOnce, SharedString,
-    StatefulInteractiveElement as _, StyleRefinement, Styled, Window, prelude::FluentBuilder, px,
+    ElementId, InteractiveElement, RenderOnce,
+    StyleRefinement, Window, prelude::FluentBuilder,
 };
 use raijin_i18n::t;
 
+use crate::prelude::*;
 use crate::{
-    Button, ButtonCommon as _, ButtonVariants, Clickable as _, Disableable, Icon, IconName,
-    PopupMenuItem, Sizable, Size, StyledExt, Tooltip, h_flex,
+    Disableable, PopupMenuItem, StyledExt, Tooltip,
 };
 
 /// Pagination with page navigation, next and previous links.
@@ -221,7 +221,7 @@ impl RenderOnce for Pagination {
                     .compact()
                     .disabled(self.disabled)
                     .icon(IconName::Ellipsis)
-                    .dropdown_menu({
+                    .popup_menu({
                         let on_click = on_click.clone();
                         move |mut menu, _, _| {
                             for page in range.clone() {

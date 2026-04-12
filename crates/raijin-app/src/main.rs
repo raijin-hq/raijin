@@ -1,18 +1,14 @@
 mod app_bootstrap;
-mod command_history;
-mod completions;
-mod input;
-mod settings_view;
-mod shell_install;
-mod terminal;
-mod terminal_pane;
-mod workspace;
 
 use std::borrow::Cow;
+use std::sync::Arc;
+
+use futures::StreamExt;
 use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, actions, px, size};
+use inazuma_settings_framework::{SettingsStore, watch_config_file};
+use raijin_settings::AppearanceSettings;
 use raijin_ui::AppShell;
 use raijin_ui::TitleBar;
-use inazuma_settings_framework::SettingsStore;
 
 // Global actions — available everywhere
 actions!(
@@ -77,27 +73,23 @@ fn main() {
             .collect();
         cx.text_system().add_fonts(bundled_fonts).expect("failed to register bundled fonts");
 
-
         // 1. Initialize SettingsStore with defaults from assets/settings/default.toml
         //    All #[derive(RegisterSetting)] types are automatically registered via inventory
         inazuma_settings_framework::init(cx);
 
-        // 2. Load user settings from ~/.raijin/settings.toml into SettingsStore
-        let settings_path = raijin_settings::RaijinSettings::settings_path();
-        if let Ok(content) = std::fs::read_to_string(&settings_path) {
-            SettingsStore::update_global(cx, |store, cx| {
-                store.set_user_settings(&content, cx);
-            });
-        }
+        // 2. Initialize ReleaseChannel (required before Client::production)
+        let app_version = semver::Version::new(0, 1, 0);
+        raijin_release_channel::init(app_version, cx);
 
-        // 3. Also keep RaijinSettings loaded for Raijin-specific settings
-        //    (working_directory, input_mode, colorspace, symbol_map, etc.)
-        //    These will migrate to SettingsStore once GeneralSettings/AppearanceSettings are added
-        let raijin_settings = raijin_settings::RaijinSettings::load().unwrap_or_default();
-        let colorspace = raijin_settings.appearance.window_colorspace;
-        cx.set_global(raijin_settings);
+        // 3. Build AppState (Client, Session, UserStore, WorkspaceStore, FS, Languages)
+        let app_state = app_bootstrap::build_app_state(cx);
 
-        // 4. Initialize theme system (ThemeSettings via SettingsStore + Provider registration)
+        // 4. Watch settings.toml + keymap.toml via Fs::watch (like Zed)
+        let fs = app_state.fs.clone();
+        handle_settings_file(fs.clone(), cx);
+        handle_keymap_file(fs.clone(), cx);
+
+        // 5. Initialize theme system (ThemeSettings via SettingsStore + Provider registration)
         //    MUST happen after SettingsStore init — registers ThemeSettingsProvider for raijin-ui
         raijin_theme_settings::init(raijin_theme::LoadThemes::All(Box::new(raijin_assets::Assets)), cx);
 
@@ -123,25 +115,26 @@ fn main() {
         // Load keybindings from default + user keymap
         raijin_settings::keymap_file::load_default_and_user_keymap(cx);
 
-        // File watchers — hot-reload settings, themes, and keymaps on change
-        start_file_watchers(cx);
+        // Set up globals for shell switching (used by raijin-terminal-view)
+        cx.set_global(raijin_terminal_view::terminal_pane::PendingShellSwitch(None));
+        cx.set_global(raijin_terminal_view::terminal_pane::PendingShellInstallName(None));
 
-        // Set up globals for shell switching (used by terminal_pane)
-        cx.set_global(terminal_pane::PendingShellSwitch(None));
-        cx.set_global(terminal_pane::PendingShellInstallName(None));
-
-        // Initialize ReleaseChannel (required before Client::production)
-        let app_version = semver::Version::new(0, 1, 0);
-        raijin_release_channel::init(app_version, cx);
-
-        // Build AppState (Client, Session, UserStore, WorkspaceStore, FS, Languages)
-        let app_state = app_bootstrap::build_app_state(cx);
+        // Initialize UI components (keybindings, global state)
+        raijin_ui::init(cx);
 
         // Initialize workspace system + feature crates
         raijin_workspace::init(app_state.clone(), cx);
+        raijin_terminal_view::init(cx);
         raijin_title_bar::init(cx);
         raijin_command_palette::init(cx);
         raijin_tab_switcher::init(cx);
+        raijin_settings_ui::init(cx);
+
+        // Read colorspace from SettingsStore (already loaded by handle_settings_file)
+        let colorspace = {
+            use inazuma_settings_framework::Settings;
+            AppearanceSettings::get_global(cx).window_colorspace
+        };
 
         let bounds = Bounds::centered(None, size(px(960.), px(640.)), cx);
         cx.open_window(
@@ -152,7 +145,13 @@ fn main() {
                 ..Default::default()
             },
             |window, cx| {
-                // Create a local Project (no remote connection)
+                // Resolve initial CWD from GeneralSettings (via SettingsStore)
+                let cwd = {
+                    use inazuma_settings_framework::Settings;
+                    raijin_settings::GeneralSettings::get_global(cx).resolve_working_directory()
+                };
+
+                // Create a local Project (no remote connection, worktree added lazily)
                 let project = raijin_project::Project::local(
                     app_state.client.clone(),
                     raijin_node_runtime::NodeRuntime::unavailable(),
@@ -164,7 +163,16 @@ fn main() {
                     cx,
                 );
 
-                // Create the Workspace (Zed's full workspace system)
+                // Lazy worktree scan — runs async in background, terminal is
+                // immediately usable. Git status, file finder, project panel
+                // become available once the scan completes.
+                project.update(cx, |project, cx| {
+                    project
+                        .find_or_create_worktree(&cwd, true, cx)
+                        .detach_and_log_err(cx);
+                });
+
+                // Create the Workspace
                 let workspace = cx.new(|cx| {
                     raijin_workspace::Workspace::new(
                         None,
@@ -177,8 +185,7 @@ fn main() {
 
                 // Add our terminal as the first item + configure workspace
                 workspace.update(cx, |ws, cx| {
-                    // Create and add terminal pane
-                    let terminal = cx.new(|cx| terminal_pane::TerminalPane::new(window, cx));
+                    let terminal = cx.new(|cx| raijin_terminal_view::terminal_pane::TerminalPane::new(window, cx));
                     ws.add_item_to_active_pane(
                         Box::new(terminal),
                         None,
@@ -202,90 +209,54 @@ fn main() {
     });
 }
 
-/// Starts file watchers for settings.toml and the themes directory.
-/// Changes are hot-reloaded without requiring an app restart.
-fn start_file_watchers(cx: &mut App) {
-    // Watch settings.toml — reload into SettingsStore + RaijinSettings on change
-    let settings_path = raijin_settings::RaijinSettings::settings_path();
-    let (settings_rx, _settings_handle) = raijin_settings::watcher::watch_file(settings_path);
-    cx.spawn(async move |cx| {
-        while let Ok(_path) = settings_rx.recv_async().await {
-            cx.update(|cx| {
-                let settings_path = raijin_settings::RaijinSettings::settings_path();
-                if let Ok(content) = std::fs::read_to_string(&settings_path) {
-                    // Update SettingsStore (triggers theme/font observers automatically)
-                    SettingsStore::update_global(cx, |store, cx| {
-                        store.set_user_settings(&content, cx);
-                    });
-                }
-                // Also reload RaijinSettings for Raijin-specific values
-                match raijin_settings::RaijinSettings::load() {
-                    Ok(new_settings) => {
-                        cx.set_global(new_settings);
-                        cx.refresh_windows();
-                        log::info!("Settings reloaded from disk");
-                    }
-                    Err(err) => {
-                        log::warn!("Failed to reload settings: {err}");
-                    }
-                }
-            });
-        }
-    })
-    .detach();
+/// Watches ~/.raijin/settings.toml via Fs::watch and loads changes into SettingsStore.
+///
+/// Uses the same pattern as Zed: `watch_config_file()` from inazuma-settings-framework,
+/// initial blocking load + async continuous watching.
+fn handle_settings_file(fs: Arc<dyn raijin_fs::Fs>, cx: &mut App) {
+    let settings_path = raijin_paths::settings_file().clone();
 
-    // Watch ~/.raijin/themes/ — reload changed theme files
-    let themes_dir = raijin_settings::RaijinSettings::themes_dir();
-    if !themes_dir.exists() {
-        std::fs::create_dir_all(&themes_dir).ok();
+    let (mut rx, _task) = watch_config_file(
+        &cx.background_executor(),
+        fs,
+        settings_path,
+    );
+
+    // Initial load (blocking) — settings must be available before window opens
+    if let Some(content) = cx.foreground_executor().block_on(rx.next()) {
+        SettingsStore::update(cx, |store, cx| {
+            let _ = store.set_user_settings(&content, cx);
+        });
     }
-    let (themes_rx, _themes_handle) = raijin_settings::watcher::watch_dir(themes_dir);
+
+    // Continuous watching (async)
     cx.spawn(async move |cx| {
-        while let Ok(changed_path) = themes_rx.recv_async().await {
-            if changed_path.extension().and_then(|e| e.to_str()) != Some("toml") {
-                continue;
-            }
+        while let Some(content) = rx.next().await {
             cx.update(|cx| {
-                let content = match std::fs::read_to_string(&changed_path) {
-                    Ok(c) => c,
-                    Err(err) => {
-                        log::warn!("Failed to read changed theme '{}': {err}", changed_path.display());
-                        return;
-                    }
-                };
-                let id = changed_path
-                    .file_stem()
-                    .and_then(|s| s.to_str())
-                    .unwrap_or("unknown");
-                let base_dir = changed_path.parent().map(|p| p.to_path_buf());
-
-                match raijin_theme::load_theme_from_toml_with_base_dir(id, &content, base_dir) {
-                    Ok(theme) => {
-                        let theme_name = theme.name.clone();
-                        let registry = raijin_theme::ThemeRegistry::global(cx);
-                        registry.insert_theme(theme);
-                        log::info!("Hot-reloaded theme: {theme_name}");
-
-                        // If the active theme was the one that changed, refresh it
-                        let active = raijin_theme::GlobalTheme::theme(cx).clone();
-                        if active.name == theme_name {
-                            raijin_theme_settings::reload_theme(cx);
-                        }
-                    }
-                    Err(err) => {
-                        log::warn!("Failed to parse changed theme '{}': {err}", changed_path.display());
-                    }
-                }
+                SettingsStore::update(cx, |store, cx| {
+                    let _ = store.set_user_settings(&content, cx);
+                });
+                cx.refresh_windows();
+                log::info!("Settings reloaded from disk");
             });
         }
     })
     .detach();
+}
 
-    // Watch ~/.raijin/keymap.toml — reload keybindings on change
-    let keymap_path = raijin_settings::RaijinSettings::keymap_path();
-    let (keymap_rx, _keymap_handle) = raijin_settings::watcher::watch_file(keymap_path);
+/// Watches ~/.raijin/keymap.toml via Fs::watch and reloads keybindings on change.
+fn handle_keymap_file(fs: Arc<dyn raijin_fs::Fs>, cx: &mut App) {
+    let keymap_path = raijin_paths::keymap_file().clone();
+
+    let (mut rx, _task) = watch_config_file(
+        &cx.background_executor(),
+        fs,
+        keymap_path,
+    );
+
+    // Continuous watching — keymaps are loaded separately via load_default_and_user_keymap
     cx.spawn(async move |cx| {
-        while let Ok(_path) = keymap_rx.recv_async().await {
+        while let Some(_content) = rx.next().await {
             cx.update(|cx| {
                 cx.clear_key_bindings();
                 raijin_settings::keymap_file::load_default_and_user_keymap(cx);

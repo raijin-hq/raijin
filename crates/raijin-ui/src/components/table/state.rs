@@ -11,6 +11,24 @@ use inazuma::{
 };
 
 use super::*;
+use crate::traits::size::Size;
+use inazuma::Edges;
+
+pub(super) struct TableOptions {
+    pub(super) scrollbar_visible: Edges<bool>,
+    pub(super) stripe: bool,
+    pub(super) size: Size,
+}
+
+impl Default for TableOptions {
+    fn default() -> Self {
+        Self {
+            scrollbar_visible: Edges::all(true),
+            stripe: false,
+            size: Size::default(),
+        }
+    }
+}
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub(super) enum SelectionMode {
@@ -493,7 +511,7 @@ where
     pub(super) fn page_item_count(&self) -> usize {
         let row_height = self.options.size.table_row_height();
         let height = self.bounds.size.height;
-        let count = (height / row_height).floor() as usize;
+        let count = (height.as_f32() / row_height.as_f32()).floor() as usize;
         count.saturating_sub(1).max(1)
     }
 
@@ -519,6 +537,7 @@ where
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         self.measure(window, cx);
 
+        let focus_handle = self.focus_handle.clone();
         let columns_count = self.delegate.columns_count(cx);
         let left_columns_count = self
             .col_groups
@@ -645,8 +664,21 @@ where
                 }
             });
 
+        let entity = cx.entity().clone();
         div()
+            .id("table")
             .size_full()
+            .key_context("DataTable")
+            .track_focus(&focus_handle)
+            .on_action(window.listener_for(&entity, TableState::action_cancel))
+            .on_action(window.listener_for(&entity, TableState::action_select_next))
+            .on_action(window.listener_for(&entity, TableState::action_select_prev))
+            .on_action(window.listener_for(&entity, TableState::action_select_next_col))
+            .on_action(window.listener_for(&entity, TableState::action_select_prev_col))
+            .on_action(window.listener_for(&entity, TableState::action_select_first_column))
+            .on_action(window.listener_for(&entity, TableState::action_select_last_column))
+            .on_action(window.listener_for(&entity, TableState::action_select_page_up))
+            .on_action(window.listener_for(&entity, TableState::action_select_page_down))
             .children(loading_view)
             .when(!loading, |this| {
                 this.child(inner_table)

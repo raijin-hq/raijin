@@ -676,7 +676,7 @@ impl<T: NumberFieldType> RenderOnce for NumberField<T> {
                                                 .border_color(cx.theme().colors().border_focused)
                                         })
                                         .child(editor)
-                                        .on_action::<menu::Confirm>({
+                                        .on_action::<inazuma_menu::Confirm>({
                                             move |_, window, _| {
                                                 window.blur();
                                             }

@@ -409,9 +409,8 @@ impl Render for LanguageServerPrompt {
                     )
                     .children(request.actions.iter().enumerate().map(|(ix, action)| {
                         let this_handle = cx.entity();
-                        Button::new(ix, action.title.clone())
-                            .size(ButtonSize::Large)
-                            .on_click(move |_, window, cx| {
+                        ButtonCommon::size(Button::new(ix, action.title.clone()), ButtonSize::Large)
+                            .on_click(move |_, window: &mut Window, cx: &mut App| {
                                 let this_handle = this_handle.clone();
                                 window
                                     .spawn(cx, async move |cx| {

@@ -21,7 +21,7 @@ use raijin_editor::{
 use futures::{StreamExt, stream::FuturesOrdered};
 use inazuma::{
     Action, AnyElement, App, Axis, Context, Entity, EntityId, EventEmitter, FocusHandle, Focusable,
-    Global, Hsla, InteractiveElement, IntoElement, KeyContext, ParentElement, Point, Render,
+    Global, Oklch, InteractiveElement, IntoElement, KeyContext, ParentElement, Point, Render,
     SharedString, Styled, Subscription, Task, UpdateGlobal, WeakEntity, Window, actions, div,
 };
 use itertools::Itertools;
@@ -1714,7 +1714,7 @@ impl ProjectSearchView {
             )
     }
 
-    fn border_color_for(&self, panel: InputPanel, cx: &App) -> Hsla {
+    fn border_color_for(&self, panel: InputPanel, cx: &App) -> Oklch {
         if self.panels_with_errors.contains_key(&panel) {
             Color::Error.color(cx)
         } else {
@@ -4307,7 +4307,7 @@ pub mod tests {
             .update_in(cx, |workspace, window, cx| {
                 workspace.split_and_clone(
                     first_pane.clone(),
-                    workspace::SplitDirection::Right,
+                    raijin_workspace::SplitDirection::Right,
                     window,
                     cx,
                 )
@@ -4501,7 +4501,7 @@ pub mod tests {
             .update_in(cx, |workspace, window, cx| {
                 workspace.split_and_clone(
                     first_pane.clone(),
-                    workspace::SplitDirection::Right,
+                    raijin_workspace::SplitDirection::Right,
                     window,
                     cx,
                 )
@@ -4554,7 +4554,7 @@ pub mod tests {
                 this.activate_previous_item(&Default::default(), window, cx);
                 assert_eq!(this.active_item_index(), 0);
             });
-            workspace.activate_pane_in_direction(workspace::SplitDirection::Left, window, cx);
+            workspace.activate_pane_in_direction(raijin_workspace::SplitDirection::Left, window, cx);
         });
         workspace.update_in(cx, |workspace, _, cx| {
             assert_eq!(workspace.active_pane(), &first_pane);
@@ -4807,7 +4807,7 @@ pub mod tests {
                 self.focus_handle.clone()
             }
         }
-        impl workspace::ModalView for EmptyModalView {}
+        impl raijin_workspace::ModalView for EmptyModalView {}
 
         workspace.update_in(cx, |workspace, window, cx| {
             workspace.toggle_modal(window, cx, |_, cx| EmptyModalView {
@@ -4868,21 +4868,21 @@ pub mod tests {
         let mut fake_servers = language_registry.register_fake_lsp(
             "Rust",
             FakeLspAdapter {
-                capabilities: lsp::ServerCapabilities {
-                    inlay_hint_provider: Some(lsp::OneOf::Left(true)),
-                    ..lsp::ServerCapabilities::default()
+                capabilities: raijin_lsp::ServerCapabilities {
+                    inlay_hint_provider: Some(raijin_lsp::OneOf::Left(true)),
+                    ..raijin_lsp::ServerCapabilities::default()
                 },
                 initializer: Some(Box::new(move |fake_server| {
                     let requests_count = closure_requests_count.clone();
-                    fake_server.set_request_handler::<lsp::request::InlayHintRequest, _, _>({
+                    fake_server.set_request_handler::<raijin_lsp::request::InlayHintRequest, _, _>({
                         move |_, _| {
                             let requests_count = requests_count.clone();
                             async move {
                                 requests_count.fetch_add(1, atomic::Ordering::Release);
-                                Ok(Some(vec![lsp::InlayHint {
-                                    position: lsp::Position::new(0, 17),
-                                    label: lsp::InlayHintLabel::String(": i32".to_owned()),
-                                    kind: Some(lsp::InlayHintKind::TYPE),
+                                Ok(Some(vec![raijin_lsp::InlayHint {
+                                    position: raijin_lsp::Position::new(0, 17),
+                                    label: raijin_lsp::InlayHintLabel::String(": i32".to_owned()),
+                                    kind: Some(raijin_lsp::InlayHintKind::TYPE),
                                     text_edits: None,
                                     tooltip: None,
                                     padding_left: None,
@@ -4952,7 +4952,7 @@ pub mod tests {
             .update_in(cx, |workspace, window, cx| {
                 workspace.open_abs_path(
                     PathBuf::from(path!("/dir/main.rs")),
-                    workspace::OpenOptions::default(),
+                    raijin_workspace::OpenOptions::default(),
                     window,
                     cx,
                 )
@@ -5021,7 +5021,7 @@ pub mod tests {
             );
         });
         project.update(cx, |_, cx| {
-            cx.emit(project::Event::RefreshInlayHints {
+            cx.emit(raijin_project::Event::RefreshInlayHints {
                 server_id: fake_server.server.server_id(),
                 request_id: Some(1),
             });

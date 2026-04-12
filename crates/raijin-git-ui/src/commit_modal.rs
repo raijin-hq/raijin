@@ -375,7 +375,7 @@ impl CommitModal {
             .on_click(cx.listener(|_, _, window, cx| {
                 window.dispatch_action(raijin_actions::git::Branch.boxed_clone(), cx);
             }))
-            .style(ButtonStyle::Transparent);
+            .style(ButtonStyle::TRANSPARENT);
 
         let branch_picker = PopoverMenu::new("popover-button")
             .menu(move |window, cx| {

@@ -208,7 +208,8 @@ fn screen_id_to_human_label() -> HashMap<CGDirectDisplayID, ScreenMeta> {
             else {
                 continue;
             };
-            let screen_number: Retained<NSNumber> = Retained::cast(screen_number);
+            let screen_number: Retained<NSNumber> =
+                Retained::downcast(screen_number).expect("NSScreenNumber is an NSNumber");
             let screen_id = screen_number.unsignedIntegerValue() as CGDirectDisplayID;
 
             let name = screen.localizedName();

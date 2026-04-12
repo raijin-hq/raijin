@@ -184,7 +184,7 @@ unsafe fn suspend_all_other_threads() {
 pub struct CrashServer {
     initialization_params: Mutex<Option<InitCrashHandler>>,
     panic_info: Mutex<Option<CrashPanic>>,
-    active_gpu: Mutex<Option<system_specs::GpuSpecs>>,
+    active_gpu: Mutex<Option<raijin_system_specs::GpuSpecs>>,
     user_info: Mutex<Option<UserInfo>>,
     has_connection: Arc<AtomicBool>,
 }
@@ -194,8 +194,8 @@ pub struct CrashInfo {
     pub init: InitCrashHandler,
     pub panic: Option<CrashPanic>,
     pub minidump_error: Option<String>,
-    pub gpus: Vec<system_specs::GpuInfo>,
-    pub active_gpu: Option<system_specs::GpuSpecs>,
+    pub gpus: Vec<raijin_system_specs::GpuInfo>,
+    pub active_gpu: Option<raijin_system_specs::GpuSpecs>,
     pub user_info: Option<UserInfo>,
 }
 
@@ -291,7 +291,7 @@ impl minidumper::ServerHandler for CrashServer {
         let gpus = vec![];
 
         #[cfg(any(target_os = "linux", target_os = "freebsd"))]
-        let gpus = match system_specs::read_gpu_info_from_sys_class_drm() {
+        let gpus = match raijin_system_specs::read_gpu_info_from_sys_class_drm() {
             Ok(gpus) => gpus,
             Err(err) => {
                 log::warn!("Failed to collect GPU information for crash report: {err}");

@@ -103,7 +103,7 @@ impl inazuma_picker::PickerDelegate for WslPickerDelegate {
         _window: &mut Window,
         cx: &mut Context<Picker<Self>>,
     ) -> Task<()> {
-        use inazuma_inazuma_fuzzy::StringMatchCandidate;
+        use inazuma_fuzzy::StringMatchCandidate;
 
         let needs_fetch = self.distro_list.is_none();
         if needs_fetch {

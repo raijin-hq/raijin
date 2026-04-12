@@ -87,7 +87,7 @@ impl DeepSeekLanguageModelProvider {
         Self { http_client, state }
     }
 
-    fn create_language_model(&self, model: deepseek::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_deepseek::Model) -> Arc<dyn LanguageModel> {
         Arc::new(DeepSeekLanguageModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -133,23 +133,23 @@ impl LanguageModelProvider for DeepSeekLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(deepseek::Model::default()))
+        Some(self.create_language_model(raijin_deepseek::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(deepseek::Model::default_fast()))
+        Some(self.create_language_model(raijin_deepseek::Model::default_fast()))
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        models.insert("deepseek-chat", deepseek::Model::Chat);
-        models.insert("deepseek-reasoner", deepseek::Model::Reasoner);
+        models.insert("deepseek-chat", raijin_deepseek::Model::Chat);
+        models.insert("deepseek-reasoner", raijin_deepseek::Model::Reasoner);
 
         for available_model in &Self::settings(cx).available_models {
             models.insert(
                 &available_model.name,
-                deepseek::Model::Custom {
+                raijin_deepseek::Model::Custom {
                     name: available_model.name.clone(),
                     display_name: available_model.display_name.clone(),
                     max_tokens: available_model.max_tokens,
@@ -174,7 +174,7 @@ impl LanguageModelProvider for DeepSeekLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -190,7 +190,7 @@ impl LanguageModelProvider for DeepSeekLanguageModelProvider {
 
 pub struct DeepSeekLanguageModel {
     id: LanguageModelId,
-    model: deepseek::Model,
+    model: raijin_deepseek::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
@@ -199,9 +199,9 @@ pub struct DeepSeekLanguageModel {
 impl DeepSeekLanguageModel {
     fn stream_completion(
         &self,
-        request: deepseek::Request,
+        request: raijin_deepseek::Request,
         cx: &AsyncApp,
-    ) -> BoxFuture<'static, Result<BoxStream<'static, Result<deepseek::StreamResponse>>>> {
+    ) -> BoxFuture<'static, Result<BoxStream<'static, Result<raijin_deepseek::StreamResponse>>>> {
         let http_client = self.http_client.clone();
 
         let (api_key, api_url) = self.state.read_with(cx, |state, cx| {
@@ -216,7 +216,7 @@ impl DeepSeekLanguageModel {
                 });
             };
             let request =
-                deepseek::stream_completion(http_client.as_ref(), &api_url, &api_key, request);
+                raijin_deepseek::stream_completion(http_client.as_ref(), &api_url, &api_key, request);
             let response = request.await?;
             Ok(response)
         });
@@ -320,10 +320,10 @@ impl LanguageModel for DeepSeekLanguageModel {
 
 pub fn into_deepseek(
     request: LanguageModelRequest,
-    model: &deepseek::Model,
+    model: &raijin_deepseek::Model,
     max_output_tokens: Option<u64>,
-) -> deepseek::Request {
-    let is_reasoner = model == &deepseek::Model::Reasoner;
+) -> raijin_deepseek::Request {
+    let is_reasoner = model == &raijin_deepseek::Model::Reasoner;
 
     let mut messages = Vec::new();
     let mut current_reasoning: Option<String> = None;
@@ -340,13 +340,13 @@ pub fn into_deepseek(
 
                     if should_add {
                         messages.push(match message.role {
-                            Role::User => deepseek::RequestMessage::User { content: text },
-                            Role::Assistant => deepseek::RequestMessage::Assistant {
+                            Role::User => raijin_deepseek::RequestMessage::User { content: text },
+                            Role::Assistant => raijin_deepseek::RequestMessage::Assistant {
                                 content: Some(text),
                                 tool_calls: Vec::new(),
                                 reasoning_content: current_reasoning.take(),
                             },
-                            Role::System => deepseek::RequestMessage::System { content: text },
+                            Role::System => raijin_deepseek::RequestMessage::System { content: text },
                         });
                     }
                 }
@@ -357,10 +357,10 @@ pub fn into_deepseek(
                 MessageContent::RedactedThinking(_) => {}
                 MessageContent::Image(_) => {}
                 MessageContent::ToolUse(tool_use) => {
-                    let tool_call = deepseek::ToolCall {
+                    let tool_call = raijin_deepseek::ToolCall {
                         id: tool_use.id.to_string(),
-                        content: deepseek::ToolCallContent::Function {
-                            function: deepseek::FunctionContent {
+                        content: raijin_deepseek::ToolCallContent::Function {
+                            function: raijin_deepseek::FunctionContent {
                                 name: tool_use.name.to_string(),
                                 arguments: serde_json::to_string(&tool_use.input)
                                     .unwrap_or_default(),
@@ -368,12 +368,12 @@ pub fn into_deepseek(
                         },
                     };
 
-                    if let Some(deepseek::RequestMessage::Assistant { tool_calls, .. }) =
+                    if let Some(raijin_deepseek::RequestMessage::Assistant { tool_calls, .. }) =
                         messages.last_mut()
                     {
                         tool_calls.push(tool_call);
                     } else {
-                        messages.push(deepseek::RequestMessage::Assistant {
+                        messages.push(raijin_deepseek::RequestMessage::Assistant {
                             content: None,
                             tool_calls: vec![tool_call],
                             reasoning_content: current_reasoning.take(),
@@ -383,7 +383,7 @@ pub fn into_deepseek(
                 MessageContent::ToolResult(tool_result) => {
                     match &tool_result.content {
                         LanguageModelToolResultContent::Text(text) => {
-                            messages.push(deepseek::RequestMessage::Tool {
+                            messages.push(raijin_deepseek::RequestMessage::Tool {
                                 content: text.to_string(),
                                 tool_call_id: tool_result.tool_use_id.to_string(),
                             });
@@ -395,7 +395,7 @@ pub fn into_deepseek(
         }
     }
 
-    deepseek::Request {
+    raijin_deepseek::Request {
         model: model.id().to_string(),
         messages,
         stream: true,
@@ -409,8 +409,8 @@ pub fn into_deepseek(
         tools: request
             .tools
             .into_iter()
-            .map(|tool| deepseek::ToolDefinition::Function {
-                function: deepseek::FunctionDefinition {
+            .map(|tool| raijin_deepseek::ToolDefinition::Function {
+                function: raijin_deepseek::FunctionDefinition {
                     name: tool.name,
                     description: Some(tool.description),
                     parameters: Some(tool.input_schema),
@@ -433,7 +433,7 @@ impl DeepSeekEventMapper {
 
     pub fn map_stream(
         mut self,
-        events: Pin<Box<dyn Send + Stream<Item = Result<deepseek::StreamResponse>>>>,
+        events: Pin<Box<dyn Send + Stream<Item = Result<raijin_deepseek::StreamResponse>>>>,
     ) -> impl Stream<Item = Result<LanguageModelCompletionEvent, LanguageModelCompletionError>>
     {
         events.flat_map(move |event| {
@@ -446,7 +446,7 @@ impl DeepSeekEventMapper {
 
     pub fn map_event(
         &mut self,
-        event: deepseek::StreamResponse,
+        event: raijin_deepseek::StreamResponse,
     ) -> Vec<Result<LanguageModelCompletionEvent, LanguageModelCompletionError>> {
         let Some(choice) = event.choices.first() else {
             return vec![Err(LanguageModelCompletionError::from(anyhow!(
@@ -591,7 +591,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;

@@ -2,7 +2,7 @@ use crate::AgentTool;
 use crate::tools::TerminalTool;
 use raijin_agent_settings::{AgentSettings, CompiledRegex, ToolPermissions, ToolRules};
 use inazuma_settings_framework::ToolPermissionMode;
-use shell_command_parser::{
+use raijin_shell_command_parser::{
     TerminalCommandValidation, extract_commands, validate_terminal_command,
 };
 use std::path::{Component, Path};
@@ -695,7 +695,7 @@ mod tests {
         }
 
         fn run(&self) -> ToolPermissionDecision {
-            let mut tools = collections::HashMap::default();
+            let mut tools = inazuma_collections::HashMap::default();
             tools.insert(
                 Arc::from(self.tool),
                 ToolRules {
@@ -749,7 +749,7 @@ mod tests {
             &[input.to_string()],
             &ToolPermissions {
                 default: global_default,
-                tools: collections::HashMap::default(),
+                tools: inazuma_collections::HashMap::default(),
             },
             ShellKind::Posix,
         )
@@ -995,7 +995,7 @@ mod tests {
     // tool isolation
     #[test]
     fn other_tool_not_affected() {
-        let mut tools = collections::HashMap::default();
+        let mut tools = inazuma_collections::HashMap::default();
         tools.insert(
             Arc::from(TerminalTool::NAME),
             ToolRules {
@@ -1042,7 +1042,7 @@ mod tests {
 
     #[test]
     fn partial_tool_name_no_match() {
-        let mut tools = collections::HashMap::default();
+        let mut tools = inazuma_collections::HashMap::default();
         tools.insert(
             Arc::from("term"),
             ToolRules {
@@ -1072,7 +1072,7 @@ mod tests {
     // invalid patterns block the tool
     #[test]
     fn invalid_pattern_blocks() {
-        let mut tools = collections::HashMap::default();
+        let mut tools = inazuma_collections::HashMap::default();
         tools.insert(
             Arc::from(TerminalTool::NAME),
             ToolRules {
@@ -1123,7 +1123,7 @@ mod tests {
 
     #[test]
     fn unconditional_allow_all_bypasses_invalid_command_rejection_with_terminal_default_allow() {
-        let mut tools = collections::HashMap::default();
+        let mut tools = inazuma_collections::HashMap::default();
         tools.insert(
             Arc::from(TerminalTool::NAME),
             ToolRules {
@@ -1440,7 +1440,7 @@ mod tests {
 
     #[test]
     fn mcp_doesnt_collide_with_builtin() {
-        let mut tools = collections::HashMap::default();
+        let mut tools = inazuma_collections::HashMap::default();
         tools.insert(
             Arc::from(TerminalTool::NAME),
             ToolRules {
@@ -1554,7 +1554,7 @@ mod tests {
 
     #[test]
     fn multiple_invalid_patterns_pluralizes_message() {
-        let mut tools = collections::HashMap::default();
+        let mut tools = inazuma_collections::HashMap::default();
         tools.insert(
             Arc::from(TerminalTool::NAME),
             ToolRules {
@@ -2228,7 +2228,7 @@ mod tests {
     #[test]
     fn decide_permission_for_path_traversal_triggers_deny() {
         let deny_regex = CompiledRegex::new("/etc/passwd", false).unwrap();
-        let mut tools = collections::HashMap::default();
+        let mut tools = inazuma_collections::HashMap::default();
         tools.insert(
             Arc::from(EditFileTool::NAME),
             ToolRules {
@@ -2279,7 +2279,7 @@ mod tests {
         allow: &[&str],
         confirm: &[&str],
     ) -> ToolPermissionDecision {
-        let mut tools = collections::HashMap::default();
+        let mut tools = inazuma_collections::HashMap::default();
         tools.insert(
             Arc::from(tool),
             ToolRules {

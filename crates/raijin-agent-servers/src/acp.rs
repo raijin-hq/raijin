@@ -3,7 +3,7 @@ use raijin_acp_thread::{
     AgentSessionListResponse,
 };
 use raijin_acp_tools::AcpConnectionRegistry;
-use action_log::ActionLog;
+use raijin_action_log::ActionLog;
 use agent_client_protocol::{self as acp, Agent as _, ErrorCode};
 use anyhow::anyhow;
 use inazuma_collections::HashMap;
@@ -60,13 +60,13 @@ pub struct AcpConnection {
 
 struct ConfigOptions {
     config_options: Rc<RefCell<Vec<acp::SessionConfigOption>>>,
-    tx: Rc<RefCell<watch::Sender<()>>>,
-    rx: watch::Receiver<()>,
+    tx: Rc<RefCell<raijin_watch::Sender<()>>>,
+    rx: raijin_watch::Receiver<()>,
 }
 
 impl ConfigOptions {
     fn new(config_options: Rc<RefCell<Vec<acp::SessionConfigOption>>>) -> Self {
-        let (tx, rx) = watch::channel(());
+        let (tx, rx) = raijin_watch::channel(());
         Self {
             config_options,
             tx: Rc::new(RefCell::new(tx)),
@@ -85,8 +85,8 @@ pub struct AcpSession {
 
 pub struct AcpSessionList {
     connection: Rc<acp::ClientSideConnection>,
-    updates_tx: smol::channel::Sender<acp_thread::SessionListUpdate>,
-    updates_rx: smol::channel::Receiver<acp_thread::SessionListUpdate>,
+    updates_tx: smol::channel::Sender<raijin_acp_thread::SessionListUpdate>,
+    updates_rx: smol::channel::Receiver<raijin_acp_thread::SessionListUpdate>,
 }
 
 impl AcpSessionList {
@@ -101,13 +101,13 @@ impl AcpSessionList {
 
     fn notify_update(&self) {
         self.updates_tx
-            .try_send(acp_thread::SessionListUpdate::Refresh)
+            .try_send(raijin_acp_thread::SessionListUpdate::Refresh)
             .log_err();
     }
 
     fn send_info_update(&self, session_id: acp::SessionId, update: acp::SessionInfoUpdate) {
         self.updates_tx
-            .try_send(acp_thread::SessionListUpdate::SessionInfo { session_id, update })
+            .try_send(raijin_acp_thread::SessionListUpdate::SessionInfo { session_id, update })
             .log_err();
     }
 }
@@ -150,7 +150,7 @@ impl AgentSessionList for AcpSessionList {
     fn watch(
         &self,
         _cx: &mut App,
-    ) -> Option<smol::channel::Receiver<acp_thread::SessionListUpdate>> {
+    ) -> Option<smol::channel::Receiver<raijin_acp_thread::SessionListUpdate>> {
         Some(self.updates_rx.clone())
     }
 
@@ -231,9 +231,9 @@ impl AcpConnection {
 
         let (release_channel, version): (Option<&str>, String) = cx.update(|cx| {
             (
-                release_channel::ReleaseChannel::try_global(cx)
+                raijin_release_channel::ReleaseChannel::try_global(cx)
                     .map(|release_channel| release_channel.display_name()),
-                release_channel::AppVersion::global(cx).to_string(),
+                raijin_release_channel::AppVersion::global(cx).to_string(),
             )
         });
 
@@ -500,7 +500,7 @@ fn terminal_auth_task(
     let mut env = command.env.clone().unwrap_or_default();
     env.extend(method.env.clone());
 
-    acp_thread::build_terminal_auth_task(
+    raijin_acp_thread::build_terminal_auth_task(
         terminal_auth_task_id(agent_id, &method.id),
         method.name.clone(),
         command.path.to_string_lossy().into_owned(),
@@ -534,7 +534,7 @@ fn meta_terminal_auth_task(
     let terminal_auth =
         serde_json::from_value::<MetaTerminalAuth>(meta.get("terminal-auth")?.clone()).ok()?;
 
-    Some(acp_thread::build_terminal_auth_task(
+    Some(raijin_acp_thread::build_terminal_auth_task(
         terminal_auth_task_id(agent_id, method_id),
         terminal_auth.label.clone(),
         terminal_auth.command,
@@ -666,7 +666,7 @@ impl AgentConnection for AcpConnection {
                     action_log,
                     response.session_id.clone(),
                     // ACP doesn't currently support per-session prompt capabilities or changing capabilities dynamically.
-                    watch::Receiver::constant(self.agent_capabilities.prompt_capabilities.clone()),
+                    raijin_watch::Receiver::constant(self.agent_capabilities.prompt_capabilities.clone()),
                     cx,
                 )
             });
@@ -726,7 +726,7 @@ impl AgentConnection for AcpConnection {
                 project,
                 action_log,
                 session_id.clone(),
-                watch::Receiver::constant(self.agent_capabilities.prompt_capabilities.clone()),
+                raijin_watch::Receiver::constant(self.agent_capabilities.prompt_capabilities.clone()),
                 cx,
             )
         });
@@ -808,7 +808,7 @@ impl AgentConnection for AcpConnection {
                 project,
                 action_log,
                 session_id.clone(),
-                watch::Receiver::constant(self.agent_capabilities.prompt_capabilities.clone()),
+                raijin_watch::Receiver::constant(self.agent_capabilities.prompt_capabilities.clone()),
                 cx,
             )
         });
@@ -915,7 +915,7 @@ impl AgentConnection for AcpConnection {
 
     fn prompt(
         &self,
-        _id: Option<acp_thread::UserMessageId>,
+        _id: Option<raijin_acp_thread::UserMessageId>,
         params: acp::PromptRequest,
         cx: &mut App,
     ) -> Task<Result<acp::PromptResponse>> {
@@ -989,7 +989,7 @@ impl AgentConnection for AcpConnection {
         &self,
         session_id: &acp::SessionId,
         _cx: &App,
-    ) -> Option<Rc<dyn acp_thread::AgentSessionModes>> {
+    ) -> Option<Rc<dyn raijin_acp_thread::AgentSessionModes>> {
         let sessions = self.sessions.clone();
         let sessions_ref = sessions.borrow();
         let Some(session) = sessions_ref.get(session_id) else {
@@ -1010,7 +1010,7 @@ impl AgentConnection for AcpConnection {
     fn model_selector(
         &self,
         session_id: &acp::SessionId,
-    ) -> Option<Rc<dyn acp_thread::AgentModelSelector>> {
+    ) -> Option<Rc<dyn raijin_acp_thread::AgentModelSelector>> {
         let sessions = self.sessions.clone();
         let sessions_ref = sessions.borrow();
         let Some(session) = sessions_ref.get(session_id) else {
@@ -1032,7 +1032,7 @@ impl AgentConnection for AcpConnection {
         &self,
         session_id: &acp::SessionId,
         _cx: &App,
-    ) -> Option<Rc<dyn acp_thread::AgentSessionConfigOptions>> {
+    ) -> Option<Rc<dyn raijin_acp_thread::AgentSessionConfigOptions>> {
         let sessions = self.sessions.borrow();
         let session = sessions.get(session_id)?;
 
@@ -1222,12 +1222,12 @@ fn mcp_servers_for_project(project: &Entity<Project>, cx: &App) -> Vec<acp::McpS
         .filter_map(|id| {
             let configuration = context_server_store.configuration_for_server(id)?;
             match &*configuration {
-                project::context_server_store::ContextServerConfiguration::Custom {
+                raijin_project::context_server_store::ContextServerConfiguration::Custom {
                     command,
                     remote,
                     ..
                 }
-                | project::context_server_store::ContextServerConfiguration::Extension {
+                | raijin_project::context_server_store::ContextServerConfiguration::Extension {
                     command,
                     remote,
                     ..
@@ -1242,7 +1242,7 @@ fn mcp_servers_for_project(project: &Entity<Project>, cx: &App) -> Vec<acp::McpS
                             vec![]
                         }),
                 )),
-                project::context_server_store::ContextServerConfiguration::Http {
+                raijin_project::context_server_store::ContextServerConfiguration::Http {
                     url,
                     headers,
                     timeout: _,
@@ -1284,7 +1284,7 @@ struct AcpSessionModes {
     state: Rc<RefCell<acp::SessionModeState>>,
 }
 
-impl acp_thread::AgentSessionModes for AcpSessionModes {
+impl raijin_acp_thread::AgentSessionModes for AcpSessionModes {
     fn current_mode(&self) -> acp::SessionModeId {
         self.state.borrow().current_mode_id.clone()
     }
@@ -1339,15 +1339,15 @@ impl AcpModelSelector {
     }
 }
 
-impl acp_thread::AgentModelSelector for AcpModelSelector {
-    fn list_models(&self, _cx: &mut App) -> Task<Result<acp_thread::AgentModelList>> {
-        Task::ready(Ok(acp_thread::AgentModelList::Flat(
+impl raijin_acp_thread::AgentModelSelector for AcpModelSelector {
+    fn list_models(&self, _cx: &mut App) -> Task<Result<raijin_acp_thread::AgentModelList>> {
+        Task::ready(Ok(raijin_acp_thread::AgentModelList::Flat(
             self.state
                 .borrow()
                 .available_models
                 .clone()
                 .into_iter()
-                .map(acp_thread::AgentModelInfo::from)
+                .map(raijin_acp_thread::AgentModelInfo::from)
                 .collect(),
         )))
     }
@@ -1377,7 +1377,7 @@ impl acp_thread::AgentModelSelector for AcpModelSelector {
         })
     }
 
-    fn selected_model(&self, _cx: &mut App) -> Task<Result<acp_thread::AgentModelInfo>> {
+    fn selected_model(&self, _cx: &mut App) -> Task<Result<raijin_acp_thread::AgentModelInfo>> {
         let state = self.state.borrow();
         Task::ready(
             state
@@ -1385,7 +1385,7 @@ impl acp_thread::AgentModelSelector for AcpModelSelector {
                 .iter()
                 .find(|m| m.model_id == state.current_model_id)
                 .cloned()
-                .map(acp_thread::AgentModelInfo::from)
+                .map(raijin_acp_thread::AgentModelInfo::from)
                 .ok_or_else(|| anyhow::anyhow!("Model not found")),
         )
     }
@@ -1395,11 +1395,11 @@ struct AcpSessionConfigOptions {
     session_id: acp::SessionId,
     connection: Rc<acp::ClientSideConnection>,
     state: Rc<RefCell<Vec<acp::SessionConfigOption>>>,
-    watch_tx: Rc<RefCell<watch::Sender<()>>>,
-    watch_rx: watch::Receiver<()>,
+    watch_tx: Rc<RefCell<raijin_watch::Sender<()>>>,
+    watch_rx: raijin_watch::Receiver<()>,
 }
 
-impl acp_thread::AgentSessionConfigOptions for AcpSessionConfigOptions {
+impl raijin_acp_thread::AgentSessionConfigOptions for AcpSessionConfigOptions {
     fn config_options(&self) -> Vec<acp::SessionConfigOption> {
         self.state.borrow().clone()
     }
@@ -1429,7 +1429,7 @@ impl acp_thread::AgentSessionConfigOptions for AcpSessionConfigOptions {
         })
     }
 
-    fn watch(&self, _cx: &mut App) -> Option<watch::Receiver<()>> {
+    fn watch(&self, _cx: &mut App) -> Option<raijin_watch::Receiver<()>> {
         Some(self.watch_rx.clone())
     }
 }
@@ -1460,7 +1460,7 @@ impl acp::Client for ClientDelegate {
         let task = thread.update(cx, |thread, cx| {
             thread.request_tool_call_authorization(
                 arguments.tool_call,
-                acp_thread::PermissionOptions::Flat(arguments.options),
+                raijin_acp_thread::PermissionOptions::Flat(arguments.options),
                 cx,
             )
         })??;
@@ -1644,7 +1644,7 @@ impl acp::Client for ClientDelegate {
         let thread = self.session_thread(&args.session_id)?;
         let project = thread.read_with(&self.cx, |thread, _cx| thread.project().clone())?;
 
-        let terminal_entity = acp_thread::create_terminal_entity(
+        let terminal_entity = raijin_acp_thread::create_terminal_entity(
             args.command.clone(),
             &args.args,
             args.env

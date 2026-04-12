@@ -6,7 +6,7 @@ use inazuma::{
 use raijin_i18n::t;
 
 use crate::{
-    ActiveTheme as _, PopoverGlobalState, PopupMenu,
+    PopoverGlobalState, PopupMenu,
     input::{self, InputState, popovers::ContextMenu},
 };
 

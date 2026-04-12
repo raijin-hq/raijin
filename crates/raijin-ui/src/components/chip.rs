@@ -267,7 +267,7 @@ impl Component for Chip {
         ComponentScope::DataDisplay
     }
 
-    fn preview(_window: &mut Window, cx: &mut App) -> Option<AnyElement> {
+    fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
         let chip_examples = vec![
             single_example("Default", Chip::new("Chip Example").into_any_element()),
             single_example(

@@ -85,10 +85,11 @@ use inazuma_sum_tree::Bias;
 use inazuma_text::{BufferId, SelectionGoal};
 use raijin_theme::{ActiveTheme, Appearance, PlayerColor};
 use raijin_theme_settings::BufferLineHeight;
-use raijin_ui::utils::ensure_minimum_contrast;
+use crate::apca_contrast::ensure_minimum_contrast;
+use crate::scrollbar_types::ShowScrollbar;
 use raijin_ui::{
     ButtonLike, ContextMenu, Indicator, KeyBinding, POPOVER_Y_PADDING, Tooltip, prelude::*,
-    right_click_menu, scrollbars::ShowScrollbar, text_for_keystroke,
+    right_click_menu, text_for_keystroke,
 };
 use unicode_segmentation::UnicodeSegmentation;
 use inazuma_util::post_inc;
@@ -5618,8 +5619,8 @@ impl EditorElement {
                         .and_then(|row_info| row_info.diff_status)?;
 
                     let background_color = match diff_status.kind {
-                        DiffHunkStatusKind::Added => colors.version_control_word_added,
-                        DiffHunkStatusKind::Deleted => colors.version_control_word_deleted,
+                        DiffHunkStatusKind::Added => colors.version_control.word_added,
+                        DiffHunkStatusKind::Deleted => colors.version_control.word_deleted,
                         DiffHunkStatusKind::Modified => {
                             debug_panic!("modified diff status for row info");
                             return None;
@@ -6276,7 +6277,7 @@ impl EditorElement {
                     let flattened_background_color = cx
                         .theme()
                         .colors()
-                        .editor_background
+                        .editor.background
                         .blend(background_color);
 
                     if !Self::diff_hunk_hollow(status, cx) {
@@ -6292,7 +6293,7 @@ impl EditorElement {
                         let flattened_unstaged_background_color = cx
                             .theme()
                             .colors()
-                            .editor_background
+                            .editor.background
                             .blend(background_color.opacity(0.3));
 
                         window.paint_quad(quad(
@@ -8000,7 +8001,7 @@ pub fn render_breadcrumb_text(
                 ButtonLike::new("toggle outline view")
                     .child(breadcrumbs)
                     .when(multibuffer_header, |this| {
-                        this.style(ButtonStyle::Transparent)
+                        this.style(ButtonStyle::Ghost)
                     })
                     .when(!multibuffer_header, |this| {
                         let focus_handle = editor.upgrade().unwrap().focus_handle(&cx);
@@ -8284,7 +8285,7 @@ pub(crate) fn render_buffer_header(
                         };
                     border.border_color(border_color)
                 })
-                .bg(colors.editor_subheader_background)
+                .bg(colors.editor.subheader_background)
                 .hover(|style| style.bg(colors.element_hover))
                 .map(|header| {
                     let editor = editor.clone();
@@ -8299,7 +8300,7 @@ pub(crate) fn render_buffer_header(
                             .rounded_xs()
                             .child(
                                 ButtonLike::new("toggle-buffer-fold")
-                                    .style(ButtonStyle::Transparent)
+                                    .style(ButtonStyle::Ghost)
                                     .height(button_size.into())
                                     .width(button_size)
                                     .children(toggle_chevron_icon)
@@ -8472,7 +8473,7 @@ pub(crate) fn render_buffer_header(
                                     })
                                     .child(
                                         Button::new("open-file-button", "Open File")
-                                            .style(ButtonStyle::OutlinedGhost)
+                                            .style(ButtonStyle::Outlined)
                                             .when(is_selected, |this| {
                                                 this.key_binding(KeyBinding::for_action_in(
                                                     &OpenExcerpts,

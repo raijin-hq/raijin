@@ -27,7 +27,7 @@ use std::{
 use std::{ops::Range, sync::Arc, time::Duration};
 use std::{path::PathBuf, rc::Rc};
 use raijin_theme_settings::ThemeSettings;
-use raijin_ui::{CopyButton, Scrollbars, WithScrollbar, prelude::*, theme_is_transparent};
+use raijin_ui::{CopyButton, ScrollAxes, Scrollbars, WithScrollbar, prelude::*, theme_is_transparent};
 use url::Url;
 use inazuma_util::TryFutureExt;
 use raijin_workspace::{OpenOptions, OpenVisible, Workspace};
@@ -1048,7 +1048,7 @@ impl InfoPopover {
                         ),
                 )
                 .custom_scrollbars(
-                    Scrollbars::for_settings::<EditorSettings>()
+                    Scrollbars::new(ScrollAxes::Both)
                         .tracked_scroll_handle(&self.scroll_handle),
                     window,
                     cx,
@@ -1176,7 +1176,7 @@ impl DiagnosticPopover {
                         CopyButton::new("copy-diagnostic", message).tooltip_label("Copy Diagnostic")
                     }))
                     .custom_scrollbars(
-                        Scrollbars::for_settings::<EditorSettings>()
+                        Scrollbars::new(ScrollAxes::Both)
                             .tracked_scroll_handle(&self.scroll_handle),
                         window,
                         cx,

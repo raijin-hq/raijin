@@ -440,7 +440,7 @@ impl Scrollbar {
         )
     }
 
-    pub(super) fn style_for_idle(&self, cx: &App) -> (Oklch, Oklch, Oklch, Pixels, Pixels, Pixels) {
+    pub(super) fn style_for_idle(&self, _cx: &App) -> (Oklch, Oklch, Oklch, Pixels, Pixels, Pixels) {
         let scrollbar_show = self.scrollbar_show.unwrap_or(ScrollbarShow::Scrolling);
         let (width, inset, radius) = match scrollbar_show {
             ScrollbarShow::Scrolling => (THUMB_WIDTH, THUMB_INSET, THUMB_RADIUS),

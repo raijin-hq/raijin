@@ -1109,7 +1109,7 @@ pub async fn handle_websocket_request(
     system_id_header: Option<TypedHeader<SystemIdHeader>>,
     ws: WebSocketUpgrade,
 ) -> axum::response::Response {
-    if protocol_version != rpc::PROTOCOL_VERSION {
+    if protocol_version != raijin_rpc::PROTOCOL_VERSION {
         return (
             StatusCode::UPGRADE_REQUIRED,
             "client must be upgraded".to_string(),
@@ -1273,7 +1273,7 @@ async fn create_room(
 ) -> Result<()> {
     let livekit_room = nanoid::nanoid!(30);
 
-    let live_kit_connection_info = util::maybe!(async {
+    let live_kit_connection_info = inazuma_util::maybe!(async {
         let live_kit = session.app_state.livekit_client.as_ref();
         let live_kit = live_kit?;
         let user_id = session.user_id().to_string();
@@ -1591,7 +1591,7 @@ async fn set_room_participant_role(
             .update_participant(
                 livekit_room.clone(),
                 request.user_id.to_string(),
-                livekit_api::proto::ParticipantPermission {
+                raijin_livekit_api::proto::ParticipantPermission {
                     can_subscribe: true,
                     can_publish,
                     can_publish_data: can_publish,

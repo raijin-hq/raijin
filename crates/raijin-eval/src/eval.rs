@@ -109,8 +109,8 @@ fn main() {
     std::fs::create_dir_all(&examples_dir).unwrap();
     std::fs::create_dir_all(&raijin_paths::config_dir()).unwrap();
 
-    let zed_commit_sha = commit_sha_for_path(&root_dir);
-    let zed_branch_name = git_branch_for_path(&root_dir);
+    let raijin_commit_sha = commit_sha_for_path(&root_dir);
+    let raijin_branch_name = git_branch_for_path(&root_dir);
     let languages: HashSet<String> = args.languages.into_iter().collect();
 
     let http_client = Arc::new(ReqwestClient::new());
@@ -123,14 +123,14 @@ fn main() {
         let telemetry = app_state.client.telemetry();
         telemetry.start(system_id, installation_id, session_id, cx);
 
-        let enable_telemetry = env::var("ZED_EVAL_TELEMETRY").is_ok_and(|value| value == "1")
+        let enable_telemetry = env::var("RAIJIN_EVAL_TELEMETRY").is_ok_and(|value| value == "1")
             && telemetry.has_checksum_seed();
         if enable_telemetry {
             println!("Telemetry enabled");
             raijin_telemetry::event!(
                 "Agent Eval Started",
-                zed_commit_sha = zed_commit_sha,
-                zed_branch_name = zed_branch_name,
+                raijin_commit_sha = raijin_commit_sha,
+                raijin_branch_name = raijin_branch_name,
                 run_id = run_id,
             );
         }
@@ -282,8 +282,8 @@ fn main() {
             future::join_all((0..args.concurrency).map(|_| {
                 let app_state = app_state.clone();
                 let judge_model = judge_model.model.clone();
-                let zed_commit_sha = zed_commit_sha.clone();
-                let zed_branch_name = zed_branch_name.clone();
+                let raijin_commit_sha = raijin_commit_sha.clone();
+                let raijin_branch_name = raijin_branch_name.clone();
                 let run_id = run_id.clone();
                 let examples = examples.clone();
                 let results = results_by_example_name.clone();
@@ -300,8 +300,8 @@ fn main() {
                             let judge_output = judge_example(
                                 example.clone(),
                                 judge_model.clone(),
-                                &zed_commit_sha,
-                                &zed_branch_name,
+                                &raijin_commit_sha,
+                                &raijin_branch_name,
                                 &run_id,
                                 &run_output,
                                 enable_telemetry,
@@ -349,11 +349,11 @@ pub struct AgentAppState {
 }
 
 pub fn init(cx: &mut App) -> Arc<AgentAppState> {
-    let app_commit_sha = option_env!("ZED_COMMIT_SHA").map(|s| AppCommitSha::new(s.to_owned()));
+    let app_commit_sha = option_env!("RAIJIN_COMMIT_SHA").map(|s| AppCommitSha::new(s.to_owned()));
 
     let app_version = AppVersion::load(
-        env!("ZED_PKG_VERSION"),
-        option_env!("ZED_BUILD_ID"),
+        env!("RAIJIN_PKG_VERSION"),
+        option_env!("RAIJIN_BUILD_ID"),
         app_commit_sha,
     );
 
@@ -519,8 +519,8 @@ pub fn git_branch_for_path(repo_path: &Path) -> String {
 async fn judge_example(
     example: ExampleInstance,
     model: Arc<dyn LanguageModel>,
-    zed_commit_sha: &str,
-    zed_branch_name: &str,
+    raijin_commit_sha: &str,
+    raijin_branch_name: &str,
     run_id: &str,
     run_output: &RunOutput,
     enable_telemetry: bool,
@@ -531,8 +531,8 @@ async fn judge_example(
     if enable_telemetry {
         raijin_telemetry::event!(
             "Agent Example Evaluated",
-            zed_commit_sha = zed_commit_sha,
-            zed_branch_name = zed_branch_name,
+            raijin_commit_sha = raijin_commit_sha,
+            raijin_branch_name = raijin_branch_name,
             run_id = run_id,
             example_name = example.name.clone(),
             example_repetition = example.repetition,

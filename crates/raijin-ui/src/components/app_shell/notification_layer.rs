@@ -1,4 +1,4 @@
-use inazuma::{App, Context, Window};
+use inazuma::{Context, Window};
 use std::any::TypeId;
 
 use crate::Notification;

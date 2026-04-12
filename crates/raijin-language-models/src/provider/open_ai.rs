@@ -35,8 +35,8 @@ use inazuma_util::ResultExt;
 
 use crate::provider::util::{fix_streamed_json, parse_tool_arguments};
 
-const PROVIDER_ID: LanguageModelProviderId = language_model::OPEN_AI_PROVIDER_ID;
-const PROVIDER_NAME: LanguageModelProviderName = language_model::OPEN_AI_PROVIDER_NAME;
+const PROVIDER_ID: LanguageModelProviderId = raijin_language_model::OPEN_AI_PROVIDER_ID;
+const PROVIDER_NAME: LanguageModelProviderName = raijin_language_model::OPEN_AI_PROVIDER_NAME;
 
 const API_KEY_ENV_VAR_NAME: &str = "OPENAI_API_KEY";
 static API_KEY_ENV_VAR: LazyLock<EnvVar> = env_var!(API_KEY_ENV_VAR_NAME);
@@ -92,7 +92,7 @@ impl OpenAiLanguageModelProvider {
         Self { http_client, state }
     }
 
-    fn create_language_model(&self, model: open_ai::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_open_ai::Model) -> Arc<dyn LanguageModel> {
         Arc::new(OpenAiLanguageModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -109,7 +109,7 @@ impl OpenAiLanguageModelProvider {
     fn api_url(cx: &App) -> SharedString {
         let api_url = &Self::settings(cx).api_url;
         if api_url.is_empty() {
-            open_ai::OPEN_AI_API_URL.into()
+            raijin_open_ai::OPEN_AI_API_URL.into()
         } else {
             SharedString::new(api_url.as_str())
         }
@@ -138,19 +138,19 @@ impl LanguageModelProvider for OpenAiLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(open_ai::Model::default()))
+        Some(self.create_language_model(raijin_open_ai::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(open_ai::Model::default_fast()))
+        Some(self.create_language_model(raijin_open_ai::Model::default_fast()))
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        // Add base models from open_ai::Model::iter()
-        for model in open_ai::Model::iter() {
-            if !matches!(model, open_ai::Model::Custom { .. }) {
+        // Add base models from raijin_open_ai::Model::iter()
+        for model in raijin_open_ai::Model::iter() {
+            if !matches!(model, raijin_open_ai::Model::Custom { .. }) {
                 models.insert(model.id().to_string(), model);
             }
         }
@@ -159,7 +159,7 @@ impl LanguageModelProvider for OpenAiLanguageModelProvider {
         for model in &OpenAiLanguageModelProvider::settings(cx).available_models {
             models.insert(
                 model.name.clone(),
-                open_ai::Model::Custom {
+                raijin_open_ai::Model::Custom {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
@@ -187,7 +187,7 @@ impl LanguageModelProvider for OpenAiLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -203,7 +203,7 @@ impl LanguageModelProvider for OpenAiLanguageModelProvider {
 
 pub struct OpenAiLanguageModel {
     id: LanguageModelId,
-    model: open_ai::Model,
+    model: raijin_open_ai::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
@@ -212,7 +212,7 @@ pub struct OpenAiLanguageModel {
 impl OpenAiLanguageModel {
     fn stream_completion(
         &self,
-        request: open_ai::Request,
+        request: raijin_open_ai::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<'static, Result<futures::stream::BoxStream<'static, Result<ResponseStreamEvent>>>>
     {
@@ -416,7 +416,7 @@ pub fn into_open_ai(
     supports_prompt_cache_key: bool,
     max_output_tokens: Option<u64>,
     reasoning_effort: Option<ReasoningEffort>,
-) -> open_ai::Request {
+) -> raijin_open_ai::Request {
     let stream = !model_id.starts_with("o1-");
 
     let mut messages = Vec::new();
@@ -433,7 +433,7 @@ pub fn into_open_ai(
                     };
                     if should_add {
                         add_message_content_part(
-                            open_ai::MessagePart::Text { text },
+                            raijin_open_ai::MessagePart::Text { text },
                             message.role,
                             &mut messages,
                         );
@@ -442,7 +442,7 @@ pub fn into_open_ai(
                 MessageContent::RedactedThinking(_) => {}
                 MessageContent::Image(image) => {
                     add_message_content_part(
-                        open_ai::MessagePart::Image {
+                        raijin_open_ai::MessagePart::Image {
                             image_url: ImageUrl {
                                 url: image.to_base64_url(),
                                 detail: None,
@@ -453,10 +453,10 @@ pub fn into_open_ai(
                     );
                 }
                 MessageContent::ToolUse(tool_use) => {
-                    let tool_call = open_ai::ToolCall {
+                    let tool_call = raijin_open_ai::ToolCall {
                         id: tool_use.id.to_string(),
-                        content: open_ai::ToolCallContent::Function {
-                            function: open_ai::FunctionContent {
+                        content: raijin_open_ai::ToolCallContent::Function {
+                            function: raijin_open_ai::FunctionContent {
                                 name: tool_use.name.to_string(),
                                 arguments: serde_json::to_string(&tool_use.input)
                                     .unwrap_or_default(),
@@ -464,12 +464,12 @@ pub fn into_open_ai(
                         },
                     };
 
-                    if let Some(open_ai::RequestMessage::Assistant { tool_calls, .. }) =
+                    if let Some(raijin_open_ai::RequestMessage::Assistant { tool_calls, .. }) =
                         messages.last_mut()
                     {
                         tool_calls.push(tool_call);
                     } else {
-                        messages.push(open_ai::RequestMessage::Assistant {
+                        messages.push(raijin_open_ai::RequestMessage::Assistant {
                             content: None,
                             tool_calls: vec![tool_call],
                         });
@@ -478,12 +478,12 @@ pub fn into_open_ai(
                 MessageContent::ToolResult(tool_result) => {
                     let content = match &tool_result.content {
                         LanguageModelToolResultContent::Text(text) => {
-                            vec![open_ai::MessagePart::Text {
+                            vec![raijin_open_ai::MessagePart::Text {
                                 text: text.to_string(),
                             }]
                         }
                         LanguageModelToolResultContent::Image(image) => {
-                            vec![open_ai::MessagePart::Image {
+                            vec![raijin_open_ai::MessagePart::Image {
                                 image_url: ImageUrl {
                                     url: image.to_base64_url(),
                                     detail: None,
@@ -492,7 +492,7 @@ pub fn into_open_ai(
                         }
                     };
 
-                    messages.push(open_ai::RequestMessage::Tool {
+                    messages.push(raijin_open_ai::RequestMessage::Tool {
                         content: content.into(),
                         tool_call_id: tool_result.tool_use_id.to_string(),
                     });
@@ -501,12 +501,12 @@ pub fn into_open_ai(
         }
     }
 
-    open_ai::Request {
+    raijin_open_ai::Request {
         model: model_id.into(),
         messages,
         stream,
         stream_options: if stream {
-            Some(open_ai::StreamOptions::default())
+            Some(raijin_open_ai::StreamOptions::default())
         } else {
             None
         },
@@ -526,8 +526,8 @@ pub fn into_open_ai(
         tools: request
             .tools
             .into_iter()
-            .map(|tool| open_ai::ToolDefinition::Function {
-                function: open_ai::FunctionDefinition {
+            .map(|tool| raijin_open_ai::ToolDefinition::Function {
+                function: raijin_open_ai::FunctionDefinition {
                     name: tool.name,
                     description: Some(tool.description),
                     parameters: Some(tool.input_schema),
@@ -535,9 +535,9 @@ pub fn into_open_ai(
             })
             .collect(),
         tool_choice: request.tool_choice.map(|choice| match choice {
-            LanguageModelToolChoice::Auto => open_ai::ToolChoice::Auto,
-            LanguageModelToolChoice::Any => open_ai::ToolChoice::Required,
-            LanguageModelToolChoice::None => open_ai::ToolChoice::None,
+            LanguageModelToolChoice::Auto => raijin_open_ai::ToolChoice::Auto,
+            LanguageModelToolChoice::Any => raijin_open_ai::ToolChoice::Required,
+            LanguageModelToolChoice::None => raijin_open_ai::ToolChoice::None,
         }),
         reasoning_effort,
     }
@@ -574,7 +574,7 @@ pub fn into_open_ai_response(
 
     let tools: Vec<_> = tools
         .into_iter()
-        .map(|tool| open_ai::responses::ToolDefinition::Function {
+        .map(|tool| raijin_open_ai::responses::ToolDefinition::Function {
             name: tool.name,
             description: Some(tool.description),
             parameters: Some(tool.input_schema),
@@ -595,9 +595,9 @@ pub fn into_open_ai_response(
             Some(supports_parallel_tool_calls)
         },
         tool_choice: tool_choice.map(|choice| match choice {
-            LanguageModelToolChoice::Auto => open_ai::ToolChoice::Auto,
-            LanguageModelToolChoice::Any => open_ai::ToolChoice::Required,
-            LanguageModelToolChoice::None => open_ai::ToolChoice::None,
+            LanguageModelToolChoice::Auto => raijin_open_ai::ToolChoice::Auto,
+            LanguageModelToolChoice::Any => raijin_open_ai::ToolChoice::Required,
+            LanguageModelToolChoice::None => raijin_open_ai::ToolChoice::None,
         }),
         tools,
         prompt_cache_key: if supports_prompt_cache_key {
@@ -605,9 +605,9 @@ pub fn into_open_ai_response(
         } else {
             None
         },
-        reasoning: reasoning_effort.map(|effort| open_ai::responses::ReasoningConfig {
+        reasoning: reasoning_effort.map(|effort| raijin_open_ai::responses::ReasoningConfig {
             effort,
-            summary: Some(open_ai::responses::ReasoningSummaryMode::Auto),
+            summary: Some(raijin_open_ai::responses::ReasoningSummaryMode::Auto),
         }),
     }
 }
@@ -713,9 +713,9 @@ fn flush_response_parts(
 
     let item = ResponseInputItem::Message(ResponseMessageItem {
         role: match role {
-            Role::User => open_ai::Role::User,
-            Role::Assistant => open_ai::Role::Assistant,
-            Role::System => open_ai::Role::System,
+            Role::User => raijin_open_ai::Role::User,
+            Role::Assistant => raijin_open_ai::Role::Assistant,
+            Role::System => raijin_open_ai::Role::System,
         },
         content: parts.clone(),
     });
@@ -725,33 +725,33 @@ fn flush_response_parts(
 }
 
 fn add_message_content_part(
-    new_part: open_ai::MessagePart,
+    new_part: raijin_open_ai::MessagePart,
     role: Role,
-    messages: &mut Vec<open_ai::RequestMessage>,
+    messages: &mut Vec<raijin_open_ai::RequestMessage>,
 ) {
     match (role, messages.last_mut()) {
-        (Role::User, Some(open_ai::RequestMessage::User { content }))
+        (Role::User, Some(raijin_open_ai::RequestMessage::User { content }))
         | (
             Role::Assistant,
-            Some(open_ai::RequestMessage::Assistant {
+            Some(raijin_open_ai::RequestMessage::Assistant {
                 content: Some(content),
                 ..
             }),
         )
-        | (Role::System, Some(open_ai::RequestMessage::System { content, .. })) => {
+        | (Role::System, Some(raijin_open_ai::RequestMessage::System { content, .. })) => {
             content.push_part(new_part);
         }
         _ => {
             messages.push(match role {
-                Role::User => open_ai::RequestMessage::User {
-                    content: open_ai::MessageContent::from(vec![new_part]),
+                Role::User => raijin_open_ai::RequestMessage::User {
+                    content: raijin_open_ai::MessageContent::from(vec![new_part]),
                 },
-                Role::Assistant => open_ai::RequestMessage::Assistant {
-                    content: Some(open_ai::MessageContent::from(vec![new_part])),
+                Role::Assistant => raijin_open_ai::RequestMessage::Assistant {
+                    content: Some(raijin_open_ai::MessageContent::from(vec![new_part])),
                     tool_calls: Vec::new(),
                 },
-                Role::System => open_ai::RequestMessage::System {
-                    content: open_ai::MessageContent::from(vec![new_part]),
+                Role::System => raijin_open_ai::RequestMessage::System {
+                    content: raijin_open_ai::MessageContent::from(vec![new_part]),
                 },
             });
         }

@@ -156,7 +156,7 @@ impl Render for SecurityModal {
                     )
                     .map(|this| match trust_label {
                         Some(trust_label) => this.child(
-                            Checkbox::new("trust-parents", ToggleState::from(self.trust_parents))
+                            Checkbox::new("trust-parents").toggle_state(ToggleState::from(self.trust_parents))
                                 .label(trust_label)
                                 .on_click(cx.listener(
                                     |security_modal, state: &ToggleState, _, cx| {
@@ -192,7 +192,7 @@ impl Render for SecurityModal {
                     )
                     .child(
                         Button::new("tc", "Trust and Continue")
-                            .style(ButtonStyle::Filled)
+                            .style(ButtonStyle::Primary)
                             .layer(raijin_ui::ElevationIndex::ModalSurface)
                             .key_binding(
                                 KeyBinding::for_action(&inazuma_menu::Confirm, cx)

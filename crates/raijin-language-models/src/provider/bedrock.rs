@@ -128,13 +128,13 @@ pub enum BedrockAuthMethod {
     Automatic,
 }
 
-impl From<settings::BedrockAuthMethodContent> for BedrockAuthMethod {
-    fn from(value: settings::BedrockAuthMethodContent) -> Self {
+impl From<inazuma_settings_framework::BedrockAuthMethodContent> for BedrockAuthMethod {
+    fn from(value: inazuma_settings_framework::BedrockAuthMethodContent) -> Self {
         match value {
-            settings::BedrockAuthMethodContent::SingleSignOn => BedrockAuthMethod::SingleSignOn,
-            settings::BedrockAuthMethodContent::Automatic => BedrockAuthMethod::Automatic,
-            settings::BedrockAuthMethodContent::NamedProfile => BedrockAuthMethod::NamedProfile,
-            settings::BedrockAuthMethodContent::ApiKey => BedrockAuthMethod::ApiKey,
+            inazuma_settings_framework::BedrockAuthMethodContent::SingleSignOn => BedrockAuthMethod::SingleSignOn,
+            inazuma_settings_framework::BedrockAuthMethodContent::Automatic => BedrockAuthMethod::Automatic,
+            inazuma_settings_framework::BedrockAuthMethodContent::NamedProfile => BedrockAuthMethod::NamedProfile,
+            inazuma_settings_framework::BedrockAuthMethodContent::ApiKey => BedrockAuthMethod::ApiKey,
         }
     }
 }
@@ -149,7 +149,7 @@ pub enum ModelMode {
         budget_tokens: Option<u64>,
     },
     AdaptiveThinking {
-        effort: bedrock::BedrockAdaptiveThinkingEffort,
+        effort: raijin_bedrock::BedrockAdaptiveThinkingEffort,
     },
 }
 
@@ -417,7 +417,7 @@ impl BedrockLanguageModelProvider {
         }
     }
 
-    fn create_language_model(&self, model: bedrock::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_bedrock::Model) -> Arc<dyn LanguageModel> {
         Arc::new(BedrockModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -444,19 +444,19 @@ impl LanguageModelProvider for BedrockLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(bedrock::Model::default()))
+        Some(self.create_language_model(raijin_bedrock::Model::default()))
     }
 
     fn default_fast_model(&self, cx: &App) -> Option<Arc<dyn LanguageModel>> {
         let region = self.state.read(cx).get_region();
-        Some(self.create_language_model(bedrock::Model::default_fast(region.as_str())))
+        Some(self.create_language_model(raijin_bedrock::Model::default_fast(region.as_str())))
     }
 
     fn provided_models(&self, cx: &App) -> Vec<Arc<dyn LanguageModel>> {
         let mut models = BTreeMap::default();
 
-        for model in bedrock::Model::iter() {
-            if !matches!(model, bedrock::Model::Custom { .. }) {
+        for model in raijin_bedrock::Model::iter() {
+            if !matches!(model, raijin_bedrock::Model::Custom { .. }) {
                 models.insert(model.id().to_string(), model);
             }
         }
@@ -469,14 +469,14 @@ impl LanguageModelProvider for BedrockLanguageModelProvider {
         {
             models.insert(
                 model.name.clone(),
-                bedrock::Model::Custom {
+                raijin_bedrock::Model::Custom {
                     name: model.name.clone(),
                     display_name: model.display_name.clone(),
                     max_tokens: model.max_tokens,
                     max_output_tokens: model.max_output_tokens,
                     default_temperature: model.default_temperature,
                     cache_configuration: model.cache_configuration.as_ref().map(|config| {
-                        bedrock::BedrockModelCacheConfiguration {
+                        raijin_bedrock::BedrockModelCacheConfiguration {
                             max_cache_anchors: config.max_cache_anchors,
                             min_total_token: config.min_total_token,
                         }
@@ -501,7 +501,7 @@ impl LanguageModelProvider for BedrockLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -596,7 +596,7 @@ impl BedrockModel {
 
     fn stream_completion(
         &self,
-        request: bedrock::Request,
+        request: raijin_bedrock::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
@@ -611,7 +611,7 @@ impl BedrockModel {
                 .boxed();
         };
 
-        let task = Tokio::spawn(cx, bedrock::stream_completion(runtime_client, request));
+        let task = Tokio::spawn(cx, raijin_bedrock::stream_completion(runtime_client, request));
         async move { task.await.map_err(|e| BedrockError::Other(e.into()))? }.boxed()
     }
 }
@@ -645,25 +645,25 @@ impl LanguageModel for BedrockModel {
         self.model.supports_thinking()
     }
 
-    fn supported_effort_levels(&self) -> Vec<language_model::LanguageModelEffortLevel> {
+    fn supported_effort_levels(&self) -> Vec<raijin_language_model::LanguageModelEffortLevel> {
         if self.model.supports_adaptive_thinking() {
             vec![
-                language_model::LanguageModelEffortLevel {
+                raijin_language_model::LanguageModelEffortLevel {
                     name: "Low".into(),
                     value: "low".into(),
                     is_default: false,
                 },
-                language_model::LanguageModelEffortLevel {
+                raijin_language_model::LanguageModelEffortLevel {
                     name: "Medium".into(),
                     value: "medium".into(),
                     is_default: false,
                 },
-                language_model::LanguageModelEffortLevel {
+                raijin_language_model::LanguageModelEffortLevel {
                     name: "High".into(),
                     value: "high".into(),
                     is_default: true,
                 },
-                language_model::LanguageModelEffortLevel {
+                raijin_language_model::LanguageModelEffortLevel {
                     name: "Max".into(),
                     value: "max".into(),
                     is_default: false,
@@ -841,7 +841,7 @@ pub fn into_bedrock(
     supports_caching: bool,
     supports_tool_use: bool,
     allow_extended_context: bool,
-) -> Result<bedrock::Request> {
+) -> Result<raijin_bedrock::Request> {
     let mut new_messages: Vec<BedrockMessage> = Vec::new();
     let mut system_message = String::new();
 
@@ -1003,8 +1003,8 @@ pub fn into_bedrock(
                     ));
                 }
                 let bedrock_role = match message.role {
-                    Role::User => bedrock::BedrockRole::User,
-                    Role::Assistant => bedrock::BedrockRole::Assistant,
+                    Role::User => raijin_bedrock::BedrockRole::User,
+                    Role::Assistant => raijin_bedrock::BedrockRole::Assistant,
                     Role::System => unreachable!("System role should never occur here"),
                 };
                 if bedrock_message_content.is_empty() {
@@ -1104,7 +1104,7 @@ pub fn into_bedrock(
         )
     };
 
-    Ok(bedrock::Request {
+    Ok(raijin_bedrock::Request {
         model,
         messages: new_messages,
         max_tokens: max_output_tokens,
@@ -1113,7 +1113,7 @@ pub fn into_bedrock(
         thinking: if request.thinking_allowed {
             match thinking_mode {
                 BedrockModelMode::Thinking { budget_tokens } => {
-                    Some(bedrock::Thinking::Enabled { budget_tokens })
+                    Some(raijin_bedrock::Thinking::Enabled { budget_tokens })
                 }
                 BedrockModelMode::AdaptiveThinking {
                     effort: default_effort,
@@ -1122,14 +1122,14 @@ pub fn into_bedrock(
                         .thinking_effort
                         .as_deref()
                         .and_then(|e| match e {
-                            "low" => Some(bedrock::BedrockAdaptiveThinkingEffort::Low),
-                            "medium" => Some(bedrock::BedrockAdaptiveThinkingEffort::Medium),
-                            "high" => Some(bedrock::BedrockAdaptiveThinkingEffort::High),
-                            "max" => Some(bedrock::BedrockAdaptiveThinkingEffort::Max),
+                            "low" => Some(raijin_bedrock::BedrockAdaptiveThinkingEffort::Low),
+                            "medium" => Some(raijin_bedrock::BedrockAdaptiveThinkingEffort::Medium),
+                            "high" => Some(raijin_bedrock::BedrockAdaptiveThinkingEffort::High),
+                            "max" => Some(raijin_bedrock::BedrockAdaptiveThinkingEffort::Max),
                             _ => None,
                         })
                         .unwrap_or(default_effort);
-                    Some(bedrock::Thinking::Adaptive { effort })
+                    Some(raijin_bedrock::Thinking::Adaptive { effort })
                 }
                 BedrockModelMode::Default => None,
             }
@@ -1341,11 +1341,11 @@ pub fn map_to_language_model_completion_events(
                                 // Some models (e.g. Kimi) send EndTurn even when
                                 // they've made tool calls. Trust the content over
                                 // the stop reason.
-                                language_model::StopReason::ToolUse
+                                raijin_language_model::StopReason::ToolUse
                             } else {
                                 match message_stop.stop_reason {
-                                    StopReason::ToolUse => language_model::StopReason::ToolUse,
-                                    _ => language_model::StopReason::EndTurn,
+                                    StopReason::ToolUse => raijin_language_model::StopReason::ToolUse,
+                                    _ => raijin_language_model::StopReason::EndTurn,
                                 }
                             };
                             Some(Ok(LanguageModelCompletionEvent::Stop(stop_reason)))
@@ -1447,7 +1447,7 @@ impl ConfigurationView {
 
     fn save_credentials(
         &mut self,
-        _: &menu::Confirm,
+        _: &inazuma_menu::Confirm,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1523,13 +1523,13 @@ impl ConfigurationView {
         self.state.read(cx).is_authenticated()
     }
 
-    fn on_tab(&mut self, _: &menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
+    fn on_tab(&mut self, _: &inazuma_menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
         window.focus_next(cx);
     }
 
     fn on_tab_prev(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {

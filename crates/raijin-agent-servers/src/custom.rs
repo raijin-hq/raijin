@@ -97,15 +97,15 @@ impl AgentServer for CustomAgentServer {
                 .or_insert_with(|| default_settings_for_agent(agent_id, cx));
 
             match settings {
-                settings::CustomAgentServerSettings::Custom {
+                inazuma_settings_framework::CustomAgentServerSettings::Custom {
                     favorite_config_option_values,
                     ..
                 }
-                | settings::CustomAgentServerSettings::Extension {
+                | inazuma_settings_framework::CustomAgentServerSettings::Extension {
                     favorite_config_option_values,
                     ..
                 }
-                | settings::CustomAgentServerSettings::Registry {
+                | inazuma_settings_framework::CustomAgentServerSettings::Registry {
                     favorite_config_option_values,
                     ..
                 } => {
@@ -138,9 +138,9 @@ impl AgentServer for CustomAgentServer {
                 .or_insert_with(|| default_settings_for_agent(agent_id, cx));
 
             match settings {
-                settings::CustomAgentServerSettings::Custom { default_mode, .. }
-                | settings::CustomAgentServerSettings::Extension { default_mode, .. }
-                | settings::CustomAgentServerSettings::Registry { default_mode, .. } => {
+                inazuma_settings_framework::CustomAgentServerSettings::Custom { default_mode, .. }
+                | inazuma_settings_framework::CustomAgentServerSettings::Extension { default_mode, .. }
+                | inazuma_settings_framework::CustomAgentServerSettings::Registry { default_mode, .. } => {
                     *default_mode = mode_id.map(|m| m.to_string());
                 }
             }
@@ -170,9 +170,9 @@ impl AgentServer for CustomAgentServer {
                 .or_insert_with(|| default_settings_for_agent(agent_id, cx));
 
             match settings {
-                settings::CustomAgentServerSettings::Custom { default_model, .. }
-                | settings::CustomAgentServerSettings::Extension { default_model, .. }
-                | settings::CustomAgentServerSettings::Registry { default_model, .. } => {
+                inazuma_settings_framework::CustomAgentServerSettings::Custom { default_model, .. }
+                | inazuma_settings_framework::CustomAgentServerSettings::Extension { default_model, .. }
+                | inazuma_settings_framework::CustomAgentServerSettings::Registry { default_model, .. } => {
                     *default_model = model_id.map(|m| m.to_string());
                 }
             }
@@ -214,13 +214,13 @@ impl AgentServer for CustomAgentServer {
                 .or_insert_with(|| default_settings_for_agent(agent_id, cx));
 
             let favorite_models = match settings {
-                settings::CustomAgentServerSettings::Custom {
+                inazuma_settings_framework::CustomAgentServerSettings::Custom {
                     favorite_models, ..
                 }
-                | settings::CustomAgentServerSettings::Extension {
+                | inazuma_settings_framework::CustomAgentServerSettings::Extension {
                     favorite_models, ..
                 }
-                | settings::CustomAgentServerSettings::Registry {
+                | inazuma_settings_framework::CustomAgentServerSettings::Registry {
                     favorite_models, ..
                 } => favorite_models,
             };
@@ -267,15 +267,15 @@ impl AgentServer for CustomAgentServer {
                 .or_insert_with(|| default_settings_for_agent(agent_id, cx));
 
             match settings {
-                settings::CustomAgentServerSettings::Custom {
+                inazuma_settings_framework::CustomAgentServerSettings::Custom {
                     default_config_options,
                     ..
                 }
-                | settings::CustomAgentServerSettings::Extension {
+                | inazuma_settings_framework::CustomAgentServerSettings::Extension {
                     default_config_options,
                     ..
                 }
-                | settings::CustomAgentServerSettings::Registry {
+                | inazuma_settings_framework::CustomAgentServerSettings::Registry {
                     default_config_options,
                     ..
                 } => {
@@ -304,15 +304,15 @@ impl AgentServer for CustomAgentServer {
                 .get::<AllAgentServersSettings>(None)
                 .get(self.agent_id().as_ref())
                 .map(|s| match s {
-                    project::agent_server_store::CustomAgentServerSettings::Custom {
+                    raijin_project::agent_server_store::CustomAgentServerSettings::Custom {
                         default_config_options,
                         ..
                     }
-                    | project::agent_server_store::CustomAgentServerSettings::Extension {
+                    | raijin_project::agent_server_store::CustomAgentServerSettings::Extension {
                         default_config_options,
                         ..
                     }
-                    | project::agent_server_store::CustomAgentServerSettings::Registry {
+                    | raijin_project::agent_server_store::CustomAgentServerSettings::Registry {
                         default_config_options,
                         ..
                     } => default_config_options.clone(),
@@ -321,7 +321,7 @@ impl AgentServer for CustomAgentServer {
         });
 
         if is_registry_agent {
-            if let Some(registry_store) = project::AgentRegistryStore::try_global(cx) {
+            if let Some(registry_store) = raijin_project::AgentRegistryStore::try_global(cx) {
                 registry_store.update(cx, |store, cx| store.refresh_if_stale(cx));
             }
         }
@@ -393,7 +393,7 @@ fn api_key_for_gemini_cli(cx: &mut App) -> Task<Result<String>> {
         return Task::ready(Ok(key));
     }
     let credentials_provider = <dyn CredentialsProvider>::global(cx);
-    let api_url = google_ai::API_URL.to_string();
+    let api_url = raijin_google_ai::API_URL.to_string();
     cx.spawn(async move |cx| {
         Ok(
             ApiKey::load_from_system_keychain(&api_url, credentials_provider.as_ref(), cx)
@@ -406,7 +406,7 @@ fn api_key_for_gemini_cli(cx: &mut App) -> Task<Result<String>> {
 
 fn is_registry_agent(agent_id: impl Into<AgentId>, cx: &App) -> bool {
     let agent_id = agent_id.into();
-    let is_in_registry = project::AgentRegistryStore::try_global(cx)
+    let is_in_registry = raijin_project::AgentRegistryStore::try_global(cx)
         .map(|store| store.read(cx).agent(&agent_id).is_some())
         .unwrap_or(false);
     let is_settings_registry = cx.read_global(|settings: &SettingsStore, _| {
@@ -416,7 +416,7 @@ fn is_registry_agent(agent_id: impl Into<AgentId>, cx: &App) -> bool {
             .is_some_and(|s| {
                 matches!(
                     s,
-                    project::agent_server_store::CustomAgentServerSettings::Registry { .. }
+                    raijin_project::agent_server_store::CustomAgentServerSettings::Registry { .. }
                 )
             })
     });
@@ -426,9 +426,9 @@ fn is_registry_agent(agent_id: impl Into<AgentId>, cx: &App) -> bool {
 fn default_settings_for_agent(
     agent_id: impl Into<AgentId>,
     cx: &App,
-) -> settings::CustomAgentServerSettings {
+) -> inazuma_settings_framework::CustomAgentServerSettings {
     if is_registry_agent(agent_id, cx) {
-        settings::CustomAgentServerSettings::Registry {
+        inazuma_settings_framework::CustomAgentServerSettings::Registry {
             default_model: None,
             default_mode: None,
             env: Default::default(),
@@ -437,7 +437,7 @@ fn default_settings_for_agent(
             favorite_config_option_values: Default::default(),
         }
     } else {
-        settings::CustomAgentServerSettings::Extension {
+        inazuma_settings_framework::CustomAgentServerSettings::Extension {
             default_model: None,
             default_mode: None,
             env: Default::default(),
@@ -494,11 +494,11 @@ mod tests {
 
     fn set_agent_server_settings(
         cx: &mut TestAppContext,
-        entries: Vec<(&str, settings::CustomAgentServerSettings)>,
+        entries: Vec<(&str, inazuma_settings_framework::CustomAgentServerSettings)>,
     ) {
         cx.update(|cx| {
             AllAgentServersSettings::override_global(
-                project::agent_server_store::AllAgentServersSettings(
+                raijin_project::agent_server_store::AllAgentServersSettings(
                     entries
                         .into_iter()
                         .map(|(name, settings)| (name.to_string(), settings.into()))
@@ -534,7 +534,7 @@ mod tests {
             cx,
             vec![(
                 "agent-from-settings",
-                settings::CustomAgentServerSettings::Registry {
+                inazuma_settings_framework::CustomAgentServerSettings::Registry {
                     env: HashMap::default(),
                     default_mode: None,
                     default_model: None,
@@ -556,7 +556,7 @@ mod tests {
             cx,
             vec![(
                 "my-extension-agent",
-                settings::CustomAgentServerSettings::Extension {
+                inazuma_settings_framework::CustomAgentServerSettings::Extension {
                     env: HashMap::default(),
                     default_mode: None,
                     default_model: None,
@@ -577,7 +577,7 @@ mod tests {
         cx.update(|cx| {
             assert!(matches!(
                 default_settings_for_agent("some-extension-agent", cx),
-                settings::CustomAgentServerSettings::Extension { .. }
+                inazuma_settings_framework::CustomAgentServerSettings::Extension { .. }
             ));
         });
     }
@@ -589,11 +589,11 @@ mod tests {
         cx.update(|cx| {
             assert!(matches!(
                 default_settings_for_agent("new-registry-agent", cx),
-                settings::CustomAgentServerSettings::Registry { .. }
+                inazuma_settings_framework::CustomAgentServerSettings::Registry { .. }
             ));
             assert!(matches!(
                 default_settings_for_agent("not-in-registry", cx),
-                settings::CustomAgentServerSettings::Extension { .. }
+                inazuma_settings_framework::CustomAgentServerSettings::Extension { .. }
             ));
         });
     }

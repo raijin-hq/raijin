@@ -13,7 +13,7 @@ use raijin_collab::{
     executor::Executor,
 };
 use raijin_collab::{REVISION, ServiceMode, VERSION};
-use raijin_db::Database;
+use raijin_collab::db::Database;
 use std::{
     env::args,
     net::{SocketAddr, TcpListener},
@@ -50,7 +50,7 @@ async fn main() -> Result<()> {
             let mut db = Database::new(db_options).await?;
             db.initialize_notification_kinds().await?;
 
-            collab::seed::seed(&config, &db, false).await?;
+            raijin_collab::seed::seed(&config, &db, false).await?;
         }
         Some("serve") => {
             let mode = match args.next().as_deref() {
@@ -88,10 +88,10 @@ async fn main() -> Result<()> {
                         .db
                         .create_server(&state.config.zed_environment)
                         .await?;
-                    let rpc_server = collab::rpc::Server::new(epoch, state.clone());
+                    let rpc_server = raijin_collab::rpc::Server::new(epoch, state.clone());
                     rpc_server.start().await?;
 
-                    app = app.merge(collab::rpc::routes(rpc_server.clone()));
+                    app = app.merge(raijin_collab::rpc::routes(rpc_server.clone()));
 
                     on_shutdown = Some(Box::new(move || rpc_server.teardown()));
                 }
@@ -100,8 +100,8 @@ async fn main() -> Result<()> {
                     fetch_extensions_from_blob_store_periodically(state.clone());
 
                     app = app
-                        .merge(collab::api::events::router())
-                        .merge(collab::api::extensions::router())
+                        .merge(raijin_collab::api::events::router())
+                        .merge(raijin_collab::api::extensions::router())
                 }
 
                 app = app.layer(Extension(state.clone()));
@@ -201,7 +201,7 @@ async fn setup_app_database(config: &Config) -> Result<()> {
     db.initialize_notification_kinds().await?;
 
     if config.seed_path.is_some() {
-        collab::seed::seed(config, &db, false).await?;
+        raijin_collab::seed::seed(config, &db, false).await?;
     }
 
     Ok(())

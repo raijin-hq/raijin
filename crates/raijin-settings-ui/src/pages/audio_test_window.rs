@@ -88,13 +88,12 @@ fn start_test_playback(
                     }
                 };
 
-                let Ok(output) = audio::open_test_output(output_device_id) else {
+                let Ok((_stream, mixer)) = raijin_audio::open_test_output(output_device_id) else {
                     log::error!("Could not open output device for audio test");
                     return;
                 };
 
-                // let microphone = rx.recv().unwrap();
-                output.mixer().add(microphone);
+                mixer.add(microphone);
 
                 // Keep thread (and output device) alive until stop signal
                 while !stop_signal.load(Ordering::Relaxed) {
@@ -103,7 +102,7 @@ fn start_test_playback(
             }
         })?;
 
-    Ok(Box::new(util::defer(move || {
+    Ok(Box::new(inazuma_util::defer(move || {
         stop_signal.store(true, Ordering::Relaxed);
     })))
 }
@@ -111,8 +110,8 @@ fn start_test_playback(
 fn open_test_microphone(
     input_device_id: Option<DeviceId>,
     stop_signal: Arc<AtomicBool>,
-) -> anyhow::Result<impl Source> {
-    let stream = audio::open_input_stream(input_device_id)?;
+) -> anyhow::Result<impl Source<Item = f32>> {
+    let stream = raijin_audio::open_input_stream(input_device_id)?;
     let stream = stream
         .possibly_disconnected_channels_to_mono()
         .constant_samplerate(SAMPLE_RATE)
@@ -139,9 +138,9 @@ impl Render for AudioTestWindow {
         };
 
         let button_style = if is_testing {
-            ButtonStyle::Tinted(ui::TintColor::Error)
+            ButtonStyle::tinted(raijin_ui::TintColor::Error)
         } else {
-            ButtonStyle::Filled
+            ButtonStyle::FILLED
         };
 
         let weak_entity = cx.entity().downgrade();

@@ -1,10 +1,10 @@
 use anyhow::Result;
 use raijin_client::{Client, EditPredictionUsage, UserStore};
-use cloud_api_types::{OrganizationId, SubmitEditPredictionFeedbackBody};
-use cloud_llm_client::predict_edits_v3::{
+use raijin_cloud_api_types::{OrganizationId, SubmitEditPredictionFeedbackBody};
+use raijin_cloud_llm_client::predict_edits_v3::{
     PredictEditsV3Request, PredictEditsV3Response, RawCompletionRequest, RawCompletionResponse,
 };
-use cloud_llm_client::{
+use raijin_cloud_llm_client::{
     EditPredictionRejectReason, EditPredictionRejection,
     MAX_EDIT_PREDICTION_REJECTIONS_PER_REQUEST, MINIMUM_REQUIRED_VERSION_HEADER_NAME,
     PredictEditsRequestTrigger, RejectEditPredictionsBodyRef, ZED_VERSION_HEADER_NAME,
@@ -12,7 +12,7 @@ use cloud_llm_client::{
 use inazuma_collections::{HashMap, HashSet};
 use raijin_copilot::{Copilot, Reinstall, SignIn, SignOut};
 use raijin_db::kvp::{Dismissable, KeyValueStore};
-use edit_prediction_context::{RelatedExcerptStore, RelatedExcerptStoreEvent, RelatedFile};
+use raijin_edit_prediction_context::{RelatedExcerptStore, RelatedExcerptStoreEvent, RelatedFile};
 use raijin_feature_flags::{FeatureFlag, FeatureFlagAppExt as _};
 use futures::{
     AsyncReadExt as _, FutureExt as _, StreamExt as _,
@@ -42,7 +42,7 @@ use std::collections::{VecDeque, hash_map};
 use std::env;
 use inazuma_text::{AnchorRangeExt, Edit};
 use raijin_workspace::{AppState, Workspace};
-use zeta_prompt::{ZetaFormat, ZetaPromptInput};
+use raijin_zeta_prompt::{ZetaFormat, ZetaPromptInput};
 
 use std::mem;
 use std::ops::Range;
@@ -170,7 +170,7 @@ pub struct EditPredictionModelInput {
     buffer: Entity<Buffer>,
     snapshot: BufferSnapshot,
     position: Anchor,
-    events: Vec<Arc<zeta_prompt::Event>>,
+    events: Vec<Arc<raijin_zeta_prompt::Event>>,
     related_files: Vec<RelatedFile>,
     trigger: PredictEditsRequestTrigger,
     diagnostic_search_range: Range<Point>,
@@ -218,9 +218,9 @@ pub struct EditPredictionFinishedDebugEvent {
 /// An event with associated metadata for reconstructing buffer state.
 #[derive(Clone)]
 pub struct StoredEvent {
-    pub event: Arc<zeta_prompt::Event>,
+    pub event: Arc<raijin_zeta_prompt::Event>,
     pub old_snapshot: TextBufferSnapshot,
-    pub new_snapshot_version: clock::Global,
+    pub new_snapshot_version: inazuma_clock::Global,
     pub total_edit_range: Range<Anchor>,
 }
 
@@ -250,14 +250,14 @@ impl StoredEvent {
 
         let a_is_predicted = matches!(
             self.event.as_ref(),
-            zeta_prompt::Event::BufferChange {
+            raijin_zeta_prompt::Event::BufferChange {
                 predicted: true,
                 ..
             }
         );
         let b_is_predicted = matches!(
             next_old_event.event.as_ref(),
-            zeta_prompt::Event::BufferChange {
+            raijin_zeta_prompt::Event::BufferChange {
                 predicted: true,
                 ..
             }
@@ -381,7 +381,7 @@ struct CurrentEditPrediction {
     pub requested_by: PredictionRequestedBy,
     pub prediction: EditPrediction,
     pub was_shown: bool,
-    pub shown_with: Option<edit_prediction_types::SuggestionDisplayType>,
+    pub shown_with: Option<raijin_edit_prediction_types::SuggestionDisplayType>,
     pub e2e_latency: std::time::Duration,
 }
 
@@ -538,7 +538,7 @@ impl LastEvent {
             None
         } else {
             Some(StoredEvent {
-                event: Arc::new(zeta_prompt::Event::BufferChange {
+                event: Arc::new(raijin_zeta_prompt::Event::BufferChange {
                     old_path,
                     path,
                     diff,
@@ -701,7 +701,7 @@ fn compute_diff_between_snapshots_in_range(
     let old_region_text: String = old_snapshot.text_for_range(old_edit_range).collect();
     let new_region_text: String = new_snapshot.text_for_range(new_edit_range).collect();
 
-    let diff = language::unified_diff_with_offsets(
+    let diff = raijin_language::unified_diff_with_offsets(
         &old_region_text,
         &new_region_text,
         old_context_start_row,
@@ -902,14 +902,14 @@ impl EditPredictionStore {
         .detach_and_log_err(cx);
     }
 
-    pub fn icons(&self, cx: &App) -> edit_prediction_types::EditPredictionIconSet {
+    pub fn icons(&self, cx: &App) -> raijin_edit_prediction_types::EditPredictionIconSet {
         use raijin_ui::IconName;
         match self.edit_prediction_model {
             EditPredictionModel::Mercury => {
-                edit_prediction_types::EditPredictionIconSet::new(IconName::Inception)
+                raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::Inception)
             }
             EditPredictionModel::Zeta => {
-                edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
+                raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
                     .with_disabled(IconName::ZedPredictDisabled)
                     .with_up(IconName::ZedPredictUp)
                     .with_down(IconName::ZedPredictDown)
@@ -919,10 +919,10 @@ impl EditPredictionStore {
                 let settings = &all_language_settings(None, cx).edit_predictions;
                 match settings.provider {
                     EditPredictionProvider::Ollama => {
-                        edit_prediction_types::EditPredictionIconSet::new(IconName::AiOllama)
+                        raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::AiOllama)
                     }
                     _ => {
-                        edit_prediction_types::EditPredictionIconSet::new(IconName::AiOpenAiCompat)
+                        raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::AiOpenAiCompat)
                     }
                 }
             }
@@ -1176,7 +1176,7 @@ impl EditPredictionStore {
     fn handle_project_event(
         &mut self,
         project: Entity<Project>,
-        event: &project::Event,
+        event: &raijin_project::Event,
         cx: &mut Context<Self>,
     ) {
         if !is_ep_store_provider(all_language_settings(None, cx).edit_predictions.provider) {
@@ -1184,7 +1184,7 @@ impl EditPredictionStore {
         }
         // TODO [zeta2] init with recent paths
         match event {
-            project::Event::ActiveEntryChanged(Some(active_entry_id)) => {
+            raijin_project::Event::ActiveEntryChanged(Some(active_entry_id)) => {
                 let Some(project_state) = self.projects.get_mut(&project.entity_id()) else {
                     return;
                 };
@@ -1200,7 +1200,7 @@ impl EditPredictionStore {
                     project_state.recent_paths.push_front(path);
                 }
             }
-            project::Event::DiagnosticsUpdated { .. } => {
+            raijin_project::Event::DiagnosticsUpdated { .. } => {
                 if cx.has_flag::<EditPredictionJumpsFeatureFlag>() {
                     self.refresh_prediction_from_diagnostics(
                         project,
@@ -1260,7 +1260,7 @@ impl EditPredictionStore {
                         cx.subscribe(buffer, {
                             let project = project.downgrade();
                             move |this, buffer, event, cx| {
-                                if let language::BufferEvent::Edited { is_local } = event
+                                if let raijin_language::BufferEvent::Edited { is_local } = event
                                     && let Some(project) = project.upgrade()
                                 {
                                     this.report_changes_for_buffer(
@@ -1418,7 +1418,7 @@ impl EditPredictionStore {
     fn prediction_at(
         &mut self,
         buffer: &Entity<Buffer>,
-        position: Option<language::Anchor>,
+        position: Option<Anchor>,
         project: &Entity<Project>,
         cx: &App,
     ) -> Option<BufferEditPrediction<'_>> {
@@ -1625,7 +1625,7 @@ impl EditPredictionStore {
                                         );
                                     }
 
-                                    telemetry::event!(
+                                    raijin_telemetry::event!(
                                         EDIT_PREDICTION_SETTLED_EVENT,
                                         request_id = pending_prediction.request_id.0.clone(),
                                         settled_editable_region,
@@ -1708,7 +1708,7 @@ impl EditPredictionStore {
     fn did_show_current_prediction(
         &mut self,
         project: &Entity<Project>,
-        display_type: edit_prediction_types::SuggestionDisplayType,
+        display_type: raijin_edit_prediction_types::SuggestionDisplayType,
         _cx: &mut Context<Self>,
     ) {
         let Some(project_state) = self.projects.get_mut(&project.entity_id()) else {
@@ -1719,7 +1719,7 @@ impl EditPredictionStore {
             return;
         };
 
-        let is_jump = display_type == edit_prediction_types::SuggestionDisplayType::Jump;
+        let is_jump = display_type == raijin_edit_prediction_types::SuggestionDisplayType::Jump;
         let previous_shown_with = current_prediction.shown_with;
 
         if previous_shown_with.is_none() || !is_jump {
@@ -1802,7 +1802,7 @@ impl EditPredictionStore {
         &mut self,
         project: Entity<Project>,
         buffer: Entity<Buffer>,
-        position: language::Anchor,
+        position: Anchor,
         cx: &mut Context<Self>,
     ) {
         self.queue_prediction_refresh(
@@ -1959,7 +1959,7 @@ impl EditPredictionStore {
 
     fn predictions_enabled_at(
         snapshot: &BufferSnapshot,
-        position: Option<language::Anchor>,
+        position: Option<Anchor>,
         cx: &App,
     ) -> bool {
         let file = snapshot.file();
@@ -2240,7 +2240,7 @@ impl EditPredictionStore {
         &mut self,
         project: &Entity<Project>,
         active_buffer: &Entity<Buffer>,
-        position: language::Anchor,
+        position: Anchor,
         trigger: PredictEditsRequestTrigger,
         cx: &mut Context<Self>,
     ) -> Task<Result<Option<EditPredictionResult>>> {
@@ -2258,7 +2258,7 @@ impl EditPredictionStore {
         &mut self,
         project: Entity<Project>,
         active_buffer: Entity<Buffer>,
-        position: language::Anchor,
+        position: Anchor,
         trigger: PredictEditsRequestTrigger,
         allow_jump: bool,
         cx: &mut Context<Self>,
@@ -2267,7 +2267,7 @@ impl EditPredictionStore {
         let project_state = self.projects.get(&project.entity_id()).unwrap();
         let stored_events = project_state.events(cx);
         let has_events = !stored_events.is_empty();
-        let events: Vec<Arc<zeta_prompt::Event>> =
+        let events: Vec<Arc<raijin_zeta_prompt::Event>> =
             stored_events.iter().map(|e| e.event.clone()).collect();
         let debug_tx = project_state.debug_tx.clone();
 
@@ -2346,7 +2346,7 @@ impl EditPredictionStore {
         active_buffer_cursor_point: Point,
         project: &Entity<Project>,
         cx: &mut AsyncApp,
-    ) -> Result<Option<(Entity<Buffer>, language::Anchor)>> {
+    ) -> Result<Option<(Entity<Buffer>, Anchor)>> {
         let collaborator_cursor_rows: Vec<u32> = active_buffer_snapshot
             .selections_in_range(Anchor::MIN..Anchor::MAX, false)
             .flat_map(|(_, _, _, selections)| {
@@ -2592,8 +2592,8 @@ impl EditPredictionStore {
     pub fn refresh_context(
         &mut self,
         project: &Entity<Project>,
-        buffer: &Entity<language::Buffer>,
-        cursor_position: language::Anchor,
+        buffer: &Entity<Buffer>,
+        cursor_position: Anchor,
         cx: &mut Context<Self>,
     ) {
         self.get_or_init_project(project, cx)
@@ -2621,7 +2621,7 @@ impl EditPredictionStore {
     pub fn set_recent_paths_for_project(
         &mut self,
         project: &Entity<Project>,
-        paths: impl IntoIterator<Item = project::ProjectPath>,
+        paths: impl IntoIterator<Item = ProjectPath>,
         cx: &mut Context<Self>,
     ) {
         let project_state = self.get_or_init_project(project, cx);
@@ -2673,7 +2673,7 @@ impl EditPredictionStore {
         let new_choice = self.data_collection_choice;
         let is_enabled = new_choice.is_enabled(cx);
         let kvp = KeyValueStore::global(cx);
-        db::write_and_log(cx, move || async move {
+        raijin_db::write_and_log(cx, move || async move {
             kvp.write_kvp(
                 ZED_PREDICT_DATA_COLLECTION_CHOICE.into(),
                 is_enabled.to_string(),
@@ -2814,13 +2814,13 @@ fn merge_trailing_events_if_needed(
         &merged_edit_range,
     ) {
         let merged_event = match oldest_event.event.as_ref() {
-            zeta_prompt::Event::BufferChange {
+            raijin_zeta_prompt::Event::BufferChange {
                 old_path,
                 path,
                 in_open_source_repo,
                 ..
             } => StoredEvent {
-                event: Arc::new(zeta_prompt::Event::BufferChange {
+                event: Arc::new(raijin_zeta_prompt::Event::BufferChange {
                     old_path: old_path.clone(),
                     path: path.clone(),
                     diff,
@@ -2828,7 +2828,7 @@ fn merge_trailing_events_if_needed(
                     predicted: events_to_merge.all(|e| {
                         matches!(
                             e.event.as_ref(),
-                            zeta_prompt::Event::BufferChange {
+                            raijin_zeta_prompt::Event::BufferChange {
                                 predicted: true,
                                 ..
                             }
@@ -2941,7 +2941,7 @@ pub fn should_show_upsell_modal(cx: &App) -> bool {
 pub fn init(cx: &mut App) {
     cx.observe_new(move |workspace: &mut Workspace, _, _cx| {
         workspace.register_action(
-            move |workspace, _: &zed_actions::OpenZedPredictOnboarding, window, cx| {
+            move |workspace, _: &raijin_actions::OpenZedPredictOnboarding, window, cx| {
                 ZedPredictModal::toggle(
                     workspace,
                     workspace.user_store().clone(),
@@ -2970,17 +2970,17 @@ pub fn init(cx: &mut App) {
 
         workspace.register_action(|workspace, _: &SignIn, window, cx| {
             if let Some(copilot) = copilot_for_project(workspace.project(), cx) {
-                copilot_ui::initiate_sign_in(copilot, window, cx);
+                raijin_copilot_ui::initiate_sign_in(copilot, window, cx);
             }
         });
         workspace.register_action(|workspace, _: &Reinstall, window, cx| {
             if let Some(copilot) = copilot_for_project(workspace.project(), cx) {
-                copilot_ui::reinstall_and_sign_in(copilot, window, cx);
+                raijin_copilot_ui::reinstall_and_sign_in(copilot, window, cx);
             }
         });
         workspace.register_action(|workspace, _: &SignOut, window, cx| {
             if let Some(copilot) = copilot_for_project(workspace.project(), cx) {
-                copilot_ui::initiate_sign_out(copilot, window, cx);
+                raijin_copilot_ui::initiate_sign_out(copilot, window, cx);
             }
         });
     })

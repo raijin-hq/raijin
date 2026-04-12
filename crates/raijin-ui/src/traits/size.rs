@@ -1,4 +1,4 @@
-use inazuma::{DefiniteLength, Edges, Pixels, Styled, px};
+use inazuma::{Edges, Pixels, Styled, px};
 use serde::{Deserialize, Serialize};
 
 /// A size for elements.

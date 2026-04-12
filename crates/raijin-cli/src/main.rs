@@ -28,12 +28,12 @@ use walkdir::WalkDir;
 #[cfg(any(target_os = "linux", target_os = "freebsd"))]
 use std::io::IsTerminal;
 
-const URL_PREFIX: [&'static str; 5] = ["zed://", "http://", "https://", "file://", "ssh://"];
+const URL_PREFIX: [&'static str; 5] = ["raijin://", "http://", "https://", "file://", "ssh://"];
 
 struct Detect;
 
 trait InstalledApp {
-    fn zed_version_string(&self) -> String;
+    fn raijin_version_string(&self) -> String;
     fn launch(&self, ipc_url: String, user_data_dir: Option<&str>) -> anyhow::Result<()>;
     fn run_foreground(
         &self,
@@ -45,21 +45,21 @@ trait InstalledApp {
 
 #[derive(Parser, Debug)]
 #[command(
-    name = "zed",
+    name = "raijin",
     disable_version_flag = true,
-    before_help = "The Zed CLI binary.
-This CLI is a separate binary that invokes Zed.
+    before_help = "The Raijin CLI binary.
+This CLI is a separate binary that invokes Raijin.
 
 Examples:
-    `zed`
-          Simply opens Zed
-    `zed --foreground`
+    `raijin`
+          Simply opens Raijin
+    `raijin --foreground`
           Runs in foreground (shows all logs)
-    `zed path-to-your-project`
-          Open your project in Zed
-    `zed -n path-to-file `
+    `raijin path-to-your-project`
+          Open your project in Raijin
+    `raijin -n path-to-file `
           Open file/folder in a new window",
-    after_help = "To read from stdin, append '-', e.g. 'ps axf | zed -'"
+    after_help = "To read from stdin, append '-', e.g. 'ps axf | raijin -'"
 )]
 struct Args {
     /// Wait for all of the given paths to be opened/closed before exiting.
@@ -427,7 +427,7 @@ fn parse_path_in_wsl(source: &str, wsl: &str) -> Result<String> {
         source.path.as_ref(),
     ];
 
-    let output = util::command::new_std_command("wsl.exe")
+    let output = inazuma_util::command::new_std_command("wsl.exe")
         .args(&args)
         .arg("--exec")
         .args(&command)
@@ -435,7 +435,7 @@ fn parse_path_in_wsl(source: &str, wsl: &str) -> Result<String> {
     let result = if output.status.success() {
         String::from_utf8_lossy(&output.stdout).to_string()
     } else {
-        let fallback = util::command::new_std_command("wsl.exe")
+        let fallback = inazuma_util::command::new_std_command("wsl.exe")
             .args(&args)
             .arg("--")
             .args(&command)
@@ -450,7 +450,7 @@ fn parse_path_in_wsl(source: &str, wsl: &str) -> Result<String> {
 
 fn main() -> Result<()> {
     #[cfg(unix)]
-    util::prevent_root_execution();
+    inazuma_util::prevent_root_execution();
 
     // Exit flatpak sandbox if needed
     #[cfg(target_os = "linux")]
@@ -465,7 +465,7 @@ fn main() -> Result<()> {
         // When the first argument is a name of a release channel, we're going to spawn off the CLI of that version, with trailing args passed along.
         use std::str::FromStr as _;
 
-        if let Ok(channel) = release_channel::ReleaseChannel::from_str(&channel[2..]) {
+        if let Ok(channel) = raijin_release_channel::ReleaseChannel::from_str(&channel[2..]) {
             return mac_os::spawn_channel_cli(channel, std::env::args().skip(2).collect());
         }
     }
@@ -473,14 +473,14 @@ fn main() -> Result<()> {
 
     // `zed --askpass` Makes zed operate in nc/netcat mode for use with askpass
     if let Some(socket) = &args.askpass {
-        askpass::main(socket);
+        raijin_askpass::main(socket);
         return Ok(());
     }
 
     // Set custom data directory before any path operations
     let user_data_dir = args.user_data_dir.clone();
     if let Some(dir) = &user_data_dir {
-        paths::set_custom_data_dir(dir);
+        raijin_paths::set_custom_data_dir(dir);
     }
 
     #[cfg(target_os = "linux")]
@@ -489,14 +489,14 @@ fn main() -> Result<()> {
     let app = Detect::detect(args.zed.as_deref()).context("Bundle detection")?;
 
     if args.version {
-        println!("{}", app.zed_version_string());
+        println!("{}", app.raijin_version_string());
         return Ok(());
     }
 
     if args.system_specs {
         let path = app.path();
         let msg = [
-            "The `--system-specs` argument is not supported in the Zed CLI, only on Zed binary.",
+            "The `--system-specs` argument is not supported in the Raijin CLI, only on Raijin binary.",
             "To retrieve the system specs on the command line, run the following command:",
             &format!("{} --system-specs", path.display()),
         ];
@@ -519,7 +519,7 @@ fn main() -> Result<()> {
 
         let status = std::process::Command::new("sh")
             .arg(&script_path)
-            .env("ZED_CHANNEL", &*release_channel::RELEASE_CHANNEL_NAME)
+            .env("RAIJIN_CHANNEL", &*raijin_release_channel::RELEASE_CHANNEL_NAME)
             .status()
             .context("Failed to execute uninstall script")?;
 
@@ -788,7 +788,7 @@ mod linux {
     };
 
     use anyhow::{Context as _, anyhow};
-    use cli::FORCE_CLI_MODE_ENV_VAR_NAME;
+    use raijin_cli::FORCE_CLI_MODE_ENV_VAR_NAME;
     use fork::Fork;
 
     use crate::{Detect, InstalledApp};
@@ -820,16 +820,16 @@ mod linux {
     }
 
     impl InstalledApp for App {
-        fn zed_version_string(&self) -> String {
+        fn raijin_version_string(&self) -> String {
             format!(
-                "Zed {}{}{} – {}",
-                if *release_channel::RELEASE_CHANNEL_NAME == "stable" {
+                "Raijin {}{}{} – {}",
+                if *raijin_release_channel::RELEASE_CHANNEL_NAME == "stable" {
                     "".to_string()
                 } else {
-                    format!("{} ", *release_channel::RELEASE_CHANNEL_NAME)
+                    format!("{} ", *raijin_release_channel::RELEASE_CHANNEL_NAME)
                 },
                 option_env!("RELEASE_VERSION").unwrap_or_default(),
-                match option_env!("ZED_COMMIT_SHA") {
+                match option_env!("RAIJIN_COMMIT_SHA") {
                     Some(commit_sha) => format!(" {commit_sha} "),
                     None => "".to_string(),
                 },
@@ -840,11 +840,11 @@ mod linux {
         fn launch(&self, ipc_url: String, user_data_dir: Option<&str>) -> anyhow::Result<()> {
             let data_dir = user_data_dir
                 .map(PathBuf::from)
-                .unwrap_or_else(|| paths::data_dir().clone());
+                .unwrap_or_else(|| raijin_paths::data_dir().clone());
 
             let sock_path = data_dir.join(format!(
                 "zed-{}.sock",
-                *release_channel::RELEASE_CHANNEL_NAME
+                *raijin_release_channel::RELEASE_CHANNEL_NAME
             ));
             let sock = UnixDatagram::unbound()?;
             if sock.connect(&sock_path).is_err() {
@@ -930,8 +930,8 @@ mod flatpak {
     use std::process::Command;
     use std::{env, process};
 
-    const EXTRA_LIB_ENV_NAME: &str = "ZED_FLATPAK_LIB_PATH";
-    const NO_ESCAPE_ENV_NAME: &str = "ZED_FLATPAK_NO_ESCAPE";
+    const EXTRA_LIB_ENV_NAME: &str = "RAIJIN_FLATPAK_LIB_PATH";
+    const NO_ESCAPE_ENV_NAME: &str = "RAIJIN_FLATPAK_NO_ESCAPE";
 
     /// Adds bundled libraries to LD_LIBRARY_PATH if running under flatpak
     pub fn ld_extra_libs() {
@@ -953,7 +953,7 @@ mod flatpak {
         if let Some(flatpak_dir) = get_flatpak_dir() {
             let mut args = vec!["/usr/bin/flatpak-spawn".into(), "--host".into()];
             args.append(&mut get_xdg_env_args());
-            args.push("--env=ZED_UPDATE_EXPLANATION=Please use flatpak to update zed".into());
+            args.push("--env=RAIJIN_UPDATE_EXPLANATION=Please use flatpak to update raijin".into());
             args.push(
                 format!(
                     "--env={EXTRA_LIB_ENV_NAME}={}",
@@ -986,7 +986,7 @@ mod flatpak {
             && args.zed.is_none()
         {
             args.zed = Some("/app/libexec/zed-editor".into());
-            unsafe { env::set_var("ZED_UPDATE_EXPLANATION", "Please use flatpak to update zed") };
+            unsafe { env::set_var("RAIJIN_UPDATE_EXPLANATION", "Please use flatpak to update raijin") };
         }
         args
     }
@@ -1033,7 +1033,7 @@ mod flatpak {
 #[cfg(target_os = "windows")]
 mod windows {
     use anyhow::Context;
-    use raijin_release_channel::app_identifier;
+    use raijin_raijin_release_channel::app_identifier;
     use windows::{
         Win32::{
             Foundation::{CloseHandle, ERROR_ALREADY_EXISTS, GENERIC_WRITE, GetLastError},
@@ -1067,16 +1067,16 @@ mod windows {
     struct App(PathBuf);
 
     impl InstalledApp for App {
-        fn zed_version_string(&self) -> String {
+        fn raijin_version_string(&self) -> String {
             format!(
-                "Zed {}{}{} – {}",
-                if *release_channel::RELEASE_CHANNEL_NAME == "stable" {
+                "Raijin {}{}{} – {}",
+                if *raijin_release_channel::RELEASE_CHANNEL_NAME == "stable" {
                     "".to_string()
                 } else {
-                    format!("{} ", *release_channel::RELEASE_CHANNEL_NAME)
+                    format!("{} ", *raijin_release_channel::RELEASE_CHANNEL_NAME)
                 },
                 option_env!("RELEASE_VERSION").unwrap_or_default(),
-                match option_env!("ZED_COMMIT_SHA") {
+                match option_env!("RAIJIN_COMMIT_SHA") {
                     Some(commit_sha) => format!(" {commit_sha} "),
                     None => "".to_string(),
                 },
@@ -1174,7 +1174,7 @@ mod mac_os {
         ptr,
     };
 
-    use cli::FORCE_CLI_MODE_ENV_VAR_NAME;
+    use raijin_cli::FORCE_CLI_MODE_ENV_VAR_NAME;
 
     use crate::{Detect, InstalledApp};
 
@@ -1236,8 +1236,8 @@ mod mac_os {
     }
 
     impl InstalledApp for Bundle {
-        fn zed_version_string(&self) -> String {
-            format!("Zed {} – {}", self.version(), self.path().display(),)
+        fn raijin_version_string(&self) -> String {
+            format!("Raijin {} – {}", self.version(), self.path().display(),)
         }
 
         fn launch(&self, url: String, user_data_dir: Option<&str>) -> anyhow::Result<()> {
@@ -1273,7 +1273,7 @@ mod mac_os {
                     anyhow::ensure!(
                         status == 0,
                         "cannot start app bundle {}",
-                        self.zed_version_string()
+                        self.raijin_version_string()
                     );
                 }
 
@@ -1282,7 +1282,7 @@ mod mac_os {
                         .parent()
                         .with_context(|| format!("Executable {executable:?} path has no parent"))?;
                     let subprocess_stdout_file = fs::File::create(
-                        executable_parent.join("zed_dev.log"),
+                        executable_parent.join("raijin_dev.log"),
                     )
                     .with_context(|| format!("Log file creation in {executable_parent:?}"))?;
                     let subprocess_stdin_file =
@@ -1351,7 +1351,7 @@ mod mac_os {
     }
 
     pub(super) fn spawn_channel_cli(
-        channel: release_channel::ReleaseChannel,
+        channel: raijin_release_channel::ReleaseChannel,
         leftover_args: Vec<String>,
     ) -> Result<()> {
         use anyhow::bail;

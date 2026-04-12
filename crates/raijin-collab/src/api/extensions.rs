@@ -9,7 +9,7 @@ use axum::{
     response::Redirect,
     routing::get,
 };
-use cloud_api_types::{ExtensionApiManifest, GetExtensionsResponse};
+use raijin_cloud_api_types::{ExtensionApiManifest, GetExtensionsResponse};
 use inazuma_collections::HashMap;
 use semver::Version as SemanticVersion;
 use serde::Deserialize;

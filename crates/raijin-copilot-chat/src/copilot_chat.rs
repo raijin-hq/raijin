@@ -674,7 +674,7 @@ impl CopilotChat {
         is_user_initiated: bool,
         anthropic_beta: Option<String>,
         mut cx: AsyncApp,
-    ) -> Result<BoxStream<'static, Result<anthropic::Event, anthropic::AnthropicError>>> {
+    ) -> Result<BoxStream<'static, Result<raijin_anthropic::Event, raijin_anthropic::AnthropicError>>> {
         let (client, oauth_token, api_endpoint, configuration) =
             Self::get_auth_details(&mut cx).await?;
 
@@ -857,11 +857,11 @@ pub(crate) async fn discover_api_endpoint(
 }
 
 pub(crate) fn copilot_request_headers(
-    builder: http_client::Builder,
+    builder: raijin_http_client::Builder,
     oauth_token: &str,
     is_user_initiated: Option<bool>,
     location: Option<ChatLocation>,
-) -> http_client::Builder {
+) -> raijin_http_client::Builder {
     builder
         .header("Authorization", format!("Bearer {}", oauth_token))
         .header("Content-Type", "application/json")
@@ -1028,7 +1028,7 @@ async fn stream_messages(
     is_user_initiated: bool,
     location: ChatLocation,
     anthropic_beta: Option<String>,
-) -> Result<BoxStream<'static, Result<anthropic::Event, anthropic::AnthropicError>>> {
+) -> Result<BoxStream<'static, Result<raijin_anthropic::Event, raijin_anthropic::AnthropicError>>> {
     let mut request_builder = copilot_request_headers(
         HttpRequest::builder().method(Method::POST).uri(&api_url),
         &oauth_token,
@@ -1069,11 +1069,11 @@ async fn stream_messages(
                                 error,
                                 line,
                             );
-                            Some(Err(anthropic::AnthropicError::DeserializeResponse(error)))
+                            Some(Err(raijin_anthropic::AnthropicError::DeserializeResponse(error)))
                         }
                     }
                 }
-                Err(error) => Some(Err(anthropic::AnthropicError::ReadResponse(error))),
+                Err(error) => Some(Err(raijin_anthropic::AnthropicError::ReadResponse(error))),
             }
         })
         .boxed())

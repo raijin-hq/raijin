@@ -6,24 +6,24 @@ use crate::{
     prediction::EditPredictionResult,
 };
 use anyhow::Result;
-use cloud_llm_client::{
+use raijin_cloud_llm_client::{
     AcceptEditPredictionBody, EditPredictionRejectReason, predict_edits_v3::RawCompletionRequest,
 };
 use raijin_edit_prediction_types::PredictedCursorPosition;
 use inazuma::{App, AppContext as _, Entity, Task, WeakEntity, prelude::*};
 use raijin_language::{
     Buffer, BufferSnapshot, DiagnosticSeverity, OffsetRangeExt as _, ToOffset as _,
-    language_settings::all_language_settings, text_diff,
+    language_settings::{EditPredictionProvider, all_language_settings}, text_diff,
 };
 use raijin_release_channel::AppVersion;
 use inazuma_settings_framework::EditPredictionPromptFormat;
 use inazuma_text::{Anchor, Bias, Point};
 use raijin_ui::SharedString;
 use raijin_workspace::notifications::{ErrorMessagePrompt, NotificationId, show_app_notification};
-use zeta_prompt::{ParsedOutput, ZetaPromptInput};
+use raijin_zeta_prompt::{ParsedOutput, ZetaPromptInput};
 
 use std::{env, ops::Range, path::Path, sync::Arc};
-use zeta_prompt::{
+use raijin_zeta_prompt::{
     CURSOR_MARKER, ZetaFormat, format_zeta_prompt, get_prefill, parse_zeta2_model_output,
     prompt_input_contains_special_tokens, stop_tokens_for_format,
     zeta1::{self, EDITABLE_REGION_END_MARKER},
@@ -55,8 +55,8 @@ pub fn request_prediction_with_zeta(
     let settings = &all_language_settings(None, cx).edit_predictions;
     let provider = settings.provider;
     let custom_server_settings = match provider {
-        settings::EditPredictionProvider::Ollama => settings.ollama.clone(),
-        settings::EditPredictionProvider::OpenAiCompatibleApi => {
+        EditPredictionProvider::Ollama => settings.ollama.clone(),
+        EditPredictionProvider::OpenAiCompatibleApi => {
             settings.open_ai_compatible_api.clone()
         }
         _ => None,
@@ -448,7 +448,7 @@ pub fn request_prediction_with_zeta(
 
 fn handle_api_response<T>(
     this: &WeakEntity<EditPredictionStore>,
-    response: Result<(T, Option<client::EditPredictionUsage>)>,
+    response: Result<(T, Option<raijin_client::EditPredictionUsage>)>,
     cx: &mut inazuma::AsyncApp,
 ) -> Result<T> {
     match response {
@@ -490,10 +490,10 @@ fn handle_api_response<T>(
 }
 
 pub(crate) fn active_buffer_diagnostics(
-    snapshot: &language::BufferSnapshot,
+    snapshot: &BufferSnapshot,
     diagnostic_search_range: Range<Point>,
     additional_context_token_count: usize,
-) -> Vec<zeta_prompt::ActiveBufferDiagnostic> {
+) -> Vec<raijin_zeta_prompt::ActiveBufferDiagnostic> {
     snapshot
         .diagnostics_in_range::<Point, Point>(diagnostic_search_range, false)
         .map(|entry| {
@@ -515,7 +515,7 @@ pub(crate) fn active_buffer_diagnostics(
                 .collect::<String>();
             let snippet_start_offset = snippet_point_range.start.to_offset(snapshot);
             let diagnostic_offset_range = diagnostic_point_range.to_offset(snapshot);
-            zeta_prompt::ActiveBufferDiagnostic {
+            raijin_zeta_prompt::ActiveBufferDiagnostic {
                 severity,
                 message: entry.diagnostic.message.clone(),
                 snippet,
@@ -529,9 +529,9 @@ pub(crate) fn active_buffer_diagnostics(
 }
 
 pub fn zeta2_prompt_input(
-    snapshot: &language::BufferSnapshot,
-    related_files: Vec<zeta_prompt::RelatedFile>,
-    events: Vec<Arc<zeta_prompt::Event>>,
+    snapshot: &BufferSnapshot,
+    related_files: Vec<raijin_zeta_prompt::RelatedFile>,
+    events: Vec<Arc<raijin_zeta_prompt::Event>>,
     diagnostic_search_range: Range<Point>,
     excerpt_path: Arc<Path>,
     cursor_offset: usize,
@@ -539,7 +539,7 @@ pub fn zeta2_prompt_input(
     is_open_source: bool,
     can_collect_data: bool,
     repo_url: Option<String>,
-) -> (Range<usize>, zeta_prompt::ZetaPromptInput) {
+) -> (Range<usize>, raijin_zeta_prompt::ZetaPromptInput) {
     let (excerpt_point_range, excerpt_offset_range, cursor_offset_in_excerpt) =
         compute_cursor_excerpt(snapshot, cursor_offset);
 
@@ -548,7 +548,7 @@ pub fn zeta2_prompt_input(
         .collect::<String>()
         .into();
     let syntax_ranges = compute_syntax_ranges(snapshot, cursor_offset, &excerpt_offset_range);
-    let excerpt_ranges = zeta_prompt::compute_legacy_excerpt_ranges(
+    let excerpt_ranges = raijin_zeta_prompt::compute_legacy_excerpt_ranges(
         &cursor_excerpt,
         cursor_offset_in_excerpt,
         &syntax_ranges,
@@ -557,7 +557,7 @@ pub fn zeta2_prompt_input(
     let active_buffer_diagnostics =
         active_buffer_diagnostics(snapshot, diagnostic_search_range, 100);
 
-    let prompt_input = zeta_prompt::ZetaPromptInput {
+    let prompt_input = raijin_zeta_prompt::ZetaPromptInput {
         cursor_path: excerpt_path,
         cursor_excerpt,
         cursor_offset_in_excerpt,

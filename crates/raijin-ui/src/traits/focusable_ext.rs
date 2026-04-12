@@ -1,5 +1,5 @@
 use inazuma::{
-    App, Corners, Edges, FocusHandle, ParentElement, Pixels, StyleRefinement, Styled, Window, div,
+    App, Corners, Edges, ParentElement, Pixels, StyleRefinement, Styled, Window, div,
     px,
 };
 use raijin_theme::ActiveTheme;

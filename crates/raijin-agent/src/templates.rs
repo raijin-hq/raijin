@@ -36,7 +36,7 @@ pub trait Template: Sized {
 #[derive(Serialize)]
 pub struct SystemPromptTemplate<'a> {
     #[serde(flatten)]
-    pub project: &'a prompt_store::ProjectContext,
+    pub project: &'a raijin_prompt_store::ProjectContext,
     pub available_tools: Vec<SharedString>,
     pub model_name: Option<String>,
 }
@@ -76,7 +76,7 @@ mod tests {
 
     #[test]
     fn test_system_prompt_template() {
-        let project = prompt_store::ProjectContext::default();
+        let project = raijin_prompt_store::ProjectContext::default();
         let template = SystemPromptTemplate {
             project: &project,
             available_tools: vec!["echo".into()],

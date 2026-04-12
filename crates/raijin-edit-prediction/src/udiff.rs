@@ -135,7 +135,7 @@ pub async fn apply_diff(
                                     format!("Failed to find worktree for new path: {}", renamed_to)
                                 })?;
 
-                            let project_file = project::File::from_dyn(buffer.read(cx).file())
+                            let project_file = raijin_project::File::from_dyn(buffer.read(cx).file())
                                 .expect("Wrong file type");
 
                             anyhow::Ok(project.rename_entry(
@@ -566,7 +566,7 @@ impl<'a> DiffParser<'a> {
                 break;
             };
 
-            util::maybe!({
+            inazuma_util::maybe!({
                 match parsed_line {
                     DiffLine::OldPath { path } => {
                         self.current_file = Some(PatchFile {
@@ -700,7 +700,7 @@ fn resolve_hunk_edits_in_buffer(
         let old_text = buffer
             .text_for_range(context_offset + edit.range.start..context_offset + edit.range.end)
             .collect::<String>();
-        let edits_within_hunk = language::text_diff(&old_text, &edit.text);
+        let edits_within_hunk = raijin_language::text_diff(&old_text, &edit.text);
         edits_within_hunk
             .into_iter()
             .map(move |(inner_range, inner_text)| {

@@ -3,7 +3,7 @@ use std::{rc::Rc, sync::LazyLock, time::Duration};
 use inazuma::{
     Animation, AnimationExt as _, AnyElement, App, Bounds, BoxShadow, ClickEvent, Edges,
     FocusHandle, Oklch, InteractiveElement, IntoElement, KeyBinding, MouseButton, ParentElement,
-    Pixels, Point, RenderOnce, SharedString, StatefulInteractiveElement as _, StyleRefinement,
+    Pixels, Point, RenderOnce, SharedString, StyleRefinement,
     Styled, Window, WindowControlArea, actions, anchored, div, point, prelude::FluentBuilder, px,
 };
 use raijin_i18n::t;

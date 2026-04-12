@@ -12,6 +12,7 @@
 //!
 //! If you're looking to improve Vim mode, you should check out Vim crate that wraps Editor and overrides its behavior.
 pub mod actions;
+pub(crate) mod apca_contrast;
 pub mod blink_manager;
 mod bracket_colorization;
 mod clangd_ext;
@@ -38,6 +39,7 @@ mod persistence;
 mod runnables;
 mod rust_analyzer_ext;
 pub mod scroll;
+pub(crate) mod scrollbar_types;
 mod selections_collection;
 pub mod semantic_tokens;
 mod split;
@@ -54,6 +56,7 @@ mod signature_help;
 pub mod test;
 
 pub(crate) use actions::*;
+use scrollbar_types::ScrollbarAutoHide;
 pub use display_map::{
     ChunkRenderer, ChunkRendererContext, DisplayPoint, FoldPlaceholder, HighlightKey,
     SemanticTokenHighlight,
@@ -208,7 +211,7 @@ use raijin_theme::{
 use raijin_theme_settings::{ThemeSettings, observe_buffer_font_size_adjustment};
 use raijin_ui::{
     Avatar, ButtonSize, ButtonStyle, ContextMenu, Disclosure, IconButton, IconButtonShape,
-    IconName, IconSize, Indicator, Key, Tooltip, h_flex, prelude::*, scrollbars::ScrollbarAutoHide,
+    IconName, IconSize, Indicator, Key, Tooltip, h_flex, prelude::*,
     utils::WithRemSize,
 };
 use raijin_ui_input::ErasedEditor;
@@ -9244,7 +9247,7 @@ impl Editor {
                 this.indicator(Indicator::icon(Icon::new(IconName::Warning)).color(Color::Warning))
             })
             .icon_color(color)
-            .style(ButtonStyle::Transparent)
+            .style(ButtonStyle::Ghost)
             .on_click(cx.listener({
                 move |editor, event: &ClickEvent, window, cx| {
                     let edit_action = if event.modifiers().platform || breakpoint.is_disabled() {
@@ -22638,7 +22641,7 @@ impl Editor {
 
         v_flex()
             .w_full()
-            .bg(colors.editor_background)
+            .bg(colors.editor.background)
             .border_b_1()
             .border_color(colors.border)
             .px_2()
@@ -22667,7 +22670,7 @@ impl Editor {
                     .px_2()
                     .py_1p5()
                     .rounded_md()
-                    .bg(colors.surface_background)
+                    .bg(colors.surface)
                     .child(
                         div()
                             .size(avatar_size)
@@ -22691,7 +22694,7 @@ impl Editor {
                             .border_1()
                             .border_color(colors.border)
                             .rounded_md()
-                            .bg(colors.editor_background)
+                            .bg(colors.editor.background)
                             .px_2()
                             .py_1()
                             .child(prompt_editor.clone()),
@@ -22824,7 +22827,7 @@ impl Editor {
             .px_2()
             .py_1p5()
             .rounded_md()
-            .bg(colors.surface_background)
+            .bg(colors.surface)
             .child(
                 div()
                     .size(avatar_size)
@@ -22849,7 +22852,7 @@ impl Editor {
                     .border_1()
                     .border_color(colors.border)
                     .rounded_md()
-                    .bg(colors.editor_background)
+                    .bg(colors.editor.background)
                     .px_2()
                     .py_1()
                     .child(editor)
@@ -29390,10 +29393,10 @@ impl Render for MissingEditPredictionKeybindingTooltip {
                         .gap_1()
                         .items_end()
                         .w_full()
-                        .child(Button::new("open-keymap", "Assign Keybinding").size(ButtonSize::Compact).on_click(|_ev, window, cx| {
+                        .child(ButtonCommon::size(Button::new("open-keymap", "Assign Keybinding"), ButtonSize::Compact).on_click(|_ev, window: &mut Window, cx| {
                             window.dispatch_action(raijin_actions::OpenKeymapFile.boxed_clone(), cx)
                         }))
-                        .child(Button::new("see-docs", "See Docs").size(ButtonSize::Compact).on_click(|_ev, _window, cx| {
+                        .child(ButtonCommon::size(Button::new("see-docs", "See Docs"), ButtonSize::Compact).on_click(|_ev, _window: &mut Window, cx| {
                             cx.open_url("https://zed.dev/docs/completions#edit-predictions-missing-keybinding");
                         })),
                 )

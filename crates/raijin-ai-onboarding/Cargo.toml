@@ -15,6 +15,7 @@ path = "src/ai_onboarding.rs"
 default = []
 
 [dependencies]
+inazuma-component-registry.workspace = true
 raijin-client.workspace = true
 raijin-cloud-api-types.workspace = true
 inazuma.workspace = true

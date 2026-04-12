@@ -1,5 +1,5 @@
 use crate::db::ExtensionId;
-use cloud_api_types::ExtensionProvides;
+use raijin_cloud_api_types::ExtensionProvides;
 use inazuma_collections::BTreeSet;
 use sea_orm::entity::prelude::*;
 use time::PrimitiveDateTime;

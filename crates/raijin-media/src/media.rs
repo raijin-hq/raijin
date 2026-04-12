@@ -12,8 +12,7 @@ pub mod core_media {
         kCMSampleAttachmentKey_NotSync, kCMTimeInvalid, kCMVideoCodecType_H264,
     };
     use anyhow::Result;
-    use objc2_core_foundation::{CFArray, CFDictionary, CFString, CFType};
-    use objc2_core_video::CVImageBuffer;
+    use objc2_core_foundation::CFArray;
     use std::{ffi::c_void, ptr};
 
     /// Opaque CoreMedia sample buffer type.
@@ -26,7 +25,7 @@ pub mod core_media {
 
     impl CMSampleBuffer {
         pub unsafe fn from_ref(ptr: CMSampleBufferRef) -> &'static Self {
-            &*ptr
+            unsafe { &*ptr }
         }
 
         pub fn attachments(&self) -> Vec<*const c_void> {
@@ -35,9 +34,10 @@ pub mod core_media {
                 if attachments.is_null() {
                     return Vec::new();
                 }
-                let count = objc2_core_foundation::CFArrayGetCount(attachments as _);
+                let attachments_ref = &*(attachments as *const CFArray);
+                let count = attachments_ref.count();
                 (0..count)
-                    .map(|i| objc2_core_foundation::CFArrayGetValueAtIndex(attachments as _, i))
+                    .map(|i| attachments_ref.value_at_index(i))
                     .collect()
             }
         }
@@ -290,7 +290,7 @@ pub mod core_video {
     impl CVMetalTexture {
         /// Returns the underlying Metal texture pointer.
         pub unsafe fn as_texture_ptr(texture: CVMetalTextureRef) -> *mut c_void {
-            CVMetalTextureGetTexture(texture)
+            unsafe { CVMetalTextureGetTexture(texture) }
         }
     }
 

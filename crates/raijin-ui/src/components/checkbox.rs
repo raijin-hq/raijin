@@ -1,8 +1,8 @@
-use std::{rc::Rc, time::Duration};
+use std::time::Duration;
 
 use crate::{
     ActiveTheme, Color, Component, ComponentScope, Disableable, ElevationIndex, FocusableExt,
-    Icon, IconName, IconSize, LabelCommon as _, RegisterComponent, Selectable, Sizable, Size, StyledExt as _,
+    IconName, LabelCommon as _, RegisterComponent, Selectable, Sizable, Size, StyledExt as _,
     ToggleState, example_group_with_title, single_example, Text, v_flex,
 };
 use inazuma::{

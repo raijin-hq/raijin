@@ -4,7 +4,7 @@ mod tables;
 
 use crate::{Error, Result};
 use anyhow::{Context as _, anyhow};
-use cloud_api_types::{ExtensionMetadata, ExtensionProvides};
+use raijin_cloud_api_types::{ExtensionMetadata, ExtensionProvides};
 use inazuma_collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use dashmap::DashMap;
 use futures::StreamExt;
@@ -335,7 +335,7 @@ pub struct UpdatedChannelMessage {
     pub reply_to_message_id: Option<MessageId>,
     pub timestamp: PrimitiveDateTime,
     pub deleted_mention_notification_ids: Vec<NotificationId>,
-    pub updated_mention_notifications: Vec<rpc::proto::Notification>,
+    pub updated_mention_notifications: Vec<raijin_rpc::proto::Notification>,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, FromQueryResult, Serialize, Deserialize)]
@@ -687,7 +687,7 @@ impl LocalSettingsKind {
 fn db_status_to_proto(
     entry: project_repository_statuses::Model,
 ) -> anyhow::Result<proto::StatusEntry> {
-    use raijin_proto::git_file_status::{Tracked, Unmerged, Variant};
+    use raijin_rpc::proto::git_file_status::{Tracked, Unmerged, Variant};
 
     let (simple_status, variant) =
         match (entry.status_kind, entry.first_status, entry.second_status) {
@@ -740,7 +740,7 @@ fn db_status_to_proto(
 fn proto_status_to_db(
     status_entry: proto::StatusEntry,
 ) -> (String, StatusKind, Option<i32>, Option<i32>) {
-    use raijin_proto::git_file_status::{Tracked, Unmerged, Variant};
+    use raijin_rpc::proto::git_file_status::{Tracked, Unmerged, Variant};
 
     let (status_kind, first_status, second_status) = status_entry
         .status

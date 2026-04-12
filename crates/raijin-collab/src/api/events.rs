@@ -74,7 +74,7 @@ pub async fn post_events(
 
     let checksum_matched = checksum == expected;
 
-    let request_body: telemetry_events::EventRequestBody =
+    let request_body: EventRequestBody =
         serde_json::from_slice(&body).map_err(|err| {
             log::error!("can't parse event json: {err}");
             Error::Internal(anyhow!(err))

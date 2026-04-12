@@ -4,7 +4,7 @@ use inazuma::{
 };
 
 use crate::{
-    ActiveTheme, Color, GroupBox, GroupBoxVariants, Label, LabelCommon as _, RenderOptions,
+    Color, GroupBox, GroupBoxVariants, Label, LabelCommon as _, RenderOptions,
     SettingItem, StyledExt, v_flex,
 };
 

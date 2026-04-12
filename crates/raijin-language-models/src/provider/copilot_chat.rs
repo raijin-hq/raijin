@@ -178,7 +178,7 @@ impl LanguageModelProvider for CopilotChatLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         _: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -371,7 +371,7 @@ impl LanguageModel for CopilotChatLanguageModel {
                 let effort = request
                     .thinking_effort
                     .as_ref()
-                    .and_then(|e| anthropic::Effort::from_str(e).ok());
+                    .and_then(|e| raijin_anthropic::Effort::from_str(e).ok());
 
                 let mut anthropic_request = into_anthropic(
                     request,
@@ -404,8 +404,8 @@ impl LanguageModel for CopilotChatLanguageModel {
 
                 if model.supports_adaptive_thinking() {
                     if anthropic_request.thinking.is_some() {
-                        anthropic_request.thinking = Some(anthropic::Thinking::Adaptive);
-                        anthropic_request.output_config = Some(anthropic::OutputConfig { effort });
+                        anthropic_request.thinking = Some(raijin_anthropic::Thinking::Adaptive);
+                        anthropic_request.output_config = Some(raijin_anthropic::OutputConfig { effort });
                     }
                 }
 
@@ -415,7 +415,7 @@ impl LanguageModel for CopilotChatLanguageModel {
                     None
                 };
 
-                let body = serde_json::to_string(&anthropic::StreamingRequest {
+                let body = serde_json::to_string(&raijin_anthropic::StreamingRequest {
                     base: anthropic_request,
                     stream: true,
                 })
@@ -1543,7 +1543,7 @@ mod tests {
                 message,
                 ..
             }) => {
-                assert_eq!(*status_code, http_client::StatusCode::TOO_MANY_REQUESTS);
+                assert_eq!(*status_code, raijin_http_client::StatusCode::TOO_MANY_REQUESTS);
                 assert_eq!(message, "too many requests");
             }
             other => panic!("expected HttpResponseError, got {:?}", other),

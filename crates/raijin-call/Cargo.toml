@@ -39,6 +39,7 @@ log.workspace = true
 postage.workspace = true
 raijin-project.workspace = true
 serde.workspace = true
+inazuma-settings-content.workspace = true
 inazuma-settings-framework.workspace = true
 raijin-telemetry.workspace = true
 inazuma-util.workspace = true

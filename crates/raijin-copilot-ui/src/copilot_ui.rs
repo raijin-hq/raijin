@@ -4,7 +4,7 @@ use std::sync::Arc;
 
 use raijin_copilot::GlobalCopilotAuth;
 use inazuma::AppContext;
-use raijin_language::language_settings::AllLanguageSettings;
+use raijin_language::language_settings::{AllLanguageSettings, EditPredictionProvider};
 use raijin_project::DisableAiSettings;
 use inazuma_settings_framework::SettingsStore;
 pub use sign_in::{
@@ -24,7 +24,7 @@ pub fn init(app_state: &Arc<AppState>, cx: &mut App) {
             .edit_predictions
             .provider
     });
-    if !disable_ai && provider == inazuma_settings_framework::EditPredictionProvider::Copilot {
+    if !disable_ai && provider == EditPredictionProvider::Copilot {
         GlobalCopilotAuth::set_global(
             app_state.languages.next_language_server_id(),
             app_state.fs.clone(),

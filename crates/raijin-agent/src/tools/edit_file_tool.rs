@@ -357,7 +357,7 @@ impl AgentTool for EditFileTool {
 
                 let diff = cx.new(|cx| Diff::new(buffer.clone(), cx));
                 event_stream.update_diff(diff.clone());
-                let _finalize_diff = util::defer({
+                let _finalize_diff = inazuma_util::defer({
                     let diff = diff.downgrade();
                     let mut cx = cx.clone();
                     move || {
@@ -461,7 +461,7 @@ impl AgentTool for EditFileTool {
                         let old_text = old_text.clone();
                         async move {
                             let new_text = new_snapshot.text();
-                            let diff = language::unified_diff(&old_text, &new_text);
+                            let diff = raijin_language::unified_diff(&old_text, &new_text);
                             (new_text, diff)
                         }
                     })
@@ -621,7 +621,7 @@ mod tests {
     async fn test_edit_nonexistent_file(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/root", json!({})).await;
         let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
         let language_registry = project.read_with(cx, |project, _cx| project.languages().clone());
@@ -722,7 +722,7 @@ mod tests {
     ) -> anyhow::Result<ProjectPath> {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/root",
             json!({
@@ -755,16 +755,16 @@ mod tests {
     async fn test_format_on_save(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/root", json!({"src": {}})).await;
 
         let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
 
         // Set up a Rust language with LSP formatting support
-        let rust_language = Arc::new(language::Language::new(
-            language::LanguageConfig {
+        let rust_language = Arc::new(raijin_language::Language::new(
+            raijin_language::LanguageConfig {
                 name: "Rust".into(),
-                matcher: language::LanguageMatcher {
+                matcher: raijin_language::LanguageMatcher {
                     path_suffixes: vec!["rs".to_string()],
                     ..Default::default()
                 },
@@ -779,9 +779,9 @@ mod tests {
 
         let mut fake_language_servers = language_registry.register_fake_lsp(
             "Rust",
-            language::FakeLspAdapter {
-                capabilities: lsp::ServerCapabilities {
-                    document_formatting_provider: Some(lsp::OneOf::Left(true)),
+            raijin_language::FakeLspAdapter {
+                capabilities: raijin_lsp::ServerCapabilities {
+                    document_formatting_provider: Some(raijin_lsp::OneOf::Left(true)),
                     ..Default::default()
                 },
                 ..Default::default()
@@ -792,7 +792,7 @@ mod tests {
         fs.save(
             path!("/root/src/main.rs").as_ref(),
             &"initial content".into(),
-            language::LineEnding::Unix,
+            raijin_language::LineEnding::Unix,
         )
         .await
         .unwrap();
@@ -816,10 +816,10 @@ mod tests {
 
         // Get the fake language server and set up formatting handler
         let fake_language_server = fake_language_servers.next().await.unwrap();
-        fake_language_server.set_request_handler::<lsp::request::Formatting, _, _>({
+        fake_language_server.set_request_handler::<raijin_lsp::request::Formatting, _, _>({
             |_, _| async move {
-                Ok(Some(vec![lsp::TextEdit {
-                    range: lsp::Range::new(lsp::Position::new(0, 0), lsp::Position::new(1, 0)),
+                Ok(Some(vec![raijin_lsp::TextEdit {
+                    range: raijin_lsp::Range::new(raijin_lsp::Position::new(0, 0), lsp::Position::new(1, 0)),
                     new_text: FORMATTED_CONTENT.to_string(),
                 }]))
             }
@@ -845,7 +845,7 @@ mod tests {
                 store.update_user_settings(cx, |settings| {
                     settings.project.all_languages.defaults.format_on_save = Some(FormatOnSave::On);
                     settings.project.all_languages.defaults.formatter =
-                        Some(language::language_settings::FormatterList::default());
+                        Some(raijin_language::language_settings::FormatterList::default());
                 });
             });
         });
@@ -960,14 +960,14 @@ mod tests {
     async fn test_remove_trailing_whitespace(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/root", json!({"src": {}})).await;
 
         // Create a simple file with trailing whitespace
         fs.save(
             path!("/root/src/main.rs").as_ref(),
             &"initial content".into(),
-            language::LineEnding::Unix,
+            raijin_language::LineEnding::Unix,
         )
         .await
         .unwrap();
@@ -1112,7 +1112,7 @@ mod tests {
     #[inazuma::test]
     async fn test_authorize(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
         let context_server_registry =
             cx.new(|cx| ContextServerRegistry::new(project.read(cx).context_server_store(), cx));
@@ -1212,9 +1212,9 @@ mod tests {
         // Test 5: When global default is allow, sensitive and outside-project
         // paths still require confirmation
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         // 5.1: .zed/settings.json is a sensitive path — still prompts
@@ -1272,9 +1272,9 @@ mod tests {
 
         // 5.4: With Confirm default, non-project paths still prompt
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Confirm;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Confirm;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
@@ -1298,7 +1298,7 @@ mod tests {
     async fn test_authorize_create_under_symlink_with_allow(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/root", json!({})).await;
         fs.insert_tree("/outside", json!({})).await;
         fs.insert_symlink("/root/link", PathBuf::from("/outside"))
@@ -1327,9 +1327,9 @@ mod tests {
         ));
 
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
-            settings.tool_permissions.default = settings::ToolPermissionMode::Allow;
-            agent_settings::AgentSettings::override_global(settings, cx);
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
+            settings.tool_permissions.default = inazuma_settings_framework::ToolPermissionMode::Allow;
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
@@ -1358,7 +1358,7 @@ mod tests {
 
         event
             .response
-            .send(acp_thread::SelectedPermissionOutcome::new(
+            .send(raijin_acp_thread::SelectedPermissionOutcome::new(
                 acp::PermissionOptionId::new("allow"),
                 acp::PermissionOptionKind::AllowOnce,
             ))
@@ -1370,7 +1370,7 @@ mod tests {
     async fn test_edit_file_symlink_escape_requests_authorization(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             path!("/root"),
             json!({
@@ -1441,7 +1441,7 @@ mod tests {
     async fn test_edit_file_symlink_escape_denied(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             path!("/root"),
             json!({
@@ -1511,18 +1511,18 @@ mod tests {
     async fn test_edit_file_symlink_escape_honors_deny_policy(cx: &mut TestAppContext) {
         init_test(cx);
         cx.update(|cx| {
-            let mut settings = agent_settings::AgentSettings::get_global(cx).clone();
+            let mut settings = raijin_agent_settings::AgentSettings::get_global(cx).clone();
             settings.tool_permissions.tools.insert(
                 "edit_file".into(),
-                agent_settings::ToolRules {
-                    default: Some(settings::ToolPermissionMode::Deny),
+                raijin_agent_settings::ToolRules {
+                    default: Some(inazuma_settings_framework::ToolPermissionMode::Deny),
                     ..Default::default()
                 },
             );
-            agent_settings::AgentSettings::override_global(settings, cx);
+            raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             path!("/root"),
             json!({
@@ -1596,7 +1596,7 @@ mod tests {
     #[inazuma::test]
     async fn test_authorize_global_config(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/project", json!({})).await;
         let project = Project::test(fs.clone(), [path!("/project").as_ref()], cx).await;
         let language_registry = project.read_with(cx, |project, _cx| project.languages().clone());
@@ -1670,7 +1670,7 @@ mod tests {
     #[inazuma::test]
     async fn test_needs_confirmation_with_multiple_worktrees(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
 
         // Create multiple worktree directories
         fs.insert_tree(
@@ -1781,7 +1781,7 @@ mod tests {
     #[inazuma::test]
     async fn test_needs_confirmation_edge_cases(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/project",
             json!({
@@ -1875,7 +1875,7 @@ mod tests {
     #[inazuma::test]
     async fn test_needs_confirmation_with_different_modes(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/project",
             json!({
@@ -1970,7 +1970,7 @@ mod tests {
     #[inazuma::test]
     async fn test_initial_title_with_partial_input(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         let project = Project::test(fs.clone(), [path!("/project").as_ref()], cx).await;
         let language_registry = project.read_with(cx, |project, _cx| project.languages().clone());
         let context_server_registry =
@@ -2053,7 +2053,7 @@ mod tests {
     #[inazuma::test]
     async fn test_diff_finalization(cx: &mut TestAppContext) {
         init_test(cx);
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree("/", json!({"main.rs": ""})).await;
 
         let project = Project::test(fs.clone(), [path!("/").as_ref()], cx).await;
@@ -2163,7 +2163,7 @@ mod tests {
     async fn test_file_read_times_tracking(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/root",
             json!({
@@ -2264,7 +2264,7 @@ mod tests {
     async fn test_consecutive_edits_work(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/root",
             json!({
@@ -2374,7 +2374,7 @@ mod tests {
     async fn test_external_modification_detected(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/root",
             json!({
@@ -2428,7 +2428,7 @@ mod tests {
         fs.save(
             path!("/root/test.txt").as_ref(),
             &"externally modified content".into(),
-            language::LineEnding::Unix,
+            raijin_language::LineEnding::Unix,
         )
         .await
         .unwrap();
@@ -2481,7 +2481,7 @@ mod tests {
     async fn test_dirty_buffer_detected(cx: &mut TestAppContext) {
         init_test(cx);
 
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         fs.insert_tree(
             "/root",
             json!({
@@ -2590,8 +2590,8 @@ mod tests {
     async fn test_sensitive_settings_kind_detects_nonexistent_subdirectory(
         cx: &mut TestAppContext,
     ) {
-        let fs = project::FakeFs::new(cx.executor());
-        let config_dir = paths::config_dir();
+        let fs = raijin_project::FakeFs::new(cx.executor());
+        let config_dir = raijin_paths::config_dir();
         fs.insert_tree(&*config_dir.to_string_lossy(), json!({}))
             .await;
         let path = config_dir.join("nonexistent_subdir_xyz").join("evil.json");
@@ -2609,8 +2609,8 @@ mod tests {
     async fn test_sensitive_settings_kind_detects_deeply_nested_nonexistent_subdirectory(
         cx: &mut TestAppContext,
     ) {
-        let fs = project::FakeFs::new(cx.executor());
-        let config_dir = paths::config_dir();
+        let fs = raijin_project::FakeFs::new(cx.executor());
+        let config_dir = raijin_paths::config_dir();
         fs.insert_tree(&*config_dir.to_string_lossy(), json!({}))
             .await;
         let path = config_dir.join("a").join("b").join("c").join("evil.json");
@@ -2628,7 +2628,7 @@ mod tests {
     async fn test_sensitive_settings_kind_returns_none_for_non_config_path(
         cx: &mut TestAppContext,
     ) {
-        let fs = project::FakeFs::new(cx.executor());
+        let fs = raijin_project::FakeFs::new(cx.executor());
         let path = PathBuf::from("/tmp/not_a_config_dir/some_file.json");
         assert!(
             sensitive_settings_kind(&path, fs.as_ref()).await.is_none(),

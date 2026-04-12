@@ -21,7 +21,7 @@ use raijin_release_channel::ReleaseChannel;
 use schemars::JsonSchema;
 use serde::Deserialize;
 use inazuma_settings_framework::{
-    IntoGpui, Settings, SettingsContent, SettingsStore, initial_project_settings_content,
+    Settings, SettingsContent, SettingsStore, initial_project_settings_content,
 };
 use std::{
     any::{Any, TypeId, type_name},
@@ -33,11 +33,11 @@ use std::{
     sync::{Arc, LazyLock, RwLock},
     time::Duration,
 };
-use raijin_theme_inazuma_settings_framework::ThemeSettings;
+use raijin_theme_settings::ThemeSettings;
 use raijin_ui::{
-    Banner, ContextMenu, Divider, DropdownMenu, DropdownStyle, IconButtonShape, KeyBinding,
-    KeybindingHint, PopoverMenu, Scrollbars, Switch, Tooltip, TreeViewItem, WithScrollbar,
-    prelude::*,
+    Banner, ButtonCommon, ContextMenu, Divider, DropdownMenu, DropdownStyle, IconButtonShape,
+    KeyBinding, KeybindingHint, PopoverMenu, Scrollbars, Switch, Tooltip, TreeViewItem,
+    WithScrollbar, prelude::*,
 };
 
 use inazuma_util::{ResultExt as _, paths::PathStyle, rel_path::RelPath};
@@ -432,12 +432,16 @@ fn init_renderers(cx: &mut App) {
                     settings_window,
                     item,
                     settings_file,
-                    Button::new("open-in-settings-file", "Edit in settings.json")
-                        .style(ButtonStyle::Outlined)
-                        .size(ButtonSize::Medium)
-                        .tab_index(0_isize)
+                    ButtonCommon::tab_index(
+                        ButtonCommon::size(
+                            Button::new("open-in-settings-file", "Edit in settings.toml")
+                                .style(ButtonStyle::Outlined),
+                            ButtonSize::Medium,
+                        ),
+                        0_isize,
+                    )
                         .tooltip(Tooltip::for_action_title_in(
-                            "Edit in settings.json",
+                            "Edit in settings.toml",
                             &OpenCurrentFile,
                             &settings_window.focus_handle,
                         ))
@@ -563,7 +567,7 @@ pub fn open_settings_editor(
     workspace_handle: Option<WindowHandle<MultiWorkspace>>,
     cx: &mut App,
 ) {
-    telemetry::event!("Settings Viewed");
+    raijin_telemetry::event!("Settings Viewed");
 
     /// Assumes a settings GUI window is already open
     fn open_path(
@@ -639,7 +643,7 @@ pub fn open_settings_editor(
     // We have to defer this to get the workspace off the stack.
     let path = path.map(ToOwned::to_owned);
     cx.defer(move |cx| {
-        let current_rem_size: f32 = theme_inazuma_settings_framework::ThemeSettings::get_global(cx)
+        let current_rem_size: f32 = raijin_theme_settings::ThemeSettings::get_global(cx)
             .ui_font_size(cx)
             .into();
 
@@ -658,7 +662,7 @@ pub fn open_settings_editor(
         cx.open_window(
             WindowOptions {
                 titlebar: Some(TitlebarOptions {
-                    title: Some("Zed — Settings".into()),
+                    title: Some("Raijin — Settings".into()),
                     appears_transparent: true,
                     traffic_light_position: Some(point(px(12.0), px(12.0))),
                 }),
@@ -918,11 +922,15 @@ impl SettingsPageItem {
                         settings_window,
                         setting_item,
                         file.clone(),
-                        Button::new("error-warning", warning)
-                            .style(ButtonStyle::Outlined)
-                            .size(ButtonSize::Medium)
-                            .start_icon(Icon::new(IconName::Debug).color(Color::Error))
-                            .tab_index(0_isize)
+                        ButtonCommon::tab_index(
+                            ButtonCommon::size(
+                                Button::new("error-warning", warning)
+                                    .style(ButtonStyle::Outlined),
+                                ButtonSize::Medium,
+                            )
+                            .start_icon(Icon::new(IconName::Debug).color(Color::Error)),
+                            0_isize,
+                        )
                             .tooltip(Tooltip::text(setting_item.field.type_name()))
                             .into_any_element(),
                         sub_field,
@@ -982,18 +990,22 @@ impl SettingsPageItem {
                                 ),
                         )
                         .child(
-                            Button::new(
-                                ("sub-page".into(), sub_page_link.title.clone()),
-                                "Configure",
+                            ButtonCommon::size(
+                                ButtonCommon::tab_index(
+                                    Button::new(
+                                        ("sub-page".into(), sub_page_link.title.clone()),
+                                        "Configure",
+                                    ),
+                                    0_isize,
+                                )
+                                .end_icon(
+                                    Icon::new(IconName::ChevronRight)
+                                        .size(IconSize::Small)
+                                        .color(Color::Muted),
+                                )
+                                .style(ButtonStyle::Outlined),
+                                ButtonSize::Medium,
                             )
-                            .tab_index(0_isize)
-                            .end_icon(
-                                Icon::new(IconName::ChevronRight)
-                                    .size(IconSize::Small)
-                                    .color(Color::Muted),
-                            )
-                            .style(ButtonStyle::OutlinedGhost)
-                            .size(ButtonSize::Medium)
                             .on_click({
                                 let sub_page_link = sub_page_link.clone();
                                 cx.listener(move |this, _, window, cx| {
@@ -1116,18 +1128,22 @@ impl SettingsPageItem {
                                 ),
                         )
                         .child(
-                            Button::new(
-                                ("action-link".into(), action_link.title.clone()),
-                                action_link.button_text.clone(),
+                            ButtonCommon::size(
+                                ButtonCommon::tab_index(
+                                    Button::new(
+                                        ("action-link".into(), action_link.title.clone()),
+                                        action_link.button_text.clone(),
+                                    ),
+                                    0_isize,
+                                )
+                                .end_icon(
+                                    Icon::new(IconName::ArrowUpRight)
+                                        .size(IconSize::Small)
+                                        .color(Color::Muted),
+                                )
+                                .style(ButtonStyle::Outlined),
+                                ButtonSize::Medium,
                             )
-                            .tab_index(0_isize)
-                            .end_icon(
-                                Icon::new(IconName::ArrowUpRight)
-                                    .size(IconSize::Small)
-                                    .color(Color::Muted),
-                            )
-                            .style(ButtonStyle::OutlinedGhost)
-                            .size(ButtonSize::Medium)
                             .on_click({
                                 let on_click = action_link.on_click.clone();
                                 cx.listener(move |this, _, window, cx| {
@@ -1364,8 +1380,8 @@ struct SubPageLink {
     description: Option<SharedString>,
     /// See [`SettingField.json_path`]
     json_path: Option<&'static str>,
-    /// Whether or not the settings in this sub page are configurable in settings.json
-    /// Removes the "Edit in settings.json" button from the page.
+    /// Whether or not the settings in this sub page are configurable in settings.toml
+    /// Removes the "Edit in settings.toml" button from the page.
     in_json: bool,
     files: FileMask,
     render:
@@ -1469,7 +1485,7 @@ impl SettingsWindow {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
-        let font_family_cache = theme::FontFamilyCache::global(cx);
+        let font_family_cache = raijin_theme::FontFamilyCache::global(cx);
 
         cx.spawn(async move |this, cx| {
             font_family_cache.prefetch(cx).await;
@@ -1518,19 +1534,19 @@ impl SettingsWindow {
         })
         .detach();
 
-        cx.on_window_closed(|cx, _window_id| {
+        cx.on_window_closed(|cx: &mut App| {
             if let Some(existing_window) = cx
                 .windows()
                 .into_iter()
                 .find_map(|window| window.downcast::<SettingsWindow>())
                 && cx.windows().len() == 1
             {
-                cx.update_window(*existing_window, |_, window, _| {
+                cx.update_window(*existing_window, |_, window: &mut Window, _| {
                     window.remove_window();
                 })
                 .ok();
 
-                telemetry::event!("Settings Closed")
+                raijin_telemetry::event!("Settings Closed")
             }
         })
         .detach();
@@ -1686,12 +1702,12 @@ impl SettingsWindow {
     fn handle_project_event(
         &mut self,
         _: &Entity<Project>,
-        event: &project::Event,
+        event: &raijin_project::Event,
         window: &mut Window,
         cx: &mut Context<SettingsWindow>,
     ) {
         match event {
-            project::Event::WorktreeRemoved(_) | project::Event::WorktreeAdded(_) => {
+            raijin_project::Event::WorktreeRemoved(_) | raijin_project::Event::WorktreeAdded(_) => {
                 cx.defer_in(window, |this, window, cx| {
                     this.fetch_files(window, cx);
                 });
@@ -1947,7 +1963,7 @@ impl SettingsWindow {
                 }
             });
             let cancel_flag = std::sync::atomic::AtomicBool::new(false);
-            let fuzzy_search_task = fuzzy::match_strings(
+            let fuzzy_search_task = inazuma_fuzzy::match_strings(
                 search_index.fuzzy_match_candidates.as_slice(),
                 &query,
                 false,
@@ -1975,7 +1991,7 @@ impl SettingsWindow {
                 .ok();
 
             cx.background_executor().timer(Duration::from_secs(1)).await;
-            telemetry::event!("Settings Searched", query = query)
+            raijin_telemetry::event!("Settings Searched", query = query)
         }));
     }
 
@@ -2270,7 +2286,7 @@ impl SettingsWindow {
         self.current_file = self.files[ix].0.clone();
 
         if let SettingsUiFile::Project((_, _)) = &self.current_file {
-            telemetry::event!("Setting Project Clicked");
+            raijin_telemetry::event!("Setting Project Clicked");
         }
 
         self.build_ui(window, cx);
@@ -2294,14 +2310,16 @@ impl SettingsWindow {
 
         let file_button =
             |ix, file: &SettingsUiFile, focus_handle, cx: &mut Context<SettingsWindow>| {
-                Button::new(
-                    ix,
-                    self.display_name(&file)
-                        .expect("Files should always have a name"),
+                ButtonCommon::track_focus(
+                    Button::new(
+                        ix,
+                        self.display_name(&file)
+                            .expect("Files should always have a name"),
+                    )
+                    .toggle_state(file == &self.current_file)
+                    .selected_style(ButtonStyle::tinted(raijin_ui::TintColor::Accent)),
+                    focus_handle,
                 )
-                .toggle_state(file == &self.current_file)
-                .selected_style(ButtonStyle::Tinted(ui::TintColor::Accent))
-                .track_focus(focus_handle)
                 .on_click(cx.listener({
                     let focus_handle = focus_handle.clone();
                     move |this, _: &inazuma::ClickEvent, window, cx| {
@@ -2406,11 +2424,13 @@ impl SettingsWindow {
                     }),
             )
             .child(
-                Button::new(edit_in_json_id, "Edit in settings.json")
-                    .tab_index(0_isize)
-                    .style(ButtonStyle::OutlinedGhost)
+                ButtonCommon::tab_index(
+                    Button::new(edit_in_json_id, "Edit in settings.toml"),
+                    0_isize,
+                )
+                    .style(ButtonStyle::Outlined)
                     .tooltip(Tooltip::for_action_title_in(
-                        "Edit in settings.json",
+                        "Edit in settings.toml",
                         &OpenCurrentFile,
                         &self.focus_handle,
                     ))
@@ -2447,13 +2467,13 @@ impl SettingsWindow {
     //  Reconsider this after preview launch
     // fn file_location_str(&self) -> String {
     //     match &self.current_file {
-    //         SettingsUiFile::User => "settings.json".to_string(),
+    //         SettingsUiFile::User => "settings.toml".to_string(),
     //         SettingsUiFile::Project((worktree_id, path)) => self
     //             .worktree_root_dirs
     //             .get(&worktree_id)
     //             .map(|directory_name| {
     //                 let path_style = PathStyle::local();
-    //                 let file_path = path.join(paths::local_settings_file_relative_path());
+    //                 let file_path = path.join(raijin_paths::local_settings_file_relative_path());
     //                 format!(
     //                     "{}{}{}",
     //                     directory_name,
@@ -2678,7 +2698,7 @@ impl SettingsWindow {
                                                 (!entry.is_root).then_some(entry.title);
 
                                             cx.listener(move |this, _, window, cx| {
-                                                telemetry::event!(
+                                                raijin_telemetry::event!(
                                                     "Settings Navigation Clicked",
                                                     category = category,
                                                     subcategory = subcategory
@@ -3131,11 +3151,13 @@ impl SettingsWindow {
                 .when(current_sub_page.link.in_json, |this| {
                     this.child(
                         div().flex_shrink_0().child(
-                            Button::new("open-in-settings-file", "Edit in settings.json")
-                                .tab_index(0_isize)
-                                .style(ButtonStyle::OutlinedGhost)
+                            ButtonCommon::tab_index(
+                                Button::new("open-in-settings-file", "Edit in settings.toml"),
+                                0_isize,
+                            )
+                                .style(ButtonStyle::Outlined)
                                 .tooltip(Tooltip::for_action_title_in(
-                                    "Edit in settings.json",
+                                    "Edit in settings.toml",
                                     &OpenCurrentFile,
                                     &self.focus_handle,
                                 ))
@@ -3171,7 +3193,7 @@ impl SettingsWindow {
                 cx: &mut Context<SettingsWindow>,
             ) -> impl IntoElement {
                 if shown_errors.insert(error.clone()) {
-                    telemetry::event!("Settings Error Shown", label = label, error = &error);
+                    raijin_telemetry::event!("Settings Error Shown", label = label, error = &error);
                 }
                 Banner::new()
                     .severity(Severity::Warning)
@@ -3184,9 +3206,11 @@ impl SettingsWindow {
                     )
                     .action_slot(
                         div().pr_1().pb_1().child(
-                            Button::new("fix-in-json", "Fix in settings.json")
-                                .tab_index(0_isize)
-                                .style(ButtonStyle::Tinted(ui::TintColor::Warning))
+                            ButtonCommon::tab_index(
+                                Button::new("fix-in-json", "Fix in settings.toml"),
+                                0_isize,
+                            )
+                                .style(ButtonStyle::tinted(raijin_ui::TintColor::Warning))
                                 .on_click(cx.listener(|this, _, window, cx| {
                                     this.open_current_settings_file(window, cx);
                                 })),
@@ -3231,7 +3255,7 @@ impl SettingsWindow {
 
         v_flex()
             .id("settings-ui-page")
-            .on_action(cx.listener(|this, _: &menu::SelectNext, window, cx| {
+            .on_action(cx.listener(|this, _: &inazuma_menu::SelectNext, window, cx| {
                 if !this.sub_page_stack.is_empty() {
                     window.focus_next(cx);
                     return;
@@ -3263,7 +3287,7 @@ impl SettingsWindow {
                 }
                 window.focus_next(cx);
             }))
-            .on_action(cx.listener(|this, _: &menu::SelectPrevious, window, cx| {
+            .on_action(cx.listener(|this, _: &inazuma_menu::SelectPrevious, window, cx| {
                 if !this.sub_page_stack.is_empty() {
                     window.focus_prev(cx);
                     return;
@@ -3301,7 +3325,7 @@ impl SettingsWindow {
             })
             .when_some(current_sub_page, |this, current_sub_page| {
                 this.custom_scrollbars(
-                    Scrollbars::new(ui::ScrollAxes::Vertical)
+                    Scrollbars::new(raijin_ui::ScrollAxes::Vertical)
                         .tracked_scroll_handle(&current_sub_page.scroll_handle)
                         .id((current_sub_page.link.title.clone(), 42)),
                     window,
@@ -3361,7 +3385,7 @@ impl SettingsWindow {
                 window.remove_window();
             }
             SettingsUiFile::Project((worktree_id, path)) => {
-                let settings_path = path.join(paths::local_settings_file_relative_path());
+                let settings_path = path.join(raijin_paths::local_settings_file_relative_path());
                 let Some(app_state) = raijin_workspace::AppState::global(cx).upgrade() else {
                     return;
                 };
@@ -3652,7 +3676,7 @@ impl SettingsWindow {
 
 impl Render for SettingsWindow {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let ui_font = theme_inazuma_settings_framework::setup_ui_font(window, cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(cx);
 
         client_side_decorations(
             v_flex()
@@ -3670,7 +3694,7 @@ impl Render for SettingsWindow {
                         .on_action(|_: &Minimize, window, _cx| {
                             window.minimize_window();
                         })
-                        .on_action(cx.listener(|this, _: &search::FocusSearch, window, cx| {
+                        .on_action(cx.listener(|this, _: &raijin_search::FocusSearch, window, cx| {
                             this.search_bar.focus_handle(cx).focus(window, cx);
                         }))
                         .on_action(cx.listener(|this, _: &ToggleFocusNav, window, cx| {
@@ -3706,7 +3730,7 @@ impl Render for SettingsWindow {
                             let prev_index = this.focused_file_index(window, cx).saturating_sub(1);
                             this.focus_file_at_index(prev_index, window, cx);
                         }))
-                        .on_action(cx.listener(|this, _: &menu::SelectNext, window, cx| {
+                        .on_action(cx.listener(|this, _: &inazuma_menu::SelectNext, window, cx| {
                             if this
                                 .search_bar
                                 .focus_handle(cx)
@@ -3717,7 +3741,7 @@ impl Render for SettingsWindow {
                                 window.focus_next(cx);
                             }
                         }))
-                        .on_action(|_: &menu::SelectPrevious, window, cx| {
+                        .on_action(|_: &inazuma_menu::SelectPrevious, window, cx| {
                             window.focus_prev(cx);
                         })
                         .flex()
@@ -3782,8 +3806,8 @@ fn open_user_settings_in_workspace(
     cx.spawn_in(window, async move |workspace, cx| {
         let (config_dir, settings_file) = project.update(cx, |project, cx| {
             (
-                project.try_windows_path_to_wsl(paths::config_dir().as_path(), cx),
-                project.try_windows_path_to_wsl(paths::settings_file().as_path(), cx),
+                project.try_windows_path_to_wsl(raijin_paths::config_dir().as_path(), cx),
+                project.try_windows_path_to_wsl(raijin_paths::settings_file().as_path(), cx),
             )
         });
         let config_dir = config_dir.await?;
@@ -3824,11 +3848,11 @@ fn update_settings_file(
     cx: &mut App,
     update: impl 'static + Send + FnOnce(&mut SettingsContent, &App),
 ) -> Result<()> {
-    telemetry::event!("Settings Change", setting = file_name, type = file.setting_type());
+    raijin_telemetry::event!("Settings Change", setting = file_name, type = file.setting_type());
 
     match file {
         SettingsUiFile::Project((worktree_id, rel_path)) => {
-            let rel_path = rel_path.join(paths::local_settings_file_relative_path());
+            let rel_path = rel_path.join(raijin_paths::local_settings_file_relative_path());
             let Some(settings_window) = window.root::<SettingsWindow>().flatten() else {
                 anyhow::bail!("No settings window found");
             };
@@ -3837,7 +3861,7 @@ fn update_settings_file(
         }
         SettingsUiFile::User => {
             // todo(settings_ui) error?
-            SettingsStore::global(cx).update_settings_file(<dyn fs::Fs>::global(cx), update);
+            SettingsStore::global(cx).update_settings_file(<dyn raijin_fs::Fs>::global(cx), update);
             Ok(())
         }
         SettingsUiFile::Server(_) => unimplemented!(),
@@ -4043,13 +4067,13 @@ fn render_toggle_button<B: Into<bool> + From<bool> + Copy>(
         ToggleState::Unselected
     };
 
-    Switch::new("toggle_button", toggle_state)
-        .tab_index(0_isize)
+    Switch::new("toggle_button")
+        .toggle_state(toggle_state)
         .on_click({
-            move |state, window, cx| {
-                telemetry::event!("Settings Change", setting = field.json_path, type = file.setting_type());
+            move |state: &bool, window, cx| {
+                raijin_telemetry::event!("Settings Change", setting = field.json_path, type = file.setting_type());
 
-                let state = *state == ui::ToggleState::Selected;
+                let state = *state;
                 update_settings_file(file.clone(), field.json_path, window, cx, move |settings, _cx| {
                     (field.write)(settings, Some(state.into()));
                 })
@@ -4173,10 +4197,11 @@ where
 }
 
 fn render_picker_trigger_button(id: SharedString, label: SharedString) -> Button {
-    Button::new(id, label)
-        .tab_index(0_isize)
-        .style(ButtonStyle::Outlined)
-        .size(ButtonSize::Medium)
+    ButtonCommon::size(
+        ButtonCommon::tab_index(Button::new(id, label), 0_isize)
+            .style(ButtonStyle::Outlined),
+        ButtonSize::Medium,
+    )
         .end_icon(
             Icon::new(IconName::ChevronUpDown)
                 .size(IconSize::Small)
@@ -4195,7 +4220,7 @@ fn render_font_picker(
         .get_value_from_file(file.to_settings(), field.pick)
         .1
         .cloned()
-        .map_or_else(|| SharedString::default(), |value| value.into_gpui());
+        .map_or_else(|| SharedString::default(), |value| SharedString::from(value.0.clone()));
 
     PopoverMenu::new("font-picker")
         .trigger(render_picker_trigger_button(
@@ -4231,7 +4256,7 @@ fn render_font_picker(
             x: px(0.0),
             y: px(2.0),
         })
-        .with_handle(ui::PopoverMenuHandle::default())
+        .with_handle(raijin_ui::PopoverMenuHandle::default())
         .into_any_element()
 }
 
@@ -4284,7 +4309,7 @@ fn render_theme_picker(
             x: px(0.0),
             y: px(2.0),
         })
-        .with_handle(ui::PopoverMenuHandle::default())
+        .with_handle(raijin_ui::PopoverMenuHandle::default())
         .into_any_element()
 }
 
@@ -4337,7 +4362,7 @@ fn render_icon_theme_picker(
             x: px(0.0),
             y: px(2.0),
         })
-        .with_handle(ui::PopoverMenuHandle::default())
+        .with_handle(raijin_ui::PopoverMenuHandle::default())
         .into_any_element()
 }
 
@@ -4412,9 +4437,9 @@ pub mod test {
 
     pub fn register_settings(cx: &mut App) {
         inazuma_settings_framework::init(cx);
-        theme_inazuma_settings_framework::init(theme::LoadThemes::JustBase, cx);
-        editor::init(cx);
-        menu::init();
+        raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+        raijin_editor::init(cx);
+        inazuma_menu::init();
     }
 
     fn parse(input: &'static str, window: &mut Window, cx: &mut App) -> SettingsWindow {
@@ -4762,7 +4787,7 @@ pub mod test {
                 app_state.languages.clone(),
                 app_state.fs.clone(),
                 None,
-                project::LocalProjectFlags::default(),
+                raijin_project::LocalProjectFlags::default(),
                 cx,
             )
         });
@@ -4788,7 +4813,7 @@ pub mod test {
                 app_state.languages.clone(),
                 app_state.fs.clone(),
                 None,
-                project::LocalProjectFlags::default(),
+                raijin_project::LocalProjectFlags::default(),
                 cx,
             )
         });
@@ -4933,7 +4958,7 @@ pub mod test {
                 app_state.languages.clone(),
                 app_state.fs.clone(),
                 None,
-                project::LocalProjectFlags::default(),
+                raijin_project::LocalProjectFlags::default(),
                 cx,
             )
         });
@@ -4983,7 +5008,7 @@ pub mod test {
                 app_state.languages.clone(),
                 app_state.fs.clone(),
                 None,
-                project::LocalProjectFlags::default(),
+                raijin_project::LocalProjectFlags::default(),
                 cx,
             )
         });
@@ -5077,9 +5102,9 @@ mod project_settings_update_tests {
         cx.update(|cx| {
             let store = inazuma_settings_framework::SettingsStore::test(cx);
             cx.set_global(store);
-            theme_inazuma_settings_framework::init(theme::LoadThemes::JustBase, cx);
-            editor::init(cx);
-            menu::init();
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+            raijin_editor::init(cx);
+            inazuma_menu::init();
             let queue = ProjectSettingsUpdateQueue::new(cx);
             cx.set_global(queue);
         });
@@ -5087,8 +5112,8 @@ mod project_settings_update_tests {
         let fs = FakeFs::new(cx.executor());
         let tree = if let Some(settings_content) = initial_settings {
             json!({
-                ".zed": {
-                    "settings.json": settings_content
+                ".raijin": {
+                    "settings.toml": settings_content
                 },
                 "src": { "main.rs": "" }
             })
@@ -5104,7 +5129,7 @@ mod project_settings_update_tests {
             (worktree.read(cx).id(), worktree.downgrade())
         });
 
-        let rel_path: Arc<RelPath> = RelPath::unix(".zed/settings.json")
+        let rel_path: Arc<RelPath> = RelPath::unix(".raijin/settings.toml")
             .expect("valid path")
             .into_arc();
         let project_path = ProjectPath {
@@ -5334,7 +5359,7 @@ mod project_settings_update_tests {
 
         let file_content = setup
             .fs
-            .load("/project/.zed/settings.json".as_ref())
+            .load("/project/.raijin/settings.toml".as_ref())
             .await
             .unwrap();
         assert_eq!(
@@ -5367,7 +5392,7 @@ mod project_settings_update_tests {
         setup
             .fs
             .save(
-                "/project/.zed/settings.json".as_ref(),
+                "/project/.raijin/settings.toml".as_ref(),
                 &r#"{ "tab_size": 99 }"#.into(),
                 Default::default(),
             )

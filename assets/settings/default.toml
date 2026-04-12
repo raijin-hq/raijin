@@ -13,13 +13,99 @@ buffer_line_height = "comfortable"
 unnecessary_code_fade = 0.3
 theme = "Raijin Dark"
 
+# === General ===
+# Shell, working directory, input mode, scrollback — terminal IS the app.
 [general]
+shell = "system"
 working_directory = "home"
 input_mode = "raijin"
-
-[terminal]
 scrollback_history = 10000
-cursor_style = "beam"
+alternate_scroll = "on"
+option_as_meta = false
+copy_on_select = false
+keep_selection_on_copy = false
+scroll_multiplier = 1.0
 
+# === Appearance ===
+# Font, cursor, contrast, colorspace — the terminal font IS the main font.
 [appearance]
+font_family = "DankMono Nerd Font Mono"
+font_size = 15
+line_height = 1.60
+cursor_style = "bar"
+cursor_blink = "terminal_controlled"
+minimum_contrast = 45.0
 window_colorspace = "srgb"
+
+# Client/Server settings (required by ClientSettings::from_settings)
+server_url = "http://localhost:8080"
+
+[workspace]
+confirm_quit = false
+show_call_status_icon = false
+autosave = "off"
+restore_on_startup = "empty_tab"
+restore_on_file_reopen = true
+drop_target_size = 0.2
+use_system_path_prompts = true
+use_system_prompts = true
+when_closing_with_no_tabs = "platform_default"
+on_last_window_closed = "platform_default"
+text_rendering_mode = "platform_default"
+close_on_file_delete = false
+close_panel_on_toggle = false
+use_system_window_tabs = false
+zoomed_padding = false
+window_decorations = "client"
+bottom_dock_layout = "contained"
+pane_split_direction_horizontal = "up"
+pane_split_direction_vertical = "left"
+resize_all_panels_in_dock = ["left"]
+
+[workspace.active_pane_modifiers]
+border_size = 0.0
+inactive_opacity = 1.0
+
+[workspace.centered_layout]
+left_padding = 0.2
+right_padding = 0.2
+
+[tab_bar]
+show = false
+show_nav_history_buttons = false
+show_tab_bar_buttons = false
+show_pinned_tabs_in_separate_row = false
+
+[status_bar]
+"experimental.show" = false
+show_active_file = false
+active_language_button = false
+cursor_position_button = false
+line_endings_button = false
+active_encoding_button = "non_utf8"
+
+[tabs]
+git_status = false
+close_position = "right"
+file_icons = false
+activate_on_close = "history"
+show_diagnostics = "off"
+show_close_button = "hover"
+
+[preview_tabs]
+enabled = false
+enable_preview_from_project_panel = false
+enable_preview_from_file_finder = false
+enable_preview_from_multibuffer = false
+enable_preview_multibuffer_from_code_navigation = false
+enable_preview_file_from_code_navigation = false
+enable_keep_preview_on_code_navigation = false
+
+[git]
+git_gutter = "tracked_files"
+gutter_debounce = 0
+
+[git.enabled]
+disable_git = false
+enable_status = true
+enable_diff = true

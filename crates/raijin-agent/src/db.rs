@@ -19,7 +19,7 @@ use raijin_sqlez::{
 use std::sync::Arc;
 use raijin_ui::{App, SharedString};
 use inazuma_util::path_list::PathList;
-use zed_env_vars::ZED_STATELESS;
+use raijin_env_vars::RAIJIN_STATELESS;
 
 pub type DbMessage = crate::Message;
 pub type DbSummary = crate::legacy_thread::DetailedSummaryState;
@@ -37,7 +37,7 @@ pub struct DbThreadMetadata {
     pub folder_paths: PathList,
 }
 
-impl From<&DbThreadMetadata> for acp_thread::AgentSessionInfo {
+impl From<&DbThreadMetadata> for raijin_acp_thread::AgentSessionInfo {
     fn from(meta: &DbThreadMetadata) -> Self {
         Self {
             session_id: meta.id.clone(),
@@ -60,9 +60,9 @@ pub struct DbThread {
     #[serde(default)]
     pub initial_project_snapshot: Option<Arc<crate::ProjectSnapshot>>,
     #[serde(default)]
-    pub cumulative_token_usage: language_model::TokenUsage,
+    pub cumulative_token_usage: raijin_language_model::TokenUsage,
     #[serde(default)]
-    pub request_token_usage: HashMap<acp_thread::UserMessageId, language_model::TokenUsage>,
+    pub request_token_usage: HashMap<raijin_acp_thread::UserMessageId, raijin_language_model::TokenUsage>,
     #[serde(default)]
     pub model: Option<DbLanguageModel>,
     #[serde(default)]
@@ -171,7 +171,7 @@ impl DbThread {
         let mut last_user_message_id = None;
         for (ix, msg) in thread.messages.into_iter().enumerate() {
             let message = match msg.role {
-                language_model::Role::User => {
+                raijin_language_model::Role::User => {
                     let mut content = Vec::new();
 
                     // Convert segments to content
@@ -209,7 +209,7 @@ impl DbThread {
                         content,
                     })
                 }
-                language_model::Role::Assistant => {
+                raijin_language_model::Role::Assistant => {
                     let mut content = Vec::new();
 
                     // Convert segments to content
@@ -237,7 +237,7 @@ impl DbThread {
                     for tool_use in msg.tool_uses {
                         tool_names_by_id.insert(tool_use.id.clone(), tool_use.name.clone());
                         content.push(AgentMessageContent::ToolUse(
-                            language_model::LanguageModelToolUse {
+                            raijin_language_model::LanguageModelToolUse {
                                 id: tool_use.id,
                                 name: tool_use.name.into(),
                                 raw_input: serde_json::to_string(&tool_use.input)
@@ -257,7 +257,7 @@ impl DbThread {
                             .unwrap_or_else(|| SharedString::from("unknown"));
                         tool_results.insert(
                             tool_result.tool_use_id.clone(),
-                            language_model::LanguageModelToolResult {
+                            raijin_language_model::LanguageModelToolResult {
                                 tool_use_id: tool_result.tool_use_id,
                                 tool_name: name.into(),
                                 is_error: tool_result.is_error,
@@ -279,7 +279,7 @@ impl DbThread {
                         reasoning_details: None,
                     })
                 }
-                language_model::Role::System => {
+                raijin_language_model::Role::System => {
                     // Skip system messages as they're not supported in the new format
                     continue;
                 }
@@ -375,7 +375,7 @@ impl ThreadsDatabase {
     }
 
     pub fn new(executor: BackgroundExecutor) -> Result<Self> {
-        let connection = if *ZED_STATELESS {
+        let connection = if *RAIJIN_STATELESS {
             Connection::open_memory(Some("THREAD_FALLBACK_DB"))
         } else if cfg!(any(feature = "test-support", test)) {
             // rust stores the name of the test on the current thread.
@@ -389,7 +389,7 @@ impl ThreadsDatabase {
                 test_name.unwrap_or_default()
             )))
         } else {
-            let threads_dir = paths::data_dir().join("threads");
+            let threads_dir = raijin_paths::data_dir().join("threads");
             std::fs::create_dir_all(&threads_dir)?;
             let sqlite_path = threads_dir.join("threads.db");
             Connection::open_file(&sqlite_path.to_string_lossy())
@@ -532,7 +532,7 @@ impl ThreadsDatabase {
             for (id, parent_id, folder_paths, folder_paths_order, summary, updated_at, created_at) in rows {
                 let folder_paths = folder_paths
                     .map(|paths| {
-                        PathList::deserialize(&util::path_list::SerializedPathList {
+                        PathList::deserialize(&inazuma_util::path_list::SerializedPathList {
                             paths,
                             order: folder_paths_order.unwrap_or_default(),
                         })

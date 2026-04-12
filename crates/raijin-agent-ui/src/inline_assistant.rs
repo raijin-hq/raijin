@@ -1431,7 +1431,7 @@ impl InlineAssistant {
             } else {
                 editor.highlight_gutter::<GutterTransformedRange>(
                     gutter_transformed_ranges,
-                    |cx| cx.theme().status().info,
+                    |cx| cx.theme().status().info.color,
                     cx,
                 )
             }

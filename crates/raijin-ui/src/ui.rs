@@ -39,3 +39,11 @@ pub use utils::history::{History, HistoryItem};
 pub use utils::window_ext::WindowExt;
 pub use utils::focus_trap::{FocusTrapContainer, FocusTrapElement};
 pub use utils::capitalize;
+
+/// Initialize all raijin-ui components, registering keybindings and global state.
+///
+/// Must be called once during application startup.
+pub fn init(cx: &mut inazuma::App) {
+    components::init(cx);
+    utils::focus_trap::init(cx);
+}

@@ -9,7 +9,7 @@ use inazuma::{
 use raijin_shell::shell_install::{ShellInstallInfo, detect_available_installer};
 use raijin_theme::ActiveTheme;
 use raijin_ui::{
-    Button, ButtonStyle, Clickable, Color, Context, IntoElement, Label, LabelCommon,
+    Button, ButtonVariants, Clickable, Color, Context, IntoElement, Label, LabelCommon,
     Modal, ModalFooter, ModalHeader, ParentElement, Render, Styled, StyledExt,
     v_flex,
 };
@@ -129,7 +129,7 @@ impl Render for ShellInstallModal {
                                     )
                                     .child(
                                         Button::new("install", install_label)
-                                            .style(ButtonStyle::Filled)
+                                            .primary()
                                             .on_click(cx.listener(|this, _, window, cx| {
                                                 this.install(window, cx);
                                             })),

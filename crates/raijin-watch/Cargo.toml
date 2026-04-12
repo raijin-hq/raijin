@@ -13,6 +13,7 @@ path = "src/raijin_watch.rs"
 doctest = true
 
 [dependencies]
+futures.workspace = true
 parking_lot.workspace = true
 
 [dev-dependencies]

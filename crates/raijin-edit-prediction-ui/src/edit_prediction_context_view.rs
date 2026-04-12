@@ -125,7 +125,7 @@ impl EditPredictionContextView {
             self.runs.pop_back();
         }
 
-        let multibuffer = cx.new(|_| MultiBuffer::new(language::Capability::ReadOnly));
+        let multibuffer = cx.new(|_| MultiBuffer::new(raijin_language::Capability::ReadOnly));
         let editor = cx
             .new(|cx| Editor::for_multibuffer(multibuffer, Some(self.project.clone()), window, cx));
 
@@ -222,7 +222,7 @@ impl EditPredictionContextView {
                                 div()
                                     .pl(cx.anchor_x)
                                     .text_ui_xs(cx)
-                                    .text_color(cx.editor_style.status.info)
+                                    .text_color(cx.editor_style.status.info.color)
                                     .child(label.clone())
                                     .into_any_element()
                             }),
@@ -267,7 +267,7 @@ impl EditPredictionContextView {
     fn render_informational_footer(
         &self,
         cx: &mut Context<'_, EditPredictionContextView>,
-    ) -> ui::Div {
+    ) -> raijin_ui::Div {
         let run = &self.runs[self.current_ix];
         let new_run_started = self
             .runs
@@ -283,19 +283,24 @@ impl EditPredictionContextView {
             .gap_2()
             .child(v_flex().h_full().flex_1().child({
                 let t0 = run.started_at;
-                let mut table = ui::Table::new(2).width(ui::px(300.)).no_ui_font();
+                let mut rows: Vec<raijin_ui::TableRow> = Vec::new();
                 for (key, value) in &run.metadata {
-                    table = table.row(vec![
-                        key.into_any_element(),
-                        value.clone().into_any_element(),
-                    ])
+                    rows.push(
+                        raijin_ui::TableRow::new()
+                            .child(raijin_ui::TableCell::new().child(key.clone()))
+                            .child(raijin_ui::TableCell::new().child(value.clone())),
+                    );
                 }
-                table = table.row(vec![
-                    "Total Time".into_any_element(),
-                    format!("{} ms", (run.finished_at.unwrap_or(t0) - t0).as_millis())
-                        .into_any_element(),
-                ]);
-                table
+                rows.push(
+                    raijin_ui::TableRow::new()
+                        .child(raijin_ui::TableCell::new().child("Total Time"))
+                        .child(raijin_ui::TableCell::new().child(
+                            format!("{} ms", (run.finished_at.unwrap_or(t0) - t0).as_millis()),
+                        )),
+                );
+                raijin_ui::Table::new()
+                    .w(raijin_ui::px(300.))
+                    .child(raijin_ui::TableBody::new().children(rows))
             }))
             .child(
                 v_flex().h_full().text_align(TextAlign::Right).child(
@@ -304,7 +309,7 @@ impl EditPredictionContextView {
                         .child(
                             IconButton::new("go-back", IconName::ChevronLeft)
                                 .disabled(self.current_ix == 0 || self.runs.len() < 2)
-                                .tooltip(ui::Tooltip::for_action_title(
+                                .tooltip(raijin_ui::Tooltip::for_action_title(
                                     "Go to previous run",
                                     &EditPredictionContextGoBack,
                                 ))
@@ -333,7 +338,7 @@ impl EditPredictionContextView {
                         .child(
                             IconButton::new("go-forward", IconName::ChevronRight)
                                 .disabled(self.current_ix + 1 == self.runs.len())
-                                .tooltip(ui::Tooltip::for_action_title(
+                                .tooltip(raijin_ui::Tooltip::for_action_title(
                                     "Go to next run",
                                     &EditPredictionContextGoBack,
                                 ))
@@ -368,8 +373,8 @@ impl Item for EditPredictionContextView {
         "Edit Prediction Context".into()
     }
 
-    fn buffer_kind(&self, _cx: &App) -> workspace::item::ItemBufferKind {
-        workspace::item::ItemBufferKind::Multibuffer
+    fn buffer_kind(&self, _cx: &App) -> raijin_workspace::item::ItemBufferKind {
+        raijin_workspace::item::ItemBufferKind::Multibuffer
     }
 
     fn act_as_type<'a>(
@@ -389,7 +394,7 @@ impl Item for EditPredictionContextView {
 }
 
 impl inazuma::Render for EditPredictionContextView {
-    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl ui::IntoElement {
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl raijin_ui::IntoElement {
         v_flex()
             .key_context("EditPredictionContext")
             .on_action(cx.listener(Self::handle_go_back))

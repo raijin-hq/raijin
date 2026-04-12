@@ -1,7 +1,7 @@
 use crate::types::TableCell;
 use inazuma::{AnyElement, Entity};
 use std::ops::Range;
-use raijin_ui::Table;
+use raijin_ui::DataTable;
 use raijin_ui::TableColumnWidths;
 use raijin_ui::TableResizeBehavior;
 use raijin_ui::UncheckedTableRow;
@@ -75,7 +75,7 @@ impl CsvPreviewView {
             ));
         }
 
-        Table::new(cols)
+        DataTable::new(cols)
             .interactable(&self.table_interaction_state)
             .striped()
             .column_widths(widths)

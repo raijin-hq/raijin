@@ -41,7 +41,7 @@ pub use keymap_file::{
     KeybindUpdateTarget, KeymapFile, KeymapFileLoadResult,
 };
 pub use settings_file::*;
-pub use raijin_settings_json::parse_json_with_comments;
+pub use raijin_json_compat::parse_json_with_comments;
 pub use settings_store::{
     DefaultSemanticTokenRules, InvalidSettingsError, LSP_SETTINGS_SCHEMA_URL_PREFIX,
     LocalSettingsKind, LocalSettingsPath, MigrationStatus, Settings, SettingsFile,

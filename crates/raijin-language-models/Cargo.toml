@@ -24,6 +24,7 @@ raijin-client.workspace = true
 raijin-cloud-api-types.workspace = true
 raijin-cloud-llm-client.workspace = true
 inazuma-collections.workspace = true
+inazuma-component-registry.workspace = true
 convert_case.workspace = true
 raijin-copilot.workspace = true
 raijin-copilot-chat.workspace = true

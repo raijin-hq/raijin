@@ -888,7 +888,7 @@ mod macos {
             unsafe {
                 let process_info = NSProcessInfo::processInfo();
                 let reason = NSString::from_str("Audio playback in progress");
-                let activity: Retained<objc2::runtime::AnyObject> = objc2::msg_send_id![
+                let activity: Retained<objc2::runtime::AnyObject> = objc2::msg_send![
                     &process_info,
                     beginActivityWithOptions: NS_ACTIVITY_USER_INITIATED_ALLOWING_IDLE_SYSTEM_SLEEP,
                     reason: &*reason

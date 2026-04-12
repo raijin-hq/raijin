@@ -1,12 +1,12 @@
-pub fn text_from_response(mut res: open_ai::Response) -> Option<String> {
+pub fn text_from_response(mut res: raijin_open_ai::Response) -> Option<String> {
     let choice = res.choices.pop()?;
     let output_text = match choice.message {
-        open_ai::RequestMessage::Assistant {
-            content: Some(open_ai::MessageContent::Plain(content)),
+        raijin_open_ai::RequestMessage::Assistant {
+            content: Some(raijin_open_ai::MessageContent::Plain(content)),
             ..
         } => content,
-        open_ai::RequestMessage::Assistant {
-            content: Some(open_ai::MessageContent::Multipart(mut content)),
+        raijin_open_ai::RequestMessage::Assistant {
+            content: Some(raijin_open_ai::MessageContent::Multipart(mut content)),
             ..
         } => {
             if content.is_empty() {
@@ -15,8 +15,8 @@ pub fn text_from_response(mut res: open_ai::Response) -> Option<String> {
             }
 
             match content.remove(0) {
-                open_ai::MessagePart::Text { text } => text,
-                open_ai::MessagePart::Image { .. } => {
+                raijin_open_ai::MessagePart::Text { text } => text,
+                raijin_open_ai::MessagePart::Image { .. } => {
                     log::error!("Expected text, got an image");
                     return None;
                 }

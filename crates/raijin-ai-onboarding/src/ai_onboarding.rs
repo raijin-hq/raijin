@@ -122,7 +122,7 @@ impl ZedAiOnboarding {
                 Button::new("sign_in", "Try Zed Pro for Free")
                     .disabled(signing_in)
                     .full_width()
-                    .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                    .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                     .on_click({
                         let callback = self.sign_in.clone();
                         move |_, window, cx| {
@@ -162,7 +162,7 @@ impl ZedAiOnboarding {
                         .child(
                             Button::new("pro", "Get Started")
                                 .full_width()
-                                .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                                .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                                 .on_click(move |_, _window, cx| {
                                     raijin_telemetry::event!(
                                         "Upgrade To Pro Clicked",
@@ -223,7 +223,7 @@ impl ZedAiOnboarding {
                         .child(
                             Button::new("pro", "Start Free Trial")
                                 .full_width()
-                                .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                                .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                                 .on_click(move |_, _window, cx| {
                                     raijin_telemetry::event!(
                                         "Start Trial Clicked",
@@ -296,7 +296,7 @@ impl ZedAiOnboarding {
 }
 
 impl RenderOnce for ZedAiOnboarding {
-    fn render(self, _window: &mut ui::Window, cx: &mut App) -> impl IntoElement {
+    fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
         if matches!(self.sign_in_status, SignInStatus::SignedIn) {
             match self.plan {
                 None => self.render_free_plan_state(cx),

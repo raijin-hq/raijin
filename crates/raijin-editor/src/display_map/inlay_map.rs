@@ -352,7 +352,7 @@ impl<'a> Iterator for InlayChunks<'a> {
                                         div()
                                             .px_1()
                                             .rounded_sm()
-                                            .bg(colors.surface_background)
+                                            .bg(colors.surface)
                                             .text_color(colors.text_muted)
                                             .text_xs()
                                             .child(text.trim().to_string()),

@@ -11,5 +11,5 @@ fn main() {
         .trim()
         .trim_matches('"');
     println!("cargo:rerun-if-changed=../raijin-app/Cargo.toml");
-    println!("cargo:rustc-env=ZED_PKG_VERSION={}", version);
+    println!("cargo:rustc-env=RAIJIN_PKG_VERSION={}", version);
 }

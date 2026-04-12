@@ -18,6 +18,8 @@ test-support = [
 ]
 
 [dependencies]
+anyhow.workspace = true
+dirs.workspace = true
 raijin-db.workspace = true
 inazuma.workspace = true
 uuid.workspace = true

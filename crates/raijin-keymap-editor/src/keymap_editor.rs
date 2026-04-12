@@ -33,7 +33,7 @@ use inazuma_settings_framework::{
 use raijin_ui::{
     ActiveTheme as _, App, Banner, BorrowAppContext, ContextMenu, IconButtonShape, IconPosition,
     Indicator, Modal, ModalFooter, ModalHeader, ParentElement as _, PopoverMenu, Render, Section,
-    SharedString, Styled as _, Table, TableColumnWidths, TableInteractionState,
+    SharedString, Styled as _, DataTable, TableColumnWidths, TableInteractionState,
     TableResizeBehavior, Tooltip, Window, prelude::*,
 };
 use raijin_ui_input::InputField;
@@ -2087,7 +2087,7 @@ impl Render for KeymapEditor {
                     ),
             )
             .child(
-                Table::new(COLS)
+                DataTable::new(COLS)
                     .interactable(&self.table_interaction_state)
                     .striped()
                     .empty_table_callback({

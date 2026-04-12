@@ -4,7 +4,7 @@ mod test_scheduler;
 #[cfg(test)]
 mod tests;
 
-pub use inazuma_clock::*;
+pub use clock::*;
 pub use executor::*;
 pub use test_scheduler::*;
 

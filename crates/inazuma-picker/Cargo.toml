@@ -26,6 +26,7 @@ raijin-workspace = { workspace = true }
 raijin-actions = { workspace = true }
 raijin-ui-input = { workspace = true }
 raijin-theme-settings = { workspace = true }
+anyhow.workspace = true
 schemars.workspace = true
 serde.workspace = true
 log = { workspace = true }

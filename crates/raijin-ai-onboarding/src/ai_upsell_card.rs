@@ -189,9 +189,9 @@ impl RenderOnce for AiUpsellCard {
                                     .child(
                                         Button::new("pro", "Get Started")
                                             .full_width()
-                                            .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                                            .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                                             .on_click(move |_, _window, cx| {
-                                                telemetry::event!(
+                                                raijin_telemetry::event!(
                                                     "Upgrade To Pro Clicked",
                                                     state = "young-account"
                                                 );
@@ -212,12 +212,12 @@ impl RenderOnce for AiUpsellCard {
                                     .child(
                                         Button::new("start_trial", "Start Pro Trial")
                                             .full_width()
-                                            .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                                            .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                                             .when_some(self.tab_index, |this, tab_index| {
-                                                this.tab_index(tab_index)
+                                                InteractiveElement::tab_index(this, tab_index)
                                             })
                                             .on_click(move |_, _window, cx| {
-                                                telemetry::event!(
+                                                raijin_telemetry::event!(
                                                     "Start Trial Clicked",
                                                     state = "post-sign-in"
                                                 );
@@ -282,12 +282,12 @@ impl RenderOnce for AiUpsellCard {
                 .child(
                     Button::new("sign_in", "Sign In")
                         .full_width()
-                        .style(ButtonStyle::Tinted(ui::TintColor::Accent))
-                        .when_some(self.tab_index, |this, tab_index| this.tab_index(tab_index))
+                        .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
+                        .when_some(self.tab_index, |this, tab_index| InteractiveElement::tab_index(this, tab_index))
                         .on_click({
                             let callback = self.sign_in.clone();
                             move |_, window, cx| {
-                                telemetry::event!("Start Trial Clicked", state = "pre-sign-in");
+                                raijin_telemetry::event!("Start Trial Clicked", state = "pre-sign-in");
                                 callback(window, cx)
                             }
                         }),

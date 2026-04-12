@@ -1,7 +1,7 @@
 use inazuma::{
     AnyElement, App, Context, Corners, Edges, Entity, EventEmitter, FocusHandle, Focusable,
     InteractiveElement, IntoElement, KeyBinding, ParentElement, RenderOnce, SharedString,
-    StatefulInteractiveElement as _, StyleRefinement, Styled, TextAlign, Window, actions,
+    StyleRefinement, Styled, TextAlign, Window, actions,
     prelude::FluentBuilder as _,
 };
 

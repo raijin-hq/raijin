@@ -3,7 +3,7 @@ use inazuma::{
     ParentElement, RenderOnce, StyleRefinement, Styled, Window, div, prelude::FluentBuilder,
 };
 
-use crate::{Disableable, DropdownMenu, IconName, PopupMenu, Selectable, Sizable, Size, StyledExt as _};
+use crate::{Disableable, IconName, PopupMenu, Selectable, Sizable, Size, StyledExt as _};
 
 use super::{Button, ButtonRounded, ButtonVariant, ButtonVariants};
 

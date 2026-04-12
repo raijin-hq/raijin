@@ -5,7 +5,7 @@ use crate::{
 use inazuma::{
     AnyElement, App, ClickEvent, EdgesRefinement, ElementId, InteractiveElement as _, IntoElement,
     ListAlignment, ListState, ParentElement, Pixels, RenderOnce, SharedString,
-    StatefulInteractiveElement as _, StyleRefinement, Styled, Window, div, list,
+    StyleRefinement, Styled, Window, div, list,
     prelude::FluentBuilder, px,
 };
 use std::rc::Rc;

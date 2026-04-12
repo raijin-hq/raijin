@@ -1,4 +1,5 @@
 use inazuma::{Action, IntoElement, ParentElement, RenderOnce, point};
+use raijin_actions;
 use raijin_language_model::{IconOrSvg, LanguageModelRegistry, ZED_CLOUD_PROVIDER_ID};
 use raijin_ui::{Divider, List, ListBulletItem, prelude::*};
 
@@ -142,7 +143,7 @@ impl RenderOnce for ApiKeysWithoutProviders {
                     .full_width()
                     .style(ButtonStyle::Outlined)
                     .on_click(move |_, window, cx| {
-                        window.dispatch_action(zed_actions::agent::OpenSettings.boxed_clone(), cx);
+                        window.dispatch_action(raijin_actions::agent::OpenSettings.boxed_clone(), cx);
                     }),
             )
     }

@@ -89,7 +89,7 @@ macro_rules! tools {
         };
 
         /// Returns whether the tool with the given name supports the given provider.
-        pub fn tool_supports_provider(name: &str, provider: &language_model::LanguageModelProviderId) -> bool {
+        pub fn tool_supports_provider(name: &str, provider: &raijin_language_model::LanguageModelProviderId) -> bool {
             $(
                 if name == <$tool>::NAME {
                     return <$tool>::supports_provider(provider);

@@ -22,3 +22,4 @@ pub use list_sub_header::*;
 pub use delegate::*;
 pub use interactive::*;
 pub use separator_item::*;
+pub(crate) use interactive::init;

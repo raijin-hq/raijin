@@ -845,25 +845,25 @@ async fn test_extension_store_with_test_extension(cx: &mut TestAppContext) {
         Ok(Some(raijin_lsp::CompletionResponse::Array(vec![
             raijin_lsp::CompletionItem {
                 label: "foo".into(),
-                kind: Some(raijin_raijin_lsp::CompletionItemKind::FUNCTION),
+                kind: Some(raijin_lsp::CompletionItemKind::FUNCTION),
                 detail: Some("fn() -> Result(Nil, Error)".into()),
                 ..Default::default()
             },
             raijin_lsp::CompletionItem {
                 label: "bar.baz".into(),
-                kind: Some(raijin_raijin_lsp::CompletionItemKind::FUNCTION),
+                kind: Some(raijin_lsp::CompletionItemKind::FUNCTION),
                 detail: Some("fn(List(a)) -> a".into()),
                 ..Default::default()
             },
             raijin_lsp::CompletionItem {
                 label: "Quux".into(),
-                kind: Some(raijin_raijin_lsp::CompletionItemKind::CONSTRUCTOR),
+                kind: Some(raijin_lsp::CompletionItemKind::CONSTRUCTOR),
                 detail: Some("fn(String) -> T".into()),
                 ..Default::default()
             },
             raijin_lsp::CompletionItem {
                 label: "my_string".into(),
-                kind: Some(raijin_raijin_lsp::CompletionItemKind::CONSTANT),
+                kind: Some(raijin_lsp::CompletionItemKind::CONSTANT),
                 detail: Some("String".into()),
                 ..Default::default()
             },

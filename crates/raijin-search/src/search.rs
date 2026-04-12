@@ -155,7 +155,7 @@ impl SearchOption {
                 }))
             }
         })
-        .style(ButtonStyle::Subtle)
+        .style(ButtonStyle::SUBTLE)
         .shape(IconButtonShape::Square)
         .toggle_state(active.contains(self.as_options()))
         .tooltip(move |_window, cx| Tooltip::for_action_in(label, action, &focus_handle, cx))

@@ -143,7 +143,7 @@ impl EvalAssertion {
         let expected_diffs: Vec<String> = expected_diffs.into_iter().map(Into::into).collect();
         Self::new(async move |sample, _judge, _cx| {
             let matches = expected_diffs.iter().any(|possible_diff| {
-                language::apply_diff_patch(&sample.text_before, possible_diff)
+                raijin_language::apply_diff_patch(&sample.text_before, possible_diff)
                     .map(|expected| {
                         strip_empty_lines(&expected) == strip_empty_lines(&sample.text_after)
                     })
@@ -274,8 +274,8 @@ impl StreamingEditToolTest {
             cx.set_http_client(http_client);
             let client = Client::production(cx);
             let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
-            language_model::init(user_store.clone(), client.clone(), cx);
-            language_models::init(user_store, client, cx);
+            raijin_language_model::init(user_store.clone(), client.clone(), cx);
+            raijin_language_models::init(user_store, client, cx);
         });
 
         fs.insert_tree("/root", json!({})).await;
@@ -493,7 +493,7 @@ impl StreamingEditToolTest {
 
         let sample = EvalSample {
             tool_input,
-            diff: language::unified_diff(
+            diff: raijin_language::unified_diff(
                 eval.input_content.as_deref().unwrap_or_default(),
                 new_text,
             ),
@@ -742,8 +742,8 @@ fn eval_delete_function() {
     let input_file_content = include_str!("fixtures/delete_run_git_blame/before.rs");
     let output_file_content = include_str!("fixtures/delete_run_git_blame/after.rs");
     let possible_diffs = vec![
-        language::unified_diff(input_file_content, output_file_content),
-        language::unified_diff(
+        raijin_language::unified_diff(input_file_content, output_file_content),
+        raijin_language::unified_diff(
             input_file_content,
             &output_file_content
                 .replace(

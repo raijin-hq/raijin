@@ -5,7 +5,7 @@ use std::{ops::Range, rc::Rc};
 use inazuma::{
     App, AppContext as _, Context, Empty, Entity, FocusHandle, Focusable, Half,
     InteractiveElement as _, IntoElement, KeyBinding, ParentElement as _, Pixels, Render,
-    StatefulInteractiveElement as _, Styled, Subscription, Window, actions, div,
+    Styled, Subscription, Window, actions, div,
     prelude::FluentBuilder as _,
 };
 use ropey::Rope;

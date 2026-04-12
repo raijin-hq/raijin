@@ -46,7 +46,7 @@ use raijin_theme_settings::ThemeSettings;
 use time::{OffsetDateTime, UtcOffset, format_description::BorrowedFormatItem};
 use raijin_ui::{
     ButtonLike, Chip, CommonAnimationExt as _, ContextMenu, DiffStat, Divider, HighlightedLabel,
-    ScrollableHandle, Table, TableColumnWidths, TableInteractionState, TableResizeBehavior,
+    ScrollableHandle, DataTable, TableColumnWidths, TableInteractionState, TableResizeBehavior,
     Tooltip, WithScrollbar, prelude::*,
 };
 use raijin_workspace::{
@@ -2526,7 +2526,7 @@ impl Render for GitGraph {
                     let weak_self = cx.weak_entity();
                     let focus_handle = self.focus_handle.clone();
                     div().flex_1().size_full().child(
-                        Table::new(4)
+                        DataTable::new(4)
                             .interactable(&self.table_interaction_state)
                             .hide_row_borders()
                             .hide_row_hover()

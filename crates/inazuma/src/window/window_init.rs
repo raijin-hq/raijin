@@ -191,6 +191,14 @@ impl Window {
                     .log_err();
             }
         }));
+        platform_window.on_button_layout_changed(Box::new({
+            let mut cx = cx.to_async();
+            move || {
+                handle
+                    .update(&mut cx, |_, window, cx| window.button_layout_changed(cx))
+                    .log_err();
+            }
+        }));
         platform_window.on_active_status_change(Box::new({
             let mut cx = cx.to_async();
             move |active| {

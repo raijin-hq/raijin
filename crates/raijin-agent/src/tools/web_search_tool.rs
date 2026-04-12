@@ -7,7 +7,7 @@ use crate::{
 use agent_client_protocol as acp;
 use raijin_agent_settings::AgentSettings;
 use anyhow::Result;
-use cloud_llm_client::WebSearchResponse;
+use raijin_cloud_llm_client::WebSearchResponse;
 use futures::FutureExt as _;
 use inazuma::{App, Task};
 use raijin_language_model::{
@@ -18,7 +18,7 @@ use serde::{Deserialize, Serialize};
 use inazuma_settings_framework::Settings;
 use raijin_ui::prelude::*;
 use inazuma_util::markdown::MarkdownInlineCode;
-use web_search::WebSearchRegistry;
+use raijin_web_search::WebSearchRegistry;
 
 /// Search the web for information using your query.
 /// Use this when you need real-time information, facts, or data that might not be in your training.

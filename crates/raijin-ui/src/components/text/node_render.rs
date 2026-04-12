@@ -424,6 +424,7 @@ impl BlockNode {
         };
 
         match self {
+            #[cfg(feature = "html")]
             BlockNode::Root { children, .. } => div()
                 .id(("div", ix))
                 .children(children.into_iter().enumerate().map(move |(ix, node)| {

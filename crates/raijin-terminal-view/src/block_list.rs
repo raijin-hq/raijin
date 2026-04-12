@@ -75,17 +75,15 @@ impl BlockListView {
 
     /// Read current font/appearance config and build Font + dimensions.
     fn read_config(cx: &App) -> (Font, f32, f32, Vec<raijin_settings::ResolvedSymbolMap>) {
-        let config = cx.global::<raijin_settings::RaijinSettings>();
+        use inazuma_settings_framework::Settings;
+        let appearance = raijin_settings::AppearanceSettings::get_global(cx);
         let font = Font {
-            family: config.appearance.font_family.clone().into(),
+            family: appearance.font_family.clone().into(),
             weight: inazuma::FontWeight::NORMAL,
             ..Font::default()
         };
-        let symbol_maps = config.appearance.symbol_map
-            .iter()
-            .filter_map(|entry| entry.resolve())
-            .collect();
-        (font, config.appearance.font_size as f32, config.appearance.line_height as f32, symbol_maps)
+        let symbol_maps = appearance.symbol_map.clone();
+        (font, appearance.font_size, appearance.line_height, symbol_maps)
     }
 
     /// Clear all blocks and reset cache.

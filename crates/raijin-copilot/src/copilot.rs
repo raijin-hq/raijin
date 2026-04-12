@@ -146,7 +146,7 @@ impl Status {
 }
 
 struct RegisteredBuffer {
-    uri: lsp::Uri,
+    uri: raijin_lsp::Uri,
     language_id: String,
     snapshot: BufferSnapshot,
     snapshot_version: i32,
@@ -193,8 +193,8 @@ impl RegisteredBuffer {
                                     let new_text = new_snapshot
                                         .text_for_range(edit.new.start.1..edit.new.end.1)
                                         .collect();
-                                    lsp::TextDocumentContentChangeEvent {
-                                        range: Some(lsp::Range::new(
+                                    raijin_lsp::TextDocumentContentChangeEvent {
+                                        range: Some(raijin_lsp::Range::new(
                                             point_to_lsp(edit_start),
                                             point_to_lsp(edit_end),
                                         )),
@@ -216,9 +216,9 @@ impl RegisteredBuffer {
                             buffer.snapshot = new_snapshot;
                             server
                                 .lsp
-                                .notify::<lsp::notification::DidChangeTextDocument>(
-                                    lsp::DidChangeTextDocumentParams {
-                                        text_document: lsp::VersionedTextDocumentIdentifier::new(
+                                .notify::<raijin_lsp::notification::DidChangeTextDocument>(
+                                    raijin_lsp::DidChangeTextDocumentParams {
+                                        text_document: raijin_lsp::VersionedTextDocumentIdentifier::new(
                                             buffer.uri.clone(),
                                             buffer.snapshot_version,
                                         ),
@@ -318,7 +318,7 @@ pub(crate) struct CopilotEditPrediction {
     pub(crate) buffer: Entity<Buffer>,
     pub(crate) range: Range<Anchor>,
     pub(crate) text: String,
-    pub(crate) command: Option<lsp::Command>,
+    pub(crate) command: Option<raijin_lsp::Command>,
     pub(crate) snapshot: BufferSnapshot,
     pub(crate) source: CompletionSource,
 }
@@ -332,14 +332,14 @@ impl Copilot {
         cx: &mut Context<Self>,
     ) -> Self {
         let send_focus_notification = project.map(|project| {
-            cx.subscribe(&project, |this, project, e: &project::Event, cx| {
-                if let project::Event::ActiveEntryChanged(new_entry) = e
+            cx.subscribe(&project, |this, project, e: &raijin_project::Event, cx| {
+                if let raijin_project::Event::ActiveEntryChanged(new_entry) = e
                     && let Ok(running) = this.server.as_authenticated()
                 {
                     let uri = new_entry
                         .and_then(|id| project.read(cx).path_for_entry(id, cx))
                         .and_then(|entry| project.read(cx).absolute_path(&entry, cx))
-                        .and_then(|abs_path| lsp::Uri::from_file_path(abs_path).ok());
+                        .and_then(|abs_path| raijin_lsp::Uri::from_file_path(abs_path).ok());
 
                     _ = running.lsp.notify::<DidFocus>(DidFocusParams { uri });
                 }
@@ -512,15 +512,15 @@ impl Copilot {
             };
         }
 
-        if let Ok(oauth_token) = env::var(copilot_chat::COPILOT_OAUTH_ENV_VAR) {
-            env.insert(copilot_chat::COPILOT_OAUTH_ENV_VAR.to_string(), oauth_token);
+        if let Ok(oauth_token) = env::var(raijin_copilot_chat::COPILOT_OAUTH_ENV_VAR) {
+            env.insert(raijin_copilot_chat::COPILOT_OAUTH_ENV_VAR.to_string(), oauth_token);
         }
 
         if env.is_empty() { None } else { Some(env) }
     }
 
     #[cfg(any(test, feature = "test-support"))]
-    pub fn fake(cx: &mut inazuma::TestAppContext) -> (Entity<Self>, lsp::FakeLanguageServer) {
+    pub fn fake(cx: &mut inazuma::TestAppContext) -> (Entity<Self>, raijin_lsp::FakeLanguageServer) {
         use raijin_fs::FakeFs;
         use inazuma::Subscription;
         use raijin_lsp::FakeLanguageServer;
@@ -647,16 +647,16 @@ impl Copilot {
                 .detach();
 
             server
-                .on_request::<lsp::request::ShowDocument, _, _>(move |params, cx| {
+                .on_request::<raijin_lsp::request::ShowDocument, _, _>(move |params, cx| {
                     if params.external.unwrap_or(false) {
                         let url = params.uri.to_string();
                         cx.update(|cx| cx.open_url(&url));
                     }
-                    async move { Ok(lsp::ShowDocumentResult { success: true }) }
+                    async move { Ok(raijin_lsp::ShowDocumentResult { success: true }) }
                 })
                 .detach();
 
-            let configuration = lsp::DidChangeConfigurationParams {
+            let configuration = raijin_lsp::DidChangeConfigurationParams {
                 settings: Default::default(),
             };
 
@@ -687,7 +687,7 @@ impl Copilot {
                         .window
                         .get_or_insert_with(Default::default)
                         .show_document =
-                        Some(lsp::ShowDocumentClientCapabilities { support: true });
+                        Some(raijin_lsp::ShowDocumentClientCapabilities { support: true });
                     server.initialize(params, configuration.into(), request_timeout, cx)
                 })
                 .await?;
@@ -907,9 +907,9 @@ impl Copilot {
                 let language_id = id_for_language(buffer.read(cx).language());
                 let snapshot = buffer.read(cx).snapshot();
                 server
-                    .notify::<lsp::notification::DidOpenTextDocument>(
-                        lsp::DidOpenTextDocumentParams {
-                            text_document: lsp::TextDocumentItem {
+                    .notify::<raijin_lsp::notification::DidOpenTextDocument>(
+                        raijin_lsp::DidOpenTextDocumentParams {
+                            text_document: raijin_lsp::TextDocumentItem {
                                 uri: uri.clone(),
                                 language_id: language_id.clone(),
                                 version: 0,
@@ -942,22 +942,22 @@ impl Copilot {
     fn handle_buffer_event(
         &mut self,
         buffer: Entity<Buffer>,
-        event: &language::BufferEvent,
+        event: &raijin_language::BufferEvent,
         cx: &mut Context<Self>,
     ) -> Result<()> {
         if let Ok(server) = self.server.as_running()
             && let Some(registered_buffer) = server.registered_buffers.get_mut(&buffer.entity_id())
         {
             match event {
-                language::BufferEvent::Edited { .. } => {
+                raijin_language::BufferEvent::Edited { .. } => {
                     drop(registered_buffer.report_changes(&buffer, cx));
                 }
-                language::BufferEvent::Saved => {
+                raijin_language::BufferEvent::Saved => {
                     server
                         .lsp
-                        .notify::<lsp::notification::DidSaveTextDocument>(
-                            lsp::DidSaveTextDocumentParams {
-                                text_document: lsp::TextDocumentIdentifier::new(
+                        .notify::<raijin_lsp::notification::DidSaveTextDocument>(
+                            raijin_lsp::DidSaveTextDocumentParams {
+                                text_document: raijin_lsp::TextDocumentIdentifier::new(
                                     registered_buffer.uri.clone(),
                                 ),
                                 text: None,
@@ -965,8 +965,8 @@ impl Copilot {
                         )
                         .ok();
                 }
-                language::BufferEvent::FileHandleChanged
-                | language::BufferEvent::LanguageChanged(_) => {
+                raijin_language::BufferEvent::FileHandleChanged
+                | raijin_language::BufferEvent::LanguageChanged(_) => {
                     let new_language_id = id_for_language(buffer.read(cx).language());
                     let Ok(new_uri) = uri_for_buffer(&buffer, cx) else {
                         return Ok(());
@@ -978,17 +978,17 @@ impl Copilot {
                         registered_buffer.language_id = new_language_id;
                         server
                             .lsp
-                            .notify::<lsp::notification::DidCloseTextDocument>(
-                                lsp::DidCloseTextDocumentParams {
-                                    text_document: lsp::TextDocumentIdentifier::new(old_uri),
+                            .notify::<raijin_lsp::notification::DidCloseTextDocument>(
+                                raijin_lsp::DidCloseTextDocumentParams {
+                                    text_document: raijin_lsp::TextDocumentIdentifier::new(old_uri),
                                 },
                             )
                             .ok();
                         server
                             .lsp
-                            .notify::<lsp::notification::DidOpenTextDocument>(
-                                lsp::DidOpenTextDocumentParams {
-                                    text_document: lsp::TextDocumentItem::new(
+                            .notify::<raijin_lsp::notification::DidOpenTextDocument>(
+                                raijin_lsp::DidOpenTextDocumentParams {
+                                    text_document: raijin_lsp::TextDocumentItem::new(
                                         registered_buffer.uri.clone(),
                                         registered_buffer.language_id.clone(),
                                         registered_buffer.snapshot_version,
@@ -1012,9 +1012,9 @@ impl Copilot {
         {
             server
                 .lsp
-                .notify::<lsp::notification::DidCloseTextDocument>(
-                    lsp::DidCloseTextDocumentParams {
-                        text_document: lsp::TextDocumentIdentifier::new(buffer.uri),
+                .notify::<raijin_lsp::notification::DidCloseTextDocument>(
+                    raijin_lsp::DidCloseTextDocumentParams {
+                        text_document: raijin_lsp::TextDocumentIdentifier::new(buffer.uri),
                     },
                 )
                 .ok();
@@ -1065,7 +1065,7 @@ impl Copilot {
             let nes_fut = if nes_enabled {
                 lsp.request::<NextEditSuggestions>(
                     request::NextEditSuggestionsParams {
-                        text_document: lsp::VersionedTextDocumentIdentifier {
+                        text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                             uri: uri.clone(),
                             version,
                         },
@@ -1114,7 +1114,7 @@ impl Copilot {
             let inline_fut = lsp
                 .request::<InlineCompletions>(
                     request::InlineCompletionsParams {
-                        text_document: lsp::VersionedTextDocumentIdentifier {
+                        text_document: raijin_lsp::VersionedTextDocumentIdentifier {
                             uri: uri.clone(),
                             version,
                         },
@@ -1210,8 +1210,8 @@ impl Copilot {
                 .global_lsp_settings
                 .get_request_timeout();
 
-            let request = server.lsp.request::<lsp::ExecuteCommand>(
-                lsp::ExecuteCommandParams {
+            let request = server.lsp.request::<raijin_lsp::ExecuteCommand>(
+                raijin_lsp::ExecuteCommandParams {
                     command: command.command.clone(),
                     arguments: command.arguments.clone().unwrap_or_default(),
                     ..Default::default()
@@ -1340,9 +1340,9 @@ fn id_for_language(language: Option<&Arc<Language>>) -> String {
         .unwrap_or_else(|| "plaintext".to_string())
 }
 
-fn uri_for_buffer(buffer: &Entity<Buffer>, cx: &App) -> Result<lsp::Uri, ()> {
+fn uri_for_buffer(buffer: &Entity<Buffer>, cx: &App) -> Result<raijin_lsp::Uri, ()> {
     if let Some(file) = buffer.read(cx).file().and_then(|file| file.as_local()) {
-        lsp::Uri::from_file_path(file.abs_path(cx))
+        raijin_lsp::Uri::from_file_path(file.abs_path(cx))
     } else {
         format!("buffer://{}", buffer.entity_id())
             .parse()
@@ -1359,10 +1359,10 @@ fn notify_did_change_config_to_server(
         .copilot
         .clone();
 
-    if let Some(copilot_chat) = copilot_chat::CopilotChat::global(cx) {
+    if let Some(copilot_chat) = raijin_copilot_chat::CopilotChat::global(cx) {
         copilot_chat.update(cx, |chat, cx| {
             chat.set_configuration(
-                copilot_chat::CopilotChatConfiguration {
+                raijin_copilot_chat::CopilotChatConfiguration {
                     enterprise_uri: copilot_settings.enterprise_uri.clone(),
                 },
                 cx,
@@ -1381,7 +1381,7 @@ fn notify_did_change_config_to_server(
     });
 
     server
-        .notify::<lsp::notification::DidChangeConfiguration>(lsp::DidChangeConfigurationParams {
+        .notify::<raijin_lsp::notification::DidChangeConfiguration>(raijin_lsp::DidChangeConfigurationParams {
             settings,
         })
         .ok();
@@ -1389,11 +1389,11 @@ fn notify_did_change_config_to_server(
 }
 
 async fn clear_copilot_dir() {
-    remove_matching(paths::copilot_dir(), |_| true).await
+    remove_matching(raijin_paths::copilot_dir(), |_| true).await
 }
 
 async fn clear_copilot_config_dir() {
-    remove_matching(copilot_chat::copilot_chat_config_dir(), |_| true).await
+    remove_matching(raijin_copilot_chat::copilot_chat_config_dir(), |_| true).await
 }
 
 async fn ensure_node_version_for_copilot(node_path: &Path) -> anyhow::Result<()> {
@@ -1401,7 +1401,7 @@ async fn ensure_node_version_for_copilot(node_path: &Path) -> anyhow::Result<()>
 
     log::info!("Checking Node.js version for Copilot at: {:?}", node_path);
 
-    let output = util::command::new_command(node_path)
+    let output = inazuma_util::command::new_command(node_path)
         .arg("--version")
         .output()
         .await
@@ -1442,22 +1442,22 @@ async fn get_copilot_lsp(fs: Arc<dyn Fs>, node_runtime: NodeRuntime) -> anyhow::
     let latest_version = node_runtime
         .npm_package_latest_version(PACKAGE_NAME)
         .await?;
-    let server_path = paths::copilot_dir().join(SERVER_PATH);
+    let server_path = raijin_paths::copilot_dir().join(SERVER_PATH);
 
-    fs.create_dir(paths::copilot_dir()).await?;
+    fs.create_dir(raijin_paths::copilot_dir()).await?;
 
     let should_install = node_runtime
         .should_install_npm_package(
             PACKAGE_NAME,
             &server_path,
-            paths::copilot_dir(),
+            raijin_paths::copilot_dir(),
             VersionStrategy::Latest(&latest_version),
         )
         .await;
     if should_install {
         node_runtime
             .npm_install_packages(
-                paths::copilot_dir(),
+                raijin_paths::copilot_dir(),
                 &[(PACKAGE_NAME, &latest_version.to_string())],
             )
             .await?;
@@ -1589,15 +1589,15 @@ mod tests {
         let (copilot, mut lsp) = Copilot::fake(cx);
 
         let buffer_1 = cx.new(|cx| Buffer::local("Hello", cx));
-        let buffer_1_uri: lsp::Uri = format!("buffer://{}", buffer_1.entity_id().as_u64())
+        let buffer_1_uri: raijin_lsp::Uri = format!("buffer://{}", buffer_1.entity_id().as_u64())
             .parse()
             .unwrap();
         copilot.update(cx, |copilot, cx| copilot.register_buffer(&buffer_1, cx));
         assert_eq!(
-            lsp.receive_notification::<lsp::notification::DidOpenTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidOpenTextDocument>()
                 .await,
-            lsp::DidOpenTextDocumentParams {
-                text_document: lsp::TextDocumentItem::new(
+            raijin_lsp::DidOpenTextDocumentParams {
+                text_document: raijin_lsp::TextDocumentItem::new(
                     buffer_1_uri.clone(),
                     "plaintext".into(),
                     0,
@@ -1607,15 +1607,15 @@ mod tests {
         );
 
         let buffer_2 = cx.new(|cx| Buffer::local("Goodbye", cx));
-        let buffer_2_uri: lsp::Uri = format!("buffer://{}", buffer_2.entity_id().as_u64())
+        let buffer_2_uri: raijin_lsp::Uri = format!("buffer://{}", buffer_2.entity_id().as_u64())
             .parse()
             .unwrap();
         copilot.update(cx, |copilot, cx| copilot.register_buffer(&buffer_2, cx));
         assert_eq!(
-            lsp.receive_notification::<lsp::notification::DidOpenTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidOpenTextDocument>()
                 .await,
-            lsp::DidOpenTextDocumentParams {
-                text_document: lsp::TextDocumentItem::new(
+            raijin_lsp::DidOpenTextDocumentParams {
+                text_document: raijin_lsp::TextDocumentItem::new(
                     buffer_2_uri.clone(),
                     "plaintext".into(),
                     0,
@@ -1626,14 +1626,14 @@ mod tests {
 
         buffer_1.update(cx, |buffer, cx| buffer.edit([(5..5, " world")], None, cx));
         assert_eq!(
-            lsp.receive_notification::<lsp::notification::DidChangeTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidChangeTextDocument>()
                 .await,
-            lsp::DidChangeTextDocumentParams {
-                text_document: lsp::VersionedTextDocumentIdentifier::new(buffer_1_uri.clone(), 1),
-                content_changes: vec![lsp::TextDocumentContentChangeEvent {
-                    range: Some(lsp::Range::new(
-                        lsp::Position::new(0, 5),
-                        lsp::Position::new(0, 5)
+            raijin_lsp::DidChangeTextDocumentParams {
+                text_document: raijin_lsp::VersionedTextDocumentIdentifier::new(buffer_1_uri.clone(), 1),
+                content_changes: vec![raijin_lsp::TextDocumentContentChangeEvent {
+                    range: Some(raijin_lsp::Range::new(
+                        raijin_lsp::Position::new(0, 5),
+                        raijin_lsp::Position::new(0, 5)
                     )),
                     range_length: None,
                     text: " world".into(),
@@ -1652,18 +1652,18 @@ mod tests {
             )
         });
         assert_eq!(
-            lsp.receive_notification::<lsp::notification::DidCloseTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidCloseTextDocument>()
                 .await,
-            lsp::DidCloseTextDocumentParams {
-                text_document: lsp::TextDocumentIdentifier::new(buffer_1_uri),
+            raijin_lsp::DidCloseTextDocumentParams {
+                text_document: raijin_lsp::TextDocumentIdentifier::new(buffer_1_uri),
             }
         );
-        let buffer_1_uri = lsp::Uri::from_file_path(path!("/root/child/buffer-1")).unwrap();
+        let buffer_1_uri = raijin_lsp::Uri::from_file_path(path!("/root/child/buffer-1")).unwrap();
         assert_eq!(
-            lsp.receive_notification::<lsp::notification::DidOpenTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidOpenTextDocument>()
                 .await,
-            lsp::DidOpenTextDocumentParams {
-                text_document: lsp::TextDocumentItem::new(
+            raijin_lsp::DidOpenTextDocumentParams {
+                text_document: raijin_lsp::TextDocumentItem::new(
                     buffer_1_uri.clone(),
                     "plaintext".into(),
                     1,
@@ -1681,9 +1681,9 @@ mod tests {
             .await
             .unwrap();
         let mut received_close_notifications = vec![
-            lsp.receive_notification::<lsp::notification::DidCloseTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidCloseTextDocument>()
                 .await,
-            lsp.receive_notification::<lsp::notification::DidCloseTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidCloseTextDocument>()
                 .await,
         ];
         received_close_notifications
@@ -1691,11 +1691,11 @@ mod tests {
         assert_eq!(
             received_close_notifications,
             vec![
-                lsp::DidCloseTextDocumentParams {
-                    text_document: lsp::TextDocumentIdentifier::new(buffer_2_uri.clone()),
+                raijin_lsp::DidCloseTextDocumentParams {
+                    text_document: raijin_lsp::TextDocumentIdentifier::new(buffer_2_uri.clone()),
                 },
-                lsp::DidCloseTextDocumentParams {
-                    text_document: lsp::TextDocumentIdentifier::new(buffer_1_uri.clone()),
+                raijin_lsp::DidCloseTextDocumentParams {
+                    text_document: raijin_lsp::TextDocumentIdentifier::new(buffer_1_uri.clone()),
                 },
             ],
         );
@@ -1704,7 +1704,7 @@ mod tests {
         lsp.set_request_handler::<request::SignIn, _, _>(|_, _| async {
             Ok(request::PromptUserDeviceFlow {
                 user_code: "test-code".into(),
-                command: lsp::Command {
+                command: raijin_lsp::Command {
                     title: "Sign in".into(),
                     command: "github.copilot.finishDeviceFlow".into(),
                     arguments: None,
@@ -1727,9 +1727,9 @@ mod tests {
         });
 
         let mut received_open_notifications = vec![
-            lsp.receive_notification::<lsp::notification::DidOpenTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidOpenTextDocument>()
                 .await,
-            lsp.receive_notification::<lsp::notification::DidOpenTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidOpenTextDocument>()
                 .await,
         ];
         received_open_notifications
@@ -1737,16 +1737,16 @@ mod tests {
         assert_eq!(
             received_open_notifications,
             vec![
-                lsp::DidOpenTextDocumentParams {
-                    text_document: lsp::TextDocumentItem::new(
+                raijin_lsp::DidOpenTextDocumentParams {
+                    text_document: raijin_lsp::TextDocumentItem::new(
                         buffer_2_uri.clone(),
                         "plaintext".into(),
                         0,
                         "Goodbye".into()
                     ),
                 },
-                lsp::DidOpenTextDocumentParams {
-                    text_document: lsp::TextDocumentItem::new(
+                raijin_lsp::DidOpenTextDocumentParams {
+                    text_document: raijin_lsp::TextDocumentItem::new(
                         buffer_1_uri.clone(),
                         "plaintext".into(),
                         0,
@@ -1758,10 +1758,10 @@ mod tests {
         // Dropping a buffer causes it to be closed on the LSP side as well.
         cx.update(|_| drop(buffer_2));
         assert_eq!(
-            lsp.receive_notification::<lsp::notification::DidCloseTextDocument>()
+            lsp.receive_notification::<raijin_lsp::notification::DidCloseTextDocument>()
                 .await,
-            lsp::DidCloseTextDocumentParams {
-                text_document: lsp::TextDocumentIdentifier::new(buffer_2_uri),
+            raijin_lsp::DidCloseTextDocumentParams {
+                text_document: raijin_lsp::TextDocumentIdentifier::new(buffer_2_uri),
             }
         );
     }
@@ -1771,13 +1771,13 @@ mod tests {
         path: Arc<RelPath>,
     }
 
-    impl language::File for File {
-        fn as_local(&self) -> Option<&dyn language::LocalFile> {
+    impl raijin_language::File for File {
+        fn as_local(&self) -> Option<&dyn raijin_language::LocalFile> {
             Some(self)
         }
 
-        fn disk_state(&self) -> language::DiskState {
-            language::DiskState::Present {
+        fn disk_state(&self) -> raijin_language::DiskState {
+            raijin_language::DiskState::Present {
                 mtime: ::raijin_fs::MTime::from_seconds_and_nanos(100, 42),
                 size: 0,
             }
@@ -1799,12 +1799,12 @@ mod tests {
             unimplemented!()
         }
 
-        fn to_proto(&self, _: &App) -> rpc::proto::File {
+        fn to_proto(&self, _: &App) -> raijin_rpc::proto::File {
             unimplemented!()
         }
 
-        fn worktree_id(&self, _: &App) -> settings::WorktreeId {
-            settings::WorktreeId::from_usize(0)
+        fn worktree_id(&self, _: &App) -> inazuma_settings_framework::WorktreeId {
+            inazuma_settings_framework::WorktreeId::from_usize(0)
         }
 
         fn is_private(&self) -> bool {
@@ -1812,7 +1812,7 @@ mod tests {
         }
     }
 
-    impl language::LocalFile for File {
+    impl raijin_language::LocalFile for File {
         fn abs_path(&self, _: &App) -> PathBuf {
             self.abs_path.clone()
         }
@@ -1887,7 +1887,7 @@ mod tests {
     }
 
     fn init_test(cx: &mut TestAppContext) {
-        zlog::init_test();
+        raijin_log::init_test();
 
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);

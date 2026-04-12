@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use crate::{EditPredictionStore, ZedPredictUpsell};
-use ai_onboarding::EditPredictionOnboarding;
+use raijin_ai_onboarding::EditPredictionOnboarding;
 use raijin_client::{Client, UserStore};
 use raijin_db::kvp::Dismissable;
 use raijin_fs::Fs;
@@ -17,10 +17,10 @@ use raijin_workspace::{ModalView, Workspace};
 #[macro_export]
 macro_rules! onboarding_event {
     ($name:expr) => {
-        telemetry::event!($name, source = "Edit Prediction Onboarding");
+        raijin_telemetry::event!($name, source = "Edit Prediction Onboarding");
     };
     ($name:expr, $($key:ident $(= $value:expr)?),+ $(,)?) => {
-        telemetry::event!($name, source = "Edit Prediction Onboarding", $($key $(= $value)?),+);
+        raijin_telemetry::event!($name, source = "Edit Prediction Onboarding", $($key $(= $value)?),+);
     };
 }
 
@@ -78,7 +78,7 @@ impl ZedPredictModal {
                                 set_edit_prediction_provider(EditPredictionProvider::Copilot, cx);
                                 this.update(cx, |_, cx| cx.emit(DismissEvent)).ok();
                                 if let Some(copilot) = copilot.clone() {
-                                    copilot_ui::initiate_sign_in(copilot, window, cx);
+                                    raijin_copilot_ui::initiate_sign_in(copilot, window, cx);
                                 }
                             }
                         }),
@@ -90,7 +90,7 @@ impl ZedPredictModal {
         });
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         ZedPredictUpsell::set_dismissed(true, cx);
         cx.emit(DismissEvent);
     }
@@ -109,9 +109,9 @@ impl ModalView for ZedPredictModal {
         &mut self,
         _window: &mut Window,
         cx: &mut Context<Self>,
-    ) -> workspace::DismissDecision {
+    ) -> raijin_workspace::DismissDecision {
         ZedPredictUpsell::set_dismissed(true, cx);
-        workspace::DismissDecision::Dismiss(true)
+        raijin_workspace::DismissDecision::Dismiss(true)
     }
 }
 
@@ -133,7 +133,7 @@ impl Render for ZedPredictModal {
             .track_focus(&self.focus_handle(cx))
             .overflow_hidden()
             .on_action(cx.listener(Self::cancel))
-            .on_action(cx.listener(|_, _: &menu::Cancel, _window, cx| {
+            .on_action(cx.listener(|_, _: &inazuma_menu::Cancel, _window, cx| {
                 onboarding_event!("Cancelled", trigger = "Action");
                 cx.emit(DismissEvent);
             }))

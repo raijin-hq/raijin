@@ -43,7 +43,7 @@ pub struct OpenRouterLanguageModelProvider {
 pub struct State {
     api_key_state: ApiKeyState,
     http_client: Arc<dyn HttpClient>,
-    available_models: Vec<open_router::Model>,
+    available_models: Vec<raijin_open_router::Model>,
     fetch_models_task: Option<Task<Result<(), LanguageModelCompletionError>>>,
 }
 
@@ -153,7 +153,7 @@ impl OpenRouterLanguageModelProvider {
         }
     }
 
-    fn create_language_model(&self, model: open_router::Model) -> Arc<dyn LanguageModel> {
+    fn create_language_model(&self, model: raijin_open_router::Model) -> Arc<dyn LanguageModel> {
         Arc::new(OpenRouterLanguageModel {
             id: LanguageModelId::from(model.id().to_string()),
             model,
@@ -186,7 +186,7 @@ impl LanguageModelProvider for OpenRouterLanguageModelProvider {
     }
 
     fn default_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
-        Some(self.create_language_model(open_router::Model::default()))
+        Some(self.create_language_model(raijin_open_router::Model::default()))
     }
 
     fn default_fast_model(&self, _cx: &App) -> Option<Arc<dyn LanguageModel>> {
@@ -198,7 +198,7 @@ impl LanguageModelProvider for OpenRouterLanguageModelProvider {
         let mut settings_models = Vec::new();
 
         for model in &Self::settings(cx).available_models {
-            settings_models.push(open_router::Model {
+            settings_models.push(raijin_open_router::Model {
                 name: model.name.clone(),
                 display_name: model.display_name.clone(),
                 max_tokens: model.max_tokens,
@@ -236,7 +236,7 @@ impl LanguageModelProvider for OpenRouterLanguageModelProvider {
 
     fn configuration_view(
         &self,
-        _target_agent: language_model::ConfigurationViewTargetAgent,
+        _target_agent: raijin_language_model::ConfigurationViewTargetAgent,
         window: &mut Window,
         cx: &mut App,
     ) -> AnyView {
@@ -252,7 +252,7 @@ impl LanguageModelProvider for OpenRouterLanguageModelProvider {
 
 pub struct OpenRouterLanguageModel {
     id: LanguageModelId,
-    model: open_router::Model,
+    model: raijin_open_router::Model,
     state: Entity<State>,
     http_client: Arc<dyn HttpClient>,
     request_limiter: RateLimiter,
@@ -261,14 +261,14 @@ pub struct OpenRouterLanguageModel {
 impl OpenRouterLanguageModel {
     fn stream_completion(
         &self,
-        request: open_router::Request,
+        request: raijin_open_router::Request,
         cx: &AsyncApp,
     ) -> BoxFuture<
         'static,
         Result<
             futures::stream::BoxStream<
                 'static,
-                Result<ResponseStreamEvent, open_router::OpenRouterError>,
+                Result<ResponseStreamEvent, raijin_open_router::OpenRouterError>,
             >,
             LanguageModelCompletionError,
         >,
@@ -286,7 +286,7 @@ impl OpenRouterLanguageModel {
                 });
             };
             let request =
-                open_router::stream_completion(http_client.as_ref(), &api_url, &api_key, request);
+                raijin_open_router::stream_completion(http_client.as_ref(), &api_url, &api_key, request);
             request.await.map_err(Into::into)
         }
         .boxed()
@@ -391,7 +391,7 @@ pub fn into_open_router(
     request: LanguageModelRequest,
     model: &Model,
     max_output_tokens: Option<u64>,
-) -> open_router::Request {
+) -> raijin_open_router::Request {
     // Anthropic models via OpenRouter don't accept reasoning_details being echoed back
     // in requests - it's an output-only field for them. However, Gemini models require
     // the thought signatures to be echoed back for proper reasoning chain continuity.
@@ -413,7 +413,7 @@ pub fn into_open_router(
         for content in message.content {
             match content {
                 MessageContent::Text(text) => add_message_content_part(
-                    open_router::MessagePart::Text { text },
+                    raijin_open_router::MessagePart::Text { text },
                     message.role,
                     &mut messages,
                     reasoning_details_for_message.clone(),
@@ -422,7 +422,7 @@ pub fn into_open_router(
                 MessageContent::RedactedThinking(_) => {}
                 MessageContent::Image(image) => {
                     add_message_content_part(
-                        open_router::MessagePart::Image {
+                        raijin_open_router::MessagePart::Image {
                             image_url: image.to_base64_url(),
                         },
                         message.role,
@@ -431,10 +431,10 @@ pub fn into_open_router(
                     );
                 }
                 MessageContent::ToolUse(tool_use) => {
-                    let tool_call = open_router::ToolCall {
+                    let tool_call = raijin_open_router::ToolCall {
                         id: tool_use.id.to_string(),
-                        content: open_router::ToolCallContent::Function {
-                            function: open_router::FunctionContent {
+                        content: raijin_open_router::ToolCallContent::Function {
+                            function: raijin_open_router::FunctionContent {
                                 name: tool_use.name.to_string(),
                                 arguments: serde_json::to_string(&tool_use.input)
                                     .unwrap_or_default(),
@@ -443,12 +443,12 @@ pub fn into_open_router(
                         },
                     };
 
-                    if let Some(open_router::RequestMessage::Assistant { tool_calls, .. }) =
+                    if let Some(raijin_open_router::RequestMessage::Assistant { tool_calls, .. }) =
                         messages.last_mut()
                     {
                         tool_calls.push(tool_call);
                     } else {
-                        messages.push(open_router::RequestMessage::Assistant {
+                        messages.push(raijin_open_router::RequestMessage::Assistant {
                             content: None,
                             tool_calls: vec![tool_call],
                             reasoning_details: reasoning_details_for_message.clone(),
@@ -458,18 +458,18 @@ pub fn into_open_router(
                 MessageContent::ToolResult(tool_result) => {
                     let content = match &tool_result.content {
                         LanguageModelToolResultContent::Text(text) => {
-                            vec![open_router::MessagePart::Text {
+                            vec![raijin_open_router::MessagePart::Text {
                                 text: text.to_string(),
                             }]
                         }
                         LanguageModelToolResultContent::Image(image) => {
-                            vec![open_router::MessagePart::Image {
+                            vec![raijin_open_router::MessagePart::Image {
                                 image_url: image.to_base64_url(),
                             }]
                         }
                     };
 
-                    messages.push(open_router::RequestMessage::Tool {
+                    messages.push(raijin_open_router::RequestMessage::Tool {
                         content: content.into(),
                         tool_call_id: tool_result.tool_use_id.to_string(),
                     });
@@ -478,7 +478,7 @@ pub fn into_open_router(
         }
     }
 
-    open_router::Request {
+    raijin_open_router::Request {
         model: model.id().into(),
         messages,
         stream: true,
@@ -490,11 +490,11 @@ pub fn into_open_router(
         } else {
             None
         },
-        usage: open_router::RequestUsage { include: true },
+        usage: raijin_open_router::RequestUsage { include: true },
         reasoning: if request.thinking_allowed
             && let OpenRouterModelMode::Thinking { budget_tokens } = model.mode
         {
-            Some(open_router::Reasoning {
+            Some(raijin_open_router::Reasoning {
                 effort: None,
                 max_tokens: budget_tokens,
                 exclude: Some(false),
@@ -506,8 +506,8 @@ pub fn into_open_router(
         tools: request
             .tools
             .into_iter()
-            .map(|tool| open_router::ToolDefinition::Function {
-                function: open_router::FunctionDefinition {
+            .map(|tool| raijin_open_router::ToolDefinition::Function {
+                function: raijin_open_router::FunctionDefinition {
                     name: tool.name,
                     description: Some(tool.description),
                     parameters: Some(tool.input_schema),
@@ -515,28 +515,28 @@ pub fn into_open_router(
             })
             .collect(),
         tool_choice: request.tool_choice.map(|choice| match choice {
-            LanguageModelToolChoice::Auto => open_router::ToolChoice::Auto,
-            LanguageModelToolChoice::Any => open_router::ToolChoice::Required,
-            LanguageModelToolChoice::None => open_router::ToolChoice::None,
+            LanguageModelToolChoice::Auto => raijin_open_router::ToolChoice::Auto,
+            LanguageModelToolChoice::Any => raijin_open_router::ToolChoice::Required,
+            LanguageModelToolChoice::None => raijin_open_router::ToolChoice::None,
         }),
         provider: model.provider.clone(),
     }
 }
 
 fn add_message_content_part(
-    new_part: open_router::MessagePart,
+    new_part: raijin_open_router::MessagePart,
     role: Role,
-    messages: &mut Vec<open_router::RequestMessage>,
+    messages: &mut Vec<raijin_open_router::RequestMessage>,
     reasoning_details: Option<serde_json::Value>,
 ) {
     match (role, messages.last_mut()) {
-        (Role::User, Some(open_router::RequestMessage::User { content }))
-        | (Role::System, Some(open_router::RequestMessage::System { content })) => {
+        (Role::User, Some(raijin_open_router::RequestMessage::User { content }))
+        | (Role::System, Some(raijin_open_router::RequestMessage::System { content })) => {
             content.push_part(new_part);
         }
         (
             Role::Assistant,
-            Some(open_router::RequestMessage::Assistant {
+            Some(raijin_open_router::RequestMessage::Assistant {
                 content: Some(content),
                 ..
             }),
@@ -545,16 +545,16 @@ fn add_message_content_part(
         }
         _ => {
             messages.push(match role {
-                Role::User => open_router::RequestMessage::User {
-                    content: open_router::MessageContent::from(vec![new_part]),
+                Role::User => raijin_open_router::RequestMessage::User {
+                    content: raijin_open_router::MessageContent::from(vec![new_part]),
                 },
-                Role::Assistant => open_router::RequestMessage::Assistant {
-                    content: Some(open_router::MessageContent::from(vec![new_part])),
+                Role::Assistant => raijin_open_router::RequestMessage::Assistant {
+                    content: Some(raijin_open_router::MessageContent::from(vec![new_part])),
                     tool_calls: Vec::new(),
                     reasoning_details,
                 },
-                Role::System => open_router::RequestMessage::System {
-                    content: open_router::MessageContent::from(vec![new_part]),
+                Role::System => raijin_open_router::RequestMessage::System {
+                    content: raijin_open_router::MessageContent::from(vec![new_part]),
                 },
             });
         }
@@ -578,7 +578,7 @@ impl OpenRouterEventMapper {
         mut self,
         events: Pin<
             Box<
-                dyn Send + Stream<Item = Result<ResponseStreamEvent, open_router::OpenRouterError>>,
+                dyn Send + Stream<Item = Result<ResponseStreamEvent, raijin_open_router::OpenRouterError>>,
             >,
         >,
     ) -> impl Stream<Item = Result<LanguageModelCompletionEvent, LanguageModelCompletionError>>
@@ -726,7 +726,7 @@ struct RawToolCall {
 
 pub fn count_open_router_tokens(
     request: LanguageModelRequest,
-    _model: open_router::Model,
+    _model: raijin_open_router::Model,
     cx: &App,
 ) -> BoxFuture<'static, Result<u64>> {
     cx.background_spawn(async move {
@@ -793,7 +793,7 @@ impl ConfigurationView {
         }
     }
 
-    fn save_api_key(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn save_api_key(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let api_key = self.api_key_editor.read(cx).text(cx).trim().to_string();
         if api_key.is_empty() {
             return;
@@ -1083,7 +1083,7 @@ mod tests {
             created: 1234567890,
             model: "google/gemini-3-flash-preview".into(),
             choices: Vec::new(),
-            usage: Some(open_router::Usage {
+            usage: Some(raijin_open_router::Usage {
                 prompt_tokens: 12,
                 completion_tokens: 7,
                 total_tokens: 19,

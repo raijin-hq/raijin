@@ -1,7 +1,9 @@
 mod agent;
+mod appearance;
 mod editor;
 mod extension;
 mod fallible_options;
+mod general;
 mod language;
 mod language_model;
 pub mod merge_from;
@@ -13,9 +15,11 @@ mod title_bar;
 mod workspace;
 
 pub use agent::*;
+pub use appearance::*;
 pub use editor::*;
 pub use extension::*;
 pub use fallible_options::*;
+pub use general::*;
 pub use language::*;
 pub use language_model::*;
 pub use merge_from::MergeFrom as MergeFromTrait;
@@ -24,7 +28,7 @@ use serde::de::DeserializeOwned;
 pub use serde_helper::{
     serialize_f32_with_two_decimal_places, serialize_optional_f32_with_two_decimal_places,
 };
-use raijin_settings_json::parse_json_with_comments;
+use raijin_json_compat::parse_json_with_comments;
 pub use terminal::*;
 pub use theme::*;
 pub use title_bar::*;
@@ -97,6 +101,14 @@ pub struct SettingsContent {
 
     #[serde(default)]
     pub remote: RemoteSettingsContent,
+
+    /// General settings — shell, working directory, input mode, scrollback, etc.
+    /// In Raijin, the terminal IS the app, so these are top-level settings.
+    pub general: Option<GeneralSettingsContent>,
+
+    /// Appearance settings — font, cursor, contrast, colorspace, symbol maps.
+    /// In Raijin, the terminal font is THE font, not a secondary override.
+    pub appearance: Option<AppearanceSettingsContent>,
 
     /// Settings related to the file finder.
     pub file_finder: Option<FileFinderSettingsContent>,

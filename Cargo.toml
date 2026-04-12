@@ -79,7 +79,7 @@ members = [
     "crates/raijin-rpc",
     "crates/raijin-session",
     "crates/raijin-settings",
-    "crates/raijin-settings-json",
+    "crates/raijin-json-compat",
     "crates/raijin-shell",
     "crates/raijin-snippet",
     "crates/raijin-syntax",
@@ -93,7 +93,7 @@ members = [
     "crates/raijin-terminal",
     "crates/raijin-theme",
     "crates/raijin-theme-extension",
-    "crates/raijin-theme-importer",
+    # raijin-theme-importer excluded: needs full rewrite for our ThemeColors sub-struct architecture
     "crates/raijin-theme-selector",
     "crates/raijin-theme-settings",
     "crates/raijin-tracing",
@@ -213,6 +213,8 @@ members = [
     "crates/raijin-collab-ui",
 
     # Batch 8 — Extension System
+    # TODO: raijin-extension-cli, raijin-extension-host, raijin-extension-api need full rewrite:
+    # WIT namespace zed→raijin, wasmtime 33→36, drop legacy API versions — see plan/27-EXTENSION-SYSTEM-REWRITE.md
     "crates/raijin-extension-cli",
     "crates/raijin-extension-host",
     "crates/raijin-extensions-ui",
@@ -235,7 +237,6 @@ members = [
     "crates/raijin-auto-update-ui",
     "crates/raijin-install-cli",
     "crates/raijin-cli",
-    "crates/raijin-migrator",
     "crates/raijin-miniprofiler-ui",
     "crates/raijin-inspector-ui",
     "crates/raijin-component-preview",
@@ -347,7 +348,7 @@ raijin-remote = { path = "crates/raijin-remote" }
 raijin-rpc = { path = "crates/raijin-rpc" }
 raijin-session = { path = "crates/raijin-session" }
 raijin-settings = { path = "crates/raijin-settings" }
-raijin-settings-json = { path = "crates/raijin-settings-json" }
+raijin-json-compat = { path = "crates/raijin-json-compat" }
 raijin-shell = { path = "crates/raijin-shell" }
 raijin-snippet = { path = "crates/raijin-snippet" }
 raijin-syntax = { path = "crates/raijin-syntax" }
@@ -503,7 +504,6 @@ raijin-auto-update-helper = { path = "crates/raijin-auto-update-helper" }
 raijin-auto-update-ui = { path = "crates/raijin-auto-update-ui" }
 raijin-install-cli = { path = "crates/raijin-install-cli" }
 raijin-cli = { path = "crates/raijin-cli" }
-raijin-migrator = { path = "crates/raijin-migrator" }
 raijin-miniprofiler-ui = { path = "crates/raijin-miniprofiler-ui" }
 raijin-inspector-ui = { path = "crates/raijin-inspector-ui" }
 raijin-component-preview = { path = "crates/raijin-component-preview" }
@@ -752,16 +752,18 @@ pathdiff = "0.2"
 pciid-parser = "0.8.0"
 portable-pty = "0.9.0"
 prost-types = "0.9"
-reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }
 rodio = { version = "0.20", features = ["wav"] }
-runtimelib = { version = "1.4.0", default-features = false }
+runtimelib = { version = "=1.4.0", default-features = false, features = [
+    "async-dispatcher-runtime", "aws-lc-rs"
+] }
 scap = "0.0.8"
 simplelog = "0.12.2"
 sysinfo = "0.37.0"
 tiktoken-rs = "0.6"
 tower-http = "0.4.4"
-wasmtime = { version = "33", default-features = false, features = ["cranelift", "gc", "incremental-cache"] }
-wasmtime-wasi = "33"
+wasmtime = { version = "36", default-features = false, features = ["cranelift", "gc", "incremental-cache"] }
+wasmtime-wasi = "36"
 web-time = "1.1.0"
 webrtc-sys = "0.3.23"
 windows-core = "0.61"
