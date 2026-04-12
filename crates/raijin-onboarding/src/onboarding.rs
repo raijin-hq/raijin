@@ -10,7 +10,7 @@ use inazuma::{
 use raijin_notifications::status_toast::{StatusToast, ToastIcon};
 use schemars::JsonSchema;
 use serde::Deserialize;
-use inazuma_settings_framework::{SettingsStore, VsCodeSettingsSource};
+use inazuma_settings_framework::SettingsStore;
 use std::sync::Arc;
 use raijin_ui::{
     Divider, KeyBinding, ParentElement as _, StatefulInteractiveElement, Vector, VectorName,
@@ -31,24 +31,6 @@ mod base_keymap_picker;
 mod basics_page;
 pub mod multibuffer_hint;
 mod theme_preview;
-
-/// Imports settings from Visual Studio Code.
-#[derive(Copy, Clone, Debug, Default, PartialEq, Deserialize, JsonSchema, Action)]
-#[action(namespace = raijin)]
-#[serde(deny_unknown_fields)]
-pub struct ImportVsCodeSettings {
-    #[serde(default)]
-    pub skip_prompt: bool,
-}
-
-/// Imports settings from Cursor editor.
-#[derive(Copy, Clone, Debug, Default, PartialEq, Deserialize, JsonSchema, Action)]
-#[action(namespace = raijin)]
-#[serde(deny_unknown_fields)]
-pub struct ImportCursorSettings {
-    #[serde(default)]
-    pub skip_prompt: bool,
-}
 
 pub const FIRST_OPEN: &str = "first_open";
 pub const DOCS_URL: &str = "https://raijin.dev/docs/";
@@ -128,49 +110,6 @@ pub fn init(cx: &mut App) {
                 .detach();
         });
     });
-
-    cx.observe_new(|workspace: &mut Workspace, _window, _cx| {
-        workspace.register_action(|_workspace, action: &ImportVsCodeSettings, window, cx| {
-            let fs = <dyn Fs>::global(cx);
-            let action = *action;
-
-            let workspace = cx.weak_entity();
-
-            window
-                .spawn(cx, async move |cx: &mut AsyncWindowContext| {
-                    handle_import_vscode_settings(
-                        workspace,
-                        VsCodeSettingsSource::VsCode,
-                        action.skip_prompt,
-                        fs,
-                        cx,
-                    )
-                    .await
-                })
-                .detach();
-        });
-
-        workspace.register_action(|_workspace, action: &ImportCursorSettings, window, cx| {
-            let fs = <dyn Fs>::global(cx);
-            let action = *action;
-
-            let workspace = cx.weak_entity();
-
-            window
-                .spawn(cx, async move |cx: &mut AsyncWindowContext| {
-                    handle_import_vscode_settings(
-                        workspace,
-                        VsCodeSettingsSource::Cursor,
-                        action.skip_prompt,
-                        fs,
-                        cx,
-                    )
-                    .await
-                })
-                .detach();
-        });
-    })
-    .detach();
 
     base_keymap_picker::init(cx);
 
@@ -433,117 +372,6 @@ fn go_to_welcome_page(cx: &mut App) {
             pane.remove_item(onboarding_id, false, false, window, cx);
         });
     });
-}
-
-pub async fn handle_import_vscode_settings(
-    workspace: WeakEntity<Workspace>,
-    source: VsCodeSettingsSource,
-    skip_prompt: bool,
-    fs: Arc<dyn Fs>,
-    cx: &mut AsyncWindowContext,
-) {
-    use inazuma_util::truncate_and_remove_front;
-
-    let vscode_settings =
-        match inazuma_settings_framework::VsCodeSettings::load_user_settings(source, fs.clone()).await {
-            Ok(vscode_settings) => vscode_settings,
-            Err(err) => {
-                raijin_log::error!("{err:?}");
-                let _ = cx.prompt(
-                    inazuma::PromptLevel::Info,
-                    &format!("Could not find or load a {source} settings file"),
-                    None,
-                    &["Ok"],
-                );
-                return;
-            }
-        };
-
-    if !skip_prompt {
-        let prompt = cx.prompt(
-            inazuma::PromptLevel::Warning,
-            &format!(
-                "Importing {} settings may overwrite your existing settings. \
-                Will import settings from {}",
-                vscode_settings.source,
-                truncate_and_remove_front(&vscode_settings.path.to_string_lossy(), 128),
-            ),
-            None,
-            &["Ok", "Cancel"],
-        );
-        let result = cx.spawn(async move |_| prompt.await.ok()).await;
-        if result != Some(0) {
-            return;
-        }
-    };
-
-    let Ok(result_channel) = cx.update(|_, cx| {
-        let source = vscode_settings.source;
-        let path = vscode_settings.path.clone();
-        let result_channel = cx
-            .global::<SettingsStore>()
-            .import_vscode_settings(fs, vscode_settings);
-        raijin_log::info!("Imported {source} settings from {}", path.display());
-        result_channel
-    }) else {
-        return;
-    };
-
-    let result = result_channel.await;
-    workspace
-        .update_in(cx, |workspace, _, cx| match result {
-            Ok(_) => {
-                let confirmation_toast = StatusToast::new(
-                    format!("Your {} settings were successfully imported.", source),
-                    cx,
-                    |this, _| {
-                        this.icon(ToastIcon::new(IconName::Check).color(Color::Success))
-                            .dismiss_button(true)
-                    },
-                );
-                SettingsImportState::update(cx, |state, _| match source {
-                    VsCodeSettingsSource::VsCode => {
-                        state.vscode = true;
-                    }
-                    VsCodeSettingsSource::Cursor => {
-                        state.cursor = true;
-                    }
-                });
-                workspace.toggle_status_toast(confirmation_toast, cx);
-            }
-            Err(_) => {
-                let error_toast = StatusToast::new(
-                    "Failed to import settings. See log for details",
-                    cx,
-                    |this, _| {
-                        this.icon(ToastIcon::new(IconName::Close).color(Color::Error))
-                            .action("Open Log", |window, cx| {
-                                window.dispatch_action(raijin_workspace::OpenLog.boxed_clone(), cx)
-                            })
-                            .dismiss_button(true)
-                    },
-                );
-                workspace.toggle_status_toast(error_toast, cx);
-            }
-        })
-        .ok();
-}
-
-#[derive(Default, Copy, Clone)]
-pub struct SettingsImportState {
-    pub cursor: bool,
-    pub vscode: bool,
-}
-
-impl Global for SettingsImportState {}
-
-impl SettingsImportState {
-    pub fn global(cx: &App) -> Self {
-        cx.try_global().cloned().unwrap_or_default()
-    }
-    pub fn update<R>(cx: &mut App, f: impl FnOnce(&mut Self, &mut App) -> R) -> R {
-        cx.update_default_global(f)
-    }
 }
 
 impl raijin_workspace::SerializableItem for Onboarding {

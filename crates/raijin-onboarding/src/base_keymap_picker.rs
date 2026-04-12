@@ -9,7 +9,8 @@ use inazuma_settings_framework::{BaseKeymap, Settings, update_settings_file};
 use std::sync::Arc;
 use raijin_ui::{ListItem, ListItemSpacing, prelude::*};
 use inazuma_util::ResultExt;
-use raijin_workspace::{ModalView, Workspace, ui::HighlightedLabel};
+use raijin_ui::HighlightedLabel;
+use raijin_workspace::{ModalView, Workspace};
 
 actions!(
     raijin,

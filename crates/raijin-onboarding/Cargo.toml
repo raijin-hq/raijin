@@ -22,6 +22,7 @@ documented.workspace = true
 raijin-fs.workspace = true
 inazuma-fuzzy.workspace = true
 inazuma.workspace = true
+inazuma-component-registry.workspace = true
 inazuma-menu.workspace = true
 raijin-notifications.workspace = true
 inazuma-picker.workspace = true

@@ -14,7 +14,6 @@ use raijin_ui::{
 use raijin_vim_mode_setting::VimModeSetting;
 
 use crate::{
-    ImportCursorSettings, ImportVsCodeSettings, SettingsImportState,
     theme_preview::{ThemePreviewStyle, ThemePreviewTile},
 };
 
@@ -458,68 +457,6 @@ fn render_worktree_auto_trust_switch(tab_index: &mut isize, cx: &mut App) -> imp
     .tooltip(Tooltip::text(tooltip_description))
 }
 
-fn render_setting_import_button(
-    tab_index: isize,
-    label: SharedString,
-    action: &dyn Action,
-    imported: bool,
-) -> impl IntoElement + 'static {
-    let action = action.boxed_clone();
-
-    Button::new(label.clone(), label.clone())
-        .style(ButtonStyle::OutlinedGhost)
-        .size(ButtonSize::Medium)
-        .label_size(LabelSize::Small)
-        .selected_style(ButtonStyle::Tinted(TintColor::Accent))
-        .toggle_state(imported)
-        .tab_index(tab_index)
-        .when(imported, |this| {
-            this.end_icon(Icon::new(IconName::Check).size(IconSize::Small))
-                .color(Color::Success)
-        })
-        .on_click(move |_, window, cx| {
-            raijin_telemetry::event!("Welcome Import Settings", import_source = label,);
-            window.dispatch_action(action.boxed_clone(), cx);
-        })
-}
-
-fn render_import_settings_section(tab_index: &mut isize, cx: &mut App) -> impl IntoElement {
-    let import_state = SettingsImportState::global(cx);
-    let imports: [(SharedString, &dyn Action, bool); 2] = [
-        (
-            "VS Code".into(),
-            &ImportVsCodeSettings { skip_prompt: false },
-            import_state.vscode,
-        ),
-        (
-            "Cursor".into(),
-            &ImportCursorSettings { skip_prompt: false },
-            import_state.cursor,
-        ),
-    ];
-
-    let [vscode, cursor] = imports.map(|(label, action, imported)| {
-        *tab_index += 1;
-        render_setting_import_button(*tab_index - 1, label, action, imported)
-    });
-
-    h_flex()
-        .gap_2()
-        .flex_wrap()
-        .justify_between()
-        .child(
-            v_flex()
-                .gap_0p5()
-                .max_w_5_6()
-                .child(Label::new("Import Settings"))
-                .child(
-                    Label::new("Automatically pull your settings from other editors")
-                        .color(Color::Muted),
-                ),
-        )
-        .child(h_flex().gap_1().child(vscode).child(cursor))
-}
-
 pub(crate) fn render_basics_page(cx: &mut App) -> impl IntoElement {
     let mut tab_index = 0;
     v_flex()
@@ -527,7 +464,6 @@ pub(crate) fn render_basics_page(cx: &mut App) -> impl IntoElement {
         .gap_6()
         .child(render_theme_section(&mut tab_index, cx))
         .child(render_base_keymap_section(&mut tab_index, cx))
-        .child(render_import_settings_section(&mut tab_index, cx))
         .child(render_vim_mode_switch(&mut tab_index, cx))
         .child(render_worktree_auto_trust_switch(&mut tab_index, cx))
         .child(Divider::horizontal().color(raijin_ui::DividerColor::BorderVariant))
