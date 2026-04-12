@@ -59,7 +59,7 @@ pub enum Event {
 }
 
 pub struct NotificationPresenter {
-    pub actor: Option<Arc<client::User>>,
+    pub actor: Option<Arc<raijin_client::User>>,
     pub text: String,
     pub icon: &'static str,
     pub needs_response: bool,
@@ -204,18 +204,18 @@ impl NotificationPanel {
             self.did_render_notification(notification_id, &notification, window, cx);
         }
 
-        let relative_timestamp = time_format::format_localized_timestamp(
+        let relative_timestamp = raijin_time_format::format_localized_timestamp(
             timestamp,
             now,
             self.local_timezone,
-            time_format::TimestampFormat::Relative,
+            raijin_time_format::TimestampFormat::Relative,
         );
 
-        let absolute_timestamp = time_format::format_localized_timestamp(
+        let absolute_timestamp = raijin_time_format::format_localized_timestamp(
             timestamp,
             now,
             self.local_timezone,
-            time_format::TimestampFormat::Absolute,
+            raijin_time_format::TimestampFormat::Absolute,
         );
 
         Some(
@@ -499,7 +499,7 @@ impl Render for NotificationPanel {
                             .child(
                                 Button::new("connect_prompt_button", "Connect")
                                     .start_icon(Icon::new(IconName::Github).color(Color::Muted))
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .full_width()
                                     .on_click({
                                         let client = self.client.clone();
@@ -508,13 +508,13 @@ impl Render for NotificationPanel {
                                             window
                                                 .spawn(cx, async move |cx| {
                                                     match client.connect(true, cx).await {
-                                                        util::ConnectionResult::Timeout => {
+                                                        inazuma_util::ConnectionResult::Timeout => {
                                                             log::error!("Connection timeout");
                                                         }
-                                                        util::ConnectionResult::ConnectionReset => {
+                                                        inazuma_util::ConnectionResult::ConnectionReset => {
                                                             log::error!("Connection reset");
                                                         }
-                                                        util::ConnectionResult::Result(r) => {
+                                                        inazuma_util::ConnectionResult::Result(r) => {
                                                             r.log_err();
                                                         }
                                                     }
@@ -584,7 +584,7 @@ impl Panel for NotificationPanel {
     }
 
     fn set_position(&mut self, position: DockPosition, _: &mut Window, cx: &mut Context<Self>) {
-        settings::update_settings_file(self.fs.clone(), cx, move |settings, _| {
+        inazuma_settings_framework::update_settings_file(self.fs.clone(), cx, move |settings, _| {
             settings.notification_panel.get_or_insert_default().dock = Some(position.into())
         });
     }
@@ -697,13 +697,13 @@ impl Render for NotificationToast {
                         if suppress {
                             Tooltip::for_action(
                                 "Suppress.\nClose with click.",
-                                &workspace::SuppressNotification,
+                                &raijin_workspace::SuppressNotification,
                                 cx,
                             )
                         } else {
                             Tooltip::for_action(
                                 "Close.\nSuppress with shift-click",
-                                &menu::Cancel,
+                                &inazuma_menu::Cancel,
                                 cx,
                             )
                         }

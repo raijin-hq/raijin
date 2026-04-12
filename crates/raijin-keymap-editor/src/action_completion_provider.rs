@@ -26,10 +26,10 @@ impl ActionCompletionProvider {
 impl CompletionProvider for ActionCompletionProvider {
     fn completions(
         &self,
-        _excerpt_id: editor::ExcerptId,
+        _excerpt_id: raijin_editor::ExcerptId,
         buffer: &Entity<raijin_language::Buffer>,
         buffer_position: raijin_language::Anchor,
-        _trigger: editor::CompletionContext,
+        _trigger: raijin_editor::CompletionContext,
         _window: &mut Window,
         cx: &mut Context<Editor>,
     ) -> inazuma::Task<anyhow::Result<Vec<raijin_project::CompletionResponse>>> {
@@ -86,7 +86,7 @@ impl CompletionProvider for ActionCompletionProvider {
             )
             .await;
 
-            let completions: Vec<project::Completion> = matches
+            let completions: Vec<raijin_project::Completion> = matches
                 .iter()
                 .take(50)
                 .map(|m| {

@@ -2333,7 +2333,7 @@ impl Render for KeymapEditor {
                                     conflict.is_some_and(|conflict| {
                                         conflict.is_user_keybind_conflict()
                                     }),
-                                    |row| row.bg(cx.theme().status().error_background),
+                                    |row| row.bg(cx.theme().status().error.background),
                                 )
                                 .when(is_selected, |row| {
                                     row.border_color(cx.theme().colors().panel.focused_border)
@@ -3407,7 +3407,7 @@ impl ActionArgumentsEditor {
                 let path = dir_path.join(file_name);
                 fs.create_file(
                     &path,
-                    fs::CreateOptions {
+                    raijin_fs::CreateOptions {
                         ignore_if_exists: true,
                         overwrite: true,
                     },

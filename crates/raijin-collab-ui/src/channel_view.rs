@@ -39,7 +39,7 @@ actions!(
 );
 
 pub fn init(cx: &mut App) {
-    workspace::FollowableViewRegistry::register::<ChannelView>(cx)
+    raijin_workspace::FollowableViewRegistry::register::<ChannelView>(cx)
 }
 
 pub struct ChannelView {
@@ -73,7 +73,7 @@ impl ChannelView {
         window.spawn(cx, async move |cx| {
             let channel_view = channel_view.await?;
             pane.update_in(cx, |pane, window, cx| {
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Channel Notes Opened",
                     channel_id,
                     room_id = ActiveCall::global(cx)
@@ -207,7 +207,7 @@ impl ChannelView {
             )));
             editor.set_custom_context_menu(move |_, position, window, cx| {
                 let this = this.clone();
-                Some(ui::ContextMenu::build(window, cx, move |menu, _, _| {
+                Some(raijin_ui::ContextMenu::build(window, cx, move |menu, _, _| {
                     menu.entry("Copy Link to Section", None, move |window, cx| {
                         this.update(cx, |this, cx| {
                             this.copy_link_for_position(position, window, cx)
@@ -360,7 +360,7 @@ impl ChannelView {
             }),
             ChannelBufferEvent::ChannelChanged => {
                 self.editor.update(cx, |_, cx| {
-                    cx.emit(editor::EditorEvent::TitleChanged);
+                    cx.emit(raijin_editor::EditorEvent::TitleChanged);
                     cx.notify()
                 });
             }
@@ -559,7 +559,7 @@ impl Item for ChannelView {
 }
 
 impl FollowableItem for ChannelView {
-    fn remote_id(&self) -> Option<workspace::ViewId> {
+    fn remote_id(&self) -> Option<raijin_workspace::ViewId> {
         self.remote_id
     }
 
@@ -588,8 +588,8 @@ impl FollowableItem for ChannelView {
     }
 
     fn from_state_proto(
-        workspace: Entity<workspace::Workspace>,
-        remote_id: workspace::ViewId,
+        workspace: Entity<raijin_workspace::Workspace>,
+        remote_id: raijin_workspace::ViewId,
         state: &mut Option<proto::view::Variant>,
         window: &mut Window,
         cx: &mut App,
@@ -676,7 +676,7 @@ impl FollowableItem for ChannelView {
         false
     }
 
-    fn to_follow_event(event: &Self::Event) -> Option<workspace::item::FollowEvent> {
+    fn to_follow_event(event: &Self::Event) -> Option<raijin_workspace::item::FollowEvent> {
         Editor::to_follow_event(event)
     }
 

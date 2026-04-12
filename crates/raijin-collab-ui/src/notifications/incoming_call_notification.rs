@@ -80,7 +80,7 @@ impl IncomingCallNotificationState {
                 if let Some(project_id) = initial_project_id {
                     cx.update(|cx| {
                         if let Some(app_state) = app_state.upgrade() {
-                            workspace::join_in_room_project(
+                            raijin_workspace::join_in_room_project(
                                 project_id,
                                 caller_user_id,
                                 app_state,
@@ -111,7 +111,7 @@ impl IncomingCallNotification {
 
 impl Render for IncomingCallNotification {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let ui_font = theme_settings::setup_ui_font(window, cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(window, cx);
 
         div().size_full().font(ui_font).child(
             CollabNotification::new(

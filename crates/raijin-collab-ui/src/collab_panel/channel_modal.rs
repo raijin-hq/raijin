@@ -115,7 +115,7 @@ impl ChannelModal {
         });
     }
 
-    fn dismiss(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn dismiss(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 }
@@ -166,14 +166,14 @@ impl Render for ChannelModal {
                             .justify_between()
                             .line_height(rems(1.25))
                             .child(
-                                Checkbox::new(
-                                    "is-public",
-                                    if visibility == ChannelVisibility::Public {
-                                        ui::ToggleState::Selected
-                                    } else {
-                                        ui::ToggleState::Unselected
-                                    },
-                                )
+                                Checkbox::new("is-public")
+                                    .toggle_state(
+                                        if visibility == ChannelVisibility::Public {
+                                            raijin_ui::ToggleState::Selected
+                                        } else {
+                                            raijin_ui::ToggleState::Unselected
+                                        },
+                                    )
                                 .label("Public")
                                 .on_click(cx.listener(Self::set_channel_visibility)),
                             )

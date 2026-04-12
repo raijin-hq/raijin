@@ -44,7 +44,7 @@ pub const CLIENT_SIDE_DECORATION_ROUNDING: Pixels = px(10.0);
 pub const CLIENT_SIDE_DECORATION_SHADOW: Pixels = px(10.0);
 
 /// Tracks the system's current appearance (light or dark).
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, derive_more::Deref)]
 pub struct SystemAppearance(pub Appearance);
 
 #[derive(derive_more::Deref, derive_more::DerefMut, Default)]

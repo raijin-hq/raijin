@@ -165,7 +165,7 @@ impl ThemePreviewTile {
             .w(width)
             .border_r(px(1.))
             .border_color(colors.border_transparent)
-            .bg(colors.panel_background)
+            .bg(colors.panel.background)
             .child(v_flex().p_2().size_full().gap_1().children(
                 Self::render_sidebar_skeleton_items(seed, colors, skeleton_height.into()),
             ))

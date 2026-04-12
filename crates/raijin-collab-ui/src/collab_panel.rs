@@ -1095,7 +1095,7 @@ impl CollabPanel {
                 Label::new("Calling").color(Color::Muted).into_any_element()
             } else if is_current_user {
                 IconButton::new("leave-call", IconName::Exit)
-                    .style(ButtonStyle::Subtle)
+                    .style(ButtonStyle::SUBTLE)
                     .on_click(move |_, window, cx| Self::leave_call(window, cx))
                     .tooltip(Tooltip::text("Leave Call"))
                     .into_any_element()

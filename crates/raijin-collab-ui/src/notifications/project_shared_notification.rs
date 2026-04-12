@@ -102,7 +102,7 @@ impl ProjectSharedNotification {
 
     fn join(&mut self, cx: &mut Context<Self>) {
         if let Some(app_state) = self.app_state.upgrade() {
-            workspace::join_in_room_project(self.project_id, self.owner.id, app_state, cx)
+            raijin_workspace::join_in_room_project(self.project_id, self.owner.id, app_state, cx)
                 .detach_and_log_err(cx);
         }
     }
@@ -120,7 +120,7 @@ impl ProjectSharedNotification {
 
 impl Render for ProjectSharedNotification {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let ui_font = theme_settings::setup_ui_font(window, cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(window, cx);
         let no_worktree_root_names = self.worktree_root_names.is_empty();
 
         let punctuation = if no_worktree_root_names { "" } else { ":" };

@@ -1,6 +1,7 @@
 use inazuma::{
-    Animation, AnimationExt, Context, EventEmitter, FocusHandle, Focusable, FontWeight, KeyContext,
-    KeybindingKeystroke, Keystroke, Modifiers, ModifiersChangedEvent, Subscription, Task, actions,
+    Animation, AnimationExt, Context, Edges, EventEmitter, FocusHandle, Focusable, FontWeight,
+    KeyContext, KeybindingKeystroke, Keystroke, Modifiers, ModifiersChangedEvent, Subscription,
+    Task, actions,
 };
 use raijin_ui::{
     ActiveTheme as _, Color, IconButton, IconButtonShape, IconName, IconSize, Label, LabelSize,
@@ -471,7 +472,7 @@ impl Render for KeystrokeInput {
         let width = rems_from_px(64.);
 
         let recording_bg_color = colors
-            .editor_background
+            .editor.background
             .blend(colors.text_accent.opacity(0.1));
 
         let recording_pulse = |color: Color| {
@@ -497,7 +498,7 @@ impl Render for KeystrokeInput {
             .border_1()
             .border_color(colors.border)
             .bg(colors
-                .editor_background
+                .editor.background
                 .blend(colors.text_accent.opacity(0.1)))
             .rounded_sm()
             .child(recording_pulse(Color::Error))
@@ -515,7 +516,7 @@ impl Render for KeystrokeInput {
             .border_1()
             .border_color(colors.border)
             .bg(colors
-                .editor_background
+                .editor.background
                 .blend(colors.text_accent.opacity(0.1)))
             .rounded_sm()
             .child(recording_pulse(Color::Accent))
@@ -551,7 +552,7 @@ impl Render for KeystrokeInput {
                 if is_recording {
                     this.bg(recording_bg_color)
                 } else {
-                    this.bg(colors.editor_background)
+                    this.bg(colors.editor.background)
                 }
             })
             .border_1()
@@ -585,7 +586,7 @@ impl Render for KeystrokeInput {
                     .on_modifiers_changed(cx.listener(Self::on_modifiers_changed))
                     .when(!self.search, |this| {
                         this.focus(|mut style| {
-                            style.border_color = Some(colors.border_focused);
+                            style.border_colors = Some(Edges::all(Some(colors.border_focused)));
                             style
                         })
                     })
