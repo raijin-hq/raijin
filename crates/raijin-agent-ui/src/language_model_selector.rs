@@ -1,7 +1,7 @@
 use std::{cmp::Reverse, sync::Arc};
 
-use raijin_raijin_agent_settings::AgentSettings;
-use inazuma_inazuma_collections::{HashMap, HashSet, IndexMap};
+use raijin_agent_settings::AgentSettings;
+use inazuma_collections::{HashMap, HashSet, IndexMap};
 use inazuma_fuzzy::{StringMatch, StringMatchCandidate, match_strings};
 use inazuma::{
     Action, AnyElement, App, BackgroundExecutor, DismissEvent, FocusHandle, ForegroundExecutor,

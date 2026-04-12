@@ -13,7 +13,7 @@ use raijin_acp_thread::{AcpThread, MentionUri, ThreadStatus};
 use raijin_agent::{ContextServerRegistry, SharedThread, ThreadStore};
 use agent_client_protocol as acp;
 use raijin_agent_servers::AgentServer;
-use inazuma_inazuma_collections::HashSet;
+use inazuma_collections::HashSet;
 use raijin_db::kvp::{Dismissable, KeyValueStore};
 use itertools::Itertools;
 use raijin_project::AgentId;
@@ -51,14 +51,14 @@ use crate::{
 };
 use crate::{ManageProfiles, ThreadHistoryViewEvent};
 use crate::{ThreadHistory, agent_connection_store::AgentConnectionStore};
-use raijin_raijin_agent_settings::AgentSettings;
+use raijin_agent_settings::AgentSettings;
 use raijin_ai_onboarding::AgentPanelOnboarding;
 use anyhow::{Context as _, Result, anyhow};
 use raijin_assistant_slash_command::SlashCommandWorkingSet;
 use raijin_assistant_text_thread::{TextThread, TextThreadEvent, TextThreadSummary};
 use raijin_client::UserStore;
 use raijin_cloud_api_types::Plan;
-use inazuma_inazuma_collections::HashMap;
+use inazuma_collections::HashMap;
 use raijin_editor::{Anchor, AnchorRangeExt as _, Editor, EditorEvent, MultiBuffer};
 use raijin_extension::ExtensionEvents;
 use raijin_extension_host::ExtensionStore;
@@ -2573,7 +2573,7 @@ impl AgentPanel {
         let repositories = project.read(cx).repositories(cx).clone();
         let mut git_repos: Vec<Entity<raijin_project::git_store::Repository>> = Vec::new();
         let mut non_git_paths: Vec<PathBuf> = Vec::new();
-        let mut seen_repo_ids = std::inazuma_collections::HashSet::new();
+        let mut seen_repo_ids = std::collections::HashSet::new();
 
         for worktree in project.read(cx).visible_worktrees(cx) {
             let wt_path = worktree.read(cx).abs_path();

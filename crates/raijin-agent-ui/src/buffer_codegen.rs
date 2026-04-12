@@ -1,7 +1,7 @@
 use crate::{context::LoadedContext, inline_prompt_editor::CodegenStatus};
-use raijin_raijin_agent_settings::AgentSettings;
+use raijin_agent_settings::AgentSettings;
 use anyhow::{Context as _, Result};
-use inazuma_inazuma_collections::HashSet;
+use inazuma_collections::HashSet;
 use raijin_editor::{Anchor, AnchorRangeExt, MultiBuffer, MultiBufferSnapshot, ToOffset as _, ToPoint};
 use futures::{
     SinkExt, Stream, StreamExt, TryStreamExt as _,
@@ -36,7 +36,7 @@ use std::{
     raijin_task::{self, Poll},
     time::Instant,
 };
-use streaming_diff::{CharOperation, LineDiff, LineOperation, StreamingDiff};
+use raijin_streaming_diff::{CharOperation, LineDiff, LineOperation, StreamingDiff};
 use uuid::Uuid;
 
 /// Use this tool when you cannot or should not make a rewrite. This includes:

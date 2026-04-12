@@ -3,7 +3,7 @@ use std::rc::Rc;
 use raijin_acp_thread::{AgentConnection, LoadError};
 use raijin_agent_servers::{AgentServer, AgentServerDelegate};
 use anyhow::Result;
-use inazuma_inazuma_collections::HashMap;
+use inazuma_collections::HashMap;
 use futures::{FutureExt, future::Shared};
 use inazuma::{App, AppContext, Context, Entity, EventEmitter, SharedString, Subscription, Task};
 

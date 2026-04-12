@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use inazuma_inazuma_collections::HashSet;
+use inazuma_collections::HashSet;
 use raijin_fs::Fs;
 use inazuma::{
     DismissEvent, Entity, EventEmitter, FocusHandle, Focusable, Render, ScrollHandle, Task,

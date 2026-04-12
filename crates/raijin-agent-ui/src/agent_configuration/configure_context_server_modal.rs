@@ -1,5 +1,5 @@
 use anyhow::{Context as _, Result};
-use inazuma_inazuma_collections::HashMap;
+use inazuma_collections::HashMap;
 use raijin_context_server::{ContextServerCommand, ContextServerId};
 use raijin_editor::{Editor, EditorElement, EditorStyle};
 

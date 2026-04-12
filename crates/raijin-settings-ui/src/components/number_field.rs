@@ -466,7 +466,6 @@ impl<T: NumberFieldType> RenderOnce for NumberField<T> {
                 this.child(
                     IconButton::new("reset", IconName::RotateCcw)
                         .icon_size(IconSize::Small)
-                        .when_some(self.tab_index, |this, _| this.tab_index(0isize))
                         .on_click(on_reset),
                 )
             })

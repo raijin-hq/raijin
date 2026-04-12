@@ -1,5 +1,5 @@
 use raijin_agent::ContextServerRegistry;
-use inazuma_inazuma_collections::HashMap;
+use inazuma_collections::HashMap;
 use raijin_context_server::ContextServerId;
 use inazuma::{
     DismissEvent, Entity, EventEmitter, FocusHandle, Focusable, ScrollHandle, Window, prelude::*,

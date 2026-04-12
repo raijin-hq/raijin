@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 use raijin_client::raijin_urls;
-use inazuma_inazuma_collections::HashMap;
+use inazuma_collections::HashMap;
 use raijin_editor::{Editor, EditorElement, EditorStyle};
 use raijin_fs::Fs;
 use inazuma::{

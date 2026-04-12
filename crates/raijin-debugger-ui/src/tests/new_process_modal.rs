@@ -50,7 +50,7 @@ async fn test_debug_session_substitutes_variables_and_relativizes_paths(
     }
     .into();
 
-    let home_dir = paths::home_dir();
+    let home_dir = raijin_paths::home_dir();
 
     let test_cases: Vec<(&'static str, &'static str)> = vec![
         // Absolute path - should not be relativized
@@ -87,10 +87,10 @@ async fn test_debug_session_substitutes_variables_and_relativizes_paths(
     let called_launch = Arc::new(AtomicBool::new(false));
 
     for (input_path, expected_path) in test_cases {
-        let _subscription = project::debugger::test::intercept_debug_sessions(cx, {
+        let _subscription = raijin_project::debugger::test::intercept_debug_sessions(cx, {
             let called_launch = called_launch.clone();
             move |client| {
-                client.on_request::<dap::requests::Launch, _>({
+                client.on_request::<raijin_dap::requests::Launch, _>({
                     let called_launch = called_launch.clone();
 
                     move |_, args| {
@@ -429,8 +429,8 @@ async fn test_dap_adapter_config_conversion_and_validation(cx: &mut TestAppConte
             });
 
         match request_type {
-            dap::StartDebuggingRequestArgumentsRequest::Launch => {}
-            dap::StartDebuggingRequestArgumentsRequest::Attach => {
+            raijin_dap::StartDebuggingRequestArgumentsRequest::Launch => {}
+            raijin_dap::StartDebuggingRequestArgumentsRequest::Attach => {
                 panic!(
                     "Expected Launch request but got Attach for adapter {}",
                     adapter_name

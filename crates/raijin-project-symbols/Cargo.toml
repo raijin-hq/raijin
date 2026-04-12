@@ -24,6 +24,7 @@ serde_json.workspace = true
 inazuma-settings-framework.workspace = true
 raijin-theme.workspace = true
 raijin-theme-settings.workspace = true
+raijin-ui.workspace = true
 inazuma-util.workspace = true
 raijin-workspace.workspace = true
 

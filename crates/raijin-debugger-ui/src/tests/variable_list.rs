@@ -61,9 +61,9 @@ async fn test_basic_fetch_initial_scope_and_variables(
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -73,7 +73,7 @@ async fn test_basic_fetch_initial_scope_and_variables(
     let stack_frames = vec![StackFrame {
         id: 1,
         name: "Stack Frame 1".into(),
-        source: Some(dap::Source {
+        source: Some(raijin_dap::Source {
             name: Some("test.js".into()),
             path: Some(path!("/project/src/test.js").into()),
             source_reference: None,
@@ -98,7 +98,7 @@ async fn test_basic_fetch_initial_scope_and_variables(
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -124,7 +124,7 @@ async fn test_basic_fetch_initial_scope_and_variables(
         move |_, args| {
             assert_eq!(1, args.frame_id);
 
-            Ok(dap::ScopesResponse {
+            Ok(raijin_dap::ScopesResponse {
                 scopes: (*scopes).clone(),
             })
         }
@@ -164,15 +164,15 @@ async fn test_basic_fetch_initial_scope_and_variables(
         move |_, args| {
             assert_eq!(2, args.variables_reference);
 
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*variables).clone(),
             })
         }
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -263,9 +263,9 @@ async fn test_fetch_variables_for_multiple_scopes(
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -273,7 +273,7 @@ async fn test_fetch_variables_for_multiple_scopes(
     });
 
     client.on_request::<Initialize, _>(move |_, _| {
-        Ok(dap::Capabilities {
+        Ok(raijin_dap::Capabilities {
             supports_step_back: Some(false),
             ..Default::default()
         })
@@ -284,7 +284,7 @@ async fn test_fetch_variables_for_multiple_scopes(
     let stack_frames = vec![StackFrame {
         id: 1,
         name: "Stack Frame 1".into(),
-        source: Some(dap::Source {
+        source: Some(raijin_dap::Source {
             name: Some("test.js".into()),
             path: Some(path!("/project/src/test.js").into()),
             source_reference: None,
@@ -309,7 +309,7 @@ async fn test_fetch_variables_for_multiple_scopes(
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -319,7 +319,7 @@ async fn test_fetch_variables_for_multiple_scopes(
     let scopes = vec![
         Scope {
             name: "Scope 1".into(),
-            presentation_hint: Some(dap::ScopePresentationHint::Locals),
+            presentation_hint: Some(raijin_dap::ScopePresentationHint::Locals),
             variables_reference: 2,
             named_variables: None,
             indexed_variables: None,
@@ -350,7 +350,7 @@ async fn test_fetch_variables_for_multiple_scopes(
         move |_, args| {
             assert_eq!(1, args.frame_id);
 
-            Ok(dap::ScopesResponse {
+            Ok(raijin_dap::ScopesResponse {
                 scopes: (*scopes).clone(),
             })
         }
@@ -408,15 +408,15 @@ async fn test_fetch_variables_for_multiple_scopes(
     client.on_request::<Variables, _>({
         let variables = Arc::new(variables.clone());
         move |_, args| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: variables.get(&args.variables_reference).unwrap().clone(),
             })
         }
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -464,7 +464,7 @@ async fn test_fetch_variables_for_multiple_scopes(
                 );
 
                 // scope 2
-                let empty_vec: Vec<dap::Variable> = vec![];
+                let empty_vec: Vec<raijin_dap::Variable> = vec![];
                 assert_eq!(empty_vec, variables_by_scope[1].1);
 
                 variable_list.assert_visual_entries(vec![
@@ -515,9 +515,9 @@ async fn test_keyboard_navigation(executor: BackgroundExecutor, cx: &mut TestApp
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -525,7 +525,7 @@ async fn test_keyboard_navigation(executor: BackgroundExecutor, cx: &mut TestApp
     });
 
     client.on_request::<Initialize, _>(move |_, _| {
-        Ok(dap::Capabilities {
+        Ok(raijin_dap::Capabilities {
             supports_step_back: Some(false),
             ..Default::default()
         })
@@ -536,7 +536,7 @@ async fn test_keyboard_navigation(executor: BackgroundExecutor, cx: &mut TestApp
     let stack_frames = vec![StackFrame {
         id: 1,
         name: "Stack Frame 1".into(),
-        source: Some(dap::Source {
+        source: Some(raijin_dap::Source {
             name: Some("test.js".into()),
             path: Some(path!("/project/src/test.js").into()),
             source_reference: None,
@@ -561,7 +561,7 @@ async fn test_keyboard_navigation(executor: BackgroundExecutor, cx: &mut TestApp
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -571,7 +571,7 @@ async fn test_keyboard_navigation(executor: BackgroundExecutor, cx: &mut TestApp
     let scopes = vec![
         Scope {
             name: "Scope 1".into(),
-            presentation_hint: Some(dap::ScopePresentationHint::Locals),
+            presentation_hint: Some(raijin_dap::ScopePresentationHint::Locals),
             variables_reference: 2,
             named_variables: None,
             indexed_variables: None,
@@ -602,7 +602,7 @@ async fn test_keyboard_navigation(executor: BackgroundExecutor, cx: &mut TestApp
         move |_, args| {
             assert_eq!(1, args.frame_id);
 
-            Ok(dap::ScopesResponse {
+            Ok(raijin_dap::ScopesResponse {
                 scopes: (*scopes).clone(),
             })
         }
@@ -685,13 +685,13 @@ async fn test_keyboard_navigation(executor: BackgroundExecutor, cx: &mut TestApp
         let nested_variables = Arc::new(nested_variables.clone());
         let scope2_variables = Arc::new(scope2_variables.clone());
         move |_, args| match args.variables_reference {
-            4 => Ok(dap::VariablesResponse {
+            4 => Ok(raijin_dap::VariablesResponse {
                 variables: (*scope2_variables).clone(),
             }),
-            3 => Ok(dap::VariablesResponse {
+            3 => Ok(raijin_dap::VariablesResponse {
                 variables: (*nested_variables).clone(),
             }),
-            2 => Ok(dap::VariablesResponse {
+            2 => Ok(raijin_dap::VariablesResponse {
                 variables: (*scope1_variables).clone(),
             }),
             id => unreachable!("unexpected variables reference {id}"),
@@ -699,8 +699,8 @@ async fn test_keyboard_navigation(executor: BackgroundExecutor, cx: &mut TestApp
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1292,9 +1292,9 @@ async fn test_variable_list_only_sends_requests_when_rendering(
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -1302,7 +1302,7 @@ async fn test_variable_list_only_sends_requests_when_rendering(
     });
 
     client.on_request::<Initialize, _>(move |_, _| {
-        Ok(dap::Capabilities {
+        Ok(raijin_dap::Capabilities {
             supports_step_back: Some(false),
             ..Default::default()
         })
@@ -1314,7 +1314,7 @@ async fn test_variable_list_only_sends_requests_when_rendering(
         StackFrame {
             id: 1,
             name: "Stack Frame 1".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("test.js".into()),
                 path: Some(path!("/project/src/test.js").into()),
                 source_reference: None,
@@ -1336,7 +1336,7 @@ async fn test_variable_list_only_sends_requests_when_rendering(
         StackFrame {
             id: 2,
             name: "Stack Frame 2".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -1362,7 +1362,7 @@ async fn test_variable_list_only_sends_requests_when_rendering(
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -1397,7 +1397,7 @@ async fn test_variable_list_only_sends_requests_when_rendering(
 
             made_scopes_request.store(true, Ordering::SeqCst);
 
-            Ok(dap::ScopesResponse {
+            Ok(raijin_dap::ScopesResponse {
                 scopes: (*frame_1_scopes).clone(),
             })
         }
@@ -1437,7 +1437,7 @@ async fn test_variable_list_only_sends_requests_when_rendering(
         move |_, args| {
             assert_eq!(2, args.variables_reference);
 
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*frame_1_variables).clone(),
             })
         }
@@ -1449,8 +1449,8 @@ async fn test_variable_list_only_sends_requests_when_rendering(
         .update_in(cx, |item, _, _| item.running_state().clone());
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1525,9 +1525,9 @@ async fn test_it_fetches_scopes_variables_when_you_select_a_stack_frame(
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -1535,7 +1535,7 @@ async fn test_it_fetches_scopes_variables_when_you_select_a_stack_frame(
     });
 
     client.on_request::<Initialize, _>(move |_, _| {
-        Ok(dap::Capabilities {
+        Ok(raijin_dap::Capabilities {
             supports_step_back: Some(false),
             ..Default::default()
         })
@@ -1547,7 +1547,7 @@ async fn test_it_fetches_scopes_variables_when_you_select_a_stack_frame(
         StackFrame {
             id: 1,
             name: "Stack Frame 1".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("test.js".into()),
                 path: Some(path!("/project/src/test.js").into()),
                 source_reference: None,
@@ -1569,7 +1569,7 @@ async fn test_it_fetches_scopes_variables_when_you_select_a_stack_frame(
         StackFrame {
             id: 2,
             name: "Stack Frame 2".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -1595,7 +1595,7 @@ async fn test_it_fetches_scopes_variables_when_you_select_a_stack_frame(
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -1643,14 +1643,14 @@ async fn test_it_fetches_scopes_variables_when_you_select_a_stack_frame(
         move |_, args| match args.frame_id {
             1 => {
                 called_first_stack_frame.store(true, Ordering::SeqCst);
-                Ok(dap::ScopesResponse {
+                Ok(raijin_dap::ScopesResponse {
                     scopes: (*frame_1_scopes).clone(),
                 })
             }
             2 => {
                 called_second_stack_frame.store(true, Ordering::SeqCst);
 
-                Ok(dap::ScopesResponse {
+                Ok(raijin_dap::ScopesResponse {
                     scopes: (*frame_2_scopes).clone(),
                 })
             }
@@ -1721,15 +1721,15 @@ async fn test_it_fetches_scopes_variables_when_you_select_a_stack_frame(
         move |_, args| {
             assert_eq!(2, args.variables_reference);
 
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*frame_1_variables).clone(),
             })
         }
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1786,7 +1786,7 @@ async fn test_it_fetches_scopes_variables_when_you_select_a_stack_frame(
         move |_, args| {
             assert_eq!(3, args.variables_reference);
 
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*frame_2_variables).clone(),
             })
         }
@@ -1862,9 +1862,9 @@ async fn test_add_and_remove_watcher(executor: BackgroundExecutor, cx: &mut Test
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -1874,7 +1874,7 @@ async fn test_add_and_remove_watcher(executor: BackgroundExecutor, cx: &mut Test
     let stack_frames = vec![StackFrame {
         id: 1,
         name: "Stack Frame 1".into(),
-        source: Some(dap::Source {
+        source: Some(raijin_dap::Source {
             name: Some("test.js".into()),
             path: Some(path!("/project/src/test.js").into()),
             source_reference: None,
@@ -1899,7 +1899,7 @@ async fn test_add_and_remove_watcher(executor: BackgroundExecutor, cx: &mut Test
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -1925,7 +1925,7 @@ async fn test_add_and_remove_watcher(executor: BackgroundExecutor, cx: &mut Test
         move |_, args| {
             assert_eq!(1, args.frame_id);
 
-            Ok(dap::ScopesResponse {
+            Ok(raijin_dap::ScopesResponse {
                 scopes: (*scopes).clone(),
             })
         }
@@ -1965,7 +1965,7 @@ async fn test_add_and_remove_watcher(executor: BackgroundExecutor, cx: &mut Test
         move |_, args| {
             assert_eq!(2, args.variables_reference);
 
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*variables).clone(),
             })
         }
@@ -1975,7 +1975,7 @@ async fn test_add_and_remove_watcher(executor: BackgroundExecutor, cx: &mut Test
         move |_, args| {
             assert_eq!("variable1", args.expression);
 
-            Ok(dap::EvaluateResponse {
+            Ok(raijin_dap::EvaluateResponse {
                 result: "value1".to_owned(),
                 type_: None,
                 presentation_hint: None,
@@ -1989,8 +1989,8 @@ async fn test_add_and_remove_watcher(executor: BackgroundExecutor, cx: &mut Test
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -2114,9 +2114,9 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -2126,7 +2126,7 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
     let stack_frames = vec![StackFrame {
         id: 1,
         name: "Stack Frame 1".into(),
-        source: Some(dap::Source {
+        source: Some(raijin_dap::Source {
             name: Some("test.js".into()),
             path: Some(path!("/project/src/test.js").into()),
             source_reference: None,
@@ -2151,7 +2151,7 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -2177,7 +2177,7 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
         move |_, args| {
             assert_eq!(1, args.frame_id);
 
-            Ok(dap::ScopesResponse {
+            Ok(raijin_dap::ScopesResponse {
                 scopes: (*scopes).clone(),
             })
         }
@@ -2217,7 +2217,7 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
         move |_, args| {
             assert_eq!(2, args.variables_reference);
 
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*variables).clone(),
             })
         }
@@ -2227,7 +2227,7 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
         move |_, args| {
             assert_eq!("variable1", args.expression);
 
-            Ok(dap::EvaluateResponse {
+            Ok(raijin_dap::EvaluateResponse {
                 result: "value1".to_owned(),
                 type_: None,
                 presentation_hint: None,
@@ -2241,8 +2241,8 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -2302,7 +2302,7 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
         move |_, args| {
             assert_eq!("variable1", args.expression);
 
-            Ok(dap::EvaluateResponse {
+            Ok(raijin_dap::EvaluateResponse {
                 result: "value updated".to_owned(),
                 type_: None,
                 presentation_hint: None,
@@ -2316,8 +2316,8 @@ async fn test_refresh_watchers(executor: BackgroundExecutor, cx: &mut TestAppCon
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,

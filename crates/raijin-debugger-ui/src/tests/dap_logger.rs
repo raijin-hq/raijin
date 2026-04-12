@@ -1,5 +1,5 @@
 use crate::tests::{init_test, init_test_workspace, start_debug_session};
-use raijin_dap::requests::{StackTrace, Threads};
+use raijin_raijin_dap::requests::{StackTrace, Threads};
 use raijin_debugger_tools::LogStore;
 use inazuma::{BackgroundExecutor, TestAppContext, VisualTestContext};
 use raijin_project::Project;
@@ -84,8 +84,8 @@ async fn test_dap_logger_captures_all_session_rpc_messages(
 
     // Set up basic responses for common requests
     client.on_request::<Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -93,7 +93,7 @@ async fn test_dap_logger_captures_all_session_rpc_messages(
     });
 
     client.on_request::<StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: Vec::default(),
             total_frames: None,
         })
@@ -104,8 +104,8 @@ async fn test_dap_logger_captures_all_session_rpc_messages(
 
     // Simulate a stopped event to generate more DAP messages
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,

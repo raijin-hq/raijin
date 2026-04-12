@@ -7,10 +7,10 @@ use crate::{
     terminal_codegen::{CLEAR_INPUT, CodegenEvent, TerminalCodegen},
 };
 use raijin_agent::ThreadStore;
-use raijin_raijin_agent_settings::AgentSettings;
+use raijin_agent_settings::AgentSettings;
 use anyhow::{Context as _, Result};
 
-use inazuma_inazuma_collections::{HashMap, VecDeque};
+use inazuma_collections::{HashMap, VecDeque};
 use raijin_editor::{MultiBuffer, actions::SelectAll};
 use raijin_fs::Fs;
 use inazuma::{App, Entity, Focusable, Global, Subscription, Task, UpdateGlobal, WeakEntity};

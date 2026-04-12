@@ -5,7 +5,7 @@ use raijin_agent::{ThreadStore, ZED_AGENT_ID};
 use agent_client_protocol as acp;
 use anyhow::Context as _;
 use chrono::{DateTime, Utc};
-use inazuma_inazuma_collections::HashMap;
+use inazuma_collections::HashMap;
 use raijin_db::{
     sqlez::{
         bindable::Column, domain::Domain, statement::Statement,

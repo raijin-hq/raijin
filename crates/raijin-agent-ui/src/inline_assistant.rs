@@ -17,9 +17,9 @@ use crate::{
     // TODO(phase20): terminal_inline_assistant::TerminalInlineAssistant,
 };
 use raijin_agent::ThreadStore;
-use raijin_raijin_agent_settings::AgentSettings;
+use raijin_agent_settings::AgentSettings;
 use anyhow::{Context as _, Result};
-use inazuma_inazuma_collections::{HashMap, HashSet, VecDeque, hash_map};
+use inazuma_collections::{HashMap, HashSet, VecDeque, hash_map};
 use raijin_editor::EditorSnapshot;
 use raijin_editor::MultiBufferOffset;
 use raijin_editor::RowExt;

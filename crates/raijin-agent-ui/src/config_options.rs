@@ -3,8 +3,8 @@ use std::{cmp::Reverse, rc::Rc, sync::Arc};
 use raijin_acp_thread::AgentSessionConfigOptions;
 use agent_client_protocol as acp;
 use raijin_agent_servers::AgentServer;
-use raijin_raijin_agent_settings::AgentSettings;
-use inazuma_inazuma_collections::HashSet;
+use raijin_agent_settings::AgentSettings;
+use inazuma_collections::HashSet;
 use raijin_fs::Fs;
 use inazuma_fuzzy::StringMatchCandidate;
 use inazuma::{

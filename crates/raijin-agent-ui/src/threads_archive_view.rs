@@ -7,7 +7,7 @@ use crate::{
 use raijin_acp_thread::AgentSessionInfo;
 use raijin_agent::ThreadStore;
 use agent_client_protocol as acp;
-use raijin_raijin_agent_settings::AgentSettings;
+use raijin_agent_settings::AgentSettings;
 use chrono::{DateTime, Datelike as _, Local, NaiveDate, TimeDelta, Utc};
 use raijin_editor::Editor;
 use raijin_fs::Fs;
@@ -27,7 +27,7 @@ use raijin_ui::{
 };
 use inazuma_util::ResultExt as _;
 use raijin_actions::agents_sidebar::FocusSidebarFilter;
-use raijin_actions::raijin_editor::{MoveDown, MoveUp};
+use raijin_actions::editor::{MoveDown, MoveUp};
 
 #[derive(Clone)]
 enum ArchiveListItem {

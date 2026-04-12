@@ -42,7 +42,7 @@ use std::rc::Rc;
 use std::sync::Arc;
 
 use agent_client_protocol as acp;
-use raijin_raijin_agent_settings::{AgentProfileId, AgentSettings};
+use raijin_agent_settings::{AgentProfileId, AgentSettings};
 use raijin_assistant_slash_command::SlashCommandRegistry;
 use raijin_client::Client;
 use raijin_command_palette_hooks::CommandPaletteFilter;
@@ -612,7 +612,7 @@ fn register_slash_commands(cx: &mut App) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use raijin_raijin_agent_settings::{AgentProfileId, AgentSettings};
+    use raijin_agent_settings::{AgentProfileId, AgentSettings};
     use raijin_command_palette_hooks::CommandPaletteFilter;
     use raijin_editor::actions::AcceptEditPrediction;
     use inazuma::{BorrowAppContext, TestAppContext, px};

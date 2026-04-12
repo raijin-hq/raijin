@@ -9,7 +9,7 @@ use std::{ops::Range, rc::Rc, sync::Arc};
 use raijin_agent::ContextServerRegistry;
 use anyhow::Result;
 use raijin_cloud_api_types::Plan;
-use inazuma_inazuma_collections::HashMap;
+use inazuma_collections::HashMap;
 use raijin_context_server::ContextServerId;
 use raijin_editor::{Editor, MultiBufferOffset, SelectionEffects, scroll::Autoscroll};
 use raijin_extension::ExtensionManifest;

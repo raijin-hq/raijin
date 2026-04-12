@@ -4152,7 +4152,7 @@ mod tests {
             &mut cx,
         );
 
-        std::raijin_fs::remove_file(&temporary_image_path).expect("remove temp png");
+        std::fs::remove_file(&temporary_image_path).expect("remove temp png");
 
         let expected_file_uri = MentionUri::File {
             abs_path: path!("/project/file.txt").into(),
@@ -4293,7 +4293,7 @@ mod tests {
             None => format!("zed-agent-ui-test-{}", uuid::Uuid::new_v4()),
         };
         let path = std::env::temp_dir().join(file_name);
-        std::raijin_fs::write(&path, bytes).expect("write temp png");
+        std::fs::write(&path, bytes).expect("write temp png");
         path
     }
 

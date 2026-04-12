@@ -11,12 +11,12 @@ use agent_client_protocol as acp;
 #[cfg(test)]
 use raijin_agent_servers::AgentServerDelegate;
 use raijin_agent_servers::{AgentServer, GEMINI_TERMINAL_AUTH_METHOD_ID};
-use raijin_raijin_agent_settings::{AgentProfileId, AgentSettings};
+use raijin_agent_settings::{AgentProfileId, AgentSettings};
 use anyhow::{Result, anyhow};
 use raijin_audio::{Audio, Sound};
 use raijin_buffer_diff::BufferDiff;
 use raijin_client::raijin_urls;
-use inazuma_inazuma_collections::{HashMap, HashSet, IndexMap};
+use inazuma_collections::{HashMap, HashSet, IndexMap};
 use raijin_editor::scroll::Autoscroll;
 use raijin_editor::{
     Editor, EditorEvent, EditorMode, MultiBuffer, PathKey, SelectionEffects, SizingBehavior,

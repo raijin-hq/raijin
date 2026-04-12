@@ -1,5 +1,5 @@
 use crate::{CycleModeSelector, ManageProfiles, ToggleProfileSelector};
-use raijin_raijin_agent_settings::{
+use raijin_agent_settings::{
     AgentProfile, AgentProfileId, AgentSettings, AvailableProfiles, builtin_profiles,
 };
 use raijin_fs::Fs;

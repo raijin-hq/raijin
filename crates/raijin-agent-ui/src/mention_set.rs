@@ -4,7 +4,7 @@ use agent_client_protocol as acp;
 use raijin_agent_servers::{AgentServer, AgentServerDelegate};
 use anyhow::{Context as _, Result, anyhow};
 use raijin_assistant_slash_commands::{codeblock_fence_for_path, collect_diagnostics_output};
-use inazuma_inazuma_collections::{HashMap, HashSet};
+use inazuma_collections::{HashMap, HashSet};
 use raijin_editor::{
     Anchor, Editor, EditorSnapshot, ExcerptId, FoldPlaceholder, ToOffset,
     display_map::{Crease, CreaseId, CreaseMetadata, FoldId},
@@ -852,7 +852,7 @@ pub(crate) fn load_external_image_from_path(
     path: &Path,
     default_name: &SharedString,
 ) -> Option<(Image, SharedString)> {
-    let content = std::raijin_fs::read(path).ok()?;
+    let content = std::fs::read(path).ok()?;
     let format = image::guess_format(&content)
         .ok()
         .and_then(image_format_from_external_content)?;

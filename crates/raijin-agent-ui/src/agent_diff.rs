@@ -1,10 +1,10 @@
 use crate::{Keep, KeepAll, OpenAgentDiff, Reject, RejectAll};
 use raijin_acp_thread::{AcpThread, AcpThreadEvent};
 use raijin_action_log::{ActionLogTelemetry, LastRejectUndo};
-use raijin_raijin_agent_settings::AgentSettings;
+use raijin_agent_settings::AgentSettings;
 use anyhow::Result;
 use raijin_buffer_diff::DiffHunkStatus;
-use inazuma_inazuma_collections::{HashMap, HashSet};
+use inazuma_collections::{HashMap, HashSet};
 use raijin_editor::{
     Direction, Editor, EditorEvent, EditorSettings, MultiBuffer, MultiBufferSnapshot,
     SelectionEffects, ToPoint,
@@ -1790,7 +1790,7 @@ mod tests {
     use super::*;
     use crate::Keep;
     use raijin_acp_thread::AgentConnection as _;
-    use raijin_raijin_agent_settings::AgentSettings;
+    use raijin_agent_settings::AgentSettings;
     use raijin_editor::EditorSettings;
     use inazuma::{TestAppContext, UpdateGlobal, VisualTestContext};
     use raijin_project::{FakeFs, Project};

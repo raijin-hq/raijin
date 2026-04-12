@@ -3,7 +3,7 @@ mod profile_modal_header;
 use std::sync::Arc;
 
 use raijin_agent::ContextServerRegistry;
-use raijin_raijin_agent_settings::{AgentProfile, AgentProfileId, AgentSettings, builtin_profiles};
+use raijin_agent_settings::{AgentProfile, AgentProfileId, AgentSettings, builtin_profiles};
 use raijin_editor::Editor;
 use raijin_fs::Fs;
 use inazuma::{DismissEvent, Entity, EventEmitter, FocusHandle, Focusable, Subscription, prelude::*};

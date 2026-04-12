@@ -1,7 +1,7 @@
 use raijin_acp_thread::AgentSessionModes;
 use agent_client_protocol as acp;
 use raijin_agent_servers::AgentServer;
-use raijin_raijin_agent_settings::AgentSettings;
+use raijin_agent_settings::AgentSettings;
 use raijin_fs::Fs;
 use inazuma::{Context, Entity, WeakEntity, Window, prelude::*};
 use inazuma_settings_framework::Settings as _;

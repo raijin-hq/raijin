@@ -7,7 +7,7 @@ use anyhow::Result;
 use raijin_assistant_slash_command::{SlashCommand, SlashCommandOutputSection, SlashCommandWorkingSet};
 use raijin_assistant_slash_commands::{DefaultSlashCommand, FileSlashCommand, selections_creases};
 use raijin_client::{proto, raijin_urls};
-use inazuma_inazuma_collections::{BTreeSet, HashMap, HashSet, hash_map};
+use inazuma_collections::{BTreeSet, HashMap, HashSet, hash_map};
 use raijin_editor::{
     Anchor, Editor, EditorEvent, MenuEditPredictionsPolicy, MultiBuffer, MultiBufferOffset,
     MultiBufferSnapshot, RowExt, ToOffset as _, ToPoint as _,

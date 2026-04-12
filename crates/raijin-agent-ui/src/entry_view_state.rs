@@ -4,7 +4,7 @@ use super::thread_history::ThreadHistory;
 use raijin_acp_thread::{AcpThread, AgentThreadEntry};
 use raijin_agent::ThreadStore;
 use agent_client_protocol::ToolCallId;
-use inazuma_inazuma_collections::HashMap;
+use inazuma_collections::HashMap;
 use raijin_editor::{Editor, EditorEvent, EditorMode, MinimapVisibility, SizingBehavior};
 use inazuma::{
     AnyEntity, App, AppContext as _, Entity, EntityId, EventEmitter, FocusHandle, Focusable,

@@ -1,7 +1,7 @@
 use crate::ThreadHistory;
 use raijin_agent::ThreadStore;
-use raijin_raijin_agent_settings::AgentSettings;
-use inazuma_inazuma_collections::{HashMap, VecDeque};
+use raijin_agent_settings::AgentSettings;
+use inazuma_collections::{HashMap, VecDeque};
 use raijin_editor::actions::Paste;
 use raijin_editor::code_context_menus::CodeContextMenu;
 use raijin_editor::display_map::{CreaseId, EditorMargins};
