@@ -441,7 +441,7 @@ impl MemoryView {
                         this.create_data_breakpoint(
                             context,
                             data_id.clone(),
-                            dap::DataBreakpoint {
+                            raijin_dap::DataBreakpoint {
                                 data_id,
                                 access_type: None,
                                 condition: None,

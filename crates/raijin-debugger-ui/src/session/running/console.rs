@@ -286,7 +286,7 @@ impl Console {
             session
                 .evaluate(
                     expression.clone(),
-                    Some(dap::EvaluateArgumentsContext::Repl),
+                    Some(raijin_dap::EvaluateArgumentsContext::Repl),
                     self.stack_frame_list.read(cx).opened_stack_frame_id(),
                     None,
                     cx,
@@ -339,7 +339,7 @@ impl Console {
             session
                 .evaluate(
                     expression,
-                    Some(dap::EvaluateArgumentsContext::Repl),
+                    Some(raijin_dap::EvaluateArgumentsContext::Repl),
                     self.stack_frame_list.read(cx).opened_stack_frame_id(),
                     None,
                     cx,
@@ -671,13 +671,13 @@ impl ConsoleQueryBarCompletionProvider {
                             variable_value.into(),
                         )),
                         confirm: None,
-                        source: raijin_raijin_project::CompletionSource::Custom,
+                        source: raijin_project::CompletionSource::Custom,
                         insert_text_mode: None,
                     })
                 })
                 .collect::<Vec<_>>();
 
-            Ok(vec![raijin_raijin_project::CompletionResponse {
+            Ok(vec![raijin_project::CompletionResponse {
                 is_incomplete: completions.len() >= LIMIT,
                 display_options: CompletionDisplayOptions::default(),
                 completions,
@@ -782,13 +782,13 @@ impl ConsoleQueryBarCompletionProvider {
                         match_start: None,
                         snippet_deduplication_key: None,
                         confirm: None,
-                        source: raijin_raijin_project::CompletionSource::Dap { sort_text },
+                        source: raijin_project::CompletionSource::Dap { sort_text },
                         insert_text_mode: None,
                     }
                 })
                 .collect();
 
-            Ok(vec![raijin_raijin_project::CompletionResponse {
+            Ok(vec![raijin_project::CompletionResponse {
                 completions,
                 display_options: CompletionDisplayOptions::default(),
                 is_incomplete: false,

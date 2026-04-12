@@ -1364,7 +1364,7 @@ impl BreakpointOptionsStrip {
 
             if self.is_selected && self.strip_mode == Some(kind) {
                 if self.focus_handle.is_focused(window) {
-                    this.bg(color.editor_background)
+                    this.bg(color.editor.background)
                         .border_color(color.border_focused)
                 } else {
                     this.border_color(color.border)

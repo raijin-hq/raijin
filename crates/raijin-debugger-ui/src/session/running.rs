@@ -1211,7 +1211,7 @@ impl RunningState {
                     .with_context(|| anyhow!("{}: is not a valid adapter name", &adapter))?.config_from_zed_format(zed_config)
                     .await?;
                 config = scenario.config;
-                util::merge_non_null_json_value_into(extra_config, &mut config);
+                inazuma_util::merge_non_null_json_value_into(extra_config, &mut config);
 
                 Self::substitute_variables_in_config(&mut config, &task_context);
             } else {

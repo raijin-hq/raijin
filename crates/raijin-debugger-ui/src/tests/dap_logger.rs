@@ -1,5 +1,5 @@
 use crate::tests::{init_test, init_test_workspace, start_debug_session};
-use raijin_raijin_dap::requests::{StackTrace, Threads};
+use raijin_dap::requests::{StackTrace, Threads};
 use raijin_debugger_tools::LogStore;
 use inazuma::{BackgroundExecutor, TestAppContext, VisualTestContext};
 use raijin_project::Project;

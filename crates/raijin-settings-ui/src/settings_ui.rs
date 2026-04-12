@@ -432,9 +432,11 @@ fn init_renderers(cx: &mut App) {
                     settings_window,
                     item,
                     settings_file,
-                    Button::new("open-in-settings-file", "Edit in settings.toml")
-                        .style(ButtonStyle::Outlined)
-                        .size(ButtonSize::Medium)
+                    <Button as ButtonCommon>::size(
+                        Button::new("open-in-settings-file", "Edit in settings.toml")
+                            .style(ButtonStyle::Outlined),
+                        ButtonSize::Medium,
+                    )
                         .tooltip(Tooltip::for_action_title_in(
                             "Edit in settings.toml",
                             &OpenCurrentFile,
@@ -917,9 +919,11 @@ impl SettingsPageItem {
                         settings_window,
                         setting_item,
                         file.clone(),
-                        Button::new("error-warning", warning)
-                            .style(ButtonStyle::Outlined)
-                            .size(ButtonSize::Medium)
+                        <Button as ButtonCommon>::size(
+                            Button::new("error-warning", warning)
+                                .style(ButtonStyle::Outlined),
+                            ButtonSize::Medium,
+                        )
                             .start_icon(Icon::new(IconName::Debug).color(Color::Error))
                             .tooltip(Tooltip::text(setting_item.field.type_name()))
                             .into_any_element(),
@@ -980,7 +984,8 @@ impl SettingsPageItem {
                                 ),
                         )
                         .child(
-                            Button::new(
+                            <Button as ButtonCommon>::size(
+                                Button::new(
                                     ("sub-page".into(), sub_page_link.title.clone()),
                                     "Configure",
                                 )
@@ -989,8 +994,9 @@ impl SettingsPageItem {
                                         .size(IconSize::Small)
                                         .color(Color::Muted),
                                 )
-                                .style(ButtonStyle::Outlined)
-                                .size(ButtonSize::Medium)
+                                .style(ButtonStyle::Outlined),
+                                ButtonSize::Medium,
+                            )
                             .on_click({
                                 let sub_page_link = sub_page_link.clone();
                                 cx.listener(move |this, _, window, cx| {
@@ -1113,7 +1119,8 @@ impl SettingsPageItem {
                                 ),
                         )
                         .child(
-                            Button::new(
+                            <Button as ButtonCommon>::size(
+                                Button::new(
                                     ("action-link".into(), action_link.title.clone()),
                                     action_link.button_text.clone(),
                                 )
@@ -1122,8 +1129,9 @@ impl SettingsPageItem {
                                         .size(IconSize::Small)
                                         .color(Color::Muted),
                                 )
-                                .style(ButtonStyle::Outlined)
-                                .size(ButtonSize::Medium)
+                                .style(ButtonStyle::Outlined),
+                                ButtonSize::Medium,
+                            )
                             .on_click({
                                 let on_click = action_link.on_click.clone();
                                 cx.listener(move |this, _, window, cx| {
@@ -2290,7 +2298,7 @@ impl SettingsWindow {
 
         let file_button =
             |ix, file: &SettingsUiFile, focus_handle, cx: &mut Context<SettingsWindow>| {
-                ButtonCommon::track_focus(
+                <Button as ButtonCommon>::track_focus(
                     Button::new(
                         ix,
                         self.display_name(&file)
@@ -2404,10 +2412,7 @@ impl SettingsWindow {
                     }),
             )
             .child(
-                ButtonCommon::tab_index(
-                    Button::new(edit_in_json_id, "Edit in settings.toml"),
-                    0_isize,
-                )
+                Button::new(edit_in_json_id, "Edit in settings.toml")
                     .style(ButtonStyle::Outlined)
                     .tooltip(Tooltip::for_action_title_in(
                         "Edit in settings.toml",
@@ -3131,10 +3136,7 @@ impl SettingsWindow {
                 .when(current_sub_page.link.in_json, |this| {
                     this.child(
                         div().flex_shrink_0().child(
-                            ButtonCommon::tab_index(
-                                Button::new("open-in-settings-file", "Edit in settings.toml"),
-                                0_isize,
-                            )
+                            Button::new("open-in-settings-file", "Edit in settings.toml")
                                 .style(ButtonStyle::Outlined)
                                 .tooltip(Tooltip::for_action_title_in(
                                     "Edit in settings.toml",
@@ -3186,10 +3188,7 @@ impl SettingsWindow {
                     )
                     .action_slot(
                         div().pr_1().pb_1().child(
-                            ButtonCommon::tab_index(
-                                Button::new("fix-in-json", "Fix in settings.toml"),
-                                0_isize,
-                            )
+                            Button::new("fix-in-json", "Fix in settings.toml")
                                 .style(ButtonStyle::tinted(raijin_ui::TintColor::Warning))
                                 .on_click(cx.listener(|this, _, window, cx| {
                                     this.open_current_settings_file(window, cx);
@@ -4177,8 +4176,8 @@ where
 }
 
 fn render_picker_trigger_button(id: SharedString, label: SharedString) -> Button {
-    ButtonCommon::size(
-        ButtonCommon::tab_index(Button::new(id, label), 0_isize)
+    <Button as ButtonCommon>::size(
+        Button::new(id, label)
             .style(ButtonStyle::Outlined),
         ButtonSize::Medium,
     )

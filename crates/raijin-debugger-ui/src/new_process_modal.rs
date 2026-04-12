@@ -974,7 +974,7 @@ impl AttachMode {
         let definition = ZedDebugConfig {
             adapter: debugger.unwrap_or(DebugAdapterName("".into())).0,
             label: "Attach New Session Setup".into(),
-            request: raijin_dap::DebugRequest::Attach(raijin_raijin_task::AttachRequest { process_id: None }),
+            request: raijin_dap::DebugRequest::Attach(raijin_task::AttachRequest { process_id: None }),
             stop_on_entry: Some(false),
         };
         let attach_picker = cx.new(|cx| {
@@ -996,7 +996,7 @@ impl AttachMode {
             attach_picker,
         })
     }
-    pub(super) fn debug_request(&self) -> task::AttachRequest {
+    pub(super) fn debug_request(&self) -> raijin_task::AttachRequest {
         raijin_task::AttachRequest { process_id: None }
     }
 }
@@ -1219,7 +1219,7 @@ impl PickerDelegate for DebugDelegate {
         &mut self,
         ix: usize,
         _window: &mut Window,
-        _cx: &mut Context<picker::Picker<Self>>,
+        _cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) {
         self.selected_index = ix;
     }
@@ -1232,7 +1232,7 @@ impl PickerDelegate for DebugDelegate {
         &mut self,
         query: String,
         window: &mut Window,
-        cx: &mut Context<picker::Picker<Self>>,
+        cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) -> inazuma::Task<()> {
         let candidates = self.candidates.clone();
 
@@ -1245,7 +1245,7 @@ impl PickerDelegate for DebugDelegate {
                 })
                 .collect();
 
-            let matches = fuzzy::match_strings(
+            let matches = inazuma_fuzzy::match_strings(
                 &candidates,
                 &query,
                 true,
@@ -1405,7 +1405,7 @@ impl PickerDelegate for DebugDelegate {
         &mut self,
         secondary: bool,
         window: &mut Window,
-        cx: &mut Context<picker::Picker<Self>>,
+        cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) {
         let debug_scenario = self
             .matches
@@ -1466,7 +1466,7 @@ impl PickerDelegate for DebugDelegate {
         cx.emit(DismissEvent);
     }
 
-    fn dismissed(&mut self, _: &mut Window, cx: &mut Context<picker::Picker<Self>>) {
+    fn dismissed(&mut self, _: &mut Window, cx: &mut Context<inazuma_picker::Picker<Self>>) {
         cx.emit(DismissEvent);
     }
 
@@ -1504,7 +1504,7 @@ impl PickerDelegate for DebugDelegate {
             })
             .map(|this| {
                 if (current_modifiers.alt || self.matches.is_empty()) && !self.prompt.is_empty() {
-                    let action = picker::ConfirmInput { secondary: false }.boxed_clone();
+                    let action = inazuma_picker::ConfirmInput { secondary: false }.boxed_clone();
                     this.child({
                         Button::new("launch-custom", "Launch Custom")
                             .key_binding(KeyBinding::for_action(&*action, cx))
@@ -1533,7 +1533,7 @@ impl PickerDelegate for DebugDelegate {
         ix: usize,
         selected: bool,
         window: &mut Window,
-        cx: &mut Context<picker::Picker<Self>>,
+        cx: &mut Context<inazuma_picker::Picker<Self>>,
     ) -> Option<Self::ListItem> {
         let hit = &self.matches.get(ix)?;
         let (task_kind, language_name, _scenario, context) = &self.candidates[hit.candidate_id];

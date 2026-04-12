@@ -276,12 +276,9 @@ fn render_tool_list_item(
         )
         .child({
             let tool_name = tool.name;
-            ButtonCommon::size(
-                ButtonCommon::tab_index(
-                    Button::new(format!("configure-{}", tool.id), "Configure"),
-                    tool_index as isize,
-                )
-                .style(ButtonStyle::Outlined),
+            <Button as ButtonCommon>::size(
+                Button::new(format!("configure-{}", tool.id), "Configure")
+                    .style(ButtonStyle::Outlined),
                 ButtonSize::Medium,
             )
                 .end_icon(
@@ -1099,12 +1096,9 @@ fn render_global_default_mode_section(current_mode: ToolPermissionMode) -> AnyEl
         .child(
             PopoverMenu::new("global-default-mode")
                 .trigger(
-                    ButtonCommon::size(
-                        ButtonCommon::tab_index(
-                            Button::new("global-mode-trigger", mode_label),
-                            0_isize,
-                        )
-                        .style(ButtonStyle::Outlined),
+                    <Button as ButtonCommon>::size(
+                        Button::new("global-mode-trigger", mode_label)
+                            .style(ButtonStyle::Outlined),
                         ButtonSize::Medium,
                     )
                         .end_icon(Icon::new(IconName::ChevronDown).size(IconSize::Small)),
@@ -1157,12 +1151,9 @@ fn render_default_mode_section(
         .child(
             PopoverMenu::new(format!("default-mode-{}", tool_id))
                 .trigger(
-                    ButtonCommon::size(
-                        ButtonCommon::tab_index(
-                            Button::new(format!("mode-trigger-{}", tool_id), mode_label),
-                            0_isize,
-                        )
-                        .style(ButtonStyle::Outlined),
+                    <Button as ButtonCommon>::size(
+                        Button::new(format!("mode-trigger-{}", tool_id), mode_label)
+                            .style(ButtonStyle::Outlined),
                         ButtonSize::Medium,
                     )
                         .end_icon(Icon::new(IconName::ChevronDown).size(IconSize::Small)),

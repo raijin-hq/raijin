@@ -274,7 +274,7 @@ impl DebugPanel {
     pub(crate) fn render_thread_dropdown(
         &self,
         running_state: &Entity<RunningState>,
-        threads: Vec<(dap::Thread, ThreadStatus)>,
+        threads: Vec<(raijin_dap::Thread, ThreadStatus)>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Option<DropdownMenu> {

@@ -3,7 +3,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use anyhow::{Context as _, Result, anyhow};
-use raijin_raijin_dap::StackFrameId;
+use raijin_dap::StackFrameId;
 use raijin_dap::adapters::DebugAdapterName;
 use raijin_db::kvp::KeyValueStore;
 use inazuma::{
@@ -300,11 +300,11 @@ impl StackFrameList {
             });
 
             match stack_frame.dap.presentation_hint {
-                Some(raijin_raijin_dap::StackFramePresentationHint::Deemphasize)
-                | Some(raijin_raijin_dap::StackFramePresentationHint::Subtle) => {
+                Some(raijin_dap::StackFramePresentationHint::Deemphasize)
+                | Some(raijin_dap::StackFramePresentationHint::Subtle) => {
                     collapsed_entries.push(stack_frame.dap.clone());
                 }
-                Some(raijin_raijin_dap::StackFramePresentationHint::Label) => {
+                Some(raijin_dap::StackFramePresentationHint::Label) => {
                     entries.push(StackFrameEntry::Label(stack_frame.dap.clone()));
                 }
                 _ => {
@@ -589,8 +589,8 @@ impl StackFrameList {
         let should_deemphasize = matches!(
             stack_frame.presentation_hint,
             Some(
-                raijin_raijin_dap::StackFramePresentationHint::Subtle
-                    | raijin_raijin_dap::StackFramePresentationHint::Deemphasize
+                raijin_dap::StackFramePresentationHint::Subtle
+                    | raijin_dap::StackFramePresentationHint::Deemphasize
             )
         );
         h_flex()
@@ -939,9 +939,9 @@ impl Render for StackFrameList {
             .when_some(self.error.clone(), |el, error| {
                 el.child(
                     h_flex()
-                        .bg(cx.theme().status().warning_background)
+                        .bg(cx.theme().status().warning.background)
                         .border_b_1()
-                        .border_color(cx.theme().status().warning_border)
+                        .border_color(cx.theme().status().warning.border)
                         .pl_1()
                         .child(Icon::new(IconName::Warning).color(Color::Warning))
                         .gap_2()

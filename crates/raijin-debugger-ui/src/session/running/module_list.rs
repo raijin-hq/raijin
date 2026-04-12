@@ -163,7 +163,7 @@ impl ModuleList {
     }
 
     #[cfg(test)]
-    pub(crate) fn modules(&self, cx: &mut Context<Self>) -> Vec<dap::Module> {
+    pub(crate) fn modules(&self, cx: &mut Context<Self>) -> Vec<raijin_dap::Module> {
         self.session
             .update(cx, |session, cx| session.modules(cx).to_vec())
     }
