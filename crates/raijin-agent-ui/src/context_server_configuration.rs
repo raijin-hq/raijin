@@ -18,12 +18,12 @@ pub(crate) fn init(language_registry: Arc<LanguageRegistry>, fs: Arc<dyn Fs>, cx
             return;
         };
 
-        if let Some(extension_events) = extension::ExtensionEvents::try_global(cx).as_ref() {
+        if let Some(extension_events) = raijin_extension::ExtensionEvents::try_global(cx).as_ref() {
             cx.subscribe_in(extension_events, window, {
                 let language_registry = language_registry.clone();
                 let fs = fs.clone();
                 move |_, _, event, window, cx| match event {
-                    extension::Event::ExtensionInstalled(manifest) => {
+                    raijin_extension::Event::ExtensionInstalled(manifest) => {
                         show_configure_mcp_modal(
                             language_registry.clone(),
                             manifest,
@@ -32,14 +32,14 @@ pub(crate) fn init(language_registry: Arc<LanguageRegistry>, fs: Arc<dyn Fs>, cx
                             cx,
                         );
                     }
-                    extension::Event::ExtensionUninstalled(manifest) => {
+                    raijin_extension::Event::ExtensionUninstalled(manifest) => {
                         remove_context_server_settings(
                             manifest.context_servers.keys().cloned().collect(),
                             fs.clone(),
                             cx,
                         );
                     }
-                    extension::Event::ConfigureExtensionRequested(manifest) => {
+                    raijin_extension::Event::ConfigureExtensionRequested(manifest) => {
                         if !manifest.context_servers.is_empty() {
                             show_configure_mcp_modal(
                                 language_registry.clone(),

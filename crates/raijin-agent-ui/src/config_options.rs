@@ -3,8 +3,8 @@ use std::{cmp::Reverse, rc::Rc, sync::Arc};
 use raijin_acp_thread::AgentSessionConfigOptions;
 use agent_client_protocol as acp;
 use raijin_agent_servers::AgentServer;
-use raijin_agent_settings::AgentSettings;
-use inazuma_collections::HashSet;
+use raijin_raijin_agent_settings::AgentSettings;
+use inazuma_inazuma_collections::HashSet;
 use raijin_fs::Fs;
 use inazuma_fuzzy::StringMatchCandidate;
 use inazuma::{
@@ -538,7 +538,7 @@ impl PickerDelegate for ConfigOptionPickerDelegate {
                     })
                     .unwrap_or(0);
 
-                this.set_selected_index(new_index, Some(picker::Direction::Down), true, window, cx);
+                this.set_selected_index(new_index, Some(inazuma_picker::Direction::Down), true, window, cx);
                 cx.notify();
             })
             .ok();
@@ -688,7 +688,7 @@ impl PickerDelegate for ConfigOptionPickerDelegate {
         &self,
         _window: &mut Window,
         cx: &mut Context<Picker<Self>>,
-    ) -> Option<ui::DocumentationAside> {
+    ) -> Option<raijin_ui::DocumentationAside> {
         self.selected_description
             .as_ref()
             .map(|(_, description, is_default)| {
@@ -697,13 +697,13 @@ impl PickerDelegate for ConfigOptionPickerDelegate {
 
                 let settings = AgentSettings::get_global(cx);
                 let side = match settings.dock {
-                    settings::DockPosition::Left => DocumentationSide::Right,
-                    settings::DockPosition::Bottom | settings::DockPosition::Right => {
+                    inazuma_settings_framework::DockPosition::Left => DocumentationSide::Right,
+                    inazuma_settings_framework::DockPosition::Bottom | inazuma_settings_framework::DockPosition::Right => {
                         DocumentationSide::Left
                     }
                 };
 
-                ui::DocumentationAside::new(
+                raijin_ui::DocumentationAside::new(
                     side,
                     Rc::new(move |_| {
                         v_flex()
@@ -831,7 +831,7 @@ async fn fuzzy_search_options(
         .map(|(ix, opt)| StringMatchCandidate::new(ix, &opt.name))
         .collect::<Vec<_>>();
 
-    let mut matches = fuzzy::match_strings(
+    let mut matches = inazuma_fuzzy::match_strings(
         &candidates,
         query,
         false,

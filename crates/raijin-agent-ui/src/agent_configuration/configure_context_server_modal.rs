@@ -1,5 +1,5 @@
 use anyhow::{Context as _, Result};
-use inazuma_collections::HashMap;
+use inazuma_inazuma_collections::HashMap;
 use raijin_context_server::{ContextServerCommand, ContextServerId};
 use raijin_editor::{Editor, EditorElement, EditorStyle};
 
@@ -46,7 +46,7 @@ enum ConfigurationTarget {
     Extension {
         id: ContextServerId,
         repository_url: Option<SharedString>,
-        installation: Option<extension::ContextServerConfiguration>,
+        installation: Option<raijin_extension::ContextServerConfiguration>,
     },
 }
 
@@ -63,7 +63,7 @@ enum ConfigurationSource {
         id: ContextServerId,
         editor: Option<Entity<Editor>>,
         repository_url: Option<SharedString>,
-        installation_instructions: Option<Entity<markdown::Markdown>>,
+        installation_instructions: Option<Entity<raijin_markdown::Markdown>>,
         settings_validator: Option<jsonschema::Validator>,
     },
 }
@@ -94,7 +94,7 @@ impl ConfigurationSource {
                 let mut editor = Editor::auto_height(4, 16, window, cx);
                 editor.set_text(json, window, cx);
                 editor.set_show_gutter(false, cx);
-                editor.set_soft_wrap_mode(language::language_settings::SoftWrap::None, cx);
+                editor.set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::None, cx);
                 if let Some(buffer) = editor.buffer().read(cx).as_singleton() {
                     buffer.update(cx, |buffer, cx| buffer.set_language(jsonc_language, cx))
                 }
@@ -495,7 +495,7 @@ impl ConfigureContextServerModal {
         cx.notify();
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, cx: &mut Context<Self>) {
         if matches!(
             self.state,
             State::Waiting | State::AuthRequired { .. } | State::Authenticating { .. }
@@ -576,7 +576,7 @@ impl ConfigureContextServerModal {
         }
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 
@@ -861,11 +861,11 @@ impl ConfigureContextServerModal {
                             },
                         )
                         .key_binding(
-                            KeyBinding::for_action_in(&menu::Cancel, &focus_handle, cx)
+                            KeyBinding::for_action_in(&inazuma_menu::Cancel, &focus_handle, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(
-                            cx.listener(|this, _event, _window, cx| this.cancel(&menu::Cancel, cx)),
+                            cx.listener(|this, _event, _window, cx| this.cancel(&inazuma_menu::Cancel, cx)),
                         ),
                     )
                     .children(self.source.has_configuration_options().then(|| {
@@ -879,12 +879,12 @@ impl ConfigureContextServerModal {
                         )
                         .disabled(is_busy)
                         .key_binding(
-                            KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                            KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                 .map(|kb| kb.size(rems_from_px(12.))),
                         )
                         .on_click(
                             cx.listener(|this, _event, _window, cx| {
-                                this.confirm(&menu::Confirm, cx)
+                                this.confirm(&inazuma_menu::Confirm, cx)
                             }),
                         )
                     })),
@@ -964,11 +964,11 @@ impl Render for ConfigureContextServerModal {
             .w(rems(40.))
             .key_context("ConfigureContextServerModal")
             .on_action(
-                cx.listener(|this, _: &menu::Cancel, _window, cx| this.cancel(&menu::Cancel, cx)),
+                cx.listener(|this, _: &inazuma_menu::Cancel, _window, cx| this.cancel(&inazuma_menu::Cancel, cx)),
             )
             .on_action(
-                cx.listener(|this, _: &menu::Confirm, _window, cx| {
-                    this.confirm(&menu::Confirm, cx)
+                cx.listener(|this, _: &inazuma_menu::Confirm, _window, cx| {
+                    this.confirm(&inazuma_menu::Confirm, cx)
                 }),
             )
             .capture_any_mouse_down(cx.listener(|this, _, window, cx| {

@@ -5,18 +5,18 @@ use raijin_acp_thread::{
     ToolCall, ToolCallContent, ToolCallStatus, UserMessageId,
 };
 use raijin_acp_thread::{AgentConnection, Plan};
-use action_log::{ActionLog, ActionLogTelemetry, DiffStats};
+use raijin_action_log::{ActionLog, ActionLogTelemetry, DiffStats};
 use raijin_agent::{NativeAgentServer, NativeAgentSessionList, SharedThread, ThreadStore};
 use agent_client_protocol as acp;
 #[cfg(test)]
 use raijin_agent_servers::AgentServerDelegate;
 use raijin_agent_servers::{AgentServer, GEMINI_TERMINAL_AUTH_METHOD_ID};
-use raijin_agent_settings::{AgentProfileId, AgentSettings};
+use raijin_raijin_agent_settings::{AgentProfileId, AgentSettings};
 use anyhow::{Result, anyhow};
-use audio::{Audio, Sound};
+use raijin_audio::{Audio, Sound};
 use raijin_buffer_diff::BufferDiff;
 use raijin_client::raijin_urls;
-use inazuma_collections::{HashMap, HashSet, IndexMap};
+use inazuma_inazuma_collections::{HashMap, HashSet, IndexMap};
 use raijin_editor::scroll::Autoscroll;
 use raijin_editor::{
     Editor, EditorEvent, EditorMode, MultiBuffer, PathKey, SelectionEffects, SizingBehavior,
@@ -46,7 +46,7 @@ use inazuma_settings_framework::{NotifyWhenAgentWaiting, Settings as _, Settings
 use std::path::Path;
 use std::sync::Arc;
 use std::time::Instant;
-use std::{collections::BTreeMap, rc::Rc, time::Duration};
+use std::{inazuma_collections::BTreeMap, rc::Rc, time::Duration};
 use raijin_terminal_view::terminal_panel::TerminalPanel;
 use inazuma_text::Anchor;
 use raijin_theme_settings::AgentFontSize;
@@ -60,7 +60,7 @@ use inazuma_util::{ResultExt, size::format_file_size, time::duration_alt_display
 use inazuma_util::{debug_panic, defer};
 use raijin_workspace::PathList;
 use raijin_workspace::{
-    CollaboratorId, MultiWorkspace, NewTerminal, Toast, Workspace, notifications::NotificationId,
+    CollaboratorId, MultiWorkspace, NewTerminal, Toast, Workspace, raijin_notifications::NotificationId,
 };
 use raijin_actions::agent::{Chat, ToggleModelSelector};
 use raijin_actions::assistant::OpenRulesLibrary;
@@ -118,7 +118,7 @@ pub(crate) enum ThreadError {
 
 impl From<anyhow::Error> for ThreadError {
     fn from(error: anyhow::Error) -> Self {
-        if error.is::<language_model::PaymentRequiredError>() {
+        if error.is::<raijin_language_model::PaymentRequiredError>() {
             Self::PaymentRequired
         } else if let Some(acp_error) = error.downcast_ref::<acp::Error>()
             && acp_error.code == acp::ErrorCode::AuthRequired
@@ -140,7 +140,7 @@ impl From<anyhow::Error> for ThreadError {
     }
 }
 
-impl ProfileProvider for Entity<agent::Thread> {
+impl ProfileProvider for Entity<raijin_agent::Thread> {
     fn profile_id(&self, cx: &App) -> AgentProfileId {
         self.read(cx).profile().clone()
     }
@@ -280,7 +280,7 @@ impl Conversation {
         };
         let agent_telemetry_id = thread.read(cx).connection().telemetry_id();
 
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Agent Tool Call Authorized",
             agent = agent_telemetry_id,
             session = session_id,
@@ -651,7 +651,7 @@ impl ConversationView {
                 }
             };
 
-            telemetry::event!("Agent Thread Started", agent = connection.telemetry_id());
+            raijin_telemetry::event!("Agent Thread Started", agent = connection.telemetry_id());
 
             let mut resumed_without_history = false;
             let result = if let Some(session_id) = load_session_id.clone() {
@@ -694,7 +694,7 @@ impl ConversationView {
             };
 
             let result = match result.await {
-                Err(e) => match e.downcast::<acp_thread::AuthRequired>() {
+                Err(e) => match e.downcast::<raijin_acp_thread::AuthRequired>() {
                     Ok(err) => {
                         cx.update(|window, cx| {
                             Self::handle_auth_required(
@@ -909,7 +909,7 @@ impl ConversationView {
             .detach();
         }
 
-        let profile_selector: Option<Rc<agent::NativeAgentConnection>> =
+        let profile_selector: Option<Rc<raijin_agent::NativeAgentConnection>> =
             connection.clone().downcast();
         let profile_selector = profile_selector
             .and_then(|native_connection| native_connection.thread(&session_id, cx))
@@ -936,7 +936,7 @@ impl ConversationView {
             .read(cx)
             .agent_icon(&self.agent.agent_id())
             .or_else(|| {
-                project::AgentRegistryStore::try_global(cx).and_then(|store| {
+                raijin_project::AgentRegistryStore::try_global(cx).and_then(|store| {
                     store
                         .read(cx)
                         .agent(&self.agent.agent_id())
@@ -991,7 +991,7 @@ impl ConversationView {
                 let provider_id = provider_id.clone();
                 let this = this.clone();
                 move |_, ev, window, cx| {
-                    if let language_model::Event::ProviderStateChanged(updated_provider_id) = &ev
+                    if let raijin_language_model::Event::ProviderStateChanged(updated_provider_id) = &ev
                         && &provider_id == updated_provider_id
                         && LanguageModelRegistry::global(cx)
                             .read(cx)
@@ -1008,7 +1008,7 @@ impl ConversationView {
 
             let view = registry.read(cx).provider(&provider_id).map(|provider| {
                 provider.configuration_view(
-                    language_model::ConfigurationViewTargetAgent::Other(agent_id.0),
+                    raijin_language_model::ConfigurationViewTargetAgent::Other(agent_id.0),
                     window,
                     cx,
                 )
@@ -1088,8 +1088,8 @@ impl ConversationView {
 
     fn handle_agent_servers_updated(
         &mut self,
-        _agent_server_store: &Entity<project::AgentServerStore>,
-        _event: &project::AgentServersUpdated,
+        _agent_server_store: &Entity<raijin_project::AgentServerStore>,
+        _event: &raijin_project::AgentServersUpdated,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1505,12 +1505,12 @@ impl ConversationView {
                     let result = authenticate.await;
 
                     match &result {
-                        Ok(_) => telemetry::event!(
+                        Ok(_) => raijin_telemetry::event!(
                             "Authenticate Agent Succeeded",
                             agent = agent_telemetry_id
                         ),
                         Err(_) => {
-                            telemetry::event!(
+                            raijin_telemetry::event!(
                                 "Authenticate Agent Failed",
                                 agent = agent_telemetry_id,
                             )
@@ -1556,12 +1556,12 @@ impl ConversationView {
                 let result = authenticate.await;
 
                 match &result {
-                    Ok(_) => telemetry::event!(
+                    Ok(_) => raijin_telemetry::event!(
                         "Authenticate Agent Succeeded",
                         agent = agent_telemetry_id
                     ),
                     Err(_) => {
-                        telemetry::event!("Authenticate Agent Failed", agent = agent_telemetry_id,)
+                        raijin_telemetry::event!("Authenticate Agent Failed", agent = agent_telemetry_id,)
                     }
                 }
 
@@ -1657,7 +1657,7 @@ impl ConversationView {
     }
 
     fn spawn_external_agent_login(
-        login: task::SpawnInTerminal,
+        login: raijin_task::SpawnInTerminal,
         workspace: Entity<Workspace>,
         project: Entity<Project>,
         method: acp::AuthMethodId,
@@ -1690,7 +1690,7 @@ impl ConversationView {
                     }
                 }
             }
-            task.shell = task::Shell::WithArguments {
+            task.shell = raijin_task::Shell::WithArguments {
                 program: task.command.take().expect("login command should be set"),
                 args: std::mem::take(&mut task.args),
                 title_override: None,
@@ -1837,7 +1837,7 @@ impl ConversationView {
                             .label_size(LabelSize::Small)
                             .map(|this| {
                                 if ix == 0 {
-                                    this.style(ButtonStyle::Tinted(TintColor::Accent))
+                                    this.style(ButtonStyle::tinted(TintColor::Accent))
                                 } else {
                                     this.style(ButtonStyle::Outlined)
                                 }
@@ -1847,7 +1847,7 @@ impl ConversationView {
                             })
                             .on_click({
                                 cx.listener(move |this, _, window, cx| {
-                                    telemetry::event!(
+                                    raijin_telemetry::event!(
                                         "Authenticate Agent Started",
                                         agent = agent_telemetry_id,
                                         method = method_id
@@ -1937,14 +1937,14 @@ impl ConversationView {
         };
 
         let kind = match ratio {
-            acp_thread::TokenUsageRatio::Normal => {
+            raijin_acp_thread::TokenUsageRatio::Normal => {
                 active_thread.update(cx, |active, _cx| {
                     active.last_token_limit_telemetry = None;
                 });
                 return;
             }
-            acp_thread::TokenUsageRatio::Warning => "warning",
-            acp_thread::TokenUsageRatio::Exceeded => "exceeded",
+            raijin_acp_thread::TokenUsageRatio::Warning => "warning",
+            raijin_acp_thread::TokenUsageRatio::Exceeded => "exceeded",
         };
 
         let should_skip = active_thread
@@ -1960,7 +1960,7 @@ impl ConversationView {
             active.last_token_limit_telemetry = Some(ratio);
         });
 
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Agent Token Limit Warning",
             agent = agent_telemetry_id,
             session_id = session_id,
@@ -1978,7 +1978,7 @@ impl ConversationView {
 
         let agent_name = self.agent.agent_id();
 
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Agent Panel Error Shown",
             agent = agent_name,
             kind = error_kind,
@@ -2073,12 +2073,12 @@ impl ConversationView {
     pub(crate) fn as_native_connection(
         &self,
         cx: &App,
-    ) -> Option<Rc<agent::NativeAgentConnection>> {
+    ) -> Option<Rc<raijin_agent::NativeAgentConnection>> {
         let acp_thread = self.active_thread()?.read(cx).thread.read(cx);
         acp_thread.connection().clone().downcast()
     }
 
-    pub fn as_native_thread(&self, cx: &App) -> Option<Entity<agent::Thread>> {
+    pub fn as_native_thread(&self, cx: &App) -> Option<Entity<raijin_agent::Thread>> {
         let acp_thread = self.active_thread()?.read(cx).thread.read(cx);
         self.as_native_connection(cx)?
             .thread(acp_thread.session_id(), cx)
@@ -2474,8 +2474,8 @@ impl ConversationView {
 
     pub(crate) fn insert_dragged_files(
         &self,
-        paths: Vec<project::ProjectPath>,
-        added_worktrees: Vec<Entity<project::Worktree>>,
+        paths: Vec<raijin_project::ProjectPath>,
+        added_worktrees: Vec<Entity<raijin_project::Worktree>>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -2584,7 +2584,7 @@ fn loading_contents_spinner(size: IconSize) -> AnyElement {
 }
 
 fn placeholder_text(agent_name: &str, has_commands: bool) -> String {
-    if agent_name == agent::ZED_AGENT_ID.as_ref() {
+    if agent_name == raijin_agent::ZED_AGENT_ID.as_ref() {
         format!("Message the {} — @ to include context", agent_name)
     } else if has_commands {
         format!(
@@ -2725,7 +2725,7 @@ pub(crate) mod tests {
     use raijin_acp_thread::{
         AgentSessionList, AgentSessionListRequest, AgentSessionListResponse, StubAgentConnection,
     };
-    use action_log::ActionLog;
+    use raijin_action_log::ActionLog;
     use raijin_agent::{AgentTool, EditFileTool, FetchTool, TerminalTool, ToolPermissionContext};
     use agent_client_protocol::SessionId;
     use raijin_assistant_text_thread::TextThreadStore;
@@ -3267,8 +3267,8 @@ pub(crate) mod tests {
 
         cx.update(|cx| {
             cx.update_flags(true, vec!["agent-v2".to_string()]);
-            agent::ThreadStore::init_global(cx);
-            language_model::LanguageModelRegistry::test(cx);
+            raijin_agent::ThreadStore::init_global(cx);
+            raijin_language_model::LanguageModelRegistry::test(cx);
             <dyn Fs>::set_global(fs.clone(), cx);
         });
 
@@ -3648,8 +3648,8 @@ pub(crate) mod tests {
     where
         C: 'static + AgentConnection + Send + Clone,
     {
-        fn logo(&self) -> ui::IconName {
-            ui::IconName::ZedAgent
+        fn logo(&self) -> raijin_ui::IconName {
+            raijin_ui::IconName::ZedAgent
         }
 
         fn agent_id(&self) -> AgentId {
@@ -3673,8 +3673,8 @@ pub(crate) mod tests {
     struct FailingAgentServer;
 
     impl AgentServer for FailingAgentServer {
-        fn logo(&self) -> ui::IconName {
-            ui::IconName::AiOpenAi
+        fn logo(&self) -> raijin_ui::IconName {
+            raijin_ui::IconName::AiOpenAi
         }
 
         fn agent_id(&self) -> AgentId {
@@ -3753,7 +3753,7 @@ pub(crate) mod tests {
                 project,
                 action_log,
                 session_id,
-                watch::Receiver::constant(
+                raijin_watch::Receiver::constant(
                     acp::PromptCapabilities::new()
                         .image(true)
                         .audio(true)
@@ -3811,7 +3811,7 @@ pub(crate) mod tests {
 
         fn prompt(
             &self,
-            _id: Option<acp_thread::UserMessageId>,
+            _id: Option<raijin_acp_thread::UserMessageId>,
             _params: acp::PromptRequest,
             _cx: &mut App,
         ) -> Task<anyhow::Result<acp::PromptResponse>> {
@@ -3884,7 +3884,7 @@ pub(crate) mod tests {
 
         fn prompt(
             &self,
-            _id: Option<acp_thread::UserMessageId>,
+            _id: Option<raijin_acp_thread::UserMessageId>,
             _params: acp::PromptRequest,
             _cx: &mut App,
         ) -> Task<inazuma::Result<acp::PromptResponse>> {
@@ -3937,7 +3937,7 @@ pub(crate) mod tests {
             cx: &mut inazuma::App,
         ) -> Task<inazuma::Result<Entity<AcpThread>>> {
             if !*self.authenticated.lock() {
-                return Task::ready(Err(acp_thread::AuthRequired::new()
+                return Task::ready(Err(raijin_acp_thread::AuthRequired::new()
                     .with_description("Sign in to continue".to_string())
                     .into()));
             }
@@ -3953,7 +3953,7 @@ pub(crate) mod tests {
                     project,
                     action_log,
                     session_id,
-                    watch::Receiver::constant(
+                    raijin_watch::Receiver::constant(
                         acp::PromptCapabilities::new()
                             .image(true)
                             .audio(true)
@@ -3983,7 +3983,7 @@ pub(crate) mod tests {
 
         fn prompt(
             &self,
-            _id: Option<acp_thread::UserMessageId>,
+            _id: Option<raijin_acp_thread::UserMessageId>,
             _params: acp::PromptRequest,
             _cx: &mut App,
         ) -> Task<inazuma::Result<acp::PromptResponse>> {
@@ -4027,7 +4027,7 @@ pub(crate) mod tests {
                     project,
                     action_log,
                     SessionId::new("test"),
-                    watch::Receiver::constant(
+                    raijin_watch::Receiver::constant(
                         acp::PromptCapabilities::new()
                             .image(true)
                             .audio(true)
@@ -4052,7 +4052,7 @@ pub(crate) mod tests {
 
         fn prompt(
             &self,
-            _id: Option<acp_thread::UserMessageId>,
+            _id: Option<raijin_acp_thread::UserMessageId>,
             _params: acp::PromptRequest,
             _cx: &mut App,
         ) -> Task<inazuma::Result<acp::PromptResponse>> {
@@ -4097,7 +4097,7 @@ pub(crate) mod tests {
                     project,
                     action_log,
                     SessionId::new("test"),
-                    watch::Receiver::constant(
+                    raijin_watch::Receiver::constant(
                         acp::PromptCapabilities::new()
                             .image(true)
                             .audio(true)
@@ -4122,7 +4122,7 @@ pub(crate) mod tests {
 
         fn prompt(
             &self,
-            _id: Option<acp_thread::UserMessageId>,
+            _id: Option<raijin_acp_thread::UserMessageId>,
             _params: acp::PromptRequest,
             _cx: &mut App,
         ) -> Task<inazuma::Result<acp::PromptResponse>> {
@@ -4177,7 +4177,7 @@ pub(crate) mod tests {
                     project,
                     action_log,
                     SessionId::new("new-session"),
-                    watch::Receiver::constant(
+                    raijin_watch::Receiver::constant(
                         acp::PromptCapabilities::new()
                             .image(true)
                             .audio(true)
@@ -4212,7 +4212,7 @@ pub(crate) mod tests {
                     project,
                     action_log,
                     session_id,
-                    watch::Receiver::constant(
+                    raijin_watch::Receiver::constant(
                         acp::PromptCapabilities::new()
                             .image(true)
                             .audio(true)
@@ -4238,7 +4238,7 @@ pub(crate) mod tests {
 
         fn prompt(
             &self,
-            _id: Option<acp_thread::UserMessageId>,
+            _id: Option<raijin_acp_thread::UserMessageId>,
             _params: acp::PromptRequest,
             _cx: &mut App,
         ) -> Task<inazuma::Result<acp::PromptResponse>> {
@@ -4257,11 +4257,11 @@ pub(crate) mod tests {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
             SidebarThreadMetadataStore::init_global(cx);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
-            editor::init(cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+            raijin_editor::init(cx);
             agent_panel::init(cx);
             release_channel::init(semver::Version::new(0, 0, 0), cx);
-            prompt_store::init(cx)
+            raijin_prompt_store::init(cx)
         });
     }
 
@@ -4585,7 +4585,7 @@ pub(crate) mod tests {
 
         // Cancel
         user_message_editor.update_in(cx, |_editor, window, cx| {
-            window.dispatch_action(Box::new(editor::actions::Cancel), cx);
+            window.dispatch_action(Box::new(raijin_editor::actions::Cancel), cx);
         });
 
         conversation_view.read_with(cx, |view, cx| {
@@ -4921,7 +4921,7 @@ pub(crate) mod tests {
         });
 
         setup.conversation_view.update_in(cx, |_, window, cx| {
-            window.dispatch_action(menu::Cancel.boxed_clone(), cx);
+            window.dispatch_action(inazuma_menu::Cancel.boxed_clone(), cx);
         });
 
         cx.run_until_parked();
@@ -4945,7 +4945,7 @@ pub(crate) mod tests {
         });
 
         setup.message_editor.update_in(cx, |_, window, cx| {
-            window.dispatch_action(editor::actions::Cancel.boxed_clone(), cx);
+            window.dispatch_action(raijin_editor::actions::Cancel.boxed_clone(), cx);
         });
 
         cx.run_until_parked();
@@ -4977,7 +4977,7 @@ pub(crate) mod tests {
         });
 
         conversation_view.update_in(cx, |_, window, cx| {
-            window.dispatch_action(menu::Cancel.boxed_clone(), cx);
+            window.dispatch_action(inazuma_menu::Cancel.boxed_clone(), cx);
         });
 
         cx.run_until_parked();
@@ -5331,7 +5331,7 @@ pub(crate) mod tests {
             let thread = thread.read(cx);
 
             let tool_call = thread.entries().iter().find_map(|entry| {
-                if let acp_thread::AgentThreadEntry::ToolCall(call) = entry {
+                if let raijin_acp_thread::AgentThreadEntry::ToolCall(call) = entry {
                     Some(call)
                 } else {
                     None
@@ -5345,14 +5345,14 @@ pub(crate) mod tests {
             assert!(
                 matches!(
                     tool_call.status,
-                    acp_thread::ToolCallStatus::WaitingForConfirmation { .. }
+                    raijin_acp_thread::ToolCallStatus::WaitingForConfirmation { .. }
                 ),
                 "Expected WaitingForConfirmation status, got {:?}",
                 tool_call.status
             );
 
             // Verify the options count (granularity options only, no separate Deny option)
-            if let acp_thread::ToolCallStatus::WaitingForConfirmation { options, .. } =
+            if let raijin_acp_thread::ToolCallStatus::WaitingForConfirmation { options, .. } =
                 &tool_call.status
             {
                 let PermissionOptions::Dropdown(choices) = options else {
@@ -5441,7 +5441,7 @@ pub(crate) mod tests {
             let thread = thread.read(cx);
 
             let tool_call = thread.entries().iter().find_map(|entry| {
-                if let acp_thread::AgentThreadEntry::ToolCall(call) = entry {
+                if let raijin_acp_thread::AgentThreadEntry::ToolCall(call) = entry {
                     Some(call)
                 } else {
                     None
@@ -5451,7 +5451,7 @@ pub(crate) mod tests {
             assert!(tool_call.is_some(), "Expected a tool call entry");
             let tool_call = tool_call.unwrap();
 
-            if let acp_thread::ToolCallStatus::WaitingForConfirmation { options, .. } =
+            if let raijin_acp_thread::ToolCallStatus::WaitingForConfirmation { options, .. } =
                 &tool_call.status
             {
                 let PermissionOptions::Dropdown(choices) = options else {
@@ -5531,7 +5531,7 @@ pub(crate) mod tests {
             let thread = thread.read(cx);
 
             let tool_call = thread.entries().iter().find_map(|entry| {
-                if let acp_thread::AgentThreadEntry::ToolCall(call) = entry {
+                if let raijin_acp_thread::AgentThreadEntry::ToolCall(call) = entry {
                     Some(call)
                 } else {
                     None
@@ -5541,7 +5541,7 @@ pub(crate) mod tests {
             assert!(tool_call.is_some(), "Expected a tool call entry");
             let tool_call = tool_call.unwrap();
 
-            if let acp_thread::ToolCallStatus::WaitingForConfirmation { options, .. } =
+            if let raijin_acp_thread::ToolCallStatus::WaitingForConfirmation { options, .. } =
                 &tool_call.status
             {
                 let PermissionOptions::Dropdown(choices) = options else {
@@ -5624,7 +5624,7 @@ pub(crate) mod tests {
             let thread = thread.read(cx);
 
             let tool_call = thread.entries().iter().find_map(|entry| {
-                if let acp_thread::AgentThreadEntry::ToolCall(call) = entry {
+                if let raijin_acp_thread::AgentThreadEntry::ToolCall(call) = entry {
                     Some(call)
                 } else {
                     None
@@ -5634,7 +5634,7 @@ pub(crate) mod tests {
             assert!(tool_call.is_some(), "Expected a tool call entry");
             let tool_call = tool_call.unwrap();
 
-            if let acp_thread::ToolCallStatus::WaitingForConfirmation { options, .. } =
+            if let raijin_acp_thread::ToolCallStatus::WaitingForConfirmation { options, .. } =
                 &tool_call.status
             {
                 let PermissionOptions::Dropdown(choices) = options else {
@@ -6139,7 +6139,7 @@ pub(crate) mod tests {
         cx.focus(&conversation_view);
         cx.focus(&title_editor);
 
-        cx.dispatch_action(editor::actions::DeleteLine);
+        cx.dispatch_action(raijin_editor::actions::DeleteLine);
         cx.simulate_input("My Custom Title");
 
         cx.run_until_parked();
@@ -6240,7 +6240,7 @@ pub(crate) mod tests {
                 project,
                 action_log,
                 acp::SessionId::new(session_id),
-                watch::Receiver::constant(acp::PromptCapabilities::new()),
+                raijin_watch::Receiver::constant(acp::PromptCapabilities::new()),
                 cx,
             )
         })
@@ -6251,7 +6251,7 @@ pub(crate) mod tests {
         tool_call_id: &str,
         option_id: &str,
         cx: &mut TestAppContext,
-    ) -> Task<acp_thread::RequestPermissionOutcome> {
+    ) -> Task<raijin_acp_thread::RequestPermissionOutcome> {
         let tool_call_id = acp::ToolCallId::new(tool_call_id);
         let label = format!("Tool {tool_call_id}");
         let option_id = acp::PermissionOptionId::new(option_id);
@@ -6754,7 +6754,7 @@ pub(crate) mod tests {
                     project,
                     action_log,
                     SessionId::new("close-capable-session"),
-                    watch::Receiver::constant(
+                    raijin_watch::Receiver::constant(
                         acp::PromptCapabilities::new()
                             .image(true)
                             .audio(true)
@@ -6793,7 +6793,7 @@ pub(crate) mod tests {
 
         fn prompt(
             &self,
-            _id: Option<acp_thread::UserMessageId>,
+            _id: Option<raijin_acp_thread::UserMessageId>,
             _params: acp::PromptRequest,
             _cx: &mut App,
         ) -> Task<inazuma::Result<acp::PromptResponse>> {

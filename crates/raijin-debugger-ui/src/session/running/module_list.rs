@@ -168,7 +168,7 @@ impl ModuleList {
             .update(cx, |session, cx| session.modules(cx).to_vec())
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let Some(ix) = self.selected_ix else { return };
         let Some(entry) = self.entries.get(ix) else {
             return;
@@ -189,7 +189,7 @@ impl ModuleList {
         cx.notify();
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
         let ix = match self.selected_ix {
             _ if self.entries.is_empty() => None,
             None => Some(0),
@@ -206,7 +206,7 @@ impl ModuleList {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -226,7 +226,7 @@ impl ModuleList {
 
     fn select_first(
         &mut self,
-        _: &menu::SelectFirst,
+        _: &inazuma_menu::SelectFirst,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -238,7 +238,7 @@ impl ModuleList {
         self.select_ix(ix, cx);
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
         let ix = if !self.entries.is_empty() {
             Some(self.entries.len() - 1)
         } else {

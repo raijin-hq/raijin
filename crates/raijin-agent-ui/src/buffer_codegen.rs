@@ -1,7 +1,7 @@
 use crate::{context::LoadedContext, inline_prompt_editor::CodegenStatus};
-use raijin_agent_settings::AgentSettings;
+use raijin_raijin_agent_settings::AgentSettings;
 use anyhow::{Context as _, Result};
-use inazuma_collections::HashSet;
+use inazuma_inazuma_collections::HashSet;
 use raijin_editor::{Anchor, AnchorRangeExt, MultiBuffer, MultiBufferSnapshot, ToOffset as _, ToPoint};
 use futures::{
     SinkExt, Stream, StreamExt, TryStreamExt as _,
@@ -33,7 +33,7 @@ use std::{
     ops::{Range, RangeInclusive},
     pin::Pin,
     sync::Arc,
-    task::{self, Poll},
+    raijin_task::{self, Poll},
     time::Instant,
 };
 use streaming_diff::{CharOperation, LineDiff, LineOperation, StreamingDiff};
@@ -380,10 +380,10 @@ impl CodegenAlternative {
     fn handle_buffer_event(
         &mut self,
         _buffer: Entity<MultiBuffer>,
-        event: &multi_buffer::Event,
+        event: &raijin_multi_buffer::Event,
         cx: &mut Context<Self>,
     ) {
-        if let multi_buffer::Event::TransactionUndone { transaction_id } = event
+        if let raijin_multi_buffer::Event::TransactionUndone { transaction_id } = event
             && self.transformation_transaction_id == Some(*transaction_id)
         {
             self.transformation_transaction_id = None;
@@ -457,7 +457,7 @@ impl CodegenAlternative {
         let buffer = self.buffer.read(cx).snapshot(cx);
         let language = buffer.language_at(self.range.start);
         let language_name = if let Some(language) = language.as_ref() {
-            if Arc::ptr_eq(language, &language::PLAIN_TEXT) {
+            if Arc::ptr_eq(language, &raijin_language::PLAIN_TEXT) {
                 None
             } else {
                 Some(language.name())
@@ -523,13 +523,13 @@ impl CodegenAlternative {
                 LanguageModelRequestTool {
                     name: REWRITE_SECTION_TOOL_NAME.to_string(),
                     description: "Replaces text in <rewrite_this></rewrite_this> tags with your replacement_text.".to_string(),
-                    input_schema: language_model::tool_schema::root_schema_for::<RewriteSectionInput>(tool_input_format).to_value(),
+                    input_schema: raijin_language_model::tool_schema::root_schema_for::<RewriteSectionInput>(tool_input_format).to_value(),
                     use_input_streaming: false,
                 },
                 LanguageModelRequestTool {
                     name: FAILURE_MESSAGE_TOOL_NAME.to_string(),
                     description: "Use this tool to provide a message to the user when you're unable to complete a task.".to_string(),
-                    input_schema: language_model::tool_schema::root_schema_for::<FailureMessageInput>(tool_input_format).to_value(),
+                    input_schema: raijin_language_model::tool_schema::root_schema_for::<FailureMessageInput>(tool_input_format).to_value(),
                     use_input_streaming: false,
                 },
             ];
@@ -564,7 +564,7 @@ impl CodegenAlternative {
         let buffer = self.buffer.read(cx).snapshot(cx);
         let language = buffer.language_at(self.range.start);
         let language_name = if let Some(language) = language.as_ref() {
-            if Arc::ptr_eq(language, &language::PLAIN_TEXT) {
+            if Arc::ptr_eq(language, &raijin_language::PLAIN_TEXT) {
                 None
             } else {
                 Some(language.name())
@@ -637,7 +637,7 @@ impl CodegenAlternative {
         stream: impl 'static + Future<Output = Result<LanguageModelTextStream>>,
         cx: &mut Context<Self>,
     ) -> Task<()> {
-        let anthropic_reporter = language_model::AnthropicEventReporter::new(&model, cx);
+        let anthropic_reporter = raijin_language_model::AnthropicEventReporter::new(&model, cx);
         let session_id = self.session_id;
         let model_telemetry_id = model.telemetry_id();
         let model_provider_id = model.provider_id().to_string();
@@ -817,7 +817,7 @@ impl CodegenAlternative {
                         let result = diff.await;
 
                         let error_message = result.as_ref().err().map(|error| error.to_string());
-                        telemetry::event!(
+                        raijin_telemetry::event!(
                             "Assistant Responded",
                             kind = "inline",
                             phase = "response",
@@ -830,9 +830,9 @@ impl CodegenAlternative {
                             error_message = error_message.as_deref(),
                         );
 
-                        anthropic_reporter.report(language_model::AnthropicEventData {
-                            completion_type: language_model::AnthropicCompletionType::Editor,
-                            event: language_model::AnthropicEventType::Response,
+                        anthropic_reporter.report(raijin_language_model::AnthropicEventData {
+                            completion_type: raijin_language_model::AnthropicCompletionType::Editor,
+                            event: raijin_language_model::AnthropicEventType::Response,
                             language_name: language_name.map(|n| n.to_string()),
                             message_id,
                         });
@@ -910,7 +910,7 @@ impl CodegenAlternative {
                     this.completion = Some(completion.lock().clone());
                     if let Some(usage) = token_usage {
                         let usage = usage.lock();
-                        telemetry::event!(
+                        raijin_telemetry::event!(
                             "Inline Assistant Completion",
                             model = model_telemetry_id,
                             model_provider = model_provider_id,
@@ -1372,7 +1372,7 @@ where
 {
     type Item = Result<String>;
 
-    fn poll_next(self: Pin<&mut Self>, cx: &mut task::Context) -> Poll<Option<Self::Item>> {
+    fn poll_next(self: Pin<&mut Self>, cx: &mut raijin_task::Context) -> Poll<Option<Self::Item>> {
         const CODE_BLOCK_DELIMITER: &str = "```";
         const CURSOR_SPAN: &str = "<|CURSOR|>";
 

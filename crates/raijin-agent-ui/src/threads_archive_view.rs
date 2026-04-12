@@ -7,7 +7,7 @@ use crate::{
 use raijin_acp_thread::AgentSessionInfo;
 use raijin_agent::ThreadStore;
 use agent_client_protocol as acp;
-use raijin_agent_settings::AgentSettings;
+use raijin_raijin_agent_settings::AgentSettings;
 use chrono::{DateTime, Datelike as _, Local, NaiveDate, TimeDelta, Utc};
 use raijin_editor::Editor;
 use raijin_fs::Fs;
@@ -27,7 +27,7 @@ use raijin_ui::{
 };
 use inazuma_util::ResultExt as _;
 use raijin_actions::agents_sidebar::FocusSidebarFilter;
-use raijin_actions::editor::{MoveDown, MoveUp};
+use raijin_actions::raijin_editor::{MoveDown, MoveUp};
 
 #[derive(Clone)]
 enum ArchiveListItem {
@@ -160,7 +160,7 @@ impl ThreadsArchiveView {
 
         let filter_editor_subscription =
             cx.subscribe(&filter_editor, |this: &mut Self, _, event, cx| {
-                if let editor::EditorEvent::BufferEdited = event {
+                if let raijin_editor::EditorEvent::BufferEdited = event {
                     this.update_items(cx);
                 }
             });
@@ -577,12 +577,12 @@ impl ThreadsArchiveView {
                                                 .when(can_unarchive, |this| {
                                                     this.child(
                                                         Button::new("unarchive-thread", "Restore")
-                                                            .style(ButtonStyle::Filled)
+                                                            .style(ButtonStyle::FILLED)
                                                             .label_size(LabelSize::Small)
                                                             .when(is_focused, |this| {
                                                                 this.key_binding(
                                                                     KeyBinding::for_action_in(
-                                                                        &menu::Confirm,
+                                                                        &inazuma_menu::Confirm,
                                                                         &focus_handle,
                                                                         cx,
                                                                     )
@@ -608,7 +608,7 @@ impl ThreadsArchiveView {
                                                             "delete-thread",
                                                             IconName::Trash,
                                                         )
-                                                        .style(ButtonStyle::Filled)
+                                                        .style(ButtonStyle::FILLED)
                                                         .icon_size(IconSize::Small)
                                                         .icon_color(Color::Muted)
                                                         .tooltip({
@@ -696,7 +696,7 @@ impl ThreadsArchiveView {
         PopoverMenu::new("agent_history_menu")
             .trigger(
                 ButtonLike::new("selected_agent")
-                    .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                    .selected_style(ButtonStyle::tinted(TintColor::Accent))
                     .child(
                         h_flex().gap_1().child(selected_agent_icon).child(
                             Icon::new(chevron_icon)
@@ -724,7 +724,7 @@ impl ThreadsArchiveView {
                     .separator()
                     .map(|mut menu| {
                         let agent_server_store = agent_server_store.read(cx);
-                        let registry_store = project::AgentRegistryStore::try_global(cx);
+                        let registry_store = raijin_project::AgentRegistryStore::try_global(cx);
                         let registry_store_ref = registry_store.as_ref().map(|s| s.read(cx));
 
                         struct AgentMenuItem {
@@ -799,7 +799,7 @@ impl ThreadsArchiveView {
         let has_query = !self.filter_editor.read(cx).text(cx).is_empty();
         let sidebar_on_left = matches!(
             AgentSettings::get_global(cx).sidebar_side(),
-            settings::SidebarSide::Left
+            inazuma_settings_framework::SidebarSide::Left
         );
         let traffic_lights =
             cfg!(target_os = "macos") && !window.is_fullscreen() && sidebar_on_left;
@@ -813,7 +813,7 @@ impl ThreadsArchiveView {
             .pb_px()
             .map(|this| {
                 if traffic_lights {
-                    this.pl(px(ui::utils::TRAFFIC_LIGHT_PADDING))
+                    this.pl(px(raijin_ui::utils::TRAFFIC_LIGHT_PADDING))
                 } else {
                     this.pl_1p5()
                 }
@@ -824,7 +824,7 @@ impl ThreadsArchiveView {
             .border_b_1()
             .border_color(cx.theme().colors().border)
             .when(traffic_lights, |this| {
-                this.child(Divider::vertical().color(ui::DividerColor::Border))
+                this.child(Divider::vertical().color(raijin_ui::DividerColor::Border))
             })
             .child(
                 h_flex()

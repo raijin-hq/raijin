@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use ai_onboarding::{AgentPanelOnboardingCard, PlanDefinitions};
+use raijin_ai_onboarding::{AgentPanelOnboardingCard, PlanDefinitions};
 use raijin_client::raijin_urls;
 use inazuma::{AnyElement, App, IntoElement, RenderOnce, Window};
 use raijin_ui::{Divider, Tooltip, prelude::*};
@@ -35,9 +35,9 @@ impl RenderOnce for EndTrialUpsell {
             .child(
                 Button::new("cta-button", "Upgrade to Zed Pro")
                     .full_width()
-                    .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                    .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                     .on_click(move |_, _window, cx| {
-                        telemetry::event!("Upgrade To Pro Clicked", state = "end-of-trial");
+                        raijin_telemetry::event!("Upgrade To Pro Clicked", state = "end-of-trial");
                         cx.open_url(&raijin_urls::upgrade_to_raijin_pro_url(cx))
                     }),
             );
@@ -81,7 +81,7 @@ impl RenderOnce for EndTrialUpsell {
                         .on_click({
                             let callback = self.dismiss_upsell.clone();
                             move |_, window, cx| {
-                                telemetry::event!("Banner Dismissed", source = "AI Onboarding");
+                                raijin_telemetry::event!("Banner Dismissed", source = "AI Onboarding");
                                 callback(window, cx)
                             }
                         }),

@@ -1,5 +1,5 @@
 use raijin_agent::ContextServerRegistry;
-use inazuma_collections::HashMap;
+use inazuma_inazuma_collections::HashMap;
 use raijin_context_server::ContextServerId;
 use inazuma::{
     DismissEvent, Entity, EventEmitter, FocusHandle, Focusable, ScrollHandle, Window, prelude::*,
@@ -43,7 +43,7 @@ impl ConfigureContextServerToolsModal {
         });
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent)
     }
 

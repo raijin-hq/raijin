@@ -41,7 +41,7 @@ pub(crate) struct MemoryView {
 }
 
 impl Focusable for MemoryView {
-    fn focus_handle(&self, _: &ui::App) -> FocusHandle {
+    fn focus_handle(&self, _: &raijin_ui::App) -> FocusHandle {
         self.focus_handle.clone()
     }
 }
@@ -371,7 +371,7 @@ impl MemoryView {
         .handle(self.width_picker_handle.clone())
     }
 
-    fn page_down(&mut self, _: &menu::SelectLast, _: &mut Window, cx: &mut Context<Self>) {
+    fn page_down(&mut self, _: &inazuma_menu::SelectLast, _: &mut Window, cx: &mut Context<Self>) {
         let mut view_state = self.view_state();
         view_state.base_row = view_state
             .base_row
@@ -379,7 +379,7 @@ impl MemoryView {
             .0;
         cx.notify();
     }
-    fn page_up(&mut self, _: &menu::SelectFirst, _: &mut Window, cx: &mut Context<Self>) {
+    fn page_up(&mut self, _: &inazuma_menu::SelectFirst, _: &mut Window, cx: &mut Context<Self>) {
         let mut view_state = self.view_state();
         view_state.base_row = view_state
             .base_row
@@ -456,7 +456,7 @@ impl MemoryView {
         })
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let selection = self.view_state().selection.clone();
         if let Some(SelectedMemoryRange::DragComplete(drag)) = selection {
             // Go into memory writing mode.
@@ -570,7 +570,7 @@ impl MemoryView {
         .detach();
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         self.view_state().selection = None;
         cx.notify();
     }
@@ -711,7 +711,7 @@ fn render_single_memory_view_line(
                 .child(
                     Label::new(format!("{:016X}", base_address))
                         .buffer_font(cx)
-                        .size(ui::LabelSize::Small)
+                        .size(raijin_ui::LabelSize::Small)
                         .color(Color::Muted),
                 )
                 .px_1()
@@ -764,7 +764,7 @@ fn render_single_memory_view_line(
                             )
                             .buffer_font(cx)
                             .when(cell.0.is_none(), |this| this.color(Color::Muted))
-                            .size(ui::LabelSize::Small),
+                            .size(raijin_ui::LabelSize::Small),
                         )
                         .on_drag(
                             Drag {
@@ -838,7 +838,7 @@ fn render_single_memory_view_line(
                             Label::new(format!("{as_visible}"))
                                 .buffer_font(cx)
                                 .when(cell.0.is_none(), |this| this.color(Color::Muted))
-                                .size(ui::LabelSize::Small),
+                                .size(raijin_ui::LabelSize::Small),
                         )
                 })),
         )
@@ -848,9 +848,9 @@ fn render_single_memory_view_line(
 impl Render for MemoryView {
     fn render(
         &mut self,
-        window: &mut ui::Window,
-        cx: &mut ui::Context<Self>,
-    ) -> impl ui::IntoElement {
+        window: &mut raijin_ui::Window,
+        cx: &mut raijin_ui::Context<Self>,
+    ) -> impl raijin_ui::IntoElement {
         let (icon, tooltip_text) = if self.is_writing_memory {
             (IconName::Pencil, "Edit memory at a selected address")
         } else {
@@ -895,7 +895,7 @@ impl Render for MemoryView {
                             .child(
                                 div()
                                     .id("memory-view-editor-icon")
-                                    .child(Icon::new(icon).size(ui::IconSize::XSmall))
+                                    .child(Icon::new(icon).size(raijin_ui::IconSize::XSmall))
                                     .tooltip(Tooltip::text(tooltip_text)),
                             )
                             .child(self.render_query_bar(cx)),
@@ -920,10 +920,10 @@ impl Render for MemoryView {
                         .with_priority(1)
                     }))
                     .custom_scrollbars(
-                        ui::Scrollbars::new(ui::ScrollAxes::Both)
+                        raijin_ui::Scrollbars::new(raijin_ui::ScrollAxes::Both)
                             .tracked_scroll_handle(&self.view_state_handle)
                             .with_track_along(
-                                ui::ScrollAxes::Both,
+                                raijin_ui::ScrollAxes::Both,
                                 cx.theme().colors().panel.background,
                             )
                             .tracked_entity(cx.entity_id()),

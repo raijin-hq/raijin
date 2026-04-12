@@ -1,4 +1,4 @@
-use action_log::ActionLog;
+use raijin_action_log::ActionLog;
 use inazuma::{App, Entity};
 use raijin_notifications::status_toast::{StatusToast, ToastIcon};
 use raijin_ui::prelude::*;

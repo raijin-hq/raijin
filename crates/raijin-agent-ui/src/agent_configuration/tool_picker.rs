@@ -1,7 +1,7 @@
-use std::{collections::BTreeMap, sync::Arc};
+use std::{inazuma_collections::BTreeMap, sync::Arc};
 
 use raijin_agent::ContextServerRegistry;
-use raijin_agent_settings::{AgentProfileId, AgentProfileSettings};
+use raijin_raijin_agent_settings::{AgentProfileId, AgentProfileSettings};
 use raijin_fs::Fs;
 use inazuma::{App, Context, DismissEvent, Entity, EventEmitter, Focusable, Task, WeakEntity, Window};
 use inazuma_picker::{Picker, PickerDelegate};

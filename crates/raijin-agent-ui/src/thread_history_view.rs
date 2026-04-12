@@ -208,7 +208,7 @@ impl ThreadHistoryView {
 
                 const MAX_MATCHES: usize = 100;
 
-                let matches = fuzzy::match_strings(
+                let matches = inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     false,
@@ -276,7 +276,7 @@ impl ThreadHistoryView {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -287,7 +287,7 @@ impl ThreadHistoryView {
         }
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
         if self.selected_index == self.visible_items.len() - 1 {
             self.set_selected_index(0, Bias::Right, cx);
         } else {
@@ -297,18 +297,18 @@ impl ThreadHistoryView {
 
     fn select_first(
         &mut self,
-        _: &menu::SelectFirst,
+        _: &inazuma_menu::SelectFirst,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
         self.set_selected_index(0, Bias::Right, cx);
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
         self.set_selected_index(self.visible_items.len() - 1, Bias::Left, cx);
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         self.confirm_entry(self.selected_index, cx);
     }
 
@@ -620,7 +620,7 @@ impl Render for ThreadHistoryView {
                                         )
                                         .child(
                                             Button::new("confirm_delete", "Delete")
-                                                .style(ButtonStyle::Tinted(ui::TintColor::Error))
+                                                .style(ButtonStyle::tinted(raijin_ui::TintColor::Error))
                                                 .color(Color::Error)
                                                 .label_size(LabelSize::Small)
                                                 .on_click(cx.listener(|_, _, window, cx| {
@@ -781,13 +781,13 @@ impl EntryTimeFormat {
         let timestamp = OffsetDateTime::from_unix_timestamp(timestamp).unwrap();
 
         match self {
-            EntryTimeFormat::DateAndTime => time_format::format_localized_timestamp(
+            EntryTimeFormat::DateAndTime => raijin_time_format::format_localized_timestamp(
                 timestamp,
                 OffsetDateTime::now_utc(),
                 timezone,
-                time_format::TimestampFormat::EnhancedAbsolute,
+                raijin_time_format::TimestampFormat::EnhancedAbsolute,
             ),
-            EntryTimeFormat::TimeOnly => time_format::format_time(timestamp.to_offset(timezone)),
+            EntryTimeFormat::TimeOnly => raijin_time_format::format_time(timestamp.to_offset(timezone)),
         }
     }
 }

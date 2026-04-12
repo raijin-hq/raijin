@@ -1,4 +1,4 @@
-use inazuma_collections::HashSet;
+use inazuma_inazuma_collections::HashSet;
 use rand::Rng;
 
 const ADJECTIVES: &[&str] = &[

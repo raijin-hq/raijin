@@ -3,7 +3,7 @@ use std::rc::Rc;
 use raijin_acp_thread::{AgentConnection, LoadError};
 use raijin_agent_servers::{AgentServer, AgentServerDelegate};
 use anyhow::Result;
-use inazuma_collections::HashMap;
+use inazuma_inazuma_collections::HashMap;
 use futures::{FutureExt, future::Shared};
 use inazuma::{App, AppContext, Context, Entity, EventEmitter, SharedString, Subscription, Task};
 
@@ -229,7 +229,7 @@ impl AgentConnectionStore {
         Receiver<Option<String>>,
         Task<Result<AgentConnectedState, LoadError>>,
     ) {
-        let (new_version_tx, new_version_rx) = watch::channel::<Option<String>>(None);
+        let (new_version_tx, new_version_rx) = raijin_watch::channel::<Option<String>>(None);
 
         let agent_server_store = self.project.read(cx).agent_server_store().clone();
         let delegate = AgentServerDelegate::new(agent_server_store, Some(new_version_tx));

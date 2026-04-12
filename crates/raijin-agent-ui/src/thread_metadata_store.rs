@@ -5,7 +5,7 @@ use raijin_agent::{ThreadStore, ZED_AGENT_ID};
 use agent_client_protocol as acp;
 use anyhow::Context as _;
 use chrono::{DateTime, Utc};
-use inazuma_collections::HashMap;
+use inazuma_inazuma_collections::HashMap;
 use raijin_db::{
     sqlez::{
         bindable::Column, domain::Domain, statement::Statement,
@@ -137,7 +137,7 @@ impl ThreadMetadata {
         }
     }
 
-    pub fn from_thread(thread: &Entity<acp_thread::AcpThread>, cx: &App) -> Self {
+    pub fn from_thread(thread: &Entity<raijin_acp_thread::AcpThread>, cx: &App) -> Self {
         let thread_ref = thread.read(cx);
         let session_id = thread_ref.session_id().clone();
         let title = thread_ref
@@ -219,7 +219,7 @@ impl SidebarThreadMetadataStore {
         let thread = std::thread::current();
         let test_name = thread.name().unwrap_or("unknown_test");
         let db_name = format!("THREAD_METADATA_DB_{}", test_name);
-        let db = smol::block_on(db::open_test_db::<ThreadMetadataDb>(&db_name));
+        let db = smol::block_on(raijin_db::open_test_db::<ThreadMetadataDb>(&db_name));
         let thread_store = cx.new(|cx| Self::new(ThreadMetadataDb(db), cx));
         cx.set_global(GlobalThreadMetadataStore(thread_store));
     }
@@ -313,7 +313,7 @@ impl SidebarThreadMetadataStore {
     fn new(db: ThreadMetadataDb, cx: &mut Context<Self>) -> Self {
         let weak_store = cx.weak_entity();
 
-        cx.observe_new::<acp_thread::AcpThread>(move |thread, _window, cx| {
+        cx.observe_new::<raijin_acp_thread::AcpThread>(move |thread, _window, cx| {
             // Don't track subagent threads in the sidebar.
             if thread.parent_session_id().is_some() {
                 return;
@@ -401,8 +401,8 @@ impl SidebarThreadMetadataStore {
 
     fn handle_thread_update(
         &mut self,
-        thread: Entity<acp_thread::AcpThread>,
-        event: &acp_thread::AcpThreadEvent,
+        thread: Entity<raijin_acp_thread::AcpThread>,
+        event: &raijin_acp_thread::AcpThreadEvent,
         cx: &mut Context<Self>,
     ) {
         // Don't track subagent threads in the sidebar.
@@ -411,17 +411,17 @@ impl SidebarThreadMetadataStore {
         }
 
         match event {
-            acp_thread::AcpThreadEvent::NewEntry
-            | acp_thread::AcpThreadEvent::TitleUpdated
-            | acp_thread::AcpThreadEvent::EntryUpdated(_)
-            | acp_thread::AcpThreadEvent::EntriesRemoved(_)
-            | acp_thread::AcpThreadEvent::ToolAuthorizationRequested(_)
-            | acp_thread::AcpThreadEvent::ToolAuthorizationReceived(_)
-            | acp_thread::AcpThreadEvent::Retry(_)
-            | acp_thread::AcpThreadEvent::Stopped(_)
-            | acp_thread::AcpThreadEvent::Error
-            | acp_thread::AcpThreadEvent::LoadError(_)
-            | acp_thread::AcpThreadEvent::Refusal => {
+            raijin_acp_thread::AcpThreadEvent::NewEntry
+            | raijin_acp_thread::AcpThreadEvent::TitleUpdated
+            | raijin_acp_thread::AcpThreadEvent::EntryUpdated(_)
+            | raijin_acp_thread::AcpThreadEvent::EntriesRemoved(_)
+            | raijin_acp_thread::AcpThreadEvent::ToolAuthorizationRequested(_)
+            | raijin_acp_thread::AcpThreadEvent::ToolAuthorizationReceived(_)
+            | raijin_acp_thread::AcpThreadEvent::Retry(_)
+            | raijin_acp_thread::AcpThreadEvent::Stopped(_)
+            | raijin_acp_thread::AcpThreadEvent::Error
+            | raijin_acp_thread::AcpThreadEvent::LoadError(_)
+            | raijin_acp_thread::AcpThreadEvent::Refusal => {
                 let metadata = ThreadMetadata::from_thread(&thread, cx);
                 self.save(metadata, cx);
             }
@@ -450,7 +450,7 @@ impl Domain for ThreadMetadataDb {
     )];
 }
 
-db::static_connection!(ThreadMetadataDb, []);
+raijin_db::static_connection!(ThreadMetadataDb, []);
 
 impl ThreadMetadataDb {
     pub fn is_empty(&self) -> anyhow::Result<bool> {
@@ -536,7 +536,7 @@ impl Column for ThreadMetadata {
 
         let folder_paths = folder_paths_str
             .map(|paths| {
-                PathList::deserialize(&util::path_list::SerializedPathList {
+                PathList::deserialize(&inazuma_util::path_list::SerializedPathList {
                     paths,
                     order: folder_paths_order_str.unwrap_or_default(),
                 })
@@ -561,7 +561,7 @@ impl Column for ThreadMetadata {
 mod tests {
     use super::*;
     use raijin_acp_thread::{AgentConnection, StubAgentConnection};
-    use action_log::ActionLog;
+    use raijin_action_log::ActionLog;
     use raijin_agent::DbThread;
     use agent_client_protocol as acp;
     use raijin_feature_flags::FeatureFlagAppExt;
@@ -618,7 +618,7 @@ mod tests {
         let thread = std::thread::current();
         let test_name = thread.name().unwrap_or("unknown_test");
         let db_name = format!("THREAD_METADATA_DB_{}", test_name);
-        let db = ThreadMetadataDb(smol::block_on(db::open_test_db::<ThreadMetadataDb>(
+        let db = ThreadMetadataDb(smol::block_on(raijin_db::open_test_db::<ThreadMetadataDb>(
             &db_name,
         )));
 
@@ -640,7 +640,7 @@ mod tests {
         .unwrap();
 
         cx.update(|cx| {
-            let settings_store = settings::SettingsStore::test(cx);
+            let settings_store = inazuma_settings_framework::SettingsStore::test(cx);
             cx.set_global(settings_store);
             cx.update_flags(true, vec!["agent-v2".to_string()]);
             SidebarThreadMetadataStore::init_global(cx);
@@ -675,7 +675,7 @@ mod tests {
     #[inazuma::test]
     async fn test_store_cache_updates_after_save_and_delete(cx: &mut TestAppContext) {
         cx.update(|cx| {
-            let settings_store = settings::SettingsStore::test(cx);
+            let settings_store = inazuma_settings_framework::SettingsStore::test(cx);
             cx.set_global(settings_store);
             cx.update_flags(true, vec!["agent-v2".to_string()]);
             SidebarThreadMetadataStore::init_global(cx);
@@ -1007,7 +1007,7 @@ mod tests {
     #[inazuma::test]
     async fn test_empty_thread_metadata_deleted_when_thread_released(cx: &mut TestAppContext) {
         cx.update(|cx| {
-            let settings_store = settings::SettingsStore::test(cx);
+            let settings_store = inazuma_settings_framework::SettingsStore::test(cx);
             cx.set_global(settings_store);
             cx.update_flags(true, vec!["agent-v2".to_string()]);
             ThreadStore::init_global(cx);
@@ -1063,7 +1063,7 @@ mod tests {
     #[inazuma::test]
     async fn test_nonempty_thread_metadata_preserved_when_thread_released(cx: &mut TestAppContext) {
         cx.update(|cx| {
-            let settings_store = settings::SettingsStore::test(cx);
+            let settings_store = inazuma_settings_framework::SettingsStore::test(cx);
             cx.set_global(settings_store);
             cx.update_flags(true, vec!["agent-v2".to_string()]);
             ThreadStore::init_global(cx);
@@ -1115,7 +1115,7 @@ mod tests {
     #[inazuma::test]
     async fn test_subagent_threads_excluded_from_sidebar_metadata(cx: &mut TestAppContext) {
         cx.update(|cx| {
-            let settings_store = settings::SettingsStore::test(cx);
+            let settings_store = inazuma_settings_framework::SettingsStore::test(cx);
             cx.set_global(settings_store);
             cx.update_flags(true, vec!["agent-v2".to_string()]);
             ThreadStore::init_global(cx);
@@ -1151,7 +1151,7 @@ mod tests {
         let subagent_thread = cx.update(|cx| {
             let action_log = cx.new(|_| ActionLog::new(project.clone()));
             cx.new(|cx| {
-                acp_thread::AcpThread::new(
+                raijin_acp_thread::AcpThread::new(
                     Some(regular_session_id.clone()),
                     Some("Subagent Thread".into()),
                     None,
@@ -1159,7 +1159,7 @@ mod tests {
                     project.clone(),
                     action_log,
                     subagent_session_id.clone(),
-                    watch::Receiver::constant(acp::PromptCapabilities::new()),
+                    raijin_watch::Receiver::constant(acp::PromptCapabilities::new()),
                     cx,
                 )
             })

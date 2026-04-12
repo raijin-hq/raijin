@@ -1,7 +1,7 @@
 use std::{cmp::Reverse, sync::Arc};
 
-use raijin_agent_settings::AgentSettings;
-use inazuma_collections::{HashMap, HashSet, IndexMap};
+use raijin_raijin_agent_settings::AgentSettings;
+use inazuma_inazuma_collections::{HashMap, HashSet, IndexMap};
 use inazuma_fuzzy::{StringMatch, StringMatchCandidate, match_strings};
 use inazuma::{
     Action, AnyElement, App, BackgroundExecutor, DismissEvent, FocusHandle, ForegroundExecutor,
@@ -157,9 +157,9 @@ impl LanguageModelPickerDelegate {
                 window,
                 |picker, _, event, window, cx| {
                     match event {
-                        language_model::Event::ProviderStateChanged(_)
-                        | language_model::Event::AddedProvider(_)
-                        | language_model::Event::RemovedProvider(_) => {
+                        raijin_language_model::Event::ProviderStateChanged(_)
+                        | raijin_language_model::Event::AddedProvider(_)
+                        | raijin_language_model::Event::RemovedProvider(_) => {
                             let query = picker.query(cx);
                             picker.delegate.all_models = Arc::new(all_models(cx));
                             // Update matches will automatically drop the previous task
@@ -522,7 +522,7 @@ impl PickerDelegate for LanguageModelPickerDelegate {
                 // Finds the currently selected model in the list
                 let new_index =
                     Self::get_active_model_index(&this.delegate.filtered_entries, active_model);
-                this.set_selected_index(new_index, Some(picker::Direction::Down), true, window, cx);
+                this.set_selected_index(new_index, Some(inazuma_picker::Direction::Down), true, window, cx);
                 cx.notify();
             })
             .ok();

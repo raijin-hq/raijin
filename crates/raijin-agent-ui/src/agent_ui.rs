@@ -42,7 +42,7 @@ use std::rc::Rc;
 use std::sync::Arc;
 
 use agent_client_protocol as acp;
-use raijin_agent_settings::{AgentProfileId, AgentSettings};
+use raijin_raijin_agent_settings::{AgentProfileId, AgentSettings};
 use raijin_assistant_slash_command::SlashCommandRegistry;
 use raijin_client::Client;
 use raijin_command_palette_hooks::CommandPaletteFilter;
@@ -256,20 +256,20 @@ pub enum Agent {
 impl Agent {
     pub fn id(&self) -> AgentId {
         match self {
-            Self::NativeAgent => agent::ZED_AGENT_ID.clone(),
+            Self::NativeAgent => raijin_agent::ZED_AGENT_ID.clone(),
             Self::Custom { id } => id.clone(),
         }
     }
 
     pub fn server(
         &self,
-        fs: Arc<dyn fs::Fs>,
-        thread_store: Entity<agent::ThreadStore>,
-    ) -> Rc<dyn agent_servers::AgentServer> {
+        fs: Arc<dyn raijin_fs::Fs>,
+        thread_store: Entity<raijin_agent::ThreadStore>,
+    ) -> Rc<dyn raijin_agent_servers::AgentServer> {
         match self {
-            Self::NativeAgent => Rc::new(agent::NativeAgentServer::new(fs, thread_store)),
+            Self::NativeAgent => Rc::new(raijin_agent::NativeAgentServer::new(fs, thread_store)),
             Self::Custom { id: name } => {
-                Rc::new(agent_servers::CustomAgentServer::new(name.clone()))
+                Rc::new(raijin_agent_servers::CustomAgentServer::new(name.clone()))
             }
         }
     }
@@ -347,15 +347,15 @@ pub fn init(
     is_eval: bool,
     cx: &mut App,
 ) {
-    agent::ThreadStore::init_global(cx);
-    assistant_text_thread::init(client, cx);
-    rules_library::init(cx);
+    raijin_agent::ThreadStore::init_global(cx);
+    raijin_assistant_text_thread::init(client, cx);
+    raijin_rules_library::init(cx);
     if !is_eval {
         // Initializing the language model from the user settings messes with the eval, so we only initialize them when
         // we're not running inside of the eval.
         init_language_model_settings(cx);
     }
-    assistant_slash_command::init(cx);
+    raijin_assistant_slash_command::init(cx);
     agent_panel::init(cx);
     context_server_configuration::init(language_registry.clone(), fs.clone(), cx);
     TextThreadEditor::init(cx);
@@ -382,7 +382,7 @@ pub fn init(
 
                 if let Some(existing) = existing {
                     existing.update(cx, |_, cx| {
-                        project::AgentRegistryStore::global(cx)
+                        raijin_project::AgentRegistryStore::global(cx)
                             .update(cx, |store, cx| store.refresh(cx));
                     });
                     workspace.activate_item(&existing, true, true, window, cx);
@@ -530,11 +530,11 @@ fn init_language_model_settings(cx: &mut App) {
         .detach();
     cx.subscribe(
         &LanguageModelRegistry::global(cx),
-        |_, event: &language_model::Event, cx| match event {
-            language_model::Event::ProviderStateChanged(_)
-            | language_model::Event::AddedProvider(_)
-            | language_model::Event::RemovedProvider(_)
-            | language_model::Event::ProvidersChanged => {
+        |_, event: &raijin_language_model::Event, cx| match event {
+            raijin_language_model::Event::ProviderStateChanged(_)
+            | raijin_language_model::Event::AddedProvider(_)
+            | raijin_language_model::Event::RemovedProvider(_)
+            | raijin_language_model::Event::ProvidersChanged => {
                 update_active_language_model_from_settings(cx);
             }
             _ => {}
@@ -546,8 +546,8 @@ fn init_language_model_settings(cx: &mut App) {
 fn update_active_language_model_from_settings(cx: &mut App) {
     let settings = AgentSettings::get_global(cx);
 
-    fn to_selected_model(selection: &LanguageModelSelection) -> language_model::SelectedModel {
-        language_model::SelectedModel {
+    fn to_selected_model(selection: &LanguageModelSelection) -> raijin_language_model::SelectedModel {
+        raijin_language_model::SelectedModel {
             provider: LanguageModelProviderId::from(selection.provider.0.clone()),
             model: LanguageModelId::from(selection.model.clone()),
         }
@@ -584,23 +584,23 @@ fn update_active_language_model_from_settings(cx: &mut App) {
 fn register_slash_commands(cx: &mut App) {
     let slash_command_registry = SlashCommandRegistry::global(cx);
 
-    slash_command_registry.register_command(assistant_slash_commands::FileSlashCommand, true);
-    slash_command_registry.register_command(assistant_slash_commands::DeltaSlashCommand, true);
-    slash_command_registry.register_command(assistant_slash_commands::OutlineSlashCommand, true);
-    slash_command_registry.register_command(assistant_slash_commands::TabSlashCommand, true);
-    slash_command_registry.register_command(assistant_slash_commands::PromptSlashCommand, true);
-    slash_command_registry.register_command(assistant_slash_commands::SelectionCommand, true);
-    slash_command_registry.register_command(assistant_slash_commands::DefaultSlashCommand, false);
-    slash_command_registry.register_command(assistant_slash_commands::NowSlashCommand, false);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::FileSlashCommand, true);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::DeltaSlashCommand, true);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::OutlineSlashCommand, true);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::TabSlashCommand, true);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::PromptSlashCommand, true);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::SelectionCommand, true);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::DefaultSlashCommand, false);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::NowSlashCommand, false);
     slash_command_registry
-        .register_command(assistant_slash_commands::DiagnosticsSlashCommand, true);
-    slash_command_registry.register_command(assistant_slash_commands::FetchSlashCommand, true);
+        .register_command(raijin_assistant_slash_commands::DiagnosticsSlashCommand, true);
+    slash_command_registry.register_command(raijin_assistant_slash_commands::FetchSlashCommand, true);
 
-    cx.observe_flag::<assistant_slash_commands::StreamingExampleSlashCommandFeatureFlag, _>({
+    cx.observe_flag::<raijin_assistant_slash_commands::StreamingExampleSlashCommandFeatureFlag, _>({
         move |is_enabled, _cx| {
             if is_enabled {
                 slash_command_registry.register_command(
-                    assistant_slash_commands::StreamingExampleSlashCommand,
+                    raijin_assistant_slash_commands::StreamingExampleSlashCommand,
                     false,
                 );
             }
@@ -612,7 +612,7 @@ fn register_slash_commands(cx: &mut App) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use raijin_agent_settings::{AgentProfileId, AgentSettings};
+    use raijin_raijin_agent_settings::{AgentProfileId, AgentSettings};
     use raijin_command_palette_hooks::CommandPaletteFilter;
     use raijin_editor::actions::AcceptEditPrediction;
     use inazuma::{BorrowAppContext, TestAppContext, px};

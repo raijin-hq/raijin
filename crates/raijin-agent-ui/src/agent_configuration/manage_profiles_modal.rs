@@ -3,7 +3,7 @@ mod profile_modal_header;
 use std::sync::Arc;
 
 use raijin_agent::ContextServerRegistry;
-use raijin_agent_settings::{AgentProfile, AgentProfileId, AgentSettings, builtin_profiles};
+use raijin_raijin_agent_settings::{AgentProfile, AgentProfileId, AgentSettings, builtin_profiles};
 use raijin_editor::Editor;
 use raijin_fs::Fs;
 use inazuma::{DismissEvent, Entity, EventEmitter, FocusHandle, Focusable, Subscription, prelude::*};
@@ -236,7 +236,7 @@ impl ManageProfilesModal {
                             .and_then(|profile| profile.default_model.as_ref())
                             .and_then(|selection| {
                                 let registry = LanguageModelRegistry::read_global(cx);
-                                let provider_id = language_model::LanguageModelProviderId(
+                                let provider_id = raijin_language_model::LanguageModelProviderId(
                                     inazuma::SharedString::from(selection.provider.0.clone()),
                                 );
                                 let provider = registry.provider(&provider_id)?;
@@ -245,7 +245,7 @@ impl ManageProfilesModal {
                                     .iter()
                                     .find(|m| m.id().0 == selection.model.as_str())?
                                     .clone();
-                                Some(language_model::ConfiguredModel { provider, model })
+                                Some(raijin_language_model::ConfiguredModel { provider, model })
                             })
                     }
                 },
@@ -355,12 +355,12 @@ impl ManageProfilesModal {
         };
 
         let provider = self.active_model.as_ref().map(|model| model.provider_id());
-        let tool_names: Vec<Arc<str>> = agent::ALL_TOOL_NAMES
+        let tool_names: Vec<Arc<str>> = raijin_agent::ALL_TOOL_NAMES
             .iter()
             .copied()
             .filter(|name| {
                 let supported_by_provider = provider.as_ref().map_or(true, |provider| {
-                    agent::tool_supports_provider(name, provider)
+                    raijin_agent::tool_supports_provider(name, provider)
                 });
                 supported_by_provider
             })
@@ -502,7 +502,7 @@ impl ManageProfilesModal {
             .track_focus(&profile.navigation.focus_handle)
             .on_action({
                 let profile_id = profile.id.clone();
-                cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                     this.view_profile(profile_id.clone(), window, cx);
                 })
             })
@@ -522,7 +522,7 @@ impl ManageProfilesModal {
                                         .color(Color::Muted),
                                 )
                                 .child(KeyBinding::for_action_in(
-                                    &menu::Confirm,
+                                    &inazuma_menu::Confirm,
                                     &self.focus_handle,
                                     cx,
                                 )),
@@ -577,7 +577,7 @@ impl ManageProfilesModal {
                             div()
                                 .id("new-profile")
                                 .track_focus(&mode.add_new_profile.focus_handle)
-                                .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+                                .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                                     this.new_profile(None, window, cx);
                                 }))
                                 .child(
@@ -682,7 +682,7 @@ impl ManageProfilesModal {
                                 .track_focus(&mode.fork_profile.focus_handle)
                                 .on_action({
                                     let profile_id = mode.profile_id.clone();
-                                    cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                                    cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.new_profile(Some(profile_id.clone()), window, cx);
                                     })
                                 })
@@ -719,7 +719,7 @@ impl ManageProfilesModal {
                                 .track_focus(&mode.configure_default_model.focus_handle)
                                 .on_action({
                                     let profile_id = mode.profile_id.clone();
-                                    cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                                    cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.configure_default_model(
                                             profile_id.clone(),
                                             window,
@@ -760,7 +760,7 @@ impl ManageProfilesModal {
                                 .track_focus(&mode.configure_tools.focus_handle)
                                 .on_action({
                                     let profile_id = mode.profile_id.clone();
-                                    cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                                    cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.configure_builtin_tools(
                                             profile_id.clone(),
                                             window,
@@ -801,7 +801,7 @@ impl ManageProfilesModal {
                                 .track_focus(&mode.configure_mcps.focus_handle)
                                 .on_action({
                                     let profile_id = mode.profile_id.clone();
-                                    cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                                    cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.configure_mcp_tools(profile_id.clone(), window, cx);
                                     })
                                 })
@@ -838,7 +838,7 @@ impl ManageProfilesModal {
                                 .track_focus(&mode.delete_profile.focus_handle)
                                 .on_action({
                                     let profile_id = mode.profile_id.clone();
-                                    cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                                    cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.delete_profile(profile_id.clone(), window, cx);
                                     })
                                 })
@@ -872,7 +872,7 @@ impl ManageProfilesModal {
                                 .id("cancel-item")
                                 .track_focus(&mode.cancel_item.focus_handle)
                                 .on_action({
-                                    cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                                    cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                                         this.cancel(window, cx);
                                     })
                                 })
@@ -894,7 +894,7 @@ impl ManageProfilesModal {
                                         .end_slot(
                                             div().child(
                                                 KeyBinding::for_action_in(
-                                                    &menu::Cancel,
+                                                    &inazuma_menu::Cancel,
                                                     &self.focus_handle,
                                                     cx,
                                                 )
@@ -928,7 +928,7 @@ impl Render for ManageProfilesModal {
             .id("cancel-item")
             .track_focus(&self.focus_handle)
             .on_action({
-                cx.listener(move |this, _: &menu::Confirm, window, cx| {
+                cx.listener(move |this, _: &inazuma_menu::Confirm, window, cx| {
                     this.cancel(window, cx);
                 })
             })
@@ -945,7 +945,7 @@ impl Render for ManageProfilesModal {
                     .child(Label::new("Go Back"))
                     .end_slot(
                         div().child(
-                            KeyBinding::for_action_in(&menu::Cancel, &self.focus_handle, cx)
+                            KeyBinding::for_action_in(&inazuma_menu::Cancel, &self.focus_handle, cx)
                                 .size(rems_from_px(12.)),
                         ),
                     )
@@ -960,8 +960,8 @@ impl Render for ManageProfilesModal {
             .elevation_3(cx)
             .w(rems(34.))
             .key_context("ManageProfilesModal")
-            .on_action(cx.listener(|this, _: &menu::Cancel, window, cx| this.cancel(window, cx)))
-            .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| this.confirm(window, cx)))
+            .on_action(cx.listener(|this, _: &inazuma_menu::Cancel, window, cx| this.cancel(window, cx)))
+            .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| this.confirm(window, cx)))
             .capture_any_mouse_down(cx.listener(|this, _, window, cx| {
                 this.focus_handle(cx).focus(window, cx);
             }))

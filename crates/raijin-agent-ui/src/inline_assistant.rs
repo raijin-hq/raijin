@@ -17,9 +17,9 @@ use crate::{
     // TODO(phase20): terminal_inline_assistant::TerminalInlineAssistant,
 };
 use raijin_agent::ThreadStore;
-use raijin_agent_settings::AgentSettings;
+use raijin_raijin_agent_settings::AgentSettings;
 use anyhow::{Context as _, Result};
-use inazuma_collections::{HashMap, HashSet, VecDeque, hash_map};
+use inazuma_inazuma_collections::{HashMap, HashSet, VecDeque, hash_map};
 use raijin_editor::EditorSnapshot;
 use raijin_editor::MultiBufferOffset;
 use raijin_editor::RowExt;
@@ -52,7 +52,7 @@ use raijin_terminal_view::{TerminalView, terminal_panel::TerminalPanel};
 use inazuma_text::{OffsetRangeExt, ToPoint as _};
 use raijin_ui::prelude::*;
 use inazuma_util::{RangeExt, ResultExt, maybe};
-use raijin_workspace::{ItemHandle, Toast, Workspace, dock::Panel, notifications::NotificationId};
+use raijin_workspace::{ItemHandle, Toast, Workspace, dock::Panel, raijin_notifications::NotificationId};
 use raijin_actions::agent::OpenSettings;
 
 pub fn init(fs: Arc<dyn Fs>, prompt_builder: Arc<PromptBuilder>, cx: &mut App) {
@@ -184,12 +184,12 @@ impl InlineAssistant {
     fn handle_workspace_event(
         &mut self,
         workspace: Entity<Workspace>,
-        event: &workspace::Event,
+        event: &raijin_workspace::Event,
         window: &mut Window,
         cx: &mut App,
     ) {
         match event {
-            workspace::Event::UserSavedItem { item, .. } => {
+            raijin_workspace::Event::UserSavedItem { item, .. } => {
                 // When the user manually saves an editor, automatically accepts all finished transformations.
                 if let Some(editor) = item.upgrade().and_then(|item| item.act_as::<Editor>(cx))
                     && let Some(editor_assists) = self.assists_by_editor.get(&editor.downgrade())
@@ -202,7 +202,7 @@ impl InlineAssistant {
                     }
                 }
             }
-            workspace::Event::ItemAdded { item } => {
+            raijin_workspace::Event::ItemAdded { item } => {
                 self.register_workspace_item(&workspace, item.as_ref(), window, cx);
             }
             _ => (),
@@ -447,7 +447,7 @@ impl InlineAssistant {
             codegen_ranges.push(anchor_range);
 
             if let Some(model) = LanguageModelRegistry::read_global(cx).inline_assistant_model() {
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Assistant Invoked",
                     kind = "inline",
                     phase = "invoked",
@@ -459,8 +459,8 @@ impl InlineAssistant {
                 report_anthropic_event(
                     &model.model,
                     AnthropicEventData {
-                        completion_type: language_model::AnthropicCompletionType::Editor,
-                        event: language_model::AnthropicEventType::Invoked,
+                        completion_type: raijin_language_model::AnthropicCompletionType::Editor,
+                        event: raijin_language_model::AnthropicEventType::Invoked,
                         language_name: buffer.language().map(|language| language.name().to_proto()),
                         message_id: None,
                     },
@@ -1097,17 +1097,17 @@ impl InlineAssistant {
                     (
                         "rejected",
                         "Assistant Response Rejected",
-                        language_model::AnthropicEventType::Reject,
+                        raijin_language_model::AnthropicEventType::Reject,
                     )
                 } else {
                     (
                         "accepted",
                         "Assistant Response Accepted",
-                        language_model::AnthropicEventType::Accept,
+                        raijin_language_model::AnthropicEventType::Accept,
                     )
                 };
 
-                telemetry::event!(
+                raijin_telemetry::event!(
                     event_type,
                     phase,
                     session_id = session_id.to_string(),
@@ -1120,8 +1120,8 @@ impl InlineAssistant {
 
                 report_anthropic_event(
                     &model.model,
-                    language_model::AnthropicEventData {
-                        completion_type: language_model::AnthropicCompletionType::Editor,
+                    raijin_language_model::AnthropicEventData {
+                        completion_type: raijin_language_model::AnthropicCompletionType::Editor,
                         event: anthropic_event_type,
                         language_name,
                         message_id,
@@ -1499,7 +1499,7 @@ impl InlineAssistant {
 
                 let deleted_lines_editor = cx.new(|cx| {
                     let multi_buffer =
-                        cx.new(|_| MultiBuffer::without_headers(language::Capability::ReadOnly));
+                        cx.new(|_| MultiBuffer::without_headers(raijin_language::Capability::ReadOnly));
                     multi_buffer.update(cx, |multi_buffer, cx| {
                         multi_buffer.set_excerpts_for_buffer(
                             old_buffer.clone(),
@@ -1513,7 +1513,7 @@ impl InlineAssistant {
                     enum DeletedLines {}
                     let mut editor = Editor::for_multibuffer(multi_buffer, None, window, cx);
                     editor.disable_scrollbars_and_minimap(window, cx);
-                    editor.set_soft_wrap_mode(language::language_settings::SoftWrap::None, cx);
+                    editor.set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::None, cx);
                     editor.set_show_wrap_guides(false, cx);
                     editor.set_show_gutter(false, cx);
                     editor.set_offset_content(false, cx);
@@ -1627,7 +1627,7 @@ impl InlineAssistant {
 struct EditorInlineAssists {
     assist_ids: Vec<InlineAssistId>,
     scroll_lock: Option<InlineAssistScrollLock>,
-    highlight_updates: watch::Sender<()>,
+    highlight_updates: raijin_watch::Sender<()>,
     _update_highlights: Task<Result<()>>,
     _subscriptions: Vec<inazuma::Subscription>,
 }
@@ -1639,7 +1639,7 @@ struct InlineAssistScrollLock {
 
 impl EditorInlineAssists {
     fn new(editor: &Entity<Editor>, window: &mut Window, cx: &mut App) -> Self {
-        let (highlight_updates_tx, mut highlight_updates_rx) = watch::channel(());
+        let (highlight_updates_tx, mut highlight_updates_rx) = raijin_watch::channel(());
         Self {
             assist_ids: Vec::new(),
             scroll_lock: None,
@@ -1677,7 +1677,7 @@ impl EditorInlineAssists {
                 }),
                 editor.update(cx, |editor, cx| {
                     let editor_handle = cx.entity().downgrade();
-                    editor.register_action(move |_: &editor::actions::Newline, window, cx| {
+                    editor.register_action(move |_: &raijin_editor::actions::Newline, window, cx| {
                         InlineAssistant::update_global(cx, |this, cx| {
                             if let Some(editor) = editor_handle.upgrade() {
                                 this.handle_editor_newline(editor, window, cx)
@@ -1687,7 +1687,7 @@ impl EditorInlineAssists {
                 }),
                 editor.update(cx, |editor, cx| {
                     let editor_handle = cx.entity().downgrade();
-                    editor.register_action(move |_: &editor::actions::Cancel, window, cx| {
+                    editor.register_action(move |_: &raijin_editor::actions::Cancel, window, cx| {
                         InlineAssistant::update_global(cx, |this, cx| {
                             if let Some(editor) = editor_handle.upgrade() {
                                 this.handle_editor_cancel(editor, window, cx)
@@ -1894,7 +1894,7 @@ impl CodeActionProvider for AssistantCodeActionProvider {
     fn code_actions(
         &self,
         buffer: &Entity<Buffer>,
-        range: Range<text::Anchor>,
+        range: Range<inazuma_text::Anchor>,
         _: &mut Window,
         cx: &mut App,
     ) -> Task<Result<Vec<CodeAction>>> {
@@ -1928,9 +1928,9 @@ impl CodeActionProvider for AssistantCodeActionProvider {
             }
 
             Task::ready(Ok(vec![CodeAction {
-                server_id: language::LanguageServerId(0),
+                server_id: raijin_language::LanguageServerId(0),
                 range: snapshot.anchor_before(range.start)..snapshot.anchor_after(range.end),
-                lsp_action: LspAction::Action(Box::new(lsp::CodeAction {
+                lsp_action: LspAction::Action(Box::new(raijin_lsp::CodeAction {
                     title: "Fix with Assistant".into(),
                     ..Default::default()
                 })),
@@ -2100,7 +2100,7 @@ pub mod evals {
         TestF: FnOnce(&mut inazuma::VisualTestContext),
     {
         let fs = FakeFs::new(cx.executor());
-        let app_state = cx.update(|cx| workspace::AppState::test(cx));
+        let app_state = cx.update(|cx| raijin_workspace::AppState::test(cx));
         let prompt_builder = Arc::new(PromptBuilder::new(None).unwrap());
         let http = Arc::new(reqwest_client::ReqwestClient::user_agent("agent tests").unwrap());
         let client = cx.update(|cx| {
@@ -2115,11 +2115,11 @@ pub mod evals {
         // Initialize settings and client
         cx.update(|cx| {
             gpui_tokio::init(cx);
-            settings::init(cx);
-            client::init(&client, cx);
-            workspace::init(app_state.clone(), cx);
+            inazuma_settings_framework::init(cx);
+            raijin_client::init(&client, cx);
+            raijin_workspace::init(app_state.clone(), cx);
             let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
-            language_model::init(user_store.clone(), client.clone(), cx);
+            raijin_language_model::init(user_store.clone(), client.clone(), cx);
             language_models::init(user_store, client.clone(), cx);
 
             cx.set_global(inline_assistant);

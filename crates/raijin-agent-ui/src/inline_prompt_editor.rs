@@ -1,7 +1,7 @@
 use crate::ThreadHistory;
 use raijin_agent::ThreadStore;
-use raijin_agent_settings::AgentSettings;
-use inazuma_collections::{HashMap, VecDeque};
+use raijin_raijin_agent_settings::AgentSettings;
+use inazuma_inazuma_collections::{HashMap, VecDeque};
 use raijin_editor::actions::Paste;
 use raijin_editor::code_context_menus::CodeContextMenu;
 use raijin_editor::display_map::{CreaseId, EditorMargins};
@@ -31,8 +31,8 @@ use uuid::Uuid;
 use raijin_workspace::notifications::NotificationId;
 use raijin_workspace::{Toast, Workspace};
 use raijin_actions::{
-    agent::ToggleModelSelector,
-    editor::{MoveDown, MoveUp},
+    raijin_agent::ToggleModelSelector,
+    raijin_editor::{MoveDown, MoveUp},
 };
 
 use crate::agent_model_selector::AgentModelSelector;
@@ -361,7 +361,7 @@ impl<T: 'static> PromptEditor<T> {
         let mut creases = vec![];
         self.editor = cx.new(|cx| {
             let mut editor = Editor::auto_height(1, Self::MAX_LINES as usize, window, cx);
-            editor.set_soft_wrap_mode(language::language_settings::SoftWrap::EditorWidth, cx);
+            editor.set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::EditorWidth, cx);
             editor.set_placeholder_text("Add a prompt…", window, cx);
             editor.set_text(prompt, window, cx);
             creases = insert_message_creases(&mut editor, &existing_creases, window, cx);
@@ -493,7 +493,7 @@ impl<T: 'static> PromptEditor<T> {
 
             let has_at_sign = {
                 let snapshot = editor.display_snapshot(cx);
-                let cursor = editor.selections.newest::<text::Point>(&snapshot).head();
+                let cursor = editor.selections.newest::<inazuma_text::Point>(&snapshot).head();
                 let offset = cursor.to_offset(&snapshot);
                 if offset.0 > 0 {
                     snapshot
@@ -512,13 +512,13 @@ impl<T: 'static> PromptEditor<T> {
             }
 
             editor.insert("@", window, cx);
-            editor.show_completions(&editor::actions::ShowCompletions, window, cx);
+            editor.show_completions(&raijin_editor::actions::ShowCompletions, window, cx);
         });
     }
 
     fn cancel(
         &mut self,
-        _: &editor::actions::Cancel,
+        _: &raijin_editor::actions::Cancel,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -532,7 +532,7 @@ impl<T: 'static> PromptEditor<T> {
         }
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         match self.codegen_status(cx) {
             CodegenStatus::Idle => {
                 self.fire_started_telemetry(cx);
@@ -573,7 +573,7 @@ impl<T: 'static> PromptEditor<T> {
             PromptEditorMode::Terminal { .. } => ("inline_terminal", None),
         };
 
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Assistant Started",
             session_id = self.session_state.session_id.to_string(),
             kind = kind,
@@ -628,7 +628,7 @@ impl<T: 'static> PromptEditor<T> {
                     PromptEditorMode::Terminal { .. } => "inline_terminal",
                 };
 
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Inline Assistant Rated",
                     rating = "positive",
                     session_id = self.session_state.session_id.to_string(),
@@ -691,7 +691,7 @@ impl<T: 'static> PromptEditor<T> {
                     PromptEditorMode::Terminal { .. } => "inline_terminal",
                 };
 
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Inline Assistant Rated",
                     rating = "negative",
                     session_id = self.session_state.session_id.to_string(),
@@ -814,7 +814,7 @@ impl<T: 'static> PromptEditor<T> {
                     .tooltip(move |_window, cx| {
                         Tooltip::with_meta(
                             mode.tooltip_interrupt(),
-                            Some(&menu::Cancel),
+                            Some(&inazuma_menu::Cancel),
                             "Changes won't be discarded",
                             cx,
                         )
@@ -832,7 +832,7 @@ impl<T: 'static> PromptEditor<T> {
                             .tooltip(move |_window, cx| {
                                 Tooltip::with_meta(
                                     mode.tooltip_restart(),
-                                    Some(&menu::Confirm),
+                                    Some(&inazuma_menu::Confirm),
                                     "Changes will be discarded",
                                     cx,
                                 )
@@ -849,7 +849,7 @@ impl<T: 'static> PromptEditor<T> {
                         .icon_color(Color::Info)
                         .shape(IconButtonShape::Square)
                         .tooltip(move |_window, cx| {
-                            Tooltip::for_action(mode.tooltip_accept(), &menu::Confirm, cx)
+                            Tooltip::for_action(mode.tooltip_accept(), &inazuma_menu::Confirm, cx)
                         })
                         .on_click(cx.listener(|_, _, _, cx| {
                             cx.emit(PromptEditorEvent::ConfirmRequested { execute: false });
@@ -942,7 +942,7 @@ impl<T: 'static> PromptEditor<T> {
                                     .tooltip(|_window, cx| {
                                         Tooltip::for_action(
                                             "Execute Generated Command",
-                                            &menu::SecondaryConfirm,
+                                            &inazuma_menu::SecondaryConfirm,
                                             cx,
                                         )
                                     })
@@ -999,7 +999,7 @@ impl<T: 'static> PromptEditor<T> {
                 move |_window, cx| {
                     Tooltip::for_action_in(
                         "Close Assistant",
-                        &editor::actions::Cancel,
+                        &raijin_editor::actions::Cancel,
                         &focus_handle,
                         cx,
                     )
@@ -1251,7 +1251,7 @@ impl PromptEditor<BufferCodegen> {
                 window,
                 cx,
             );
-            editor.set_soft_wrap_mode(language::language_settings::SoftWrap::EditorWidth, cx);
+            editor.set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::EditorWidth, cx);
             // Since the prompt editors for all inline assistants are linked,
             // always show the cursor (even when it isn't focused) because
             // typing in one will make what you typed appear in all of them.
@@ -1410,7 +1410,7 @@ impl PromptEditor<TerminalCodegen> {
                 window,
                 cx,
             );
-            editor.set_soft_wrap_mode(language::language_settings::SoftWrap::EditorWidth, cx);
+            editor.set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::EditorWidth, cx);
             editor.set_placeholder_text(&Self::placeholder_text(&mode, window, cx), window, cx);
             editor.set_context_menu_options(ContextMenuOptions {
                 min_entries_visible: 12,

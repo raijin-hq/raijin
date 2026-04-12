@@ -3,8 +3,8 @@ use raijin_agent::{ThreadStore, outline};
 use agent_client_protocol as acp;
 use raijin_agent_servers::{AgentServer, AgentServerDelegate};
 use anyhow::{Context as _, Result, anyhow};
-use assistant_slash_commands::{codeblock_fence_for_path, collect_diagnostics_output};
-use inazuma_collections::{HashMap, HashSet};
+use raijin_assistant_slash_commands::{codeblock_fence_for_path, collect_diagnostics_output};
+use inazuma_inazuma_collections::{HashMap, HashSet};
 use raijin_editor::{
     Anchor, Editor, EditorSnapshot, ExcerptId, FoldPlaceholder, ToOffset,
     display_map::{Crease, CreaseId, CreaseMetadata, FoldId},
@@ -36,7 +36,7 @@ use std::{
 use inazuma_text::OffsetRangeExt;
 use raijin_ui::{Disclosure, Toggleable, prelude::*};
 use inazuma_util::{ResultExt, debug_panic, rel_path::RelPath};
-use raijin_workspace::{Workspace, notifications::NotifyResultExt as _};
+use raijin_workspace::{Workspace, raijin_notifications::NotifyResultExt as _};
 
 use crate::ui::MentionCrease;
 
@@ -193,7 +193,7 @@ impl MentionSet {
     pub fn confirm_mention_completion(
         &mut self,
         crease_text: SharedString,
-        start: text::Anchor,
+        start: inazuma_text::Anchor,
         content_len: usize,
         mention_uri: MentionUri,
         supports_images: bool,
@@ -463,8 +463,8 @@ impl MentionSet {
 
     pub fn confirm_mention_for_selection(
         &mut self,
-        source_range: Range<text::Anchor>,
-        selections: Vec<(Entity<Buffer>, Range<text::Anchor>, Range<usize>)>,
+        source_range: Range<inazuma_text::Anchor>,
+        selections: Vec<(Entity<Buffer>, Range<inazuma_text::Anchor>, Range<usize>)>,
         editor: Entity<Editor>,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -556,7 +556,7 @@ impl MentionSet {
             return Task::ready(Err(anyhow!("project not found")));
         };
 
-        let server = Rc::new(agent::NativeAgentServer::new(
+        let server = Rc::new(raijin_agent::NativeAgentServer::new(
             project.read(cx).fs().clone(),
             thread_store,
         ));
@@ -565,7 +565,7 @@ impl MentionSet {
         let connection = server.connect(delegate, project.clone(), cx);
         cx.spawn(async move |_, cx| {
             let agent = connection.await?;
-            let agent = agent.downcast::<agent::NativeAgentConnection>().unwrap();
+            let agent = agent.downcast::<raijin_agent::NativeAgentConnection>().unwrap();
             let summary = agent
                 .0
                 .update(cx, |agent, cx| {
@@ -591,7 +591,7 @@ impl MentionSet {
 
         let diagnostics_task = collect_diagnostics_output(
             project,
-            assistant_slash_commands::Options {
+            raijin_assistant_slash_commands::Options {
                 include_errors,
                 include_warnings,
                 path_matcher: None,
@@ -625,7 +625,7 @@ impl MentionSet {
 
         let diff_receiver = repo.update(cx, |repo, cx| {
             repo.diff(
-                git::repository::DiffType::MergeBase { base_ref: base_ref },
+                raijin_git::repository::DiffType::MergeBase { base_ref: base_ref },
                 cx,
             )
         });
@@ -667,9 +667,9 @@ mod tests {
         let settings_store = cx.update(SettingsStore::test);
         cx.set_global(settings_store);
         cx.update(|cx| {
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
             release_channel::init(Version::new(0, 0, 0), cx);
-            prompt_store::init(cx);
+            raijin_prompt_store::init(cx);
         });
     }
 
@@ -852,7 +852,7 @@ pub(crate) fn load_external_image_from_path(
     path: &Path,
     default_name: &SharedString,
 ) -> Option<(Image, SharedString)> {
-    let content = std::fs::read(path).ok()?;
+    let content = std::raijin_fs::read(path).ok()?;
     let format = image::guess_format(&content)
         .ok()
         .and_then(image_format_from_external_content)?;
@@ -917,7 +917,7 @@ pub(crate) fn paste_images_as_context(
 
 pub(crate) fn insert_crease_for_mention(
     excerpt_id: ExcerptId,
-    anchor: text::Anchor,
+    anchor: inazuma_text::Anchor,
     content_len: usize,
     crease_label: SharedString,
     crease_icon: SharedString,
@@ -1257,7 +1257,7 @@ async fn fetch_url_content(http_client: Arc<HttpClientWithUrl>, url: String) -> 
         Plaintext,
         Json,
     }
-    use html_to_markdown::{TagHandler, convert_html_to_markdown, markdown};
+    use raijin_html_to_markdown::{TagHandler, convert_html_to_markdown, markdown};
 
     let url = if !url.starts_with("https://") && !url.starts_with("http://") {
         format!("https://{url}")
@@ -1297,15 +1297,15 @@ async fn fetch_url_content(http_client: Arc<HttpClientWithUrl>, url: String) -> 
     match content_type {
         ContentType::Html => {
             let mut handlers: Vec<TagHandler> = vec![
-                Rc::new(RefCell::new(markdown::WebpageChromeRemover)),
-                Rc::new(RefCell::new(markdown::ParagraphHandler)),
-                Rc::new(RefCell::new(markdown::HeadingHandler)),
-                Rc::new(RefCell::new(markdown::ListHandler)),
-                Rc::new(RefCell::new(markdown::TableHandler::new())),
-                Rc::new(RefCell::new(markdown::StyledTextHandler)),
+                Rc::new(RefCell::new(raijin_markdown::WebpageChromeRemover)),
+                Rc::new(RefCell::new(raijin_markdown::ParagraphHandler)),
+                Rc::new(RefCell::new(raijin_markdown::HeadingHandler)),
+                Rc::new(RefCell::new(raijin_markdown::ListHandler)),
+                Rc::new(RefCell::new(raijin_markdown::TableHandler::new())),
+                Rc::new(RefCell::new(raijin_markdown::StyledTextHandler)),
             ];
             if url.contains("wikipedia.org") {
-                use html_to_markdown::structure::wikipedia;
+                use raijin_html_to_markdown::structure::wikipedia;
 
                 handlers.push(Rc::new(RefCell::new(wikipedia::WikipediaChromeRemover)));
                 handlers.push(Rc::new(RefCell::new(wikipedia::WikipediaInfoboxHandler)));
@@ -1313,7 +1313,7 @@ async fn fetch_url_content(http_client: Arc<HttpClientWithUrl>, url: String) -> 
                     RefCell::new(wikipedia::WikipediaCodeHandler::new()),
                 ));
             } else {
-                handlers.push(Rc::new(RefCell::new(markdown::CodeHandler)));
+                handlers.push(Rc::new(RefCell::new(raijin_markdown::CodeHandler)));
             }
             convert_html_to_markdown(&body[..], &mut handlers)
         }

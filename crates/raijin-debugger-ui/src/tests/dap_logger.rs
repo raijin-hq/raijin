@@ -20,14 +20,14 @@ async fn test_dap_logger_captures_all_session_rpc_messages(
             log_store_cell.set(cx.entity()).unwrap();
         })
         .detach();
-        debugger_tools::init(cx);
+        raijin_debugger_tools::init(cx);
     });
     init_test(cx);
 
     let log_store = log_store_cell.get().unwrap().clone();
 
     // Create a filesystem with a simple project
-    let fs = project::FakeFs::new(executor.clone());
+    let fs = raijin_project::FakeFs::new(executor.clone());
     fs.insert_tree(
         path!("/project"),
         json!({

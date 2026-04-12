@@ -177,7 +177,7 @@ impl BreakpointList {
                 BreakpointEntryKind::LineBreakpoint(bp) => (
                     SelectedBreakpointKind::Source,
                     bp.breakpoint.state
-                        == project::debugger::breakpoint_store::BreakpointState::Enabled,
+                        == raijin_project::debugger::breakpoint_store::BreakpointState::Enabled,
                 ),
                 BreakpointEntryKind::ExceptionBreakpoint(bp) => {
                     (SelectedBreakpointKind::Exception, bp.is_enabled)
@@ -239,7 +239,7 @@ impl BreakpointList {
         cx.notify();
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
         if self.strip_mode.is_some() && self.input.focus_handle(cx).contains_focused(window, cx) {
             cx.propagate();
             return;
@@ -260,7 +260,7 @@ impl BreakpointList {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -282,7 +282,7 @@ impl BreakpointList {
         self.select_ix(ix, window, cx);
     }
 
-    fn select_first(&mut self, _: &menu::SelectFirst, window: &mut Window, cx: &mut Context<Self>) {
+    fn select_first(&mut self, _: &inazuma_menu::SelectFirst, window: &mut Window, cx: &mut Context<Self>) {
         if self.strip_mode.is_some() && self.input.focus_handle(cx).contains_focused(window, cx) {
             cx.propagate();
             return;
@@ -295,7 +295,7 @@ impl BreakpointList {
         self.select_ix(ix, window, cx);
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, window: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, window: &mut Window, cx: &mut Context<Self>) {
         if self.strip_mode.is_some() && self.input.focus_handle(cx).contains_focused(window, cx) {
             cx.propagate();
             return;
@@ -308,7 +308,7 @@ impl BreakpointList {
         self.select_ix(ix, window, cx);
     }
 
-    fn dismiss(&mut self, _: &menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
+    fn dismiss(&mut self, _: &inazuma_menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
         if self.input.focus_handle(cx).contains_focused(window, cx) {
             self.focus_handle.focus(window, cx);
         } else if self.strip_mode.is_some() {
@@ -318,7 +318,7 @@ impl BreakpointList {
             cx.propagate();
         }
     }
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         let Some(entry) = self.selected_ix.and_then(|ix| self.breakpoints.get_mut(ix)) else {
             return;
         };
@@ -665,7 +665,7 @@ impl BreakpointList {
 }
 
 impl Render for BreakpointList {
-    fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl ui::IntoElement {
+    fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl raijin_ui::IntoElement {
         let breakpoints = self.breakpoint_store.read(cx).all_source_breakpoints(cx);
         self.breakpoints.clear();
         let path_style = self.worktree_store.read(cx).path_style();
@@ -738,7 +738,7 @@ impl Render for BreakpointList {
                 .chain(exception_breakpoints),
         );
 
-        let text_pixels = ui::TextSize::Default.pixels(cx).to_f64() as f32;
+        let text_pixels = raijin_ui::TextSize::Default.pixels(cx).to_f64() as f32;
 
         self.max_width_index = self
             .breakpoints
@@ -776,7 +776,7 @@ impl Render for BreakpointList {
             .pt_1()
             .child(self.render_list(cx))
             .custom_scrollbars(
-                ui::Scrollbars::new(ScrollAxes::Both)
+                raijin_ui::Scrollbars::new(ScrollAxes::Both)
                     .tracked_scroll_handle(&self.scroll_handle)
                     .with_track_along(ScrollAxes::Both, cx.theme().colors().panel.background)
                     .tracked_entity(cx.entity_id()),
@@ -926,7 +926,7 @@ impl LineBreakpoint {
                         .child(
                             Label::new(format!("{}:{}", self.name, self.line))
                                 .size(LabelSize::Small)
-                                .line_height_style(ui::LineHeightStyle::UiLabel),
+                                .line_height_style(raijin_ui::LineHeightStyle::UiLabel),
                         )
                         .children(self.dir.as_ref().and_then(|dir| {
                             let path_without_root = Path::new(dir.as_ref())
@@ -938,7 +938,7 @@ impl LineBreakpoint {
                                 Label::new(path_without_root.to_string_lossy().into_owned())
                                     .color(Color::Muted)
                                     .size(LabelSize::Small)
-                                    .line_height_style(ui::LineHeightStyle::UiLabel)
+                                    .line_height_style(raijin_ui::LineHeightStyle::UiLabel)
                                     .truncate(),
                             )
                         }))
@@ -971,7 +971,7 @@ struct ExceptionBreakpoint {
 }
 
 #[derive(Clone, Debug)]
-struct DataBreakpoint(project::debugger::session::DataBreakpointState);
+struct DataBreakpoint(raijin_project::debugger::session::DataBreakpointState);
 
 impl DataBreakpoint {
     fn render(
@@ -1048,7 +1048,7 @@ impl DataBreakpoint {
                         .child(
                             Label::new(self.0.context.human_readable_label())
                                 .size(LabelSize::Small)
-                                .line_height_style(ui::LineHeightStyle::UiLabel),
+                                .line_height_style(raijin_ui::LineHeightStyle::UiLabel),
                         ),
                 )
                 .child(BreakpointOptionsStrip {
@@ -1151,7 +1151,7 @@ impl ExceptionBreakpoint {
                         .child(
                             Label::new(self.data.label.clone())
                                 .size(LabelSize::Small)
-                                .line_height_style(ui::LineHeightStyle::UiLabel),
+                                .line_height_style(raijin_ui::LineHeightStyle::UiLabel),
                         )
                         .when_some(self.data.description.clone(), |el, description| {
                             el.tooltip(Tooltip::text(description))
@@ -1393,9 +1393,9 @@ impl RenderOnce for BreakpointOptionsStrip {
         let has_hit_condition = self.breakpoint.has_hit_condition();
         let style_for_toggle = |mode, is_enabled| {
             if is_enabled && self.strip_mode == Some(mode) && self.is_selected {
-                ui::ButtonStyle::Filled
+                raijin_ui::ButtonStyle::FILLED
             } else {
-                ui::ButtonStyle::Subtle
+                raijin_ui::ButtonStyle::SUBTLE
             }
         };
         let color_for_toggle = |is_enabled| {
@@ -1423,7 +1423,7 @@ impl RenderOnce for BreakpointOptionsStrip {
                             SharedString::from(format!("{id}-log-toggle")),
                             IconName::Notepad,
                         )
-                        .shape(ui::IconButtonShape::Square)
+                        .shape(raijin_ui::IconButtonShape::Square)
                         .style(style_for_toggle(ActiveBreakpointStripMode::Log, has_logs))
                         .icon_size(IconSize::Small)
                         .icon_color(color_for_toggle(has_logs))
@@ -1456,7 +1456,7 @@ impl RenderOnce for BreakpointOptionsStrip {
                                 SharedString::from(format!("{id}-condition-toggle")),
                                 IconName::SplitAlt,
                             )
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(raijin_ui::IconButtonShape::Square)
                             .style(style_for_toggle(
                                 ActiveBreakpointStripMode::Condition,
                                 has_condition,
@@ -1495,7 +1495,7 @@ impl RenderOnce for BreakpointOptionsStrip {
                             ActiveBreakpointStripMode::HitCondition,
                             has_hit_condition,
                         ))
-                        .shape(ui::IconButtonShape::Square)
+                        .shape(raijin_ui::IconButtonShape::Square)
                         .icon_size(IconSize::Small)
                         .icon_color(color_for_toggle(has_hit_condition))
                         .when(has_hit_condition, |this| this.indicator(Indicator::dot().color(Color::Info)))

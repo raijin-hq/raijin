@@ -47,8 +47,8 @@ impl<C> AgentServer for StubAgentServer<C>
 where
     C: 'static + AgentConnection + Send + Clone,
 {
-    fn logo(&self) -> ui::IconName {
-        ui::IconName::ZedAgent
+    fn logo(&self) -> raijin_ui::IconName {
+        raijin_ui::IconName::ZedAgent
     }
 
     fn agent_id(&self) -> AgentId {
@@ -73,8 +73,8 @@ pub fn init_test(cx: &mut TestAppContext) {
     cx.update(|cx| {
         let settings_store = SettingsStore::test(cx);
         cx.set_global(settings_store);
-        theme_settings::init(theme::LoadThemes::JustBase, cx);
-        editor::init(cx);
+        raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+        raijin_editor::init(cx);
         release_channel::init("0.0.0".parse().unwrap(), cx);
         agent_panel::init(cx);
     });

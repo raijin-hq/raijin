@@ -7,10 +7,10 @@ use crate::{
     terminal_codegen::{CLEAR_INPUT, CodegenEvent, TerminalCodegen},
 };
 use raijin_agent::ThreadStore;
-use raijin_agent_settings::AgentSettings;
+use raijin_raijin_agent_settings::AgentSettings;
 use anyhow::{Context as _, Result};
 
-use inazuma_collections::{HashMap, VecDeque};
+use inazuma_inazuma_collections::{HashMap, VecDeque};
 use raijin_editor::{MultiBuffer, actions::SelectAll};
 use raijin_fs::Fs;
 use inazuma::{App, Entity, Focusable, Global, Subscription, Task, UpdateGlobal, WeakEntity};
@@ -26,7 +26,7 @@ use raijin_terminal_view::TerminalView;
 use raijin_ui::prelude::*;
 use inazuma_util::ResultExt;
 use uuid::Uuid;
-use raijin_workspace::{Toast, Workspace, notifications::NotificationId};
+use raijin_workspace::{Toast, Workspace, raijin_notifications::NotificationId};
 
 pub fn init(fs: Arc<dyn Fs>, prompt_builder: Arc<PromptBuilder>, cx: &mut App) {
     cx.set_global(TerminalInlineAssistant::new(fs, prompt_builder));
@@ -312,18 +312,18 @@ impl TerminalInlineAssistant {
                     (
                         "rejected",
                         "Assistant Response Rejected",
-                        language_model::AnthropicEventType::Reject,
+                        raijin_language_model::AnthropicEventType::Reject,
                     )
                 } else {
                     (
                         "accepted",
                         "Assistant Response Accepted",
-                        language_model::AnthropicEventType::Accept,
+                        raijin_language_model::AnthropicEventType::Accept,
                     )
                 };
 
                 // Fire Zed telemetry
-                telemetry::event!(
+                raijin_telemetry::event!(
                     event_type,
                     kind = "inline_terminal",
                     phase = phase,
@@ -335,8 +335,8 @@ impl TerminalInlineAssistant {
 
                 report_anthropic_event(
                     &model,
-                    language_model::AnthropicEventData {
-                        completion_type: language_model::AnthropicCompletionType::Terminal,
+                    raijin_language_model::AnthropicEventData {
+                        completion_type: raijin_language_model::AnthropicCompletionType::Terminal,
                         event: anthropic_event_type,
                         language_name: None,
                         message_id,

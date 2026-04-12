@@ -4,7 +4,7 @@ use super::thread_history::ThreadHistory;
 use raijin_acp_thread::{AcpThread, AgentThreadEntry};
 use raijin_agent::ThreadStore;
 use agent_client_protocol::ToolCallId;
-use inazuma_collections::HashMap;
+use inazuma_inazuma_collections::HashMap;
 use raijin_editor::{Editor, EditorEvent, EditorMode, MinimapVisibility, SizingBehavior};
 use inazuma::{
     AnyEntity, App, AppContext as _, Entity, EntityId, EventEmitter, FocusHandle, Focusable,
@@ -94,7 +94,7 @@ impl EntryViewState {
                             self.session_capabilities.clone(),
                             self.agent_id.clone(),
                             "Edit message － @ to include context",
-                            editor::EditorMode::AutoHeight {
+                            raijin_editor::EditorMode::AutoHeight {
                                 min_lines: 1,
                                 max_lines: None,
                             },
@@ -138,11 +138,11 @@ impl EntryViewState {
                 };
 
                 let is_tool_call_completed =
-                    matches!(tool_call.status, acp_thread::ToolCallStatus::Completed);
+                    matches!(tool_call.status, raijin_acp_thread::ToolCallStatus::Completed);
 
                 for terminal in terminals {
                     match views.entry(terminal.entity_id()) {
-                        collections::hash_map::Entry::Vacant(entry) => {
+                        inazuma_collections::hash_map::Entry::Vacant(entry) => {
                             let element = create_terminal(
                                 self.workspace.clone(),
                                 self.project.clone(),
@@ -157,7 +157,7 @@ impl EntryViewState {
                             });
                             entry.insert(element);
                         }
-                        collections::hash_map::Entry::Occupied(_entry) => {
+                        inazuma_collections::hash_map::Entry::Occupied(_entry) => {
                             if is_tool_call_completed && terminal.read(cx).output().is_none() {
                                 cx.emit(EntryViewEvent {
                                     entry_index: index,
@@ -308,8 +308,8 @@ impl AssistantMessageEntry {
         self.scroll_handles_by_chunk_index.get(&ix).cloned()
     }
 
-    pub fn sync(&mut self, message: &acp_thread::AssistantMessage) {
-        if let Some(acp_thread::AssistantMessageChunk::Thought { .. }) = message.chunks.last() {
+    pub fn sync(&mut self, message: &raijin_acp_thread::AssistantMessage) {
+        if let Some(raijin_acp_thread::AssistantMessageChunk::Thought { .. }) = message.chunks.last() {
             let ix = message.chunks.len() - 1;
             let handle = self.scroll_handles_by_chunk_index.entry(ix).or_default();
             handle.scroll_to_bottom();
@@ -346,7 +346,7 @@ impl Entry {
         }
     }
 
-    pub fn editor_for_diff(&self, diff: &Entity<acp_thread::Diff>) -> Option<Entity<Editor>> {
+    pub fn editor_for_diff(&self, diff: &Entity<raijin_acp_thread::Diff>) -> Option<Entity<Editor>> {
         self.content_map()?
             .get(&diff.entity_id())
             .cloned()
@@ -355,7 +355,7 @@ impl Entry {
 
     pub fn terminal(
         &self,
-        terminal: &Entity<acp_thread::Terminal>,
+        terminal: &Entity<raijin_acp_thread::Terminal>,
     ) -> Option<Entity<TerminalView>> {
         self.content_map()?
             .get(&terminal.entity_id())
@@ -392,7 +392,7 @@ impl Entry {
 fn create_terminal(
     workspace: WeakEntity<Workspace>,
     project: WeakEntity<Project>,
-    terminal: Entity<acp_thread::Terminal>,
+    terminal: Entity<raijin_acp_thread::Terminal>,
     window: &mut Window,
     cx: &mut App,
 ) -> Entity<TerminalView> {
@@ -411,7 +411,7 @@ fn create_terminal(
 }
 
 fn create_editor_diff(
-    diff: Entity<acp_thread::Diff>,
+    diff: Entity<raijin_acp_thread::Diff>,
     window: &mut Window,
     cx: &mut App,
 ) -> Entity<Editor> {
@@ -594,7 +594,7 @@ mod tests {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
             release_channel::init(semver::Version::new(0, 0, 0), cx);
         });
     }

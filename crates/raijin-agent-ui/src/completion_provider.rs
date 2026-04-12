@@ -263,7 +263,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
                 label: CodeLabel::plain(mode.label().to_string(), None),
                 icon_path: Some(mode.icon().path().into()),
                 documentation: None,
-                source: project::CompletionSource::Custom,
+                source: raijin_project::CompletionSource::Custom,
                 match_start: None,
                 snippet_deduplication_key: None,
                 insert_text_mode: None,
@@ -315,7 +315,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
             label: CodeLabel::plain(title.to_string(), None),
             documentation: None,
             insert_text_mode: None,
-            source: project::CompletionSource::Custom,
+            source: raijin_project::CompletionSource::Custom,
             match_start: None,
             snippet_deduplication_key: None,
             icon_path: Some(icon_for_completion),
@@ -354,7 +354,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
             label: CodeLabel::plain(rule.title.to_string(), None),
             documentation: None,
             insert_text_mode: None,
-            source: project::CompletionSource::Custom,
+            source: raijin_project::CompletionSource::Custom,
             match_start: None,
             snippet_deduplication_key: None,
             icon_path: Some(icon_path),
@@ -419,7 +419,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
             new_text,
             label,
             documentation: None,
-            source: project::CompletionSource::Custom,
+            source: raijin_project::CompletionSource::Custom,
             icon_path: Some(completion_icon_path),
             match_start: None,
             snippet_deduplication_key: None,
@@ -484,7 +484,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
             new_text,
             label,
             documentation: None,
-            source: project::CompletionSource::Custom,
+            source: raijin_project::CompletionSource::Custom,
             icon_path: Some(icon_path),
             match_start: None,
             snippet_deduplication_key: None,
@@ -524,7 +524,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
             new_text: new_text.clone(),
             label: CodeLabel::plain(url_to_fetch.to_string(), None),
             documentation: None,
-            source: project::CompletionSource::Custom,
+            source: raijin_project::CompletionSource::Custom,
             icon_path: Some(icon_path),
             match_start: None,
             snippet_deduplication_key: None,
@@ -686,7 +686,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
             label: CodeLabel::plain(action.label().to_string(), None),
             icon_path: Some(action.icon().path().into()),
             documentation: None,
-            source: project::CompletionSource::Custom,
+            source: raijin_project::CompletionSource::Custom,
             match_start: None,
             snippet_deduplication_key: None,
             insert_text_mode: None,
@@ -776,7 +776,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
             new_text,
             label: CodeLabel::plain(menu_label, None),
             documentation: None,
-            source: project::CompletionSource::Custom,
+            source: raijin_project::CompletionSource::Custom,
             icon_path: Some(icon_path),
             match_start: None,
             snippet_deduplication_key: None,
@@ -817,7 +817,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
             new_text,
             label: CodeLabel::plain(crease_text.to_string(), None),
             documentation: None,
-            source: project::CompletionSource::Custom,
+            source: raijin_project::CompletionSource::Custom,
             icon_path: Some(icon_path),
             match_start: None,
             snippet_deduplication_key: None,
@@ -848,7 +848,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
                 .map(|(id, command)| StringMatchCandidate::new(id, &command.name))
                 .collect::<Vec<_>>();
 
-            let matches = fuzzy::match_strings(
+            let matches = inazuma_fuzzy::match_strings(
                 &candidates,
                 &query,
                 false,
@@ -1033,7 +1033,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
                         .map(Match::File)
                         .collect::<Vec<_>>();
 
-                    let entry_matches = fuzzy::match_strings(
+                    let entry_matches = inazuma_fuzzy::match_strings(
                         &entry_candidates,
                         &query,
                         false,
@@ -1053,7 +1053,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
 
                     if let Some(branch_diff_task) = branch_diff_task {
                         let branch_diff_keyword = PromptContextType::BranchDiff.keyword();
-                        let branch_diff_matches = fuzzy::match_strings(
+                        let branch_diff_matches = inazuma_fuzzy::match_strings(
                             &[StringMatchCandidate::new(0, branch_diff_keyword)],
                             &query,
                             false,
@@ -1128,7 +1128,7 @@ impl<T: PromptCompletionProviderDelegate> PromptCompletionProvider<T> {
                                 RelPath::empty().into()
                             };
                             Match::File(FileMatch {
-                                mat: fuzzy::PathMatch {
+                                mat: inazuma_fuzzy::PathMatch {
                                     score: 1.,
                                     positions: Vec::new(),
                                     worktree_id: project_path.worktree_id.to_usize(),
@@ -1293,7 +1293,7 @@ impl<T: PromptCompletionProviderDelegate> CompletionProvider for PromptCompletio
                                 documentation: Some(CompletionDocumentation::MultiLinePlainText(
                                     command.description.into(),
                                 )),
-                                source: project::CompletionSource::Custom,
+                                source: raijin_project::CompletionSource::Custom,
                                 icon_path: None,
                                 match_start: None,
                                 snippet_deduplication_key: None,
@@ -1517,8 +1517,8 @@ impl<T: PromptCompletionProviderDelegate> CompletionProvider for PromptCompletio
 
     fn is_completion_trigger(
         &self,
-        buffer: &Entity<language::Buffer>,
-        position: language::Anchor,
+        buffer: &Entity<raijin_language::Buffer>,
+        position: raijin_language::Anchor,
         _text: &str,
         _trigger_in_words: bool,
         cx: &mut Context<Editor>,
@@ -1926,14 +1926,14 @@ pub(crate) fn search_files(
                     snapshot: worktree.snapshot(),
                     include_ignored: worktree.root_entry().is_some_and(|entry| entry.is_ignored),
                     include_root_name,
-                    candidates: project::Candidates::Entries,
+                    candidates: raijin_project::Candidates::Entries,
                 }
             })
             .collect::<Vec<_>>();
 
         let executor = cx.background_executor().clone();
         cx.foreground_executor().spawn(async move {
-            fuzzy::match_path_sets(
+            inazuma_fuzzy::match_path_sets(
                 candidate_sets.as_slice(),
                 query.as_str(),
                 &relative_to,
@@ -1992,7 +1992,7 @@ pub(crate) fn search_symbols(
             .to_owned();
         // Note if you make changes to this filtering below, also change `project_symbols::ProjectSymbolsDelegate::filter`
         const MAX_MATCHES: usize = 100;
-        let mut visible_matches = cx.foreground_executor().block_on(fuzzy::match_strings(
+        let mut visible_matches = cx.foreground_executor().block_on(inazuma_fuzzy::match_strings(
             &visible_match_candidates,
             &query,
             false,
@@ -2001,7 +2001,7 @@ pub(crate) fn search_symbols(
             &cancellation_flag,
             cx.background_executor().clone(),
         ));
-        let mut external_matches = cx.foreground_executor().block_on(fuzzy::match_strings(
+        let mut external_matches = cx.foreground_executor().block_on(inazuma_fuzzy::match_strings(
             &external_match_candidates,
             &query,
             false,
@@ -2064,7 +2064,7 @@ async fn filter_sessions(
         .enumerate()
         .map(|(id, title)| StringMatchCandidate::new(id, title.as_ref()))
         .collect::<Vec<_>>();
-    let matches = fuzzy::match_strings(
+    let matches = inazuma_fuzzy::match_strings(
         &candidates,
         &query,
         false,
@@ -2178,7 +2178,7 @@ fn terminal_selections_if_panel_open(_workspace: &Entity<Workspace>, _cx: &App) 
 fn selection_ranges(
     workspace: &Entity<Workspace>,
     cx: &mut App,
-) -> Vec<(Entity<Buffer>, Range<text::Anchor>)> {
+) -> Vec<(Entity<Buffer>, Range<inazuma_text::Anchor>)> {
     let Some(editor) = workspace
         .read(cx)
         .active_item(cx)
@@ -2197,9 +2197,9 @@ fn selection_ranges(
             .into_iter()
             .map(|s| {
                 let (start, end) = if s.is_empty() {
-                    let row = multi_buffer::MultiBufferRow(s.start.row);
-                    let line_start = text::Point::new(s.start.row, 0);
-                    let line_end = text::Point::new(s.start.row, snapshot.line_len(row));
+                    let row = raijin_multi_buffer::MultiBufferRow(s.start.row);
+                    let line_start = inazuma_text::Point::new(s.start.row, 0);
+                    let line_end = inazuma_text::Point::new(s.start.row, snapshot.line_len(row));
                     (line_start, line_end)
                 } else {
                     (s.start, s.end)
@@ -2559,8 +2559,8 @@ mod tests {
 
         let app_state = cx.update(|cx| {
             let state = AppState::test(cx);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
-            editor::init(cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+            raijin_editor::init(cx);
             state
         });
 

@@ -3,7 +3,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use anyhow::{Context as _, Result, anyhow};
-use raijin_dap::StackFrameId;
+use raijin_raijin_dap::StackFrameId;
 use raijin_dap::adapters::DebugAdapterName;
 use raijin_db::kvp::KeyValueStore;
 use inazuma::{
@@ -85,10 +85,10 @@ pub struct StackFrameList {
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum StackFrameEntry {
-    Normal(dap::StackFrame),
+    Normal(raijin_dap::StackFrame),
     /// Used to indicate that the frame is artificial and is a visual label or separator
-    Label(dap::StackFrame),
-    Collapsed(Vec<dap::StackFrame>),
+    Label(raijin_dap::StackFrame),
+    Collapsed(Vec<raijin_dap::StackFrame>),
 }
 
 impl StackFrameList {
@@ -159,7 +159,7 @@ impl StackFrameList {
         &self,
         show_collapsed: bool,
         show_labels: bool,
-    ) -> Vec<dap::StackFrame> {
+    ) -> Vec<raijin_dap::StackFrame> {
         self.entries
             .iter()
             .enumerate()
@@ -189,7 +189,7 @@ impl StackFrameList {
     }
 
     #[cfg(test)]
-    pub(crate) fn dap_stack_frames(&self, cx: &mut App) -> Vec<dap::StackFrame> {
+    pub(crate) fn dap_stack_frames(&self, cx: &mut App) -> Vec<raijin_dap::StackFrame> {
         match self.list_filter {
             StackFrameFilter::All => self
                 .stack_frames(cx)
@@ -300,11 +300,11 @@ impl StackFrameList {
             });
 
             match stack_frame.dap.presentation_hint {
-                Some(dap::StackFramePresentationHint::Deemphasize)
-                | Some(dap::StackFramePresentationHint::Subtle) => {
+                Some(raijin_raijin_dap::StackFramePresentationHint::Deemphasize)
+                | Some(raijin_raijin_dap::StackFramePresentationHint::Subtle) => {
                     collapsed_entries.push(stack_frame.dap.clone());
                 }
-                Some(dap::StackFramePresentationHint::Label) => {
+                Some(raijin_raijin_dap::StackFramePresentationHint::Label) => {
                     entries.push(StackFrameEntry::Label(stack_frame.dap.clone()));
                 }
                 _ => {
@@ -388,7 +388,7 @@ impl StackFrameList {
 
     fn go_to_stack_frame_inner(
         &mut self,
-        stack_frame: dap::StackFrame,
+        stack_frame: raijin_dap::StackFrame,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Task<Result<()>> {
@@ -514,7 +514,7 @@ impl StackFrameList {
         })
     }
 
-    pub(crate) fn abs_path_from_stack_frame(stack_frame: &dap::StackFrame) -> Option<Arc<Path>> {
+    pub(crate) fn abs_path_from_stack_frame(stack_frame: &raijin_dap::StackFrame) -> Option<Arc<Path>> {
         stack_frame.source.as_ref().and_then(|s| {
             s.path
                 .as_deref()
@@ -535,7 +535,7 @@ impl StackFrameList {
 
     fn render_label_entry(
         &self,
-        stack_frame: &dap::StackFrame,
+        stack_frame: &raijin_dap::StackFrame,
         _cx: &mut Context<Self>,
     ) -> AnyElement {
         h_flex()
@@ -563,7 +563,7 @@ impl StackFrameList {
     fn render_normal_entry(
         &self,
         ix: usize,
-        stack_frame: &dap::StackFrame,
+        stack_frame: &raijin_dap::StackFrame,
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let source = stack_frame.source.clone();
@@ -589,8 +589,8 @@ impl StackFrameList {
         let should_deemphasize = matches!(
             stack_frame.presentation_hint,
             Some(
-                dap::StackFramePresentationHint::Subtle
-                    | dap::StackFramePresentationHint::Deemphasize
+                raijin_raijin_dap::StackFramePresentationHint::Subtle
+                    | raijin_raijin_dap::StackFramePresentationHint::Deemphasize
             )
         );
         h_flex()
@@ -690,7 +690,7 @@ impl StackFrameList {
     fn render_collapsed_entry(
         &self,
         ix: usize,
-        stack_frames: &Vec<dap::StackFrame>,
+        stack_frames: &Vec<raijin_dap::StackFrame>,
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let first_stack_frame = &stack_frames[0];
@@ -752,7 +752,7 @@ impl StackFrameList {
         cx.notify();
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
         let ix = match self.selected_ix {
             _ if self.entries.is_empty() => None,
             None => Some(0),
@@ -769,7 +769,7 @@ impl StackFrameList {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -789,7 +789,7 @@ impl StackFrameList {
 
     fn select_first(
         &mut self,
-        _: &menu::SelectFirst,
+        _: &inazuma_menu::SelectFirst,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -801,7 +801,7 @@ impl StackFrameList {
         self.select_ix(ix, cx);
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
         let ix = if !self.entries.is_empty() {
             Some(self.entries.len() - 1)
         } else {
@@ -831,7 +831,7 @@ impl StackFrameList {
         cx.notify();
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
         self.activate_selected_entry(window, cx);
     }
 

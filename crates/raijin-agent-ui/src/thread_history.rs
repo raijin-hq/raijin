@@ -141,7 +141,7 @@ impl ThreadHistory {
                     }
                 };
 
-                let acp_thread::AgentSessionListResponse {
+                let raijin_acp_thread::AgentSessionListResponse {
                     sessions: page_sessions,
                     next_cursor,
                     ..
@@ -230,9 +230,9 @@ mod tests {
 
     fn init_test(cx: &mut TestAppContext) {
         cx.update(|cx| {
-            let settings_store = settings::SettingsStore::test(cx);
+            let settings_store = inazuma_settings_framework::SettingsStore::test(cx);
             cx.set_global(settings_store);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
         });
     }
 

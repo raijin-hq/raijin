@@ -5,7 +5,7 @@ use crate::{
 use std::cell::RefCell;
 
 use raijin_acp_thread::{ContentBlock, PlanEntry};
-use cloud_api_types::{SubmitAgentThreadFeedbackBody, SubmitAgentThreadFeedbackCommentsBody};
+use raijin_cloud_api_types::{SubmitAgentThreadFeedbackBody, SubmitAgentThreadFeedbackCommentsBody};
 use raijin_editor::actions::OpenExcerpts;
 
 use crate::StartThreadIn;
@@ -142,7 +142,7 @@ impl ThreadFeedbackState {
 
         let editor = cx.new(|cx| {
             let mut editor = Editor::new(
-                editor::EditorMode::AutoHeight {
+                raijin_editor::EditorMode::AutoHeight {
                     min_lines: 1,
                     max_lines: Some(4),
                 },
@@ -242,7 +242,7 @@ pub struct ThreadView {
     pub(super) thread_error: Option<ThreadError>,
     pub thread_error_markdown: Option<Entity<Markdown>>,
     pub token_limit_callout_dismissed: bool,
-    pub last_token_limit_telemetry: Option<acp_thread::TokenUsageRatio>,
+    pub last_token_limit_telemetry: Option<raijin_acp_thread::TokenUsageRatio>,
     thread_feedback: ThreadFeedbackState,
     pub list_state: ListState,
     pub session_capabilities: SharedSessionCapabilities,
@@ -363,7 +363,7 @@ impl ThreadView {
                 session_capabilities.clone(),
                 agent_id.clone(),
                 &placeholder,
-                editor::EditorMode::AutoHeight {
+                raijin_editor::EditorMode::AutoHeight {
                     min_lines: AgentSettings::get_global(cx).message_editor_min_lines,
                     max_lines: Some(AgentSettings::get_global(cx).set_message_editor_max_lines()),
                 },
@@ -617,12 +617,12 @@ impl ThreadView {
     pub(crate) fn as_native_connection(
         &self,
         cx: &App,
-    ) -> Option<Rc<agent::NativeAgentConnection>> {
+    ) -> Option<Rc<raijin_agent::NativeAgentConnection>> {
         let acp_thread = self.thread.read(cx);
         acp_thread.connection().clone().downcast()
     }
 
-    pub fn as_native_thread(&self, cx: &App) -> Option<Entity<agent::Thread>> {
+    pub fn as_native_thread(&self, cx: &App) -> Option<Entity<raijin_agent::Thread>> {
         let acp_thread = self.thread.read(cx);
         self.as_native_connection(cx)?
             .thread(acp_thread.session_id(), cx)
@@ -854,7 +854,7 @@ impl ThreadView {
     fn suppress_merge_conflict_notification(&self, cx: &mut Context<Self>) {
         self.workspace
             .update(cx, |workspace, cx| {
-                workspace.suppress_notification(&workspace::merge_conflict_notification_id(), cx);
+                workspace.suppress_notification(&raijin_workspace::merge_conflict_notification_id(), cx);
             })
             .ok();
     }
@@ -862,7 +862,7 @@ impl ThreadView {
     fn unsuppress_merge_conflict_notification(&self, cx: &mut Context<Self>) {
         self.workspace
             .update(cx, |workspace, _cx| {
-                workspace.unsuppress(workspace::merge_conflict_notification_id());
+                workspace.unsuppress(raijin_workspace::merge_conflict_notification_id());
             })
             .ok();
     }
@@ -1099,7 +1099,7 @@ impl ThreadView {
                     .join(" ");
                 let text = text.lines().next().unwrap_or("").trim();
                 if !text.is_empty() {
-                    let title: SharedString = util::truncate_and_trailoff(text, 200).into();
+                    let title: SharedString = inazuma_util::truncate_and_trailoff(text, 200).into();
                     thread.update(cx, |thread, cx| {
                         thread.set_provisional_title(title, cx);
                     })?;
@@ -1115,7 +1115,7 @@ impl ThreadView {
                 });
                 drop(guard);
 
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Agent Message Sent",
                     agent = agent_telemetry_id,
                     session = session_id,
@@ -1141,7 +1141,7 @@ impl ThreadView {
             } else {
                 "failure"
             };
-            telemetry::event!(
+            raijin_telemetry::event!(
                 "Agent Turn Completed",
                 agent = agent_telemetry_id,
                 session = session_id,
@@ -1260,7 +1260,7 @@ impl ThreadView {
             .parent_session_id()
             .map(|id| id.to_string());
 
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Agent Panel Error Shown",
             agent = agent_telemetry_id,
             session_id = session_id,
@@ -1364,7 +1364,7 @@ impl ThreadView {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let is_idle = self.thread.read(cx).status() == acp_thread::ThreadStatus::Idle;
+        let is_idle = self.thread.read(cx).status() == raijin_acp_thread::ThreadStatus::Idle;
 
         if is_idle {
             self.send_impl(message_editor, window, cx);
@@ -1448,7 +1448,7 @@ impl ThreadView {
         // Stopped event from the newly sent message (which should trigger queue processing).
         if is_send_now {
             let is_generating =
-                self.thread.read(cx).status() == acp_thread::ThreadStatus::Generating;
+                self.thread.read(cx).status() == raijin_acp_thread::ThreadStatus::Generating;
             self.skip_queue_processing_count += if is_generating { 1 } else { 0 };
         }
 
@@ -1918,14 +1918,14 @@ impl ThreadView {
             let title = shared_thread.title.to_string();
 
             client
-                .request(proto::ShareAgentThread {
+                .request(raijin_proto::ShareAgentThread {
                     session_id: session_id.clone(),
                     title,
                     thread_data,
                 })
                 .await?;
 
-            let share_url = client::raijin_urls::shared_agent_thread_url(&session_id);
+            let share_url = raijin_client::raijin_urls::shared_agent_thread_url(&session_id);
 
             cx.update(|cx| {
                 if let Some(workspace) = workspace.upgrade() {
@@ -1979,7 +1979,7 @@ impl ThreadView {
         let session_id = self.thread.read(cx).session_id().clone();
         cx.spawn_in(window, async move |this, cx| {
             let response = client
-                .request(proto::GetSharedAgentThread {
+                .request(raijin_proto::GetSharedAgentThread {
                     session_id: session_id.to_string(),
                 })
                 .await?;
@@ -2060,7 +2060,7 @@ impl ThreadView {
                 .ok();
         }
 
-        telemetry::event!("Follow Agent Selected", following = !following);
+        raijin_telemetry::event!("Follow Agent Selected", following = !following);
     }
 
     // other
@@ -2719,7 +2719,7 @@ impl ThreadView {
             .child(
                 IconButton::new("dismiss-plan", IconName::Close)
                     .icon_size(IconSize::XSmall)
-                    .shape(ui::IconButtonShape::Square)
+                    .shape(raijin_ui::IconButtonShape::Square)
                     .tooltip(Tooltip::text("Clear plan"))
                     .on_click(cx.listener(|this, _, _, cx| {
                         this.thread.update(cx, |thread, cx| thread.clear_plan(cx));
@@ -3704,7 +3704,7 @@ impl ThreadView {
 
         Some(
             SplitButton::new(left_btn, right_btn.into_any_element())
-                .style(SplitButtonStyle::Transparent)
+                .style(SplitButtonStyle::TRANSPARENT)
                 .into_any_element(),
         )
     }
@@ -3781,7 +3781,7 @@ impl ThreadView {
         PopoverMenu::new("effort-selector")
             .trigger_with_tooltip(
                 ButtonLike::new_rounded_right("effort-selector-trigger")
-                    .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                    .selected_style(ButtonStyle::tinted(TintColor::Accent))
                     .child(Label::new(label).size(LabelSize::Small).color(label_color))
                     .child(Icon::new(icon).size(IconSize::XSmall).color(Color::Muted)),
                 tooltip,
@@ -3857,9 +3857,9 @@ impl ThreadView {
         } else if is_generating && is_editor_empty {
             IconButton::new("stop-generation", IconName::Stop)
                 .icon_color(Color::Error)
-                .style(ButtonStyle::Tinted(TintColor::Error))
+                .style(ButtonStyle::tinted(TintColor::Error))
                 .tooltip(move |_window, cx| {
-                    Tooltip::for_action("Stop Generation", &editor::actions::Cancel, cx)
+                    Tooltip::for_action("Stop Generation", &raijin_editor::actions::Cancel, cx)
                 })
                 .on_click(cx.listener(|this, _event, _, cx| this.cancel_generation(cx)))
                 .into_any_element()
@@ -3870,7 +3870,7 @@ impl ThreadView {
                 IconName::Send
             };
             IconButton::new("send-message", send_icon)
-                .style(ButtonStyle::Filled)
+                .style(ButtonStyle::FILLED)
                 .map(|this| {
                     if is_editor_empty && !is_generating {
                         this.disabled(true).icon_color(Color::Muted)
@@ -4100,13 +4100,13 @@ impl ThreadView {
         let following = self.is_following(cx);
 
         let tooltip_label = if following {
-            if self.agent_id.as_ref() == agent::ZED_AGENT_ID.as_ref() {
+            if self.agent_id.as_ref() == raijin_agent::ZED_AGENT_ID.as_ref() {
                 format!("Stop Following the {}", self.agent_id)
             } else {
                 format!("Stop Following {}", self.agent_id)
             }
         } else {
-            if self.agent_id.as_ref() == agent::ZED_AGENT_ID.as_ref() {
+            if self.agent_id.as_ref() == raijin_agent::ZED_AGENT_ID.as_ref() {
                 format!("Follow the {}", self.agent_id)
             } else {
                 format!("Follow {}", self.agent_id)
@@ -4170,7 +4170,7 @@ impl Render for TokenUsageTooltip {
         let project_entry_ids = self.project_entry_ids.clone();
         let workspace = self.workspace.clone();
 
-        ui::tooltip_container(cx, move |container, cx| {
+        raijin_ui::tooltip_container(cx, move |container, cx| {
             container
                 .min_w_40()
                 .when(!show_split, |this| {
@@ -4487,7 +4487,7 @@ impl ThreadView {
                                             .child(IconButton::new("non_editable", IconName::PencilUnavailable)
                                                 .icon_size(IconSize::Small)
                                                 .icon_color(Color::Muted)
-                                                .style(ButtonStyle::Transparent)
+                                                .style(ButtonStyle::TRANSPARENT)
                                                 .tooltip(Tooltip::element({
                                                     let agent_name = agent_name.clone();
                                                     move |_, _| {
@@ -4712,11 +4712,11 @@ impl ThreadView {
     fn render_feedback_feedback_editor(editor: Entity<Editor>, cx: &Context<Self>) -> Div {
         h_flex()
             .key_context("AgentFeedbackMessageEditor")
-            .on_action(cx.listener(move |this, _: &menu::Cancel, _, cx| {
+            .on_action(cx.listener(move |this, _: &inazuma_menu::Cancel, _, cx| {
                 this.thread_feedback.dismiss_comments();
                 cx.notify();
             }))
-            .on_action(cx.listener(move |this, _: &menu::Confirm, _window, cx| {
+            .on_action(cx.listener(move |this, _: &inazuma_menu::Confirm, _window, cx| {
                 this.submit_feedback_message(cx);
             }))
             .p_2()
@@ -4734,7 +4734,7 @@ impl ThreadView {
                         IconButton::new("dismiss-feedback-message", IconName::Close)
                             .icon_color(Color::Error)
                             .icon_size(IconSize::XSmall)
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(raijin_ui::IconButtonShape::Square)
                             .on_click(cx.listener(move |this, _, _window, cx| {
                                 this.thread_feedback.dismiss_comments();
                                 cx.notify();
@@ -4743,7 +4743,7 @@ impl ThreadView {
                     .child(
                         IconButton::new("submit-feedback-message", IconName::Return)
                             .icon_size(IconSize::XSmall)
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(raijin_ui::IconButtonShape::Square)
                             .on_click(cx.listener(move |this, _, _window, cx| {
                                 this.submit_feedback_message(cx);
                             })),
@@ -4762,7 +4762,7 @@ impl ThreadView {
         }
 
         let open_as_markdown = IconButton::new("open-as-markdown", IconName::FileMarkdown)
-            .shape(ui::IconButtonShape::Square)
+            .shape(raijin_ui::IconButtonShape::Square)
             .icon_size(IconSize::Small)
             .icon_color(Color::Ignored)
             .tooltip(Tooltip::text("Open Thread as Markdown"))
@@ -4775,7 +4775,7 @@ impl ThreadView {
 
         let scroll_to_recent_user_prompt =
             IconButton::new("scroll_to_recent_user_prompt", IconName::ForwardArrow)
-                .shape(ui::IconButtonShape::Square)
+                .shape(raijin_ui::IconButtonShape::Square)
                 .icon_size(IconSize::Small)
                 .icon_color(Color::Ignored)
                 .tooltip(Tooltip::text("Scroll To Most Recent User Prompt"))
@@ -4784,7 +4784,7 @@ impl ThreadView {
                 }));
 
         let scroll_to_top = IconButton::new("scroll_to_top", IconName::ArrowUp)
-            .shape(ui::IconButtonShape::Square)
+            .shape(raijin_ui::IconButtonShape::Square)
             .icon_size(IconSize::Small)
             .icon_color(Color::Ignored)
             .tooltip(Tooltip::text("Scroll To Top"))
@@ -4858,7 +4858,7 @@ impl ThreadView {
             container = container
                     .child(
                         IconButton::new("feedback-thumbs-up", IconName::ThumbsUp)
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(raijin_ui::IconButtonShape::Square)
                             .icon_size(IconSize::Small)
                             .icon_color(match feedback {
                                 Some(ThreadFeedback::Positive) => Color::Accent,
@@ -4878,7 +4878,7 @@ impl ThreadView {
                     )
                     .child(
                         IconButton::new("feedback-thumbs-down", IconName::ThumbsDown)
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(raijin_ui::IconButtonShape::Square)
                             .icon_size(IconSize::Small)
                             .icon_color(match feedback {
                                 Some(ThreadFeedback::Negative) => Color::Accent,
@@ -4912,7 +4912,7 @@ impl ThreadView {
         {
             let button = if self.is_imported_thread(cx) {
                 IconButton::new("sync-thread", IconName::ArrowCircle)
-                    .shape(ui::IconButtonShape::Square)
+                    .shape(raijin_ui::IconButtonShape::Square)
                     .icon_size(IconSize::Small)
                     .icon_color(Color::Ignored)
                     .tooltip(Tooltip::text("Sync with source thread"))
@@ -4921,7 +4921,7 @@ impl ThreadView {
                     }))
             } else {
                 IconButton::new("share-thread", IconName::ArrowUpRight)
-                    .shape(ui::IconButtonShape::Square)
+                    .shape(raijin_ui::IconButtonShape::Square)
                     .icon_size(IconSize::Small)
                     .icon_color(Color::Ignored)
                     .tooltip(Tooltip::text("Share Thread"))
@@ -5020,7 +5020,7 @@ impl ThreadView {
 
             buffer.update(cx, |buffer, cx| {
                 buffer.set_text(markdown, cx);
-                buffer.set_capability(language::Capability::ReadWrite, cx);
+                buffer.set_capability(raijin_language::Capability::ReadWrite, cx);
             });
 
             workspace.update_in(cx, |workspace, window, cx| {
@@ -5397,7 +5397,7 @@ impl ThreadView {
                         .action_disabled_when(
                             !has_selection,
                             "Copy Selection",
-                            Box::new(markdown::CopyAsMarkdown),
+                            Box::new(raijin_markdown::CopyAsMarkdown),
                         )
                         .item(copy_this_agent_response)
                         .separator()
@@ -5539,7 +5539,7 @@ impl ThreadView {
         &self,
         active_session_id: &acp::SessionId,
         entry_ix: usize,
-        terminal: &Entity<acp_thread::Terminal>,
+        terminal: &Entity<raijin_acp_thread::Terminal>,
         tool_call: &ToolCall,
         focus_handle: &FocusHandle,
         is_subagent: bool,
@@ -5706,7 +5706,7 @@ impl ThreadView {
             })
             .when(truncated_output, |header| {
                 let tooltip = if let Some(output) = output {
-                    if output_line_count + 10 > terminal::MAX_SCROLL_HISTORY_LINES {
+                    if output_line_count + 10 > raijin_terminal::MAX_SCROLL_HISTORY_LINES {
                        format!("Output exceeded terminal max lines and was \
                             truncated, the model received the first {}.", format_file_size(output.content.len() as u64, true))
                     } else {
@@ -7060,7 +7060,7 @@ impl ThreadView {
                         && let Some(agent_buffer) = agent_location.buffer.upgrade()
                         && agent_buffer.read(cx).remote_id() == buffer_id
                     {
-                        let anchor = editor::Anchor::in_buffer(excerpt_id, agent_location.position);
+                        let anchor = raijin_editor::Anchor::in_buffer(excerpt_id, agent_location.position);
                         editor.change_selections(Default::default(), window, cx, |selections| {
                             selections.select_anchor_ranges([anchor..anchor]);
                         })
@@ -7202,7 +7202,7 @@ impl ThreadView {
     fn render_diff_editor(
         &self,
         entry_ix: usize,
-        diff: &Entity<acp_thread::Diff>,
+        diff: &Entity<raijin_acp_thread::Diff>,
         tool_call: &ToolCall,
         has_failed: bool,
         cx: &Context<Self>,
@@ -7614,7 +7614,7 @@ impl ThreadView {
                                             }
                                             let expanded =
                                                 this.expanded_tool_calls.contains(&tool_call_id);
-                                            telemetry::event!("Subagent Toggled", expanded);
+                                            raijin_telemetry::event!("Subagent Toggled", expanded);
                                             cx.notify();
                                         }
                                     }))
@@ -7633,7 +7633,7 @@ impl ThreadView {
                                     |this, thread| {
                                         this.on_click(cx.listener(
                                             move |_this, _event, _window, cx| {
-                                                telemetry::event!("Subagent Stopped");
+                                                raijin_telemetry::event!("Subagent Stopped");
                                                 thread.update(cx, |thread, cx| {
                                                     thread.cancel(cx).detach();
                                                 });
@@ -7670,7 +7670,7 @@ impl ThreadView {
                     )
                     .tooltip(Tooltip::text("Make Subagent Full Screen"))
                     .on_click(cx.listener(move |this, _event, window, cx| {
-                        telemetry::event!("Subagent Maximized");
+                        raijin_telemetry::event!("Subagent Maximized");
                         this.server_view
                             .update(cx, |this, cx| {
                                 this.navigate_to_session(session_id.clone(), window, cx);
@@ -7818,7 +7818,7 @@ impl ThreadView {
         if matches!(status, ToolCallStatus::Failed) {
             tool_call.content.iter().find_map(|content| {
                 if let ToolCallContent::ContentBlock(block) = content {
-                    if let acp_thread::ContentBlock::Markdown { markdown } = block {
+                    if let raijin_acp_thread::ContentBlock::Markdown { markdown } = block {
                         let source = markdown.read(cx).source().to_string();
                         if !source.is_empty() {
                             if source == "User canceled" {
@@ -7928,7 +7928,7 @@ impl ThreadView {
     fn upgrade_button(&self, cx: &mut Context<Self>) -> impl IntoElement {
         Button::new("upgrade", "Upgrade")
             .label_size(LabelSize::Small)
-            .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+            .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
             .on_click(cx.listener({
                 move |this, _, _, cx| {
                     this.clear_thread_error(cx);
@@ -7940,7 +7940,7 @@ impl ThreadView {
     fn authenticate_button(&self, cx: &mut Context<Self>) -> impl IntoElement {
         Button::new("authenticate", "Authenticate")
             .label_size(LabelSize::Small)
-            .style(ButtonStyle::Filled)
+            .style(ButtonStyle::FILLED)
             .on_click(cx.listener({
                 move |this, _, window, cx| {
                     let server_view = this.server_view.clone();
@@ -8119,7 +8119,7 @@ impl ThreadView {
                                 "Recent",
                                 Some(
                                     Button::new("view-history", "View All")
-                                        .style(ButtonStyle::Subtle)
+                                        .style(ButtonStyle::SUBTLE)
                                         .label_size(LabelSize::Small)
                                         .key_binding(
                                             KeyBinding::for_action_in(
@@ -8248,7 +8248,7 @@ impl ThreadView {
                 .child(
                     Button::new("update-button", format!("Update to v{}", version))
                         .label_size(LabelSize::Small)
-                        .style(ButtonStyle::Tinted(TintColor::Accent))
+                        .style(ButtonStyle::tinted(TintColor::Accent))
                         .on_click(move |_, window, cx| {
                             server_view
                                 .update(cx, |view, cx| view.reset(window, cx))
@@ -8267,13 +8267,13 @@ impl ThreadView {
         let ratio = token_usage.ratio();
 
         let (severity, icon, title) = match ratio {
-            acp_thread::TokenUsageRatio::Normal => return None,
-            acp_thread::TokenUsageRatio::Warning => (
+            raijin_acp_thread::TokenUsageRatio::Normal => return None,
+            raijin_acp_thread::TokenUsageRatio::Warning => (
                 Severity::Warning,
                 IconName::Warning,
                 "Thread reaching the token limit soon",
             ),
-            acp_thread::TokenUsageRatio::Exceeded => (
+            raijin_acp_thread::TokenUsageRatio::Exceeded => (
                 Severity::Error,
                 IconName::XCircle,
                 "Thread reached the token limit",
@@ -8435,12 +8435,12 @@ impl Render for ThreadView {
         v_flex()
             .key_context("AcpThread")
             .track_focus(&self.focus_handle)
-            .on_action(cx.listener(|this, _: &menu::Cancel, _, cx| {
+            .on_action(cx.listener(|this, _: &inazuma_menu::Cancel, _, cx| {
                 if this.parent_id.is_none() {
                     this.cancel_generation(cx);
                 }
             }))
-            .on_action(cx.listener(|this, _: &workspace::GoBack, window, cx| {
+            .on_action(cx.listener(|this, _: &raijin_workspace::GoBack, window, cx| {
                 if let Some(parent_session_id) = this.parent_id.clone() {
                     this.server_view
                         .update(cx, |view, cx| {
@@ -8658,7 +8658,7 @@ pub(crate) fn open_link(
                 };
 
                 project.update(cx, |_, cx| {
-                    cx.emit(project::Event::RevealInProjectPanel(entry_id));
+                    cx.emit(raijin_project::Event::RevealInProjectPanel(entry_id));
                 });
             }
             MentionUri::Symbol {

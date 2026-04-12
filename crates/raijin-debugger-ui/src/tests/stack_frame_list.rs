@@ -55,11 +55,11 @@ async fn test_fetch_initial_stack_frames_and_go_to_stack_frame(
     let cx = &mut VisualTestContext::from_window(*workspace, cx);
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
-    client.on_request::<Scopes, _>(move |_, _| Ok(dap::ScopesResponse { scopes: vec![] }));
+    client.on_request::<Scopes, _>(move |_, _| Ok(raijin_dap::ScopesResponse { scopes: vec![] }));
 
     client.on_request::<Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -70,7 +70,7 @@ async fn test_fetch_initial_stack_frames_and_go_to_stack_frame(
         StackFrame {
             id: 1,
             name: "Stack Frame 1".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("test.js".into()),
                 path: Some(path!("/project/src/test.js").into()),
                 source_reference: None,
@@ -92,7 +92,7 @@ async fn test_fetch_initial_stack_frames_and_go_to_stack_frame(
         StackFrame {
             id: 2,
             name: "Stack Frame 2".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -118,7 +118,7 @@ async fn test_fetch_initial_stack_frames_and_go_to_stack_frame(
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -126,8 +126,8 @@ async fn test_fetch_initial_stack_frames_and_go_to_stack_frame(
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -210,7 +210,7 @@ async fn test_select_stack_frame(executor: BackgroundExecutor, cx: &mut TestAppC
     let project = Project::test(fs, [path!("/project").as_ref()], cx).await;
     let workspace = init_test_workspace(&project, cx).await;
     let _ = workspace.update(cx, |workspace, window, cx| {
-        workspace.toggle_dock(workspace::dock::DockPosition::Bottom, window, cx);
+        workspace.toggle_dock(raijin_workspace::dock::DockPosition::Bottom, window, cx);
     });
 
     let cx = &mut VisualTestContext::from_window(*workspace, cx);
@@ -218,21 +218,21 @@ async fn test_select_stack_frame(executor: BackgroundExecutor, cx: &mut TestAppC
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
     client.on_request::<Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
         })
     });
 
-    client.on_request::<Scopes, _>(move |_, _| Ok(dap::ScopesResponse { scopes: vec![] }));
+    client.on_request::<Scopes, _>(move |_, _| Ok(raijin_dap::ScopesResponse { scopes: vec![] }));
 
     let stack_frames = vec![
         StackFrame {
             id: 1,
             name: "Stack Frame 1".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("test.js".into()),
                 path: Some(path!("/project/src/test.js").into()),
                 source_reference: None,
@@ -254,7 +254,7 @@ async fn test_select_stack_frame(executor: BackgroundExecutor, cx: &mut TestAppC
         StackFrame {
             id: 2,
             name: "Stack Frame 2".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -280,7 +280,7 @@ async fn test_select_stack_frame(executor: BackgroundExecutor, cx: &mut TestAppC
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -288,8 +288,8 @@ async fn test_select_stack_frame(executor: BackgroundExecutor, cx: &mut TestAppC
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -343,7 +343,7 @@ async fn test_select_stack_frame(executor: BackgroundExecutor, cx: &mut TestAppC
                     let snapshot = editor.snapshot(window, cx);
 
                     editor
-                        .highlighted_rows::<editor::ActiveDebugLine>()
+                        .highlighted_rows::<raijin_editor::ActiveDebugLine>()
                         .map(|(range, _)| {
                             let start = range.start.to_point(&snapshot.buffer_snapshot());
                             let end = range.end.to_point(&snapshot.buffer_snapshot());
@@ -406,7 +406,7 @@ async fn test_select_stack_frame(executor: BackgroundExecutor, cx: &mut TestAppC
                 let snapshot = editor.snapshot(window, cx);
 
                 editor
-                    .highlighted_rows::<editor::ActiveDebugLine>()
+                    .highlighted_rows::<raijin_editor::ActiveDebugLine>()
                     .map(|(range, _)| {
                         let start = range.start.to_point(&snapshot.buffer_snapshot());
                         let end = range.end.to_point(&snapshot.buffer_snapshot());
@@ -455,21 +455,21 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
     client.on_request::<Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
         })
     });
 
-    client.on_request::<Scopes, _>(move |_, _| Ok(dap::ScopesResponse { scopes: vec![] }));
+    client.on_request::<Scopes, _>(move |_, _| Ok(raijin_dap::ScopesResponse { scopes: vec![] }));
 
     let stack_frames = vec![
         StackFrame {
             id: 1,
             name: "Stack Frame 1".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("test.js".into()),
                 path: Some(path!("/project/src/test.js").into()),
                 source_reference: None,
@@ -491,7 +491,7 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
         StackFrame {
             id: 2,
             name: "Stack Frame 2".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -508,12 +508,12 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
             can_restart: None,
             instruction_pointer_reference: None,
             module_id: None,
-            presentation_hint: Some(dap::StackFramePresentationHint::Deemphasize),
+            presentation_hint: Some(raijin_dap::StackFramePresentationHint::Deemphasize),
         },
         StackFrame {
             id: 3,
             name: "Stack Frame 3".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -530,12 +530,12 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
             can_restart: None,
             instruction_pointer_reference: None,
             module_id: None,
-            presentation_hint: Some(dap::StackFramePresentationHint::Deemphasize),
+            presentation_hint: Some(raijin_dap::StackFramePresentationHint::Deemphasize),
         },
         StackFrame {
             id: 4,
             name: "Stack Frame 4".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -557,7 +557,7 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
         StackFrame {
             id: 5,
             name: "Stack Frame 5".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -574,12 +574,12 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
             can_restart: None,
             instruction_pointer_reference: None,
             module_id: None,
-            presentation_hint: Some(dap::StackFramePresentationHint::Deemphasize),
+            presentation_hint: Some(raijin_dap::StackFramePresentationHint::Deemphasize),
         },
         StackFrame {
             id: 6,
             name: "Stack Frame 6".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -596,12 +596,12 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
             can_restart: None,
             instruction_pointer_reference: None,
             module_id: None,
-            presentation_hint: Some(dap::StackFramePresentationHint::Deemphasize),
+            presentation_hint: Some(raijin_dap::StackFramePresentationHint::Deemphasize),
         },
         StackFrame {
             id: 7,
             name: "Stack Frame 7".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("module.js".into()),
                 path: Some(path!("/project/src/module.js").into()),
                 source_reference: None,
@@ -627,7 +627,7 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -635,8 +635,8 @@ async fn test_collapsed_entries(executor: BackgroundExecutor, cx: &mut TestAppCo
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -782,21 +782,21 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
     client.on_request::<Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
         })
     });
 
-    client.on_request::<Scopes, _>(move |_, _| Ok(dap::ScopesResponse { scopes: vec![] }));
+    client.on_request::<Scopes, _>(move |_, _| Ok(raijin_dap::ScopesResponse { scopes: vec![] }));
 
     let stack_frames = vec![
         StackFrame {
             id: 1,
             name: "main".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("test.js".into()),
                 path: Some(path!("/project/src/test.js").into()),
                 source_reference: None,
@@ -818,7 +818,7 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
         StackFrame {
             id: 2,
             name: "node:internal/modules/cjs/loader".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("loader.js".into()),
                 path: Some(path!("/usr/lib/node/internal/modules/cjs/loader.js").into()),
                 source_reference: None,
@@ -835,12 +835,12 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
             can_restart: None,
             instruction_pointer_reference: None,
             module_id: None,
-            presentation_hint: Some(dap::StackFramePresentationHint::Deemphasize),
+            presentation_hint: Some(raijin_dap::StackFramePresentationHint::Deemphasize),
         },
         StackFrame {
             id: 3,
             name: "node:internal/modules/run_main".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("run_main.js".into()),
                 path: Some(path!("/usr/lib/node/internal/modules/run_main.js").into()),
                 source_reference: None,
@@ -857,12 +857,12 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
             can_restart: None,
             instruction_pointer_reference: None,
             module_id: None,
-            presentation_hint: Some(dap::StackFramePresentationHint::Deemphasize),
+            presentation_hint: Some(raijin_dap::StackFramePresentationHint::Deemphasize),
         },
         StackFrame {
             id: 4,
             name: "node:internal/modules/run_main2".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("run_main.js".into()),
                 path: Some(path!("/usr/lib/node/internal/modules/run_main2.js").into()),
                 source_reference: None,
@@ -879,12 +879,12 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
             can_restart: None,
             instruction_pointer_reference: None,
             module_id: None,
-            presentation_hint: Some(dap::StackFramePresentationHint::Deemphasize),
+            presentation_hint: Some(raijin_dap::StackFramePresentationHint::Deemphasize),
         },
         StackFrame {
             id: 5,
             name: "doSomething".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("test.js".into()),
                 path: Some(path!("/project/src/test.js").into()),
                 source_reference: None,
@@ -913,7 +913,7 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
         move |_, args| {
             assert_eq!(1, args.thread_id);
 
-            Ok(dap::StackTraceResponse {
+            Ok(raijin_dap::StackTraceResponse {
                 stack_frames: (*stack_frames).clone(),
                 total_frames: None,
             })
@@ -921,8 +921,8 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1005,7 +1005,7 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
         assert_eq!(all_frames.len(), 5, "Should see all 5 frames initially");
 
         stack_frame_list
-            .toggle_frame_filter(Some(project::debugger::session::ThreadStatus::Stopped), cx);
+            .toggle_frame_filter(Some(raijin_project::debugger::session::ThreadStatus::Stopped), cx);
         assert_eq!(
             stack_frame_list.list_filter(),
             StackFrameFilter::OnlyUserFrames
@@ -1020,7 +1020,7 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
 
         // Toggle back to all frames
         stack_frame_list
-            .toggle_frame_filter(Some(project::debugger::session::ThreadStatus::Stopped), cx);
+            .toggle_frame_filter(Some(raijin_project::debugger::session::ThreadStatus::Stopped), cx);
         assert_eq!(stack_frame_list.list_filter(), StackFrameFilter::All);
     });
 
@@ -1046,7 +1046,7 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
         );
 
         stack_frame_list
-            .toggle_frame_filter(Some(project::debugger::session::ThreadStatus::Stopped), cx);
+            .toggle_frame_filter(Some(raijin_project::debugger::session::ThreadStatus::Stopped), cx);
         assert_eq!(
             stack_frame_list.list_filter(),
             StackFrameFilter::OnlyUserFrames
@@ -1055,13 +1055,13 @@ async fn test_stack_frame_filter(executor: BackgroundExecutor, cx: &mut TestAppC
 
     stack_frame_list.update(cx, |stack_frame_list, cx| {
         stack_frame_list
-            .toggle_frame_filter(Some(project::debugger::session::ThreadStatus::Stopped), cx);
+            .toggle_frame_filter(Some(raijin_project::debugger::session::ThreadStatus::Stopped), cx);
         assert_eq!(stack_frame_list.list_filter(), StackFrameFilter::All);
     });
 
     stack_frame_list.update(cx, |stack_frame_list, cx| {
         stack_frame_list
-            .toggle_frame_filter(Some(project::debugger::session::ThreadStatus::Stopped), cx);
+            .toggle_frame_filter(Some(raijin_project::debugger::session::ThreadStatus::Stopped), cx);
         assert_eq!(
             stack_frame_list.list_filter(),
             StackFrameFilter::OnlyUserFrames
@@ -1118,18 +1118,18 @@ async fn test_stack_frame_filter_persistence(
         })
         .unwrap();
 
-    let threads_response = dap::ThreadsResponse {
-        threads: vec![dap::Thread {
+    let threads_response = raijin_dap::ThreadsResponse {
+        threads: vec![raijin_dap::Thread {
             id: 1,
             name: "Thread 1".into(),
         }],
     };
 
-    let stack_trace_response = dap::StackTraceResponse {
+    let stack_trace_response = raijin_dap::StackTraceResponse {
         stack_frames: vec![StackFrame {
             id: 1,
             name: "main".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("test.js".into()),
                 path: Some(path!("/project/src/test.js").into()),
                 source_reference: None,
@@ -1151,8 +1151,8 @@ async fn test_stack_frame_filter_persistence(
         total_frames: None,
     };
 
-    let stopped_event = dap::StoppedEvent {
-        reason: dap::StoppedEventReason::Pause,
+    let stopped_event = raijin_dap::StoppedEvent {
+        reason: raijin_dap::StoppedEventReason::Pause,
         description: None,
         thread_id: Some(1),
         preserve_focus_hint: None,
@@ -1170,7 +1170,7 @@ async fn test_stack_frame_filter_persistence(
         move |_, _| Ok(threads_response.clone())
     });
 
-    client.on_request::<Scopes, _>(move |_, _| Ok(dap::ScopesResponse { scopes: vec![] }));
+    client.on_request::<Scopes, _>(move |_, _| Ok(raijin_dap::ScopesResponse { scopes: vec![] }));
 
     client.on_request::<StackTrace, _>({
         let stack_trace_response = stack_trace_response.clone();
@@ -1178,7 +1178,7 @@ async fn test_stack_frame_filter_persistence(
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(stopped_event.clone()))
+        .fake_event(raijin_dap::messages::Events::Stopped(stopped_event.clone()))
         .await;
 
     cx.run_until_parked();
@@ -1200,7 +1200,7 @@ async fn test_stack_frame_filter_persistence(
 
     stack_frame_list.update(cx, |stack_frame_list, cx| {
         stack_frame_list
-            .toggle_frame_filter(Some(project::debugger::session::ThreadStatus::Stopped), cx);
+            .toggle_frame_filter(Some(raijin_project::debugger::session::ThreadStatus::Stopped), cx);
         assert_eq!(
             stack_frame_list.list_filter(),
             StackFrameFilter::OnlyUserFrames,
@@ -1229,7 +1229,7 @@ async fn test_stack_frame_filter_persistence(
     );
 
     client
-        .fake_event(dap::messages::Events::Terminated(None))
+        .fake_event(raijin_dap::messages::Events::Terminated(None))
         .await;
     cx.run_until_parked();
 
@@ -1241,7 +1241,7 @@ async fn test_stack_frame_filter_persistence(
         move |_, _| Ok(threads_response.clone())
     });
 
-    client2.on_request::<Scopes, _>(move |_, _| Ok(dap::ScopesResponse { scopes: vec![] }));
+    client2.on_request::<Scopes, _>(move |_, _| Ok(raijin_dap::ScopesResponse { scopes: vec![] }));
 
     client2.on_request::<StackTrace, _>({
         let stack_trace_response = stack_trace_response.clone();
@@ -1249,7 +1249,7 @@ async fn test_stack_frame_filter_persistence(
     });
 
     client2
-        .fake_event(dap::messages::Events::Stopped(stopped_event.clone()))
+        .fake_event(raijin_dap::messages::Events::Stopped(stopped_event.clone()))
         .await;
 
     cx.run_until_parked();

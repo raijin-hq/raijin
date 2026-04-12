@@ -35,17 +35,17 @@ mod variable_list;
 
 pub fn init_test(cx: &mut inazuma::TestAppContext) {
     #[cfg(test)]
-    zlog::init_test();
+    raijin_log::init_test();
 
     cx.update(|cx| {
         let settings = SettingsStore::test(cx);
         cx.set_global(settings);
         raijin_terminal_view::init(cx);
-        theme_settings::init(theme::LoadThemes::JustBase, cx);
-        command_palette_hooks::init(cx);
-        editor::init(cx);
+        raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+        raijin_command_palette_hooks::init(cx);
+        raijin_editor::init(cx);
         crate::init(cx);
-        dap_adapters::init(cx);
+        raijin_dap_adapters::init(cx);
     });
 }
 
@@ -113,7 +113,7 @@ pub fn start_debug_session_with<T: Fn(&Arc<DebugAdapterClient>) + 'static>(
     config: DebugTaskDefinition,
     configure: T,
 ) -> Result<Entity<Session>> {
-    let _subscription = project::debugger::test::intercept_debug_sessions(cx, configure);
+    let _subscription = raijin_project::debugger::test::intercept_debug_sessions(cx, configure);
     workspace.update(cx, |multi, window, cx| {
         multi.workspace().update(cx, |workspace, cx| {
             workspace.start_debug_session(

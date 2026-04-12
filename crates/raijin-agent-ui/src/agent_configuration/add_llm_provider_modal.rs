@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
-use inazuma_collections::HashSet;
+use inazuma_inazuma_collections::HashSet;
 use raijin_fs::Fs;
 use inazuma::{
     DismissEvent, Entity, EventEmitter, FocusHandle, Focusable, Render, ScrollHandle, Task,
@@ -312,7 +312,7 @@ impl AddLlmProviderModal {
         }
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, _: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, _: &mut Window, cx: &mut Context<Self>) {
         let task = save_provider_to_settings(&self.input, cx);
         cx.spawn(async move |this, cx| {
             let result = task.await;
@@ -329,7 +329,7 @@ impl AddLlmProviderModal {
         .detach_and_log_err(cx);
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 
@@ -466,13 +466,13 @@ impl AddLlmProviderModal {
             })
     }
 
-    fn on_tab(&mut self, _: &menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
+    fn on_tab(&mut self, _: &inazuma_menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
         window.focus_next(cx);
     }
 
     fn on_tab_prev(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -491,7 +491,7 @@ impl Focusable for AddLlmProviderModal {
 impl ModalView for AddLlmProviderModal {}
 
 impl Render for AddLlmProviderModal {
-    fn render(&mut self, window: &mut ui::Window, cx: &mut ui::Context<Self>) -> impl IntoElement {
+    fn render(&mut self, window: &mut raijin_ui::Window, cx: &mut raijin_ui::Context<Self>) -> impl IntoElement {
         let focus_handle = self.focus_handle(cx);
 
         let window_size = window.viewport_size();
@@ -563,28 +563,28 @@ impl Render for AddLlmProviderModal {
                                     Button::new("cancel", "Cancel")
                                         .key_binding(
                                             KeyBinding::for_action_in(
-                                                &menu::Cancel,
+                                                &inazuma_menu::Cancel,
                                                 &focus_handle,
                                                 cx,
                                             )
                                             .map(|kb| kb.size(rems_from_px(12.))),
                                         )
                                         .on_click(cx.listener(|this, _event, window, cx| {
-                                            this.cancel(&menu::Cancel, window, cx)
+                                            this.cancel(&inazuma_menu::Cancel, window, cx)
                                         })),
                                 )
                                 .child(
                                     Button::new("save-server", "Save Provider")
                                         .key_binding(
                                             KeyBinding::for_action_in(
-                                                &menu::Confirm,
+                                                &inazuma_menu::Confirm,
                                                 &focus_handle,
                                                 cx,
                                             )
                                             .map(|kb| kb.size(rems_from_px(12.))),
                                         )
                                         .on_click(cx.listener(|this, _event, window, cx| {
-                                            this.confirm(&menu::Confirm, window, cx)
+                                            this.confirm(&inazuma_menu::Confirm, window, cx)
                                         })),
                                 ),
                         ),
@@ -813,10 +813,10 @@ mod tests {
         cx.update(|cx| {
             let store = SettingsStore::test(cx);
             cx.set_global(store);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
 
-            language_model::init_settings(cx);
-            editor::init(cx);
+            raijin_language_model::init_settings(cx);
+            raijin_editor::init(cx);
         });
 
         let fs = FakeFs::new(cx.executor());

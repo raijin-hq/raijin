@@ -59,8 +59,8 @@ async fn test_basic_show_debug_panel(executor: BackgroundExecutor, cx: &mut Test
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
     client.on_request::<Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -68,7 +68,7 @@ async fn test_basic_show_debug_panel(executor: BackgroundExecutor, cx: &mut Test
     });
 
     client.on_request::<StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: Vec::default(),
             total_frames: None,
         })
@@ -95,8 +95,8 @@ async fn test_basic_show_debug_panel(executor: BackgroundExecutor, cx: &mut Test
         .unwrap();
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -184,8 +184,8 @@ async fn test_we_can_only_have_one_panel_per_debug_session(
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
     client.on_request::<Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -193,7 +193,7 @@ async fn test_we_can_only_have_one_panel_per_debug_session(
     });
 
     client.on_request::<StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: Vec::default(),
             total_frames: None,
         })
@@ -213,8 +213,8 @@ async fn test_we_can_only_have_one_panel_per_debug_session(
         .unwrap();
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -247,8 +247,8 @@ async fn test_we_can_only_have_one_panel_per_debug_session(
         .unwrap();
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(2),
             preserve_focus_hint: None,
@@ -412,15 +412,15 @@ async fn test_handle_start_debugging_request(
     let fake_config = json!({"one": "two"});
     let launched_with = Arc::new(parking_lot::Mutex::new(None));
 
-    let _subscription = project::debugger::test::intercept_debug_sessions(cx, {
+    let _subscription = raijin_project::debugger::test::intercept_debug_sessions(cx, {
         let launched_with = launched_with.clone();
         move |client| {
             let launched_with = launched_with.clone();
-            client.on_request::<dap::requests::Launch, _>(move |_, args| {
+            client.on_request::<raijin_dap::requests::Launch, _>(move |_, args| {
                 launched_with.lock().replace(args.raw);
                 Ok(())
             });
-            client.on_request::<dap::requests::Attach, _>(move |_, _| {
+            client.on_request::<raijin_dap::requests::Attach, _>(move |_, _| {
                 assert!(false, "should not get attach request");
                 Ok(())
             });
@@ -592,9 +592,9 @@ async fn test_handle_start_debugging_reverse_request(
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -614,7 +614,7 @@ async fn test_handle_start_debugging_reverse_request(
         .await;
     // Set up handlers for sessions spawned with reverse request too.
     let _reverse_request_subscription =
-        project::debugger::test::intercept_debug_sessions(cx, |_| {});
+        raijin_project::debugger::test::intercept_debug_sessions(cx, |_| {});
     client
         .fake_reverse_request::<StartDebugging>(StartDebuggingRequestArguments {
             configuration: json!({}),
@@ -633,9 +633,9 @@ async fn test_handle_start_debugging_reverse_request(
     });
     let child_client = child_session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    child_client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    child_client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -645,8 +645,8 @@ async fn test_handle_start_debugging_reverse_request(
     child_client.on_request::<Disconnect, _>(move |_, _| Ok(()));
 
     child_client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(2),
             preserve_focus_hint: None,
@@ -689,9 +689,9 @@ async fn test_shutdown_children_when_parent_session_shutdown(
     let parent_session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = parent_session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
@@ -701,7 +701,7 @@ async fn test_shutdown_children_when_parent_session_shutdown(
     client.on_response::<StartDebugging, _>(move |_| {}).await;
     // Set up handlers for sessions spawned with reverse request too.
     let _reverse_request_subscription =
-        project::debugger::test::intercept_debug_sessions(cx, |_| {});
+        raijin_project::debugger::test::intercept_debug_sessions(cx, |_| {});
     // start first child session
     client
         .fake_reverse_request::<StartDebugging>(StartDebuggingRequestArguments {
@@ -798,7 +798,7 @@ async fn test_shutdown_parent_session_if_all_children_are_shutdown(
     client.on_response::<StartDebugging, _>(move |_| {}).await;
     // Set up handlers for sessions spawned with reverse request too.
     let _reverse_request_subscription =
-        project::debugger::test::intercept_debug_sessions(cx, |_| {});
+        raijin_project::debugger::test::intercept_debug_sessions(cx, |_| {});
     // start first child session
     client
         .fake_reverse_request::<StartDebugging>(StartDebuggingRequestArguments {
@@ -912,8 +912,8 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
     let cx = &mut VisualTestContext::from_window(*workspace, cx);
 
     let session = start_debug_session(&workspace, cx, |client| {
-        client.on_request::<dap::requests::Initialize, _>(move |_, _| {
-            Ok(dap::Capabilities {
+        client.on_request::<raijin_dap::requests::Initialize, _>(move |_, _| {
+            Ok(raijin_dap::Capabilities {
                 supports_step_back: Some(true),
                 ..Default::default()
             })
@@ -924,9 +924,9 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
     const THREAD_ID_NUM: i64 = 1;
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: THREAD_ID_NUM,
                 name: "Thread 1".into(),
             }],
@@ -936,7 +936,7 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
     client.on_request::<Launch, _>(move |_, _| Ok(()));
 
     client.on_request::<StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: Vec::default(),
             total_frames: None,
         })
@@ -944,7 +944,7 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
 
     client.on_request::<Next, _>(move |_, _| {
         Err(ErrorResponse {
-            error: Some(dap::Message {
+            error: Some(raijin_dap::Message {
                 id: 1,
                 format: "error".into(),
                 variables: None,
@@ -958,7 +958,7 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
 
     client.on_request::<StepOut, _>(move |_, _| {
         Err(ErrorResponse {
-            error: Some(dap::Message {
+            error: Some(raijin_dap::Message {
                 id: 1,
                 format: "error".into(),
                 variables: None,
@@ -972,7 +972,7 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
 
     client.on_request::<StepIn, _>(move |_, _| {
         Err(ErrorResponse {
-            error: Some(dap::Message {
+            error: Some(raijin_dap::Message {
                 id: 1,
                 format: "error".into(),
                 variables: None,
@@ -986,7 +986,7 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
 
     client.on_request::<StepBack, _>(move |_, _| {
         Err(ErrorResponse {
-            error: Some(dap::Message {
+            error: Some(raijin_dap::Message {
                 id: 1,
                 format: "error".into(),
                 variables: None,
@@ -1000,7 +1000,7 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
 
     client.on_request::<Continue, _>(move |_, _| {
         Err(ErrorResponse {
-            error: Some(dap::Message {
+            error: Some(raijin_dap::Message {
                 id: 1,
                 format: "error".into(),
                 variables: None,
@@ -1013,8 +1013,8 @@ async fn test_debug_panel_item_thread_status_reset_on_failure(
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1136,15 +1136,15 @@ async fn test_send_breakpoints_when_editor_has_been_saved(
     client.on_request::<Launch, _>(move |_, _| Ok(()));
 
     client.on_request::<StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: Vec::default(),
             total_frames: None,
         })
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1174,14 +1174,14 @@ async fn test_send_breakpoints_when_editor_has_been_saved(
 
             called_set_breakpoints.store(true, Ordering::SeqCst);
 
-            Ok(dap::SetBreakpointsResponse {
+            Ok(raijin_dap::SetBreakpointsResponse {
                 breakpoints: Vec::default(),
             })
         }
     });
 
     editor.update_in(cx, |editor, window, cx| {
-        editor.move_down(&zed_actions::editor::MoveDown, window, cx);
+        editor.move_down(&raijin_actions::editor::MoveDown, window, cx);
         editor.toggle_breakpoint(&actions::ToggleBreakpoint, window, cx);
     });
 
@@ -1212,14 +1212,14 @@ async fn test_send_breakpoints_when_editor_has_been_saved(
 
             called_set_breakpoints.store(true, Ordering::SeqCst);
 
-            Ok(dap::SetBreakpointsResponse {
+            Ok(raijin_dap::SetBreakpointsResponse {
                 breakpoints: Vec::default(),
             })
         }
     });
 
     editor.update_in(cx, |editor, window, cx| {
-        editor.move_up(&zed_actions::editor::MoveUp, window, cx);
+        editor.move_up(&raijin_actions::editor::MoveUp, window, cx);
         editor.insert("new text\n", window, cx);
     });
 
@@ -1313,18 +1313,18 @@ async fn test_unsetting_breakpoints_on_clear_breakpoint_action(
     });
 
     first_editor.update_in(cx, |editor, window, cx| {
-        editor.move_down(&zed_actions::editor::MoveDown, window, cx);
+        editor.move_down(&raijin_actions::editor::MoveDown, window, cx);
         editor.toggle_breakpoint(&actions::ToggleBreakpoint, window, cx);
-        editor.move_down(&zed_actions::editor::MoveDown, window, cx);
-        editor.move_down(&zed_actions::editor::MoveDown, window, cx);
+        editor.move_down(&raijin_actions::editor::MoveDown, window, cx);
+        editor.move_down(&raijin_actions::editor::MoveDown, window, cx);
         editor.toggle_breakpoint(&actions::ToggleBreakpoint, window, cx);
     });
 
     second_editor.update_in(cx, |editor, window, cx| {
         editor.toggle_breakpoint(&actions::ToggleBreakpoint, window, cx);
-        editor.move_down(&zed_actions::editor::MoveDown, window, cx);
-        editor.move_down(&zed_actions::editor::MoveDown, window, cx);
-        editor.move_down(&zed_actions::editor::MoveDown, window, cx);
+        editor.move_down(&raijin_actions::editor::MoveDown, window, cx);
+        editor.move_down(&raijin_actions::editor::MoveDown, window, cx);
+        editor.move_down(&raijin_actions::editor::MoveDown, window, cx);
         editor.toggle_breakpoint(&actions::ToggleBreakpoint, window, cx);
     });
 
@@ -1354,7 +1354,7 @@ async fn test_unsetting_breakpoints_on_clear_breakpoint_action(
 
             called_set_breakpoints.store(true, Ordering::SeqCst);
 
-            Ok(dap::SetBreakpointsResponse {
+            Ok(raijin_dap::SetBreakpointsResponse {
                 breakpoints: Vec::default(),
             })
         }
@@ -1386,7 +1386,7 @@ async fn test_debug_session_is_shutdown_when_attach_and_launch_request_fails(
     let cx = &mut VisualTestContext::from_window(*workspace, cx);
 
     start_debug_session(&workspace, cx, |client| {
-        client.on_request::<dap::requests::Initialize, _>(|_, _| {
+        client.on_request::<raijin_dap::requests::Initialize, _>(|_, _| {
             Err(ErrorResponse {
                 error: Some(Message {
                     format: "failed to launch".to_string(),
@@ -1454,7 +1454,7 @@ async fn test_we_send_arguments_from_user_config(
             let debug_definition = debug_definition.clone();
             let launch_handler_called = launch_handler_called.clone();
 
-            client.on_request::<dap::requests::Launch, _>(move |_, args| {
+            client.on_request::<raijin_dap::requests::Launch, _>(move |_, args| {
                 launch_handler_called.store(true, Ordering::SeqCst);
 
                 assert_eq!(args.raw, debug_definition.config);
@@ -1538,17 +1538,17 @@ async fn test_active_debug_line_setting(executor: BackgroundExecutor, cx: &mut T
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
         })
     });
 
-    client.on_request::<dap::requests::Scopes, _>(move |_, _| {
-        Ok(dap::ScopesResponse {
+    client.on_request::<raijin_dap::requests::Scopes, _>(move |_, _| {
+        Ok(raijin_dap::ScopesResponse {
             scopes: Vec::default(),
         })
     });
@@ -1556,11 +1556,11 @@ async fn test_active_debug_line_setting(executor: BackgroundExecutor, cx: &mut T
     client.on_request::<StackTrace, _>(move |_, args| {
         assert_eq!(args.thread_id, 1);
 
-        Ok(dap::StackTraceResponse {
-            stack_frames: vec![dap::StackFrame {
+        Ok(raijin_dap::StackTraceResponse {
+            stack_frames: vec![raijin_dap::StackFrame {
                 id: 1,
                 name: "frame 1".into(),
-                source: Some(dap::Source {
+                source: Some(raijin_dap::Source {
                     name: Some("main.rs".into()),
                     path: Some(path!("/project/main.rs").into()),
                     source_reference: None,
@@ -1584,8 +1584,8 @@ async fn test_active_debug_line_setting(executor: BackgroundExecutor, cx: &mut T
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Breakpoint,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Breakpoint,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1609,7 +1609,7 @@ async fn test_active_debug_line_setting(executor: BackgroundExecutor, cx: &mut T
         let point = editor
             .snapshot(window, cx)
             .buffer_snapshot()
-            .summary_for_anchor::<language::Point>(&active_debug_lines.first().unwrap().0.start);
+            .summary_for_anchor::<raijin_language::Point>(&active_debug_lines.first().unwrap().0.start);
 
         assert_eq!(point.row, 1);
     });
@@ -1630,11 +1630,11 @@ async fn test_active_debug_line_setting(executor: BackgroundExecutor, cx: &mut T
             handled_second_stacktrace.store(true, Ordering::SeqCst);
             assert_eq!(args.thread_id, 1);
 
-            Ok(dap::StackTraceResponse {
-                stack_frames: vec![dap::StackFrame {
+            Ok(raijin_dap::StackTraceResponse {
+                stack_frames: vec![raijin_dap::StackFrame {
                     id: 2,
                     name: "frame 2".into(),
-                    source: Some(dap::Source {
+                    source: Some(raijin_dap::Source {
                         name: Some("second.rs".into()),
                         path: Some(path!("/project/second.rs").into()),
                         source_reference: None,
@@ -1659,8 +1659,8 @@ async fn test_active_debug_line_setting(executor: BackgroundExecutor, cx: &mut T
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Breakpoint,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Breakpoint,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1684,7 +1684,7 @@ async fn test_active_debug_line_setting(executor: BackgroundExecutor, cx: &mut T
         let point = editor
             .snapshot(window, cx)
             .buffer_snapshot()
-            .summary_for_anchor::<language::Point>(&active_debug_lines.first().unwrap().0.start);
+            .summary_for_anchor::<raijin_language::Point>(&active_debug_lines.first().unwrap().0.start);
 
         assert_eq!(point.row, 2);
     });
@@ -1704,7 +1704,7 @@ async fn test_active_debug_line_setting(executor: BackgroundExecutor, cx: &mut T
     );
 
     client
-        .fake_event(dap::messages::Events::Continued(dap::ContinuedEvent {
+        .fake_event(raijin_dap::messages::Events::Continued(raijin_dap::ContinuedEvent {
             thread_id: 0,
             all_threads_continued: Some(true),
         }))
@@ -1988,16 +1988,16 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
     client.on_request::<Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
         })
     });
 
-    client.on_request::<dap::requests::Scopes, _>(move |_, _| {
-        Ok(dap::ScopesResponse {
+    client.on_request::<raijin_dap::requests::Scopes, _>(move |_, _| {
+        Ok(raijin_dap::ScopesResponse {
             scopes: Vec::default(),
         })
     });
@@ -2005,11 +2005,11 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     client.on_request::<StackTrace, _>(move |_, args| {
         assert_eq!(args.thread_id, 1);
 
-        Ok(dap::StackTraceResponse {
-            stack_frames: vec![dap::StackFrame {
+        Ok(raijin_dap::StackTraceResponse {
+            stack_frames: vec![raijin_dap::StackFrame {
                 id: 1,
                 name: "frame 1".into(),
-                source: Some(dap::Source {
+                source: Some(raijin_dap::Source {
                     name: Some("main.rs".into()),
                     path: Some(path!("/project/main.rs").into()),
                     source_reference: None,
@@ -2033,8 +2033,8 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Breakpoint,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Breakpoint,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -2112,11 +2112,11 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     client.on_request::<StackTrace, _>(move |_, args| {
         assert_eq!(args.thread_id, 1);
 
-        Ok(dap::StackTraceResponse {
-            stack_frames: vec![dap::StackFrame {
+        Ok(raijin_dap::StackTraceResponse {
+            stack_frames: vec![raijin_dap::StackFrame {
                 id: 2,
                 name: "frame 2".into(),
-                source: Some(dap::Source {
+                source: Some(raijin_dap::Source {
                     name: Some("second.rs".into()),
                     path: Some(path!("/project/second.rs").into()),
                     source_reference: None,
@@ -2140,8 +2140,8 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Breakpoint,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Breakpoint,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -2245,11 +2245,11 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     client.on_request::<StackTrace, _>(move |_, args| {
         assert_eq!(args.thread_id, 1);
 
-        Ok(dap::StackTraceResponse {
-            stack_frames: vec![dap::StackFrame {
+        Ok(raijin_dap::StackTraceResponse {
+            stack_frames: vec![raijin_dap::StackFrame {
                 id: 3,
                 name: "frame 3".into(),
-                source: Some(dap::Source {
+                source: Some(raijin_dap::Source {
                     name: Some("main.rs".into()),
                     path: Some(path!("/project/main.rs").into()),
                     source_reference: None,
@@ -2273,8 +2273,8 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Breakpoint,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Breakpoint,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -2391,7 +2391,7 @@ async fn test_adapter_shutdown_with_child_sessions_on_app_quit(
     parent_client
         .on_response::<StartDebugging, _>(move |_| {})
         .await;
-    let _subscription = project::debugger::test::intercept_debug_sessions(cx, |_| {});
+    let _subscription = raijin_project::debugger::test::intercept_debug_sessions(cx, |_| {});
 
     parent_client
         .fake_reverse_request::<StartDebugging>(StartDebuggingRequestArguments {
@@ -2504,8 +2504,8 @@ async fn test_restart_request_is_not_sent_more_than_once_until_response(
     let cx = &mut VisualTestContext::from_window(*workspace, cx);
 
     let session = start_debug_session(&workspace, cx, move |client| {
-        client.on_request::<dap::requests::Initialize, _>(move |_, _| {
-            Ok(dap::Capabilities {
+        client.on_request::<raijin_dap::requests::Initialize, _>(move |_, _| {
+            Ok(raijin_dap::Capabilities {
                 supports_restart_request: Some(true),
                 ..Default::default()
             })
@@ -2517,7 +2517,7 @@ async fn test_restart_request_is_not_sent_more_than_once_until_response(
 
     let restart_count = Arc::new(AtomicUsize::new(0));
 
-    client.on_request::<dap::requests::Restart, _>({
+    client.on_request::<raijin_dap::requests::Restart, _>({
         let restart_count = restart_count.clone();
         move |_, _| {
             restart_count.fetch_add(1, Ordering::SeqCst);

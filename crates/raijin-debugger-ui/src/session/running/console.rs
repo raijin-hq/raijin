@@ -12,7 +12,7 @@ use raijin_editor::{
 };
 use inazuma_fuzzy::StringMatchCandidate;
 use inazuma::{
-    Action as _, AppContext, Context, Corner, Entity, FocusHandle, Focusable, HighlightStyle, Hsla,
+    Action as _, AppContext, Context, Corner, Entity, FocusHandle, Focusable, HighlightStyle, Oklch,
     Render, Subscription, Task, TextStyle, WeakEntity, actions,
 };
 use raijin_language::{Anchor, Buffer, CharScopeContext, CodeLabel, TextBufferSnapshot, ToOffset};
@@ -68,7 +68,7 @@ impl Console {
                 show_active_line_background: true,
                 sizing_behavior: SizingBehavior::ExcludeOverscrollMargin,
             });
-            editor.move_to_end(&editor::actions::MoveToEnd, window, cx);
+            editor.move_to_end(&raijin_editor::actions::MoveToEnd, window, cx);
             editor.set_read_only(true);
             editor.disable_scrollbars_and_minimap(window, cx);
             editor.set_show_gutter(false, cx);
@@ -84,7 +84,7 @@ impl Console {
             editor.set_show_indent_guides(false, cx);
             editor.set_show_edit_predictions(Some(false), window, cx);
             editor.set_use_modal_editing(false);
-            editor.set_soft_wrap_mode(language::language_settings::SoftWrap::EditorWidth, cx);
+            editor.set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::EditorWidth, cx);
             editor
         });
         let focus_handle = cx.focus_handle();
@@ -123,7 +123,7 @@ impl Console {
             focus_handle,
             history: SearchHistory::new(
                 None,
-                project::search_history::QueryInsertionBehavior::ReplacePreviousIfContains,
+                raijin_project::search_history::QueryInsertionBehavior::ReplacePreviousIfContains,
             ),
             cursor: Default::default(),
         }
@@ -219,7 +219,7 @@ impl Console {
                     .await;
                 console.update_in(cx, |console, window, cx| {
                     console.set_read_only(false);
-                    console.move_to_end(&editor::actions::MoveToEnd, window, cx);
+                    console.move_to_end(&raijin_editor::actions::MoveToEnd, window, cx);
                     console.insert(&output, window, cx);
                     console.set_read_only(true);
 
@@ -356,9 +356,9 @@ impl Console {
     ) -> impl IntoElement {
         PopoverMenu::new(id.into())
             .trigger(
-                ui::ButtonLike::new_rounded_right("console-confirm-split-button-right")
-                    .layer(ui::ElevationIndex::ModalSurface)
-                    .size(ui::ButtonSize::None)
+                raijin_ui::ButtonLike::new_rounded_right("console-confirm-split-button-right")
+                    .layer(raijin_ui::ElevationIndex::ModalSurface)
+                    .size(raijin_ui::ButtonSize::None)
                     .child(
                         div()
                             .px_1()
@@ -482,14 +482,14 @@ impl Render for Console {
                         .bg(cx.theme().colors().editor.background)
                         .child(self.render_query_bar(cx))
                         .child(SplitButton::new(
-                            ui::ButtonLike::new_rounded_all(ElementId::Name(
+                            raijin_ui::ButtonLike::new_rounded_all(ElementId::Name(
                                 "split-button-left-confirm-button".into(),
                             ))
                             .on_click(move |_, window, cx| {
                                 window.dispatch_action(Box::new(Confirm), cx)
                             })
-                            .layer(ui::ElevationIndex::ModalSurface)
-                            .size(ui::ButtonSize::Compact)
+                            .layer(raijin_ui::ElevationIndex::ModalSurface)
+                            .size(raijin_ui::ButtonSize::Compact)
                             .child(Label::new("Evaluate"))
                             .tooltip({
                                 let query_focus_handle = query_focus_handle.clone();
@@ -528,8 +528,8 @@ impl CompletionProvider for ConsoleQueryBarCompletionProvider {
         &self,
         _excerpt_id: ExcerptId,
         buffer: &Entity<Buffer>,
-        buffer_position: language::Anchor,
-        _trigger: editor::CompletionContext,
+        buffer_position: raijin_language::Anchor,
+        _trigger: raijin_editor::CompletionContext,
         _window: &mut Window,
         cx: &mut Context<Editor>,
     ) -> Task<Result<Vec<CompletionResponse>>> {
@@ -555,7 +555,7 @@ impl CompletionProvider for ConsoleQueryBarCompletionProvider {
     fn is_completion_trigger(
         &self,
         buffer: &Entity<Buffer>,
-        position: language::Anchor,
+        position: raijin_language::Anchor,
         text: &str,
         trigger_in_words: bool,
         cx: &mut Context<Editor>,
@@ -597,7 +597,7 @@ impl ConsoleQueryBarCompletionProvider {
         &self,
         console: &Entity<Console>,
         buffer: &Entity<Buffer>,
-        buffer_position: language::Anchor,
+        buffer_position: raijin_language::Anchor,
         cx: &mut Context<Editor>,
     ) -> Task<Result<Vec<CompletionResponse>>> {
         let (variables, string_matches) = console.update(cx, |console, cx| {
@@ -639,7 +639,7 @@ impl ConsoleQueryBarCompletionProvider {
 
         cx.spawn(async move |_, cx| {
             const LIMIT: usize = 10;
-            let matches = fuzzy::match_strings(
+            let matches = inazuma_fuzzy::match_strings(
                 &string_matches,
                 &buffer_text,
                 true,
@@ -655,7 +655,7 @@ impl ConsoleQueryBarCompletionProvider {
                 .filter_map(|string_match| {
                     let variable_value = variables.get(&string_match.string)?;
 
-                    Some(project::Completion {
+                    Some(raijin_project::Completion {
                         replace_range: Self::replace_range_for_completion(
                             &buffer_text,
                             buffer_position,
@@ -671,13 +671,13 @@ impl ConsoleQueryBarCompletionProvider {
                             variable_value.into(),
                         )),
                         confirm: None,
-                        source: project::CompletionSource::Custom,
+                        source: raijin_raijin_project::CompletionSource::Custom,
                         insert_text_mode: None,
                     })
                 })
                 .collect::<Vec<_>>();
 
-            Ok(vec![project::CompletionResponse {
+            Ok(vec![raijin_raijin_project::CompletionResponse {
                 is_incomplete: completions.len() >= LIMIT,
                 display_options: CompletionDisplayOptions::default(),
                 completions,
@@ -737,7 +737,7 @@ impl ConsoleQueryBarCompletionProvider {
         &self,
         console: &Entity<Console>,
         buffer: &Entity<Buffer>,
-        buffer_position: language::Anchor,
+        buffer_position: raijin_language::Anchor,
         cx: &mut Context<Editor>,
     ) -> Task<Result<Vec<CompletionResponse>>> {
         let completion_task = console.update(cx, |console, cx| {
@@ -766,7 +766,7 @@ impl ConsoleQueryBarCompletionProvider {
                         .unwrap_or(&completion.label)
                         .to_owned();
 
-                    project::Completion {
+                    raijin_project::Completion {
                         replace_range: Self::replace_range_for_completion(
                             &buffer_text,
                             buffer_position,
@@ -782,13 +782,13 @@ impl ConsoleQueryBarCompletionProvider {
                         match_start: None,
                         snippet_deduplication_key: None,
                         confirm: None,
-                        source: project::CompletionSource::Dap { sort_text },
+                        source: raijin_raijin_project::CompletionSource::Dap { sort_text },
                         insert_text_mode: None,
                     }
                 })
                 .collect();
 
-            Ok(vec![project::CompletionResponse {
+            Ok(vec![raijin_raijin_project::CompletionResponse {
                 completions,
                 display_options: CompletionDisplayOptions::default(),
                 is_incomplete: false,
@@ -863,8 +863,8 @@ impl ansi::Handler for ConsoleHandler {
     }
 }
 
-fn color_fetcher(color: ansi::Color) -> fn(&Theme) -> Hsla {
-    let color_fetcher: fn(&Theme) -> Hsla = match color {
+fn color_fetcher(color: ansi::Color) -> fn(&Theme) -> Oklch {
+    let color_fetcher: fn(&Theme) -> Oklch = match color {
         // Named and theme defined colors
         ansi::Color::Named(n) => match n {
             ansi::NamedColor::Black => |theme| theme.colors().terminal.ansi.black,

@@ -18,7 +18,7 @@ pub struct ModelSelectorPopover {
 impl ModelSelectorPopover {
     pub(crate) fn new(
         selector: Rc<dyn AgentModelSelector>,
-        agent_server: Rc<dyn agent_servers::AgentServer>,
+        agent_server: Rc<dyn raijin_agent_servers::AgentServer>,
         fs: Arc<dyn Fs>,
         menu_handle: PopoverMenuHandle<ModelSelector>,
         focus_handle: FocusHandle,

@@ -13,13 +13,13 @@ use raijin_git::{
 use raijin_git_ui::{commit_tooltip::CommitAvatar, commit_view::CommitView, git_status_icon};
 use inazuma::{
     AnyElement, App, Bounds, ClickEvent, ClipboardItem, Corner, DefiniteLength, DragMoveEvent,
-    ElementId, Empty, Entity, EventEmitter, FocusHandle, Focusable, Hsla, PathBuilder, Pixels,
+    ElementId, Empty, Entity, EventEmitter, FocusHandle, Focusable, Oklch, PathBuilder, Pixels,
     Point, ScrollStrategy, ScrollWheelEvent, SharedString, Subscription, Task, TextStyleRefinement,
     UniformListScrollHandle, WeakEntity, Window, actions, anchored, deferred, point, prelude::*,
     px, uniform_list,
 };
 use raijin_language::line_diff;
-use inazuma_menu::{Cancel, SelectFirst, SelectLast, SelectNext, SelectPrevious};
+use inazuma_menu::{Cancel, Confirm, SelectFirst, SelectLast, SelectNext, SelectPrevious};
 use raijin_project::{
     Project,
     git_store::{
@@ -46,11 +46,11 @@ use raijin_theme_settings::ThemeSettings;
 use time::{OffsetDateTime, UtcOffset, format_description::BorrowedFormatItem};
 use raijin_ui::{
     ButtonLike, Chip, CommonAnimationExt as _, ContextMenu, DiffStat, Divider, HighlightedLabel,
-    ScrollableHandle, DataTable, TableColumnWidths, TableInteractionState, TableResizeBehavior,
-    Tooltip, WithScrollbar, prelude::*,
+    IconButtonShape, ScrollableHandle, DataTable, TableColumnWidths, TableInteractionState,
+    TableResizeBehavior, Tooltip, WithScrollbar, prelude::*,
 };
 use raijin_workspace::{
-    Workspace,
+    ItemId, Workspace, WorkspaceId, delete_unloaded_items, register_serializable_item,
     item::{Item, ItemEvent, SerializableItem, TabTooltipContent},
 };
 
@@ -729,9 +729,9 @@ impl GraphData {
 }
 
 pub fn init(cx: &mut App) {
-    workspace::register_serializable_item::<GitGraph>(cx);
+    register_serializable_item::<GitGraph>(cx);
 
-    cx.observe_new(|workspace: &mut workspace::Workspace, _, _| {
+    cx.observe_new(|workspace: &mut Workspace, _, _| {
         workspace.register_action_renderer(|div, workspace, _, cx| {
             div.when(
                 workspace.project().read(cx).active_repository(cx).is_some()
@@ -741,7 +741,7 @@ pub fn init(cx: &mut App) {
 
                     div.on_action({
                         let workspace = workspace.clone();
-                        move |_: &git_ui::git_panel::Open, window, cx| {
+                        move |_: &raijin_git_ui::git_panel::Open, window, cx| {
                             workspace
                                 .update(cx, |workspace, cx| {
                                     let existing = workspace.items_of_type::<GitGraph>(cx).next();
@@ -767,7 +767,7 @@ pub fn init(cx: &mut App) {
                         }
                     })
                     .on_action(
-                        move |action: &git_ui::git_panel::OpenAtCommit, window, cx| {
+                        move |action: &raijin_git_ui::git_panel::OpenAtCommit, window, cx| {
                             let sha = action.sha.clone();
                             workspace
                                 .update(cx, |workspace, cx| {
@@ -819,7 +819,7 @@ fn to_row_center(
     bounds.origin.y + to_row as f32 * row_height + row_height / 2.0 - scroll_offset
 }
 
-fn draw_commit_circle(center_x: Pixels, center_y: Pixels, color: Hsla, window: &mut Window) {
+fn draw_commit_circle(center_x: Pixels, center_y: Pixels, color: Oklch, window: &mut Window) {
     let radius = COMMIT_CIRCLE_RADIUS;
 
     let mut builder = PathBuilder::fill();
@@ -964,7 +964,7 @@ impl GitGraph {
         let table_column_widths = cx.new(|cx| TableColumnWidths::new(4, cx));
         let mut row_height = Self::row_height(cx);
 
-        cx.observe_global_in::<settings::SettingsStore>(window, move |this, _window, cx| {
+        cx.observe_global_in::<inazuma_settings_framework::SettingsStore>(window, move |this, _window, cx| {
             let new_row_height = Self::row_height(cx);
             if new_row_height != row_height {
                 this.row_height = new_row_height;
@@ -1109,7 +1109,7 @@ impl GitGraph {
             .and_then(|repo_id| project.repositories(cx).get(&repo_id).cloned())
     }
 
-    fn render_chip(&self, name: &SharedString, accent_color: inazuma::Hsla) -> impl IntoElement {
+    fn render_chip(&self, name: &SharedString, accent_color: Oklch) -> impl IntoElement {
         Chip::new(name.clone())
             .label_size(LabelSize::Small)
             .bg_color(accent_color.opacity(0.1))
@@ -1300,7 +1300,7 @@ impl GitGraph {
         );
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &Confirm, window: &mut Window, cx: &mut Context<Self>) {
         self.open_selected_commit_view(window, cx);
     }
 
@@ -1364,7 +1364,7 @@ impl GitGraph {
         self.search_state.state = QueryState::Confirmed((query, search_task));
     }
 
-    fn confirm_search(&mut self, _: &menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm_search(&mut self, _: &Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         let query = self.search_state.editor.read(cx).text(cx).into();
         self.search(query, cx);
     }
@@ -1560,7 +1560,7 @@ impl GitGraph {
                     .border_1()
                     .border_color(color.border)
                     .rounded_md()
-                    .bg(color.toolbar_background)
+                    .bg(color.toolbar.background)
                     .on_action(cx.listener(Self::confirm_search))
                     .child(self.search_state.editor.clone())
                     .child(SearchOption::CaseSensitive.as_button(
@@ -1576,7 +1576,7 @@ impl GitGraph {
                     .child({
                         let focus_handle = self.focus_handle.clone();
                         IconButton::new("git-graph-search-prev", IconName::ChevronLeft)
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(IconButtonShape::Square)
                             .icon_size(IconSize::Small)
                             .tooltip(move |_, cx| {
                                 Tooltip::for_action_in(
@@ -1599,7 +1599,7 @@ impl GitGraph {
                     .child({
                         let focus_handle = self.focus_handle.clone();
                         IconButton::new("git-graph-search-next", IconName::ChevronRight)
-                            .shape(ui::IconButtonShape::Square)
+                            .shape(IconButtonShape::Square)
                             .icon_size(IconSize::Small)
                             .tooltip(move |_, cx| {
                                 Tooltip::for_action_in(
@@ -2729,12 +2729,12 @@ impl SerializableItem for GitGraph {
     }
 
     fn cleanup(
-        workspace_id: workspace::WorkspaceId,
-        alive_items: Vec<workspace::ItemId>,
+        workspace_id: WorkspaceId,
+        alive_items: Vec<ItemId>,
         _window: &mut Window,
         cx: &mut App,
     ) -> Task<inazuma::Result<()>> {
-        workspace::delete_unloaded_items(
+        delete_unloaded_items(
             alive_items,
             workspace_id,
             "git_graphs",
@@ -2746,8 +2746,8 @@ impl SerializableItem for GitGraph {
     fn deserialize(
         project: Entity<Project>,
         workspace: WeakEntity<Workspace>,
-        workspace_id: workspace::WorkspaceId,
-        item_id: workspace::ItemId,
+        workspace_id: WorkspaceId,
+        item_id: ItemId,
         window: &mut Window,
         cx: &mut App,
     ) -> Task<inazuma::Result<Entity<Self>>> {
@@ -2767,7 +2767,7 @@ impl SerializableItem for GitGraph {
     fn serialize(
         &mut self,
         workspace: &mut Workspace,
-        item_id: workspace::ItemId,
+        item_id: ItemId,
         _closing: bool,
         _window: &mut Window,
         cx: &mut Context<Self>,
@@ -2792,7 +2792,7 @@ mod persistence {
         sqlez::{domain::Domain, thread_safe_connection::ThreadSafeConnection},
         sqlez_macros::sql,
     };
-    use raijin_workspace::WorkspaceDb;
+    use raijin_workspace::{ItemId, WorkspaceDb, WorkspaceId};
 
     pub struct GitGraphsDb(ThreadSafeConnection);
 
@@ -2812,13 +2812,13 @@ mod persistence {
         )]);
     }
 
-    db::static_connection!(GitGraphsDb, [WorkspaceDb]);
+    raijin_db::static_connection!(GitGraphsDb, [WorkspaceDb]);
 
     impl GitGraphsDb {
         query! {
             pub async fn save_git_graph(
-                item_id: workspace::ItemId,
-                workspace_id: workspace::WorkspaceId,
+                item_id: ItemId,
+                workspace_id: WorkspaceId,
                 is_open: bool
             ) -> Result<()> {
                 INSERT OR REPLACE INTO git_graphs(item_id, workspace_id, is_open)
@@ -2828,8 +2828,8 @@ mod persistence {
 
         query! {
             pub fn get_git_graph(
-                item_id: workspace::ItemId,
-                workspace_id: workspace::WorkspaceId
+                item_id: ItemId,
+                workspace_id: WorkspaceId
             ) -> Result<bool> {
                 SELECT is_open
                 FROM git_graphs

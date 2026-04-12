@@ -86,7 +86,7 @@ impl AgentNotification {
 
 impl Render for AgentNotification {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let ui_font = theme_settings::setup_ui_font(window, cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(window, cx);
         let line_height = window.line_height();
 
         let bg = cx.theme().colors().elevated_surface;
@@ -180,7 +180,7 @@ impl Render for AgentNotification {
                     .items_center()
                     .child(
                         Button::new("open", "View Panel")
-                            .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                            .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                             .full_width()
                             .on_click({
                                 cx.listener(move |this, _event, _, cx| {

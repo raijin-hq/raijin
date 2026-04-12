@@ -1,5 +1,5 @@
 use crate::{CycleModeSelector, ManageProfiles, ToggleProfileSelector};
-use raijin_agent_settings::{
+use raijin_raijin_agent_settings::{
     AgentProfile, AgentProfileId, AgentSettings, AvailableProfiles, builtin_profiles,
 };
 use raijin_fs::Fs;
@@ -525,7 +525,7 @@ impl PickerDelegate for ProfilePickerDelegate {
 
                     provider.set_profile(profile_id.clone(), cx);
 
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "agent_profile_switched",
                         profile_id = profile_id.as_str(),
                         source = "picker"
@@ -630,8 +630,8 @@ impl PickerDelegate for ProfilePickerDelegate {
 
         let settings = AgentSettings::get_global(cx);
         let side = match settings.dock {
-            settings::DockPosition::Left => DocumentationSide::Right,
-            settings::DockPosition::Bottom | settings::DockPosition::Right => {
+            inazuma_settings_framework::DockPosition::Left => DocumentationSide::Right,
+            inazuma_settings_framework::DockPosition::Bottom | inazuma_settings_framework::DockPosition::Right => {
                 DocumentationSide::Left
             }
         };

@@ -8,8 +8,8 @@ use std::{ops::Range, rc::Rc, sync::Arc};
 
 use raijin_agent::ContextServerRegistry;
 use anyhow::Result;
-use cloud_api_types::Plan;
-use inazuma_collections::HashMap;
+use raijin_cloud_api_types::Plan;
+use inazuma_inazuma_collections::HashMap;
 use raijin_context_server::ContextServerId;
 use raijin_editor::{Editor, MultiBufferOffset, SelectionEffects, scroll::Autoscroll};
 use raijin_extension::ExtensionManifest;
@@ -84,14 +84,14 @@ impl AgentConfiguration {
             cx.subscribe_in(
                 &LanguageModelRegistry::global(cx),
                 window,
-                |this, _, event: &language_model::Event, window, cx| match event {
-                    language_model::Event::AddedProvider(provider_id) => {
+                |this, _, event: &raijin_language_model::Event, window, cx| match event {
+                    raijin_language_model::Event::AddedProvider(provider_id) => {
                         let provider = LanguageModelRegistry::read_global(cx).provider(provider_id);
                         if let Some(provider) = provider {
                             this.add_provider_configuration_view(&provider, window, cx);
                         }
                     }
-                    language_model::Event::RemovedProvider(provider_id) => {
+                    raijin_language_model::Event::RemovedProvider(provider_id) => {
                         this.remove_provider_configuration_view(provider_id);
                     }
                     _ => {}
@@ -140,7 +140,7 @@ impl AgentConfiguration {
         cx: &mut Context<Self>,
     ) {
         let configuration_view = provider.configuration_view(
-            language_model::ConfigurationViewTargetAgent::ZedAgent,
+            raijin_language_model::ConfigurationViewTargetAgent::ZedAgent,
             window,
             cx,
         );
@@ -963,7 +963,7 @@ impl AgentConfiguration {
                                     .context_servers
                                     .entry(context_server_id.0)
                                     .or_insert_with(|| {
-                                        settings::ContextServerSettingsContent::Extension {
+                                        inazuma_settings_framework::ContextServerSettingsContent::Extension {
                                             enabled: is_enabled,
                                             remote: false,
                                             settings: serde_json::json!({}),
@@ -1156,8 +1156,8 @@ impl AgentConfiguration {
             .on_click(cx.listener({
                 let agent = agent.clone();
                 move |this, _, _window, cx| {
-                    let server: Rc<dyn agent_servers::AgentServer> =
-                        Rc::new(agent_servers::CustomAgentServer::new(agent.id()));
+                    let server: Rc<dyn raijin_agent_servers::AgentServer> =
+                        Rc::new(raijin_agent_servers::CustomAgentServer::new(agent.id()));
                     this.agent_connection_store.update(cx, |store, cx| {
                         store.restart_connection(agent.clone(), server, cx);
                     });
@@ -1205,7 +1205,7 @@ impl AgentConfiguration {
                             if let Some(entry) = agent_servers.get(agent_name.0.as_ref())
                                 && matches!(
                                     entry,
-                                    settings::CustomAgentServerSettings::Registry { .. }
+                                    inazuma_settings_framework::CustomAgentServerSettings::Registry { .. }
                                 )
                             {
                                 agent_servers.remove(agent_name.0.as_ref());
@@ -1233,7 +1233,7 @@ impl AgentConfiguration {
                             if let Some(entry) = agent_servers.get(agent_name.0.as_ref())
                                 && matches!(
                                     entry,
-                                    settings::CustomAgentServerSettings::Custom { .. }
+                                    inazuma_settings_framework::CustomAgentServerSettings::Custom { .. }
                                 )
                             {
                                 agent_servers.remove(agent_name.0.as_ref());
@@ -1376,8 +1376,8 @@ async fn open_new_agent_servers_entry_in_settings_editor(
 ) -> Result<()> {
     let settings_editor = workspace
         .update_in(cx, |_, window, cx| {
-            create_and_open_local_file(paths::settings_file(), window, cx, || {
-                settings::initial_user_settings_content().as_ref().into()
+            create_and_open_local_file(raijin_paths::settings_file(), window, cx, || {
+                inazuma_settings_framework::initial_user_settings_content().as_ref().into()
             })
         })?
         .await?
@@ -1411,7 +1411,7 @@ async fn open_new_agent_servers_entry_in_settings_editor(
                     unique_server_name = Some(SharedString::from(server_name.clone()));
                     settings.agent_servers.get_or_insert_default().insert(
                         server_name,
-                        settings::CustomAgentServerSettings::Custom {
+                        inazuma_settings_framework::CustomAgentServerSettings::Custom {
                             path: "path_to_executable".into(),
                             args: vec![],
                             env: HashMap::default(),
@@ -1468,7 +1468,7 @@ async fn open_new_agent_servers_entry_in_settings_editor(
 fn find_text_in_buffer(
     text: &str,
     start: usize,
-    snapshot: &language::BufferSnapshot,
+    snapshot: &raijin_language::BufferSnapshot,
 ) -> Option<Range<usize>> {
     let chars = text.chars().collect::<Vec<char>>();
 

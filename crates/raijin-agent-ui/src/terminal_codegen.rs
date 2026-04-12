@@ -40,7 +40,7 @@ impl TerminalCodegen {
             return;
         };
 
-        let anthropic_reporter = language_model::AnthropicEventReporter::new(&model, cx);
+        let anthropic_reporter = raijin_language_model::AnthropicEventReporter::new(&model, cx);
         let session_id = self.session_id;
         let model_telemetry_id = model.telemetry_id();
         let model_provider_id = model.provider_id().to_string();
@@ -81,7 +81,7 @@ impl TerminalCodegen {
 
                         let error_message = result.as_ref().err().map(|error| error.to_string());
 
-                        telemetry::event!(
+                        raijin_telemetry::event!(
                             "Assistant Responded",
                             session_id = session_id.to_string(),
                             kind = "inline_terminal",
@@ -94,9 +94,9 @@ impl TerminalCodegen {
                             error_message = error_message,
                         );
 
-                        anthropic_reporter.report(language_model::AnthropicEventData {
-                            completion_type: language_model::AnthropicCompletionType::Terminal,
-                            event: language_model::AnthropicEventType::Response,
+                        anthropic_reporter.report(raijin_language_model::AnthropicEventData {
+                            completion_type: raijin_language_model::AnthropicCompletionType::Terminal,
+                            event: raijin_language_model::AnthropicEventType::Response,
                             language_name: None,
                             message_id,
                         });

@@ -12,10 +12,8 @@ use std::{cmp::Reverse, sync::Arc};
 use raijin_theme::ActiveTheme;
 use raijin_theme_settings::ThemeSettings;
 use inazuma_util::ResultExt;
-use raijin_workspace::{
-    Workspace,
-    ui::{LabelLike, ListItem, ListItemSpacing, prelude::*},
-};
+use raijin_ui::{LabelLike, ListItem, ListItemSpacing, prelude::*};
+use raijin_workspace::Workspace;
 
 pub fn init(cx: &mut App) {
     cx.observe_new(

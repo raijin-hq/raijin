@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 use raijin_client::raijin_urls;
-use inazuma_collections::HashMap;
+use inazuma_inazuma_collections::HashMap;
 use raijin_editor::{Editor, EditorElement, EditorStyle};
 use raijin_fs::Fs;
 use inazuma::{
@@ -229,10 +229,10 @@ impl AgentRegistryPage {
     fn on_query_change(
         &mut self,
         _: Entity<Editor>,
-        event: &editor::EditorEvent,
+        event: &raijin_editor::EditorEvent,
         cx: &mut Context<Self>,
     ) {
-        if let editor::EditorEvent::Edited { .. } = event {
+        if let raijin_editor::EditorEvent::Edited { .. } = event {
             self.filter_registry_agents(cx);
             self.scroll_to_top(cx);
         }
@@ -474,7 +474,7 @@ impl AgentRegistryPage {
 
         if !supports_current_platform {
             return Button::new(button_id, "Unavailable")
-                .style(ButtonStyle::OutlinedGhost)
+                .style(ButtonStyle::OUTLINED_GHOST)
                 .disabled(true);
         }
 
@@ -483,7 +483,7 @@ impl AgentRegistryPage {
                 let fs = <dyn Fs>::global(cx);
                 let agent_id = agent.id().to_string();
                 Button::new(button_id, "Install")
-                    .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                    .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                     .start_icon(
                         Icon::new(IconName::Download)
                             .size(IconSize::Small)
@@ -494,7 +494,7 @@ impl AgentRegistryPage {
                         update_settings_file(fs.clone(), cx, move |settings, _| {
                             let agent_servers = settings.agent_servers.get_or_insert_default();
                             agent_servers.entry(agent_id).or_insert_with(|| {
-                                settings::CustomAgentServerSettings::Registry {
+                                inazuma_settings_framework::CustomAgentServerSettings::Registry {
                                     default_mode: None,
                                     default_model: None,
                                     env: Default::default(),
@@ -510,7 +510,7 @@ impl AgentRegistryPage {
                 let fs = <dyn Fs>::global(cx);
                 let agent_id = agent.id().to_string();
                 Button::new(button_id, "Remove")
-                    .style(ButtonStyle::OutlinedGhost)
+                    .style(ButtonStyle::OUTLINED_GHOST)
                     .on_click(move |_, _, cx| {
                         let agent_id = agent_id.clone();
                         update_settings_file(fs.clone(), cx, move |settings, _| {
@@ -520,7 +520,7 @@ impl AgentRegistryPage {
                             if let Some(entry) = agent_servers.get(agent_id.as_str())
                                 && matches!(
                                     entry,
-                                    settings::CustomAgentServerSettings::Registry { .. }
+                                    inazuma_settings_framework::CustomAgentServerSettings::Registry { .. }
                                 )
                             {
                                 agent_servers.remove(agent_id.as_str());
@@ -529,10 +529,10 @@ impl AgentRegistryPage {
                     })
             }
             RegistryInstallStatus::InstalledCustom => Button::new(button_id, "Installed")
-                .style(ButtonStyle::OutlinedGhost)
+                .style(ButtonStyle::OUTLINED_GHOST)
                 .disabled(true),
             RegistryInstallStatus::InstalledExtension => Button::new(button_id, "Installed")
-                .style(ButtonStyle::OutlinedGhost)
+                .style(ButtonStyle::OUTLINED_GHOST)
                 .disabled(true),
         }
     }
@@ -662,7 +662,7 @@ impl Item for AgentRegistryPage {
         false
     }
 
-    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(workspace::item::ItemEvent)) {
+    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(raijin_workspace::item::ItemEvent)) {
         f(*event)
     }
 }

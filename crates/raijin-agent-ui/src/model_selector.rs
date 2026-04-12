@@ -3,9 +3,9 @@ use std::{cmp::Reverse, rc::Rc, sync::Arc};
 use raijin_acp_thread::{AgentModelIcon, AgentModelInfo, AgentModelList, AgentModelSelector};
 use agent_client_protocol::ModelId;
 use raijin_agent_servers::AgentServer;
-use raijin_agent_settings::AgentSettings;
+use raijin_raijin_agent_settings::AgentSettings;
 use anyhow::Result;
-use inazuma_collections::{HashSet, IndexMap};
+use inazuma_inazuma_collections::{HashSet, IndexMap};
 use raijin_fs::Fs;
 use futures::FutureExt;
 use inazuma_fuzzy::{StringMatchCandidate, match_strings};
@@ -263,7 +263,7 @@ impl PickerDelegate for ModelPickerDelegate {
                         })
                     })
                     .unwrap_or(0);
-                this.set_selected_index(new_index, Some(picker::Direction::Down), true, window, cx);
+                this.set_selected_index(new_index, Some(inazuma_picker::Direction::Down), true, window, cx);
                 cx.notify();
             })
             .ok();
@@ -378,7 +378,7 @@ impl PickerDelegate for ModelPickerDelegate {
         &self,
         _window: &mut Window,
         cx: &mut Context<Picker<Self>>,
-    ) -> Option<ui::DocumentationAside> {
+    ) -> Option<raijin_ui::DocumentationAside> {
         self.selected_description
             .as_ref()
             .map(|(_, description, is_default)| {
@@ -387,8 +387,8 @@ impl PickerDelegate for ModelPickerDelegate {
 
                 let settings = AgentSettings::get_global(cx);
                 let side = match settings.dock {
-                    settings::DockPosition::Left => DocumentationSide::Right,
-                    settings::DockPosition::Bottom | settings::DockPosition::Right => {
+                    inazuma_settings_framework::DockPosition::Left => DocumentationSide::Right,
+                    inazuma_settings_framework::DockPosition::Bottom | inazuma_settings_framework::DockPosition::Right => {
                         DocumentationSide::Left
                     }
                 };
@@ -542,10 +542,10 @@ mod tests {
         AgentModelList::Grouped(IndexMap::from_iter(grouped_models.into_iter().map(
             |(group, models)| {
                 (
-                    acp_thread::AgentModelGroupName(group.to_string().into()),
+                    raijin_acp_thread::AgentModelGroupName(group.to_string().into()),
                     models
                         .into_iter()
-                        .map(|model| acp_thread::AgentModelInfo {
+                        .map(|model| raijin_acp_thread::AgentModelInfo {
                             id: acp::ModelId::new(model.to_string()),
                             name: model.to_string().into(),
                             description: None,
@@ -760,7 +760,7 @@ mod tests {
     #[inazuma::test]
     fn test_flat_model_list_with_favorites(_cx: &mut TestAppContext) {
         let models = AgentModelList::Flat(vec![
-            acp_thread::AgentModelInfo {
+            raijin_acp_thread::AgentModelInfo {
                 id: acp::ModelId::new("zed/claude".to_string()),
                 name: "Claude".into(),
                 description: None,
@@ -768,7 +768,7 @@ mod tests {
                 is_latest: false,
                 cost: None,
             },
-            acp_thread::AgentModelInfo {
+            raijin_acp_thread::AgentModelInfo {
                 id: acp::ModelId::new("zed/gemini".to_string()),
                 name: "Gemini".into(),
                 description: None,
@@ -810,7 +810,7 @@ mod tests {
     #[inazuma::test]
     fn test_is_favorite_flag_set_correctly_in_entries(_cx: &mut TestAppContext) {
         let models = AgentModelList::Flat(vec![
-            acp_thread::AgentModelInfo {
+            raijin_acp_thread::AgentModelInfo {
                 id: acp::ModelId::new("favorite-model".to_string()),
                 name: "Favorite".into(),
                 description: None,
@@ -818,7 +818,7 @@ mod tests {
                 is_latest: false,
                 cost: None,
             },
-            acp_thread::AgentModelInfo {
+            raijin_acp_thread::AgentModelInfo {
                 id: acp::ModelId::new("regular-model".to_string()),
                 name: "Regular".into(),
                 description: None,

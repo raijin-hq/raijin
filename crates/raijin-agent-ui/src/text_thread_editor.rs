@@ -1,13 +1,13 @@
 use crate::{
     language_model_selector::{LanguageModelSelector, language_model_selector},
     mention_set::load_external_image_from_path,
-    ui::ModelSelectorTooltip,
+    raijin_ui::ModelSelectorTooltip,
 };
 use anyhow::Result;
 use raijin_assistant_slash_command::{SlashCommand, SlashCommandOutputSection, SlashCommandWorkingSet};
-use assistant_slash_commands::{DefaultSlashCommand, FileSlashCommand, selections_creases};
+use raijin_assistant_slash_commands::{DefaultSlashCommand, FileSlashCommand, selections_creases};
 use raijin_client::{proto, raijin_urls};
-use inazuma_collections::{BTreeSet, HashMap, HashSet, hash_map};
+use inazuma_inazuma_collections::{BTreeSet, HashMap, HashSet, hash_map};
 use raijin_editor::{
     Anchor, Editor, EditorEvent, MenuEditPredictionsPolicy, MultiBuffer, MultiBufferOffset,
     MultiBufferSnapshot, RowExt, ToOffset as _, ToPoint as _,
@@ -68,7 +68,7 @@ use raijin_workspace::{
 use raijin_workspace::{
     Save, Toast, Workspace,
     item::{self, FollowableItem, Item},
-    notifications::NotificationId,
+    raijin_notifications::NotificationId,
     pane,
     searchable::{SearchEvent, SearchableItem},
 };
@@ -195,12 +195,12 @@ pub struct TextThreadEditor {
     project: Entity<Project>,
     lsp_adapter_delegate: Option<Arc<dyn LspAdapterDelegate>>,
     editor: Entity<Editor>,
-    pending_thought_process: Option<(CreaseId, language::Anchor)>,
+    pending_thought_process: Option<(CreaseId, raijin_language::Anchor)>,
     blocks: HashMap<MessageId, (MessageHeader, CustomBlockId)>,
     image_blocks: HashSet<CustomBlockId>,
     scroll_position: Option<ScrollPosition>,
-    remote_id: Option<workspace::ViewId>,
-    pending_slash_command_creases: HashMap<Range<language::Anchor>, CreaseId>,
+    remote_id: Option<raijin_workspace::ViewId>,
+    pending_slash_command_creases: HashMap<Range<raijin_language::Anchor>, CreaseId>,
     invoked_slash_command_creases: HashMap<InvokedSlashCommandId, CreaseId>,
     _subscriptions: Vec<Subscription>,
     last_error: Option<AssistError>,
@@ -220,7 +220,7 @@ const MAX_TAB_TITLE_LEN: usize = 16;
 
 impl TextThreadEditor {
     pub fn init(cx: &mut App) {
-        workspace::FollowableViewRegistry::register::<TextThreadEditor>(cx);
+        raijin_workspace::FollowableViewRegistry::register::<TextThreadEditor>(cx);
 
         cx.observe_new(
             |workspace: &mut Workspace, _window, _cx: &mut Context<Workspace>| {
@@ -408,7 +408,7 @@ impl TextThreadEditor {
         if self.sending_disabled(cx) {
             return;
         }
-        telemetry::event!("Agent Message Sent", agent = "zed-text");
+        raijin_telemetry::event!("Agent Message Sent", agent = "zed-text");
         self.send_to_model(window, cx);
     }
 
@@ -438,7 +438,7 @@ impl TextThreadEditor {
 
     fn cancel(
         &mut self,
-        _: &editor::actions::Cancel,
+        _: &raijin_editor::actions::Cancel,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -568,7 +568,7 @@ impl TextThreadEditor {
 
     pub fn run_command(
         &mut self,
-        command_range: Range<language::Anchor>,
+        command_range: Range<raijin_language::Anchor>,
         name: &str,
         arguments: &[String],
         ensure_trailing_newline: bool,
@@ -862,7 +862,7 @@ impl TextThreadEditor {
         &mut self,
         sections: impl IntoIterator<
             Item = (
-                ThoughtProcessOutputSection<language::Anchor>,
+                ThoughtProcessOutputSection<raijin_language::Anchor>,
                 ThoughtProcessStatus,
             ),
         >,
@@ -913,7 +913,7 @@ impl TextThreadEditor {
 
     fn insert_slash_command_output_sections(
         &mut self,
-        sections: impl IntoIterator<Item = SlashCommandOutputSection<language::Anchor>>,
+        sections: impl IntoIterator<Item = SlashCommandOutputSection<raijin_language::Anchor>>,
         expand_result: bool,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -1031,7 +1031,7 @@ impl TextThreadEditor {
             .items_center()
             .gap_1()
             .font(
-                theme_settings::ThemeSettings::get_global(cx)
+                raijin_theme_settings::ThemeSettings::get_global(cx)
                     .buffer_font
                     .clone(),
             )
@@ -1121,7 +1121,7 @@ impl TextThreadEditor {
                             .gap_2p5()
                             .child(
                                 ButtonLike::new("role")
-                                    .style(ButtonStyle::Filled)
+                                    .style(ButtonStyle::FILLED)
                                     .child(
                                         h_flex()
                                             .items_center()
@@ -1516,9 +1516,9 @@ impl TextThreadEditor {
                     .into_iter()
                     .map(|s| {
                         let (start, end) = if s.is_empty() {
-                            let row = multi_buffer::MultiBufferRow(s.start.row);
-                            let line_start = text::Point::new(s.start.row, 0);
-                            let line_end = text::Point::new(s.start.row, snapshot.line_len(row));
+                            let row = raijin_multi_buffer::MultiBufferRow(s.start.row);
+                            let line_start = inazuma_text::Point::new(s.start.row, 0);
+                            let line_end = inazuma_text::Point::new(s.start.row, snapshot.line_len(row));
                             (line_start, line_end)
                         } else {
                             (s.start, s.end)
@@ -1625,7 +1625,7 @@ impl TextThreadEditor {
         })
     }
 
-    fn copy(&mut self, _: &editor::actions::Copy, _window: &mut Window, cx: &mut Context<Self>) {
+    fn copy(&mut self, _: &raijin_editor::actions::Copy, _window: &mut Window, cx: &mut Context<Self>) {
         if self.editor.read(cx).selections.count() == 1 {
             let (copied_text, metadata, _) = self.get_clipboard_contents(cx);
             cx.write_to_clipboard(ClipboardItem::new_string_with_json_metadata(
@@ -1639,7 +1639,7 @@ impl TextThreadEditor {
         cx.propagate();
     }
 
-    fn cut(&mut self, _: &editor::actions::Cut, window: &mut Window, cx: &mut Context<Self>) {
+    fn cut(&mut self, _: &raijin_editor::actions::Cut, window: &mut Window, cx: &mut Context<Self>) {
         if self.editor.read(cx).selections.count() == 1 {
             let (copied_text, metadata, selections) = self.get_clipboard_contents(cx);
 
@@ -1669,7 +1669,7 @@ impl TextThreadEditor {
     ) -> (
         String,
         CopyMetadata,
-        Vec<text::Selection<MultiBufferOffset>>,
+        Vec<inazuma_text::Selection<MultiBufferOffset>>,
     ) {
         let (mut selection, creases) = self.editor.update(cx, |editor, cx| {
             let mut selection = editor
@@ -1759,7 +1759,7 @@ impl TextThreadEditor {
 
     fn paste(
         &mut self,
-        action: &editor::actions::Paste,
+        action: &raijin_editor::actions::Paste,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1769,7 +1769,7 @@ impl TextThreadEditor {
         let editor_clipboard_selections = cx.read_from_clipboard().and_then(|item| {
             item.entries().iter().find_map(|entry| match entry {
                 ClipboardEntry::String(text) => {
-                    text.metadata_json::<Vec<editor::ClipboardSelection>>()
+                    text.metadata_json::<Vec<raijin_editor::ClipboardSelection>>()
                 }
                 _ => None,
             })
@@ -1780,7 +1780,7 @@ impl TextThreadEditor {
         // 2. Have an associated file path
         // 3. Span multiple lines (not single-line selections)
         // 4. Belong to a file that exists in the current project
-        let should_insert_creases = util::maybe!({
+        let should_insert_creases = inazuma_util::maybe!({
             let selections = editor_clipboard_selections.as_ref()?;
             if selections.len() > 1 {
                 return Some(false);
@@ -1827,7 +1827,7 @@ impl TextThreadEditor {
                             {
                                 let selected_text =
                                     &text[current_offset..current_offset + selection.len];
-                                let fence = assistant_slash_commands::codeblock_fence_for_path(
+                                let fence = raijin_assistant_slash_commands::codeblock_fence_for_path(
                                     file_path.to_str(),
                                     Some(line_range.clone()),
                                 );
@@ -1851,7 +1851,7 @@ impl TextThreadEditor {
 
                                 editor.insert("\n", window, cx);
 
-                                let crease_text = acp_thread::selection_name(
+                                let crease_text = raijin_acp_thread::selection_name(
                                     Some(file_path.as_ref()),
                                     &line_range,
                                 );
@@ -2018,7 +2018,7 @@ impl TextThreadEditor {
 
     fn paste_raw(&mut self, _: &PasteRaw, window: &mut Window, cx: &mut Context<Self>) {
         self.editor.update(cx, |editor, cx| {
-            editor.paste(&editor::actions::Paste, window, cx);
+            editor.paste(&raijin_editor::actions::Paste, window, cx);
         });
     }
 
@@ -2155,7 +2155,7 @@ impl TextThreadEditor {
 
         let (style, tooltip) = match token_state(&self.text_thread, cx) {
             Some(TokenState::NoTokensLeft { .. }) => (
-                ButtonStyle::Tinted(TintColor::Error),
+                ButtonStyle::tinted(TintColor::Error),
                 Some(Tooltip::text("Token limit reached")(window, cx)),
             ),
             Some(TokenState::HasMoreTokens {
@@ -2164,17 +2164,17 @@ impl TextThreadEditor {
             }) => {
                 let (style, tooltip) = if over_warn_threshold {
                     (
-                        ButtonStyle::Tinted(TintColor::Warning),
+                        ButtonStyle::tinted(TintColor::Warning),
                         Some(Tooltip::text("Token limit is close to exhaustion")(
                             window, cx,
                         )),
                     )
                 } else {
-                    (ButtonStyle::Filled, None)
+                    (ButtonStyle::FILLED, None)
                 };
                 (style, tooltip)
             }
-            None => (ButtonStyle::Filled, None),
+            None => (ButtonStyle::FILLED, None),
         };
 
         Button::new("send_button", "Send")
@@ -2220,7 +2220,7 @@ impl TextThreadEditor {
                 .icon_size(IconSize::Small)
                 .icon_color(Color::Muted)
                 .selected_icon_color(Color::Accent)
-                .selected_style(ButtonStyle::Filled),
+                .selected_style(ButtonStyle::FILLED),
             move |_window, cx| {
                 Tooltip::with_meta("Add Context", None, "Type / to insert via keyboard", cx)
             },
@@ -2461,7 +2461,7 @@ fn render_thought_process_fold_icon_button(
                     ),
                 ),
             ThoughtProcessStatus::Completed => button
-                .style(ButtonStyle::Filled)
+                .style(ButtonStyle::FILLED)
                 .child(Icon::new(IconName::ToolThink).size(IconSize::Small))
                 .child(Label::new("Thought Process").single_line()),
         };
@@ -2490,7 +2490,7 @@ fn render_fold_icon_button(
     Arc::new(move |fold_id, fold_range, _cx| {
         let editor = editor.clone();
         ButtonLike::new(fold_id)
-            .style(ButtonStyle::Filled)
+            .style(ButtonStyle::FILLED)
             .layer(ElevationIndex::ElevatedSurface)
             .child(Icon::from_path(icon_path.clone()))
             .child(Label::new(label.clone()).single_line())
@@ -2550,7 +2550,7 @@ fn quote_selection_fold_placeholder(title: String, editor: WeakEntity<Editor>) -
             move |fold_id, fold_range, _cx| {
                 let editor = editor.clone();
                 ButtonLike::new(fold_id)
-                    .style(ButtonStyle::Filled)
+                    .style(ButtonStyle::FILLED)
                     .layer(ElevationIndex::ElevatedSurface)
                     .child(Icon::new(IconName::TextSnippet))
                     .child(Label::new(title.clone()).single_line())
@@ -2593,11 +2593,11 @@ fn render_pending_slash_command_gutter_decoration(
 ) -> AnyElement {
     let mut icon = IconButton::new(
         ("slash-command-gutter-decoration", row.0),
-        ui::IconName::TriangleRight,
+        raijin_ui::IconName::TriangleRight,
     )
     .on_click(move |_e, window, cx| confirm_command(window, cx))
-    .icon_size(ui::IconSize::Small)
-    .size(ui::ButtonSize::None);
+    .icon_size(raijin_ui::IconSize::Small)
+    .size(raijin_ui::ButtonSize::None);
 
     match status {
         PendingSlashCommandStatus::Idle => {
@@ -2696,10 +2696,10 @@ impl Focusable for TextThreadEditor {
 }
 
 impl Item for TextThreadEditor {
-    type Event = editor::EditorEvent;
+    type Event = raijin_editor::EditorEvent;
 
     fn tab_content_text(&self, _detail: usize, cx: &App) -> SharedString {
-        util::truncate_and_trailoff(&self.title(cx), MAX_TAB_TITLE_LEN).into()
+        inazuma_util::truncate_and_trailoff(&self.title(cx), MAX_TAB_TITLE_LEN).into()
     }
 
     fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(item::ItemEvent)) {
@@ -2827,7 +2827,7 @@ impl SearchableItem for TextThreadEditor {
     fn replace(
         &mut self,
         identifier: &Self::Match,
-        query: &project::search::SearchQuery,
+        query: &raijin_project::search::SearchQuery,
         token: SearchToken,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -2839,7 +2839,7 @@ impl SearchableItem for TextThreadEditor {
 
     fn find_matches(
         &mut self,
-        query: Arc<project::search::SearchQuery>,
+        query: Arc<raijin_project::search::SearchQuery>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Task<Vec<Self::Match>> {
@@ -2862,19 +2862,19 @@ impl SearchableItem for TextThreadEditor {
 }
 
 impl FollowableItem for TextThreadEditor {
-    fn remote_id(&self) -> Option<workspace::ViewId> {
+    fn remote_id(&self) -> Option<raijin_workspace::ViewId> {
         self.remote_id
     }
 
-    fn to_state_proto(&self, window: &mut Window, cx: &mut App) -> Option<proto::view::Variant> {
+    fn to_state_proto(&self, window: &mut Window, cx: &mut App) -> Option<raijin_proto::view::Variant> {
         let context_id = self.text_thread.read(cx).id().to_proto();
         let editor_proto = self
             .editor
             .update(cx, |editor, cx| editor.to_state_proto(window, cx));
-        Some(proto::view::Variant::ContextEditor(
-            proto::view::ContextEditor {
+        Some(raijin_proto::view::Variant::ContextEditor(
+            raijin_proto::view::ContextEditor {
                 context_id,
-                editor: if let Some(proto::view::Variant::Editor(proto)) = editor_proto {
+                editor: if let Some(raijin_proto::view::Variant::Editor(proto)) = editor_proto {
                     Some(proto)
                 } else {
                     None
@@ -2885,15 +2885,15 @@ impl FollowableItem for TextThreadEditor {
 
     fn from_state_proto(
         workspace: Entity<Workspace>,
-        id: workspace::ViewId,
-        state: &mut Option<proto::view::Variant>,
+        id: raijin_workspace::ViewId,
+        state: &mut Option<raijin_proto::view::Variant>,
         window: &mut Window,
         cx: &mut App,
     ) -> Option<Task<Result<Entity<Self>>>> {
-        let proto::view::Variant::ContextEditor(_) = state.as_ref()? else {
+        let raijin_proto::view::Variant::ContextEditor(_) = state.as_ref()? else {
             return None;
         };
-        let Some(proto::view::Variant::ContextEditor(state)) = state.take() else {
+        let Some(raijin_proto::view::Variant::ContextEditor(state)) = state.take() else {
             unreachable!()
         };
 
@@ -2915,7 +2915,7 @@ impl FollowableItem for TextThreadEditor {
                     text_thread_editor.editor.update(cx, |editor, cx| {
                         editor.apply_update_proto(
                             &project,
-                            proto::update_view::Variant::Editor(proto::update_view::Editor {
+                            raijin_proto::update_view::Variant::Editor(raijin_proto::update_view::Editor {
                                 selections: editor_state.selections,
                                 pending_selection: editor_state.pending_selection,
                                 scroll_top_anchor: editor_state.scroll_top_anchor,
@@ -2940,7 +2940,7 @@ impl FollowableItem for TextThreadEditor {
     fn add_event_to_update_proto(
         &self,
         event: &Self::Event,
-        update: &mut Option<proto::update_view::Variant>,
+        update: &mut Option<raijin_proto::update_view::Variant>,
         window: &mut Window,
         cx: &mut App,
     ) -> bool {
@@ -2952,7 +2952,7 @@ impl FollowableItem for TextThreadEditor {
     fn apply_update_proto(
         &mut self,
         project: &Entity<Project>,
-        message: proto::update_view::Variant,
+        message: raijin_proto::update_view::Variant,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Task<Result<()>> {
@@ -3367,7 +3367,7 @@ mod tests {
         MultiBufferOffset(range.start)..MultiBufferOffset(range.end)
     }
 
-    fn assert_copy_paste_text_thread_editor<T: editor::ToOffset>(
+    fn assert_copy_paste_text_thread_editor<T: raijin_editor::ToOffset>(
         text_thread_editor: &Entity<TextThreadEditor>,
         range: Range<T>,
         expected_text: &str,
@@ -3439,12 +3439,12 @@ mod tests {
 
     fn init_test(cx: &mut App) {
         let settings_store = SettingsStore::test(cx);
-        prompt_store::init(cx);
-        editor::init(cx);
+        raijin_prompt_store::init(cx);
+        raijin_editor::init(cx);
         LanguageModelRegistry::test(cx);
         cx.set_global(settings_store);
 
-        theme_settings::init(theme::LoadThemes::JustBase, cx);
+        raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
     }
 
     #[inazuma::test]

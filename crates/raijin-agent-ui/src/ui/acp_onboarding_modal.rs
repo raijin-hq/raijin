@@ -10,10 +10,10 @@ use crate::agent_panel::{AgentPanel, AgentType};
 
 macro_rules! acp_onboarding_event {
     ($name:expr) => {
-        telemetry::event!($name, source = "ACP Onboarding");
+        raijin_telemetry::event!($name, source = "ACP Onboarding");
     };
     ($name:expr, $($key:ident $(= $value:expr)?),+ $(,)?) => {
-        telemetry::event!($name, source = "ACP Onboarding", $($key $(= $value)?),+);
+        raijin_telemetry::event!($name, source = "ACP Onboarding", $($key $(= $value)?),+);
     };
 }
 
@@ -60,7 +60,7 @@ impl AcpOnboardingModal {
         acp_onboarding_event!("Open Agent Registry Clicked");
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(DismissEvent);
     }
 }
@@ -125,7 +125,7 @@ impl Render for AcpOnboardingModal {
             .child(
                 div().absolute().inset_0().w(px(515.)).h(px(126.)).child(
                     Vector::new(VectorName::AcpGrid, rems_from_px(515.), rems_from_px(126.))
-                        .color(ui::Color::Custom(cx.theme().colors().text.opacity(0.02))),
+                        .color(raijin_ui::Color::Custom(cx.theme().colors().text.opacity(0.02))),
                 ),
             )
             .child(div().absolute().inset_0().size_full().bg(linear_gradient(
@@ -152,7 +152,7 @@ impl Render for AcpOnboardingModal {
                     rems_from_px(257.),
                     rems_from_px(47.),
                 )
-                .color(ui::Color::Custom(cx.theme().colors().text.opacity(0.8))),
+                .color(raijin_ui::Color::Custom(cx.theme().colors().text.opacity(0.8))),
             )
             .child(
                 v_flex()
@@ -193,7 +193,7 @@ impl Render for AcpOnboardingModal {
         let copy = "Bring the agent of your choice to Zed via our new Agent Client Protocol (ACP), starting with Google's Gemini CLI integration.";
 
         let open_panel_button = Button::new("open-panel", "Start with Gemini CLI")
-            .style(ButtonStyle::Tinted(TintColor::Accent))
+            .style(ButtonStyle::tinted(TintColor::Accent))
             .full_width()
             .on_click(cx.listener(Self::open_panel));
 
@@ -225,7 +225,7 @@ impl Render for AcpOnboardingModal {
             .track_focus(&self.focus_handle(cx))
             .overflow_hidden()
             .on_action(cx.listener(Self::cancel))
-            .on_action(cx.listener(|_, _: &menu::Cancel, _window, cx| {
+            .on_action(cx.listener(|_, _: &inazuma_menu::Cancel, _window, cx| {
                 acp_onboarding_event!("Canceled", trigger = "Action");
                 cx.emit(DismissEvent);
             }))

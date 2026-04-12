@@ -1,7 +1,7 @@
 use raijin_acp_thread::AgentSessionModes;
 use agent_client_protocol as acp;
 use raijin_agent_servers::AgentServer;
-use raijin_agent_settings::AgentSettings;
+use raijin_raijin_agent_settings::AgentSettings;
 use raijin_fs::Fs;
 use inazuma::{Context, Entity, WeakEntity, Window, prelude::*};
 use inazuma_settings_framework::Settings as _;
@@ -11,7 +11,7 @@ use raijin_ui::{
     PopoverMenuHandle, Tooltip, prelude::*,
 };
 
-use crate::{CycleModeSelector, ToggleProfileSelector, ui::HoldForDefault};
+use crate::{CycleModeSelector, ToggleProfileSelector, raijin_ui::HoldForDefault};
 
 pub struct ModeSelector {
     connection: Rc<dyn AgentSessionModes>,
@@ -89,8 +89,8 @@ impl ModeSelector {
 
             let settings = AgentSettings::get_global(cx);
             let side = match settings.dock {
-                settings::DockPosition::Left => DocumentationSide::Right,
-                settings::DockPosition::Bottom | settings::DockPosition::Right => {
+                inazuma_settings_framework::DockPosition::Left => DocumentationSide::Right,
+                inazuma_settings_framework::DockPosition::Bottom | inazuma_settings_framework::DockPosition::Right => {
                     DocumentationSide::Left
                 }
             };

@@ -98,7 +98,7 @@ impl RenderOnce for MentionCrease {
             .style(ButtonStyle::Outlined)
             .size(ButtonSize::Compact)
             .height(button_height)
-            .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+            .selected_style(ButtonStyle::tinted(TintColor::Accent))
             .toggle_state(self.is_toggled)
             .when_some(
                 self.mention_uri.clone().zip(self.workspace.clone()),
@@ -260,7 +260,7 @@ fn reveal_in_project_panel(
     };
 
     project.update(cx, |_, cx| {
-        cx.emit(project::Event::RevealInProjectPanel(entry_id));
+        cx.emit(raijin_project::Event::RevealInProjectPanel(entry_id));
     });
 }
 

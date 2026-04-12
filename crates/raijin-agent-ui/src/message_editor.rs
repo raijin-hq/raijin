@@ -224,7 +224,7 @@ fn insert_mention_for_project_path(
             editor.update(cx, |editor, cx| {
                 editor.edit(
                     [(
-                        multi_buffer::Anchor::max()..multi_buffer::Anchor::max(),
+                        raijin_multi_buffer::Anchor::max()..raijin_multi_buffer::Anchor::max(),
                         new_text,
                     )],
                     cx,
@@ -436,13 +436,13 @@ impl MessageEditor {
                 let has_selection = editor.has_non_empty_selection(&editor.display_snapshot(cx));
 
                 Some(ContextMenu::build(window, cx, |menu, _, _| {
-                    menu.action("Cut", Box::new(editor::actions::Cut))
+                    menu.action("Cut", Box::new(raijin_editor::actions::Cut))
                         .action_disabled_when(
                             !has_selection,
                             "Copy",
-                            Box::new(editor::actions::Copy),
+                            Box::new(raijin_editor::actions::Copy),
                         )
-                        .action("Paste", Box::new(editor::actions::Paste))
+                        .action("Paste", Box::new(raijin_editor::actions::Paste))
                         .action("Paste as Plain Text", Box::new(PasteRaw))
                 }))
             });
@@ -609,7 +609,7 @@ impl MessageEditor {
                 padding_left: false,
                 padding_right: false,
                 tooltip: None,
-                resolve_state: project::ResolveState::Resolved,
+                resolve_state: raijin_project::ResolveState::Resolved,
             },
         ))
     }
@@ -898,7 +898,7 @@ impl MessageEditor {
 
                     let has_prefix = {
                         let snapshot = editor.display_snapshot(cx);
-                        let cursor = editor.selections.newest::<text::Point>(&snapshot).head();
+                        let cursor = editor.selections.newest::<inazuma_text::Point>(&snapshot).head();
                         let offset = cursor.to_offset(&snapshot);
                         let buffer_snapshot = snapshot.buffer_snapshot();
                         let prefix_char_count = prefix.chars().count();
@@ -913,7 +913,7 @@ impl MessageEditor {
                     }
 
                     editor.insert(&prefix, window, cx);
-                    editor.show_completions(&editor::actions::ShowCompletions, window, cx);
+                    editor.show_completions(&raijin_editor::actions::ShowCompletions, window, cx);
                 })
                 .log_err();
         })
@@ -951,7 +951,7 @@ impl MessageEditor {
         self.send(cx);
     }
 
-    fn cancel(&mut self, _: &editor::actions::Cancel, _: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &raijin_editor::actions::Cancel, _: &mut Window, cx: &mut Context<Self>) {
         cx.emit(MessageEditorEvent::Cancel)
     }
 
@@ -962,7 +962,7 @@ impl MessageEditor {
         let editor_clipboard_selections = cx.read_from_clipboard().and_then(|item| {
             item.entries().iter().find_map(|entry| match entry {
                 ClipboardEntry::String(text) => {
-                    text.metadata_json::<Vec<editor::ClipboardSelection>>()
+                    text.metadata_json::<Vec<raijin_editor::ClipboardSelection>>()
                 }
                 _ => None,
             })
@@ -973,7 +973,7 @@ impl MessageEditor {
         // 2. Have an associated file path
         // 3. Span multiple lines (not single-line selections)
         // 4. Belong to a file that exists in the current project
-        let should_insert_creases = util::maybe!({
+        let should_insert_creases = inazuma_util::maybe!({
             let selections = editor_clipboard_selections.as_ref()?;
             if selections.len() > 1 {
                 return Some(false);
@@ -1013,7 +1013,7 @@ impl MessageEditor {
                     (selection.file_path, selection.line_range)
                 {
                     let crease_text =
-                        acp_thread::selection_name(Some(file_path.as_ref()), &line_range);
+                        raijin_acp_thread::selection_name(Some(file_path.as_ref()), &line_range);
 
                     let mention_uri = MentionUri::Selection {
                         abs_path: Some(file_path.clone()),
@@ -1259,7 +1259,7 @@ impl MessageEditor {
 
     pub fn insert_dragged_files(
         &mut self,
-        paths: Vec<project::ProjectPath>,
+        paths: Vec<raijin_project::ProjectPath>,
         added_worktrees: Vec<Entity<Worktree>>,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -1797,7 +1797,7 @@ impl MessageEditor {
     ) {
         self.editor.update(cx, |editor, cx| {
             let snapshot = editor.buffer().read(cx).snapshot(cx);
-            let offset = snapshot.clip_offset(MultiBufferOffset(offset), text::Bias::Left);
+            let offset = snapshot.clip_offset(MultiBufferOffset(offset), inazuma_text::Bias::Left);
             editor.change_selections(Default::default(), window, cx, |selections| {
                 selections.select_ranges([offset..offset]);
             });
@@ -1871,7 +1871,7 @@ impl Render for MessageEditor {
                         local_player: cx.theme().players().local(),
                         text: text_style,
                         syntax: cx.theme().syntax().clone(),
-                        inlay_hints_style: editor::make_inlay_hints_style(cx),
+                        inlay_hints_style: raijin_editor::make_inlay_hints_style(cx),
                         ..Default::default()
                     },
                 )
@@ -1897,7 +1897,7 @@ impl Addon for MessageEditorAddon {
     }
 
     fn extend_key_context(&self, key_context: &mut KeyContext, cx: &App) {
-        let settings = agent_settings::AgentSettings::get_global(cx);
+        let settings = raijin_agent_settings::AgentSettings::get_global(cx);
         if settings.use_modifier_to_send {
             key_context.add("use_modifier_to_send");
         }
@@ -1994,7 +1994,7 @@ mod tests {
 
     use inazuma_text::Point;
     use raijin_ui::{App, Context, IntoElement, Render, SharedString, Window};
-    use inazuma_util::{path, paths::PathStyle, rel_path::rel_path};
+    use inazuma_util::{path, inazuma_util::paths::PathStyle, rel_path::rel_path};
     use raijin_workspace::{AppState, Item, MultiWorkspace};
 
     use crate::completion_provider::PromptContextType;
@@ -2149,7 +2149,7 @@ mod tests {
             completion_provider.completions(
                 excerpt_id,
                 &buffer,
-                text::Anchor::MAX,
+                inazuma_text::Anchor::MAX,
                 CompletionContext {
                     trigger_kind: CompletionTriggerKind::TRIGGER_CHARACTER,
                     trigger_character: Some("@".into()),
@@ -2361,8 +2361,8 @@ mod tests {
         let app_state = cx.update(AppState::test);
 
         cx.update(|cx| {
-            editor::init(cx);
-            workspace::init(app_state.clone(), cx);
+            raijin_editor::init(cx);
+            raijin_workspace::init(app_state.clone(), cx);
         });
 
         let project = Project::test(app_state.fs.clone(), [path!("/dir").as_ref()], cx).await;
@@ -2452,7 +2452,7 @@ mod tests {
 
         editor.update_in(&mut cx, |editor, window, cx| {
             assert!(editor.has_visible_completions_menu());
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         cx.run_until_parked();
@@ -2477,7 +2477,7 @@ mod tests {
 
         editor.update_in(&mut cx, |editor, window, cx| {
             assert!(editor.has_visible_completions_menu());
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         cx.run_until_parked();
@@ -2499,7 +2499,7 @@ mod tests {
 
             // Delete argument
             for _ in 0..5 {
-                editor.backspace(&editor::actions::Backspace, window, cx);
+                editor.backspace(&raijin_editor::actions::Backspace, window, cx);
             }
         });
 
@@ -2511,7 +2511,7 @@ mod tests {
             assert_eq!(editor.display_text(cx), "/say-hello <name>");
 
             // Delete last command letter
-            editor.backspace(&editor::actions::Backspace, window, cx);
+            editor.backspace(&raijin_editor::actions::Backspace, window, cx);
         });
 
         cx.run_until_parked();
@@ -2531,8 +2531,8 @@ mod tests {
         let app_state = cx.update(AppState::test);
 
         cx.update(|cx| {
-            editor::init(cx);
-            workspace::init(app_state.clone(), cx);
+            raijin_editor::init(cx);
+            raijin_workspace::init(app_state.clone(), cx);
         });
 
         app_state
@@ -2708,11 +2708,11 @@ mod tests {
         // Select and confirm "File"
         editor.update_in(&mut cx, |editor, window, cx| {
             assert!(editor.has_visible_completions_menu());
-            editor.context_menu_next(&editor::actions::ContextMenuNext, window, cx);
-            editor.context_menu_next(&editor::actions::ContextMenuNext, window, cx);
-            editor.context_menu_next(&editor::actions::ContextMenuNext, window, cx);
-            editor.context_menu_next(&editor::actions::ContextMenuNext, window, cx);
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.context_menu_next(&raijin_editor::actions::ContextMenuNext, window, cx);
+            editor.context_menu_next(&raijin_editor::actions::ContextMenuNext, window, cx);
+            editor.context_menu_next(&raijin_editor::actions::ContextMenuNext, window, cx);
+            editor.context_menu_next(&raijin_editor::actions::ContextMenuNext, window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         cx.run_until_parked();
@@ -2735,7 +2735,7 @@ mod tests {
 
         editor.update_in(&mut cx, |editor, window, cx| {
             assert!(editor.has_visible_completions_menu());
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         let url_one = MentionUri::File {
@@ -2800,7 +2800,7 @@ mod tests {
         });
 
         editor.update_in(&mut cx, |editor, window, cx| {
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         cx.run_until_parked();
@@ -2842,10 +2842,10 @@ mod tests {
             assert_eq!(fold_ranges(editor, cx).len(), 2);
         });
 
-        let plain_text_language = Arc::new(language::Language::new(
-            language::LanguageConfig {
+        let plain_text_language = Arc::new(raijin_language::Language::new(
+            raijin_language::LanguageConfig {
                 name: "Plain Text".into(),
-                matcher: language::LanguageMatcher {
+                matcher: raijin_language::LanguageMatcher {
                     path_suffixes: vec!["txt".to_string()],
                     ..Default::default()
                 },
@@ -2860,9 +2860,9 @@ mod tests {
 
         let mut fake_language_servers = language_registry.register_fake_lsp(
             "Plain Text",
-            language::FakeLspAdapter {
-                capabilities: lsp::ServerCapabilities {
-                    workspace_symbol_provider: Some(lsp::OneOf::Left(true)),
+            raijin_language::FakeLspAdapter {
+                capabilities: raijin_lsp::ServerCapabilities {
+                    workspace_symbol_provider: Some(raijin_lsp::OneOf::Left(true)),
                     ..Default::default()
                 },
                 ..Default::default()
@@ -2885,20 +2885,20 @@ mod tests {
         cx.run_until_parked();
 
         let fake_language_server = fake_language_servers.next().await.unwrap();
-        fake_language_server.set_request_handler::<lsp::WorkspaceSymbolRequest, _, _>(
+        fake_language_server.set_request_handler::<raijin_lsp::WorkspaceSymbolRequest, _, _>(
             move |_, _| async move {
-                Ok(Some(lsp::WorkspaceSymbolResponse::Flat(vec![
+                Ok(Some(raijin_lsp::WorkspaceSymbolResponse::Flat(vec![
                     #[allow(deprecated)]
-                    lsp::SymbolInformation {
+                    raijin_lsp::SymbolInformation {
                         name: "MySymbol".into(),
-                        location: lsp::Location {
-                            uri: lsp::Uri::from_file_path(path!("/dir/a/one.txt")).unwrap(),
-                            range: lsp::Range::new(
-                                lsp::Position::new(0, 0),
-                                lsp::Position::new(0, 1),
+                        location: raijin_lsp::Location {
+                            uri: raijin_lsp::Uri::from_file_path(path!("/dir/a/one.txt")).unwrap(),
+                            range: raijin_lsp::Range::new(
+                                raijin_lsp::Position::new(0, 0),
+                                raijin_lsp::Position::new(0, 1),
                             ),
                         },
-                        kind: lsp::SymbolKind::CONSTANT,
+                        kind: raijin_lsp::SymbolKind::CONSTANT,
                         tags: None,
                         container_name: None,
                         deprecated: None,
@@ -2919,7 +2919,7 @@ mod tests {
         });
 
         editor.update_in(&mut cx, |editor, window, cx| {
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         let symbol = MentionUri::Symbol {
@@ -2972,7 +2972,7 @@ mod tests {
         });
 
         editor.update_in(&mut cx, |editor, window, cx| {
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         // Getting the message contents fails
@@ -3011,7 +3011,7 @@ mod tests {
                 });
 
         editor.update_in(&mut cx, |editor, window, cx| {
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         // This time don't immediately get the contents, just let the confirmed completion settle
@@ -3553,7 +3553,7 @@ mod tests {
         editor.update_in(cx, |editor, window, cx| {
             assert!(editor.has_visible_completions_menu());
             assert_eq!(editor.text(cx), "What is in @file main");
-            editor.confirm_completion(&editor::actions::ConfirmCompletion::default(), window, cx);
+            editor.confirm_completion(&raijin_editor::actions::ConfirmCompletion::default(), window, cx);
         });
 
         let content = message_editor
@@ -3611,8 +3611,8 @@ mod tests {
         let app_state = cx.update(AppState::test);
 
         cx.update(|cx| {
-            editor::init(cx);
-            workspace::init(app_state.clone(), cx);
+            raijin_editor::init(cx);
+            raijin_workspace::init(app_state.clone(), cx);
         });
 
         app_state
@@ -3768,8 +3768,8 @@ mod tests {
         let app_state = cx.update(AppState::test);
 
         cx.update(|cx| {
-            editor::init(cx);
-            workspace::init(app_state.clone(), cx);
+            raijin_editor::init(cx);
+            raijin_workspace::init(app_state.clone(), cx);
         });
 
         app_state
@@ -3848,8 +3848,8 @@ mod tests {
         let app_state = cx.update(AppState::test);
 
         cx.update(|cx| {
-            editor::init(cx);
-            workspace::init(app_state.clone(), cx);
+            raijin_editor::init(cx);
+            raijin_workspace::init(app_state.clone(), cx);
         });
 
         app_state
@@ -3947,8 +3947,8 @@ mod tests {
         let app_state = cx.update(AppState::test);
 
         cx.update(|cx| {
-            editor::init(cx);
-            workspace::init(app_state.clone(), cx);
+            raijin_editor::init(cx);
+            raijin_workspace::init(app_state.clone(), cx);
         });
 
         app_state
@@ -4152,7 +4152,7 @@ mod tests {
             &mut cx,
         );
 
-        std::fs::remove_file(&temporary_image_path).expect("remove temp png");
+        std::raijin_fs::remove_file(&temporary_image_path).expect("remove temp png");
 
         let expected_file_uri = MentionUri::File {
             abs_path: path!("/project/file.txt").into(),
@@ -4194,8 +4194,8 @@ mod tests {
         let app_state = cx.update(AppState::test);
 
         cx.update(|cx| {
-            editor::init(cx);
-            workspace::init(app_state.clone(), cx);
+            raijin_editor::init(cx);
+            raijin_workspace::init(app_state.clone(), cx);
         });
 
         app_state
@@ -4293,7 +4293,7 @@ mod tests {
             None => format!("zed-agent-ui-test-{}", uuid::Uuid::new_v4()),
         };
         let path = std::env::temp_dir().join(file_name);
-        std::fs::write(&path, bytes).expect("write temp png");
+        std::raijin_fs::write(&path, bytes).expect("write temp png");
         path
     }
 

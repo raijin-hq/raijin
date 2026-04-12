@@ -13,7 +13,7 @@ use raijin_acp_thread::{AcpThread, MentionUri, ThreadStatus};
 use raijin_agent::{ContextServerRegistry, SharedThread, ThreadStore};
 use agent_client_protocol as acp;
 use raijin_agent_servers::AgentServer;
-use inazuma_collections::HashSet;
+use inazuma_inazuma_collections::HashSet;
 use raijin_db::kvp::{Dismissable, KeyValueStore};
 use itertools::Itertools;
 use raijin_project::AgentId;
@@ -35,7 +35,7 @@ use crate::{
     conversation_view::{AcpThreadViewEvent, ThreadView},
     slash_command::SlashCommandCompletionProvider,
     text_thread_editor::{AgentPanelDelegate, TextThreadEditor, make_lsp_adapter_delegate},
-    ui::EndTrialUpsell,
+    raijin_ui::EndTrialUpsell,
 };
 use crate::{
     Agent, AgentInitialContent, ExternalSourcePrompt, NewExternalAgentThread,
@@ -43,7 +43,7 @@ use crate::{
 };
 use crate::{
     DEFAULT_THREAD_TITLE,
-    ui::{AcpOnboardingModal, ClaudeCodeOnboardingModal, HoldForDefault},
+    raijin_ui::{AcpOnboardingModal, ClaudeCodeOnboardingModal, HoldForDefault},
 };
 use crate::{
     ExpandMessageEditor, ThreadHistoryView,
@@ -51,14 +51,14 @@ use crate::{
 };
 use crate::{ManageProfiles, ThreadHistoryViewEvent};
 use crate::{ThreadHistory, agent_connection_store::AgentConnectionStore};
-use raijin_agent_settings::AgentSettings;
-use ai_onboarding::AgentPanelOnboarding;
+use raijin_raijin_agent_settings::AgentSettings;
+use raijin_ai_onboarding::AgentPanelOnboarding;
 use anyhow::{Context as _, Result, anyhow};
 use raijin_assistant_slash_command::SlashCommandWorkingSet;
 use raijin_assistant_text_thread::{TextThread, TextThreadEvent, TextThreadSummary};
 use raijin_client::UserStore;
-use cloud_api_types::Plan;
-use inazuma_collections::HashMap;
+use raijin_cloud_api_types::Plan;
+use inazuma_inazuma_collections::HashMap;
 use raijin_editor::{Anchor, AnchorRangeExt as _, Editor, EditorEvent, MultiBuffer};
 use raijin_extension::ExtensionEvents;
 use raijin_extension_host::ExtensionStore;
@@ -73,7 +73,7 @@ use raijin_language_model::{ConfigurationError, LanguageModelRegistry};
 use raijin_project::project_settings::ProjectSettings;
 use raijin_project::{Project, ProjectPath, Worktree};
 use raijin_prompt_store::{PromptBuilder, PromptStore, UserPromptId};
-use rules_library::{RulesLibrary, open_rules_library};
+use raijin_rules_library::{RulesLibrary, open_rules_library};
 use raijin_search::{BufferSearchBar, buffer_search};
 use inazuma_settings_framework::{Settings, update_settings_file};
 use raijin_theme_settings::ThemeSettings;
@@ -89,7 +89,7 @@ use raijin_workspace::{
 };
 use raijin_actions::{
     DecreaseBufferFontSize, IncreaseBufferFontSize, ResetBufferFontSize,
-    agent::{OpenAcpOnboardingModal, OpenSettings, ResetAgentZoom, ResetOnboarding},
+    raijin_agent::{OpenAcpOnboardingModal, OpenSettings, ResetAgentZoom, ResetOnboarding},
     assistant::{OpenRulesLibrary, Toggle, ToggleFocus},
 };
 
@@ -97,7 +97,7 @@ const AGENT_PANEL_KEY: &str = "agent_panel";
 const RECENTLY_UPDATED_MENU_LIMIT: usize = 6;
 
 fn read_serialized_panel(
-    workspace_id: workspace::WorkspaceId,
+    workspace_id: raijin_workspace::WorkspaceId,
     kvp: &KeyValueStore,
 ) -> Option<SerializedAgentPanel> {
     let scope = kvp.scoped(AGENT_PANEL_KEY);
@@ -110,7 +110,7 @@ fn read_serialized_panel(
 }
 
 async fn save_serialized_panel(
-    workspace_id: workspace::WorkspaceId,
+    workspace_id: raijin_workspace::WorkspaceId,
     panel: SerializedAgentPanel,
     kvp: KeyValueStore,
 ) -> Result<()> {
@@ -268,7 +268,7 @@ pub fn init(cx: &mut App) {
                     },
                 )
                 .register_action(|_workspace, _: &ResetOnboarding, window, cx| {
-                    window.dispatch_action(workspace::RestoreBanner.boxed_clone(), cx);
+                    window.dispatch_action(raijin_workspace::RestoreBanner.boxed_clone(), cx);
                     window.refresh();
                 })
                 .register_action(|workspace, _: &ResetTrialUpsell, _window, cx| {
@@ -726,7 +726,7 @@ pub struct AgentPanel {
     language_registry: Arc<LanguageRegistry>,
     text_thread_history: Entity<TextThreadHistory>,
     thread_store: Entity<ThreadStore>,
-    text_thread_store: Entity<assistant_text_thread::TextThreadStore>,
+    text_thread_store: Entity<raijin_assistant_text_thread::TextThreadStore>,
     prompt_store: Option<Entity<PromptStore>>,
     connection_store: Entity<AgentConnectionStore>,
     context_server_registry: Entity<ContextServerRegistry>,
@@ -825,7 +825,7 @@ impl AgentPanel {
             let text_thread_store = workspace
                 .update(cx, |workspace, cx| {
                     let project = workspace.project().clone();
-                    assistant_text_thread::TextThreadStore::new(
+                    raijin_assistant_text_thread::TextThreadStore::new(
                         project,
                         prompt_builder,
                         slash_commands,
@@ -923,7 +923,7 @@ impl AgentPanel {
 
     pub(crate) fn new(
         workspace: &Workspace,
-        text_thread_store: Entity<assistant_text_thread::TextThreadStore>,
+        text_thread_store: Entity<raijin_assistant_text_thread::TextThreadStore>,
         prompt_store: Option<Entity<PromptStore>>,
         window: &mut Window,
         cx: &mut Context<Self>,
@@ -1027,9 +1027,9 @@ impl AgentPanel {
         {
             Some(
                 cx.subscribe(&extension_events, |this, _source, event, cx| match event {
-                    extension::Event::ExtensionInstalled(_)
-                    | extension::Event::ExtensionUninstalled(_)
-                    | extension::Event::ExtensionsInstalledChanged => {
+                    raijin_extension::Event::ExtensionInstalled(_)
+                    | raijin_extension::Event::ExtensionUninstalled(_)
+                    | raijin_extension::Event::ExtensionsInstalledChanged => {
                         this.sync_agent_servers_from_extensions(cx);
                     }
                     _ => {}
@@ -1228,7 +1228,7 @@ impl AgentPanel {
     }
 
     fn new_text_thread(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        telemetry::event!("Agent Thread Started", agent = "zed-text");
+        raijin_telemetry::event!("Agent Thread Started", agent = "zed-text");
 
         let context = self
             .text_thread_store
@@ -1554,7 +1554,7 @@ impl AgentPanel {
         );
     }
 
-    pub fn go_back(&mut self, _: &workspace::GoBack, window: &mut Window, cx: &mut Context<Self>) {
+    pub fn go_back(&mut self, _: &raijin_workspace::GoBack, window: &mut Window, cx: &mut Context<Self>) {
         match self.active_view {
             ActiveView::Configuration | ActiveView::History { .. } => {
                 if let Some(previous_view) = self.previous_view.take() {
@@ -1625,16 +1625,16 @@ impl AgentPanel {
                             ThemeSettings::get_global(cx).agent_buffer_font_size(cx) + delta;
 
                         let _ = settings.theme.agent_ui_font_size.insert(
-                            f32::from(theme_settings::clamp_font_size(agent_ui_font_size)).into(),
+                            f32::from(raijin_theme_settings::clamp_font_size(agent_ui_font_size)).into(),
                         );
                         let _ = settings.theme.agent_buffer_font_size.insert(
-                            f32::from(theme_settings::clamp_font_size(agent_buffer_font_size))
+                            f32::from(raijin_theme_settings::clamp_font_size(agent_buffer_font_size))
                                 .into(),
                         );
                     });
                 } else {
-                    theme_settings::adjust_agent_ui_font_size(cx, |size| size + delta);
-                    theme_settings::adjust_agent_buffer_font_size(cx, |size| size + delta);
+                    raijin_theme_settings::adjust_agent_ui_font_size(cx, |size| size + delta);
+                    raijin_theme_settings::adjust_agent_buffer_font_size(cx, |size| size + delta);
                 }
             }
             WhichFontSize::BufferFont => {
@@ -1658,14 +1658,14 @@ impl AgentPanel {
                 settings.theme.agent_buffer_font_size = None;
             });
         } else {
-            theme_settings::reset_agent_ui_font_size(cx);
-            theme_settings::reset_agent_buffer_font_size(cx);
+            raijin_theme_settings::reset_agent_ui_font_size(cx);
+            raijin_theme_settings::reset_agent_buffer_font_size(cx);
         }
     }
 
     pub fn reset_agent_zoom(&mut self, _window: &mut Window, cx: &mut Context<Self>) {
-        theme_settings::reset_agent_ui_font_size(cx);
-        theme_settings::reset_agent_buffer_font_size(cx);
+        raijin_theme_settings::reset_agent_ui_font_size(cx);
+        raijin_theme_settings::reset_agent_buffer_font_size(cx);
     }
 
     pub fn toggle_zoom(&mut self, _: &ToggleZoom, window: &mut Window, cx: &mut Context<Self>) {
@@ -1749,8 +1749,8 @@ impl AgentPanel {
                     workspace.update(cx, |workspace, cx| {
                         struct ThreadCopiedToast;
                         workspace.show_toast(
-                            workspace::Toast::new(
-                                workspace::notifications::NotificationId::unique::<ThreadCopiedToast>(),
+                            raijin_workspace::Toast::new(
+                                raijin_workspace::notifications::NotificationId::unique::<ThreadCopiedToast>(),
                                 "Thread copied to clipboard (base64 encoded)",
                             )
                             .autohide(),
@@ -1766,7 +1766,7 @@ impl AgentPanel {
     }
 
     fn show_deferred_toast(
-        workspace: &WeakEntity<workspace::Workspace>,
+        workspace: &WeakEntity<raijin_workspace::Workspace>,
         message: &'static str,
         cx: &mut App,
     ) {
@@ -1776,8 +1776,8 @@ impl AgentPanel {
                 workspace.update(cx, |workspace, cx| {
                     struct ClipboardToast;
                     workspace.show_toast(
-                        workspace::Toast::new(
-                            workspace::notifications::NotificationId::unique::<ClipboardToast>(),
+                        raijin_workspace::Toast::new(
+                            raijin_workspace::notifications::NotificationId::unique::<ClipboardToast>(),
                             message,
                         )
                         .autohide(),
@@ -1846,8 +1846,8 @@ impl AgentPanel {
                     workspace.update(cx, |workspace, cx| {
                         struct ThreadLoadedToast;
                         workspace.show_toast(
-                            workspace::Toast::new(
-                                workspace::notifications::NotificationId::unique::<ThreadLoadedToast>(),
+                            raijin_workspace::Toast::new(
+                                raijin_workspace::notifications::NotificationId::unique::<ThreadLoadedToast>(),
                                 "Thread loaded from clipboard",
                             )
                             .autohide(),
@@ -2019,7 +2019,7 @@ impl AgentPanel {
         }
     }
 
-    pub(crate) fn active_native_agent_thread(&self, cx: &App) -> Option<Entity<agent::Thread>> {
+    pub(crate) fn active_native_agent_thread(&self, cx: &App) -> Option<Entity<raijin_agent::Thread>> {
         match &self.active_view {
             ActiveView::AgentThread {
                 conversation_view, ..
@@ -2322,7 +2322,7 @@ impl AgentPanel {
                     .iter()
                     .map(|(id, entry)| (id.clone(), entry.manifest.clone()))
                     .collect();
-                let extensions_dir = paths::extensions_dir().join("installed");
+                let extensions_dir = raijin_paths::extensions_dir().join("installed");
                 (manifests, extensions_dir)
             };
 
@@ -2478,7 +2478,7 @@ impl AgentPanel {
         }
         let thread_store = server
             .clone()
-            .downcast::<agent::NativeAgentServer>()
+            .downcast::<raijin_agent::NativeAgentServer>()
             .is_some()
             .then(|| self.thread_store.clone());
 
@@ -2568,12 +2568,12 @@ impl AgentPanel {
     fn classify_worktrees(
         &self,
         cx: &App,
-    ) -> (Vec<Entity<project::git_store::Repository>>, Vec<PathBuf>) {
+    ) -> (Vec<Entity<raijin_project::git_store::Repository>>, Vec<PathBuf>) {
         let project = &self.project;
         let repositories = project.read(cx).repositories(cx).clone();
-        let mut git_repos: Vec<Entity<project::git_store::Repository>> = Vec::new();
+        let mut git_repos: Vec<Entity<raijin_project::git_store::Repository>> = Vec::new();
         let mut non_git_paths: Vec<PathBuf> = Vec::new();
-        let mut seen_repo_ids = std::collections::HashSet::new();
+        let mut seen_repo_ids = std::inazuma_collections::HashSet::new();
 
         for worktree in project.read(cx).visible_worktrees(cx) {
             let wt_path = worktree.read(cx).abs_path();
@@ -2617,13 +2617,13 @@ impl AgentPanel {
     /// - `path_remapping`: `(old_work_dir, new_worktree_path)` pairs used
     ///   later to remap open editor tabs into the new workspace.
     fn start_worktree_creations(
-        git_repos: &[Entity<project::git_store::Repository>],
+        git_repos: &[Entity<raijin_project::git_store::Repository>],
         branch_name: &str,
         worktree_directory_setting: &str,
         cx: &mut Context<Self>,
     ) -> Result<(
         Vec<(
-            Entity<project::git_store::Repository>,
+            Entity<raijin_project::git_store::Repository>,
             PathBuf,
             futures::channel::oneshot::Receiver<Result<()>>,
         )>,
@@ -2653,14 +2653,14 @@ impl AgentPanel {
     /// (removed) so the project isn't left in a half-migrated state.
     async fn await_and_rollback_on_failure(
         creation_infos: Vec<(
-            Entity<project::git_store::Repository>,
+            Entity<raijin_project::git_store::Repository>,
             PathBuf,
             futures::channel::oneshot::Receiver<Result<()>>,
         )>,
         cx: &mut AsyncWindowContext,
     ) -> Result<Vec<PathBuf>> {
         let mut created_paths: Vec<PathBuf> = Vec::new();
-        let mut repos_and_paths: Vec<(Entity<project::git_store::Repository>, PathBuf)> =
+        let mut repos_and_paths: Vec<(Entity<raijin_project::git_store::Repository>, PathBuf)> =
             Vec::new();
         let mut first_error: Option<anyhow::Error> = None;
 
@@ -2792,7 +2792,7 @@ impl AgentPanel {
         let workspace = self.workspace.clone();
         let window_handle = window
             .window_handle()
-            .downcast::<workspace::MultiWorkspace>();
+            .downcast::<raijin_workspace::MultiWorkspace>();
 
         let selected_agent = self.selected_agent();
 
@@ -2919,8 +2919,8 @@ impl AgentPanel {
     async fn setup_new_workspace(
         this: WeakEntity<Self>,
         all_paths: Vec<PathBuf>,
-        app_state: Arc<workspace::AppState>,
-        window_handle: Option<inazuma::WindowHandle<workspace::MultiWorkspace>>,
+        app_state: Arc<raijin_workspace::AppState>,
+        window_handle: Option<inazuma::WindowHandle<raijin_workspace::MultiWorkspace>>,
         active_file_path: Option<PathBuf>,
         path_remapping: Vec<(PathBuf, PathBuf)>,
         non_git_paths: Vec<PathBuf>,
@@ -2976,9 +2976,9 @@ impl AgentPanel {
         new_window_handle.update(cx, |_multi_workspace, window, cx| {
             new_workspace.update(cx, |workspace, cx| {
                 if has_non_git {
-                    let toast_id = workspace::notifications::NotificationId::unique::<AgentPanel>();
+                    let toast_id = raijin_workspace::notifications::NotificationId::unique::<AgentPanel>();
                     workspace.show_toast(
-                        workspace::Toast::new(
+                        raijin_workspace::Toast::new(
                             toast_id,
                             "Some project folders are not git repositories. \
                              They were included as-is without creating a worktree.",
@@ -3020,7 +3020,7 @@ impl AgentPanel {
                 if let Some(path) = remapped_active_path {
                     let open_task = workspace.open_paths(
                         vec![path],
-                        workspace::OpenOptions::default(),
+                        raijin_workspace::OpenOptions::default(),
                         None,
                         window,
                         cx,
@@ -3136,7 +3136,7 @@ impl Panel for AgentPanel {
     }
 
     fn set_position(&mut self, position: DockPosition, _: &mut Window, cx: &mut Context<Self>) {
-        settings::update_settings_file(self.fs.clone(), cx, move |settings, _| {
+        inazuma_settings_framework::update_settings_file(self.fs.clone(), cx, move |settings, _| {
             settings
                 .agent
                 .get_or_insert_default()
@@ -3169,8 +3169,8 @@ impl Panel for AgentPanel {
         }
     }
 
-    fn remote_id() -> Option<proto::PanelId> {
-        Some(proto::PanelId::AssistantPanel)
+    fn remote_id() -> Option<raijin_proto::PanelId> {
+        Some(raijin_proto::PanelId::AssistantPanel)
     }
 
     fn icon(&self, _window: &Window, cx: &App) -> Option<IconName> {
@@ -3240,7 +3240,7 @@ impl AgentPanel {
                             .w_full()
                             .on_action({
                                 let conversation_view = conversation_view.downgrade();
-                                move |_: &menu::Confirm, window, cx| {
+                                move |_: &inazuma_menu::Confirm, window, cx| {
                                     if let Some(conversation_view) = conversation_view.upgrade() {
                                         conversation_view.focus_handle(cx).focus(window, cx);
                                     }
@@ -3248,7 +3248,7 @@ impl AgentPanel {
                             })
                             .on_action({
                                 let conversation_view = conversation_view.downgrade();
-                                move |_: &editor::actions::Cancel, window, cx| {
+                                move |_: &raijin_editor::actions::Cancel, window, cx| {
                                     if let Some(conversation_view) = conversation_view.upgrade() {
                                         conversation_view.focus_handle(cx).focus(window, cx);
                                     }
@@ -3389,7 +3389,7 @@ impl AgentPanel {
                 .text_thread()
                 .read(cx)
                 .messages(cx)
-                .any(|message| message.role == language_model::Role::Assistant),
+                .any(|message| message.role == raijin_language_model::Role::Assistant),
             _ => false,
         };
 
@@ -3522,7 +3522,7 @@ impl AgentPanel {
             .menu({
                 let menu = self.agent_navigation_menu.clone();
                 move |window, cx| {
-                    telemetry::event!("View Thread History Clicked");
+                    raijin_telemetry::event!("View Thread History Clicked");
 
                     if let Some(menu) = menu.as_ref() {
                         menu.update(cx, |_, cx| {
@@ -3542,11 +3542,11 @@ impl AgentPanel {
         IconButton::new("go-back", IconName::ArrowLeft)
             .icon_size(IconSize::Small)
             .on_click(cx.listener(|this, _, window, cx| {
-                this.go_back(&workspace::GoBack, window, cx);
+                this.go_back(&raijin_workspace::GoBack, window, cx);
             }))
             .tooltip({
                 move |_window, cx| {
-                    Tooltip::for_action_in("Go Back", &workspace::GoBack, &focus_handle, cx)
+                    Tooltip::for_action_in("Go Back", &raijin_workspace::GoBack, &focus_handle, cx)
                 }
             })
     }
@@ -3587,8 +3587,8 @@ impl AgentPanel {
 
         let dock_position = AgentSettings::get_global(cx).dock;
         let documentation_side = match dock_position {
-            settings::DockPosition::Left => DocumentationSide::Right,
-            settings::DockPosition::Bottom | settings::DockPosition::Right => {
+            inazuma_settings_framework::DockPosition::Left => DocumentationSide::Right,
+            inazuma_settings_framework::DockPosition::Bottom | inazuma_settings_framework::DockPosition::Right => {
                 DocumentationSide::Left
             }
         };
@@ -3740,7 +3740,7 @@ impl AgentPanel {
             let agent_server_store = agent_server_store;
 
             Rc::new(move |window, cx| {
-                telemetry::event!("New Thread Clicked");
+                raijin_telemetry::event!("New Thread Clicked");
 
                 let active_thread = active_thread.clone();
                 Some(ContextMenu::build(window, cx, |menu, _window, cx| {
@@ -3829,7 +3829,7 @@ impl AgentPanel {
                         )
                         .map(|mut menu| {
                             let agent_server_store = agent_server_store.read(cx);
-                            let registry_store = project::AgentRegistryStore::try_global(cx);
+                            let registry_store = raijin_project::AgentRegistryStore::try_global(cx);
                             let registry_store_ref = registry_store.as_ref().map(|s| s.read(cx));
 
                             struct AgentMenuItem {
@@ -4212,7 +4212,7 @@ impl AgentPanel {
                     .read(cx)
                     .default_model()
                     .is_some_and(|model| {
-                        model.provider.id() != language_model::ZED_CLOUD_PROVIDER_ID
+                        model.provider.id() != raijin_language_model::ZED_CLOUD_PROVIDER_ID
                     })
                 {
                     return false;
@@ -4254,7 +4254,7 @@ impl AgentPanel {
             .iter()
             .any(|provider| {
                 provider.is_authenticated(cx)
-                    && provider.id() != language_model::ZED_CLOUD_PROVIDER_ID
+                    && provider.id() != raijin_language_model::ZED_CLOUD_PROVIDER_ID
             });
 
         match &self.active_view {
@@ -4350,7 +4350,7 @@ impl AgentPanel {
                 .map(|err| err.to_string())
                 .unwrap_or_default();
 
-            telemetry::event!("Agent Panel Error Shown", kind = kind, message = message,);
+            raijin_telemetry::event!("Agent Panel Error Shown", kind = kind, message = message,);
         }
     }
 
@@ -4371,12 +4371,12 @@ impl AgentPanel {
                 .icon(IconName::Warning)
                 .severity(Severity::Warning)
                 .when(border_bottom, |this| {
-                    this.border_position(ui::BorderPosition::Bottom)
+                    this.border_position(raijin_ui::BorderPosition::Bottom)
                 })
                 .title("Sign in to continue using Zed as your LLM provider.")
                 .actions_slot(
                     Button::new("sign_in", "Sign In")
-                        .style(ButtonStyle::Tinted(ui::TintColor::Warning))
+                        .style(ButtonStyle::tinted(raijin_ui::TintColor::Warning))
                         .label_size(LabelSize::Small)
                         .on_click({
                             let workspace = self.workspace.clone();
@@ -4399,12 +4399,12 @@ impl AgentPanel {
                 .icon(IconName::Warning)
                 .severity(Severity::Warning)
                 .when(border_bottom, |this| {
-                    this.border_position(ui::BorderPosition::Bottom)
+                    this.border_position(raijin_ui::BorderPosition::Bottom)
                 })
                 .title(configuration_error.to_string())
                 .actions_slot(
                     Button::new("settings", "Configure")
-                        .style(ButtonStyle::Tinted(ui::TintColor::Warning))
+                        .style(ButtonStyle::tinted(raijin_ui::TintColor::Warning))
                         .label_size(LabelSize::Small)
                         .key_binding(
                             KeyBinding::for_action_in(&OpenSettings, focus_handle, cx)
@@ -4563,7 +4563,7 @@ impl AgentPanel {
             Callout::new()
                 .icon(IconName::Warning)
                 .severity(Severity::Warning)
-                .border_position(ui::BorderPosition::Bottom)
+                .border_position(raijin_ui::BorderPosition::Bottom)
                 .title("You're in Restricted Mode")
                 .description(description)
                 .actions_slot(
@@ -4719,7 +4719,7 @@ impl PromptLibraryInlineAssist {
     }
 }
 
-impl rules_library::InlineAssistDelegate for PromptLibraryInlineAssist {
+impl raijin_rules_library::InlineAssistDelegate for PromptLibraryInlineAssist {
     fn assist(
         &self,
         prompt_editor: &Entity<Editor>,
@@ -4800,7 +4800,7 @@ impl AgentPanelDelegate for ConcreteAssistantPanelDelegate {
     fn open_remote_text_thread(
         &self,
         _workspace: &mut Workspace,
-        _text_thread_id: assistant_text_thread::TextThreadId,
+        _text_thread_id: raijin_assistant_text_thread::TextThreadId,
         _window: &mut Window,
         _cx: &mut Context<Workspace>,
     ) -> Task<Result<Entity<TextThreadEditor>>> {
@@ -4896,7 +4896,7 @@ impl Dismissable for TrialEndUpsell {
 impl AgentPanel {
     pub fn test_new(
         workspace: &Workspace,
-        text_thread_store: Entity<assistant_text_thread::TextThreadStore>,
+        text_thread_store: Entity<raijin_assistant_text_thread::TextThreadStore>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
@@ -5014,8 +5014,8 @@ mod tests {
         init_test(cx);
         cx.update(|cx| {
             cx.update_flags(true, vec!["agent-v2".to_string()]);
-            agent::ThreadStore::init_global(cx);
-            language_model::LanguageModelRegistry::test(cx);
+            raijin_agent::ThreadStore::init_global(cx);
+            raijin_language_model::LanguageModelRegistry::test(cx);
         });
 
         // --- Create a MultiWorkspace window with two workspaces ---
@@ -5090,7 +5090,7 @@ mod tests {
         cx.run_until_parked();
 
         // --- Load fresh panels for each workspace and verify independent state ---
-        let prompt_builder = Arc::new(prompt_store::PromptBuilder::new(None).unwrap());
+        let prompt_builder = Arc::new(raijin_prompt_store::PromptBuilder::new(None).unwrap());
 
         let async_cx = cx.update(|window, cx| window.to_async(cx));
         let loaded_a = AgentPanel::load(workspace_a.downgrade(), prompt_builder.clone(), async_cx)
@@ -5141,13 +5141,13 @@ mod tests {
 
         cx.update(|cx| {
             cx.update_flags(true, vec!["agent-v2".to_string()]);
-            agent::ThreadStore::init_global(cx);
-            language_model::LanguageModelRegistry::test(cx);
+            raijin_agent::ThreadStore::init_global(cx);
+            raijin_language_model::LanguageModelRegistry::test(cx);
             let slash_command_registry =
-                assistant_slash_command::SlashCommandRegistry::default_global(cx);
+                raijin_assistant_slash_command::SlashCommandRegistry::default_global(cx);
             slash_command_registry
-                .register_command(assistant_slash_commands::DefaultSlashCommand, false);
-            <dyn fs::Fs>::set_global(fs.clone(), cx);
+                .register_command(raijin_assistant_slash_commands::DefaultSlashCommand, false);
+            <dyn raijin_fs::Fs>::set_global(fs.clone(), cx);
         });
 
         let project = Project::test(fs.clone(), [], cx).await;
@@ -5498,8 +5498,8 @@ mod tests {
         init_test(cx);
         cx.update(|cx| {
             cx.update_flags(true, vec!["agent-v2".to_string()]);
-            agent::ThreadStore::init_global(cx);
-            language_model::LanguageModelRegistry::test(cx);
+            raijin_agent::ThreadStore::init_global(cx);
+            raijin_language_model::LanguageModelRegistry::test(cx);
         });
 
         let fs = FakeFs::new(cx.executor());
@@ -5822,8 +5822,8 @@ mod tests {
         init_test(cx);
         cx.update(|cx| {
             cx.update_flags(true, vec!["agent-v2".to_string()]);
-            agent::ThreadStore::init_global(cx);
-            language_model::LanguageModelRegistry::test(cx);
+            raijin_agent::ThreadStore::init_global(cx);
+            raijin_language_model::LanguageModelRegistry::test(cx);
         });
 
         let fs = FakeFs::new(cx.executor());
@@ -5932,8 +5932,8 @@ mod tests {
         init_test(cx);
         cx.update(|cx| {
             cx.update_flags(true, vec!["agent-v2".to_string()]);
-            agent::ThreadStore::init_global(cx);
-            language_model::LanguageModelRegistry::test(cx);
+            raijin_agent::ThreadStore::init_global(cx);
+            raijin_language_model::LanguageModelRegistry::test(cx);
         });
 
         let fs = FakeFs::new(cx.executor());
@@ -6001,7 +6001,7 @@ mod tests {
         cx.run_until_parked();
 
         // Load a fresh panel from the serialized data.
-        let prompt_builder = Arc::new(prompt_store::PromptBuilder::new(None).unwrap());
+        let prompt_builder = Arc::new(raijin_prompt_store::PromptBuilder::new(None).unwrap());
         let async_cx = cx.update(|window, cx| window.to_async(cx));
         let loaded_panel =
             AgentPanel::load(workspace.downgrade(), prompt_builder.clone(), async_cx)
@@ -6025,9 +6025,9 @@ mod tests {
         let fs = FakeFs::new(cx.executor());
         cx.update(|cx| {
             cx.update_flags(true, vec!["agent-v2".to_string()]);
-            agent::ThreadStore::init_global(cx);
-            language_model::LanguageModelRegistry::test(cx);
-            <dyn fs::Fs>::set_global(fs.clone(), cx);
+            raijin_agent::ThreadStore::init_global(cx);
+            raijin_language_model::LanguageModelRegistry::test(cx);
+            <dyn raijin_fs::Fs>::set_global(fs.clone(), cx);
         });
 
         fs.insert_tree(
@@ -6123,11 +6123,11 @@ mod tests {
 
         let app_state = cx.update(|cx| {
             cx.update_flags(true, vec!["agent-v2".to_string()]);
-            agent::ThreadStore::init_global(cx);
-            language_model::LanguageModelRegistry::test(cx);
+            raijin_agent::ThreadStore::init_global(cx);
+            raijin_language_model::LanguageModelRegistry::test(cx);
 
-            let app_state = workspace::AppState::test(cx);
-            workspace::init(app_state.clone(), cx);
+            let app_state = raijin_workspace::AppState::test(cx);
+            raijin_workspace::init(app_state.clone(), cx);
             app_state
         });
 

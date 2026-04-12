@@ -1,10 +1,10 @@
 use crate::{Keep, KeepAll, OpenAgentDiff, Reject, RejectAll};
 use raijin_acp_thread::{AcpThread, AcpThreadEvent};
-use action_log::{ActionLogTelemetry, LastRejectUndo};
-use raijin_agent_settings::AgentSettings;
+use raijin_action_log::{ActionLogTelemetry, LastRejectUndo};
+use raijin_raijin_agent_settings::AgentSettings;
 use anyhow::Result;
 use raijin_buffer_diff::DiffHunkStatus;
-use inazuma_collections::{HashMap, HashSet};
+use inazuma_inazuma_collections::{HashMap, HashSet};
 use raijin_editor::{
     Direction, Editor, EditorEvent, EditorSettings, MultiBuffer, MultiBufferSnapshot,
     SelectionEffects, ToPoint,
@@ -24,7 +24,7 @@ use raijin_project::{Project, ProjectItem, ProjectPath};
 use inazuma_settings_framework::{Settings, SettingsStore};
 use std::{
     any::{Any, TypeId},
-    collections::hash_map::Entry,
+    inazuma_collections::hash_map::Entry,
     ops::Range,
     sync::Arc,
 };
@@ -159,7 +159,7 @@ impl AgentDiffPane {
                 .read(cx)
                 .snapshot(cx)
                 .hunks_intersecting_range(
-                    language::Anchor::min_max_range_for_buffer(snapshot.remote_id()),
+                    raijin_language::Anchor::min_max_range_for_buffer(snapshot.remote_id()),
                     &snapshot,
                 )
                 .map(|diff_hunk| diff_hunk.buffer_range.to_point(&snapshot))
@@ -183,7 +183,7 @@ impl AgentDiffPane {
                 if was_empty {
                     let first_hunk = editor
                         .diff_hunks_in_ranges(
-                            &[editor::Anchor::min()..editor::Anchor::max()],
+                            &[raijin_editor::Anchor::min()..raijin_editor::Anchor::max()],
                             &self.multibuffer.read(cx).read(cx),
                         )
                         .next();
@@ -239,7 +239,7 @@ impl AgentDiffPane {
             self.editor.update(cx, |editor, cx| {
                 let first_hunk = editor
                     .diff_hunks_in_ranges(
-                        &[position..editor::Anchor::max()],
+                        &[position..raijin_editor::Anchor::max()],
                         &self.multibuffer.read(cx).read(cx),
                     )
                     .next();
@@ -282,7 +282,7 @@ impl AgentDiffPane {
                 editor,
                 &snapshot,
                 &self.thread,
-                vec![editor::Anchor::min()..editor::Anchor::max()],
+                vec![raijin_editor::Anchor::min()..raijin_editor::Anchor::max()],
                 self.workspace.clone(),
                 window,
                 cx,
@@ -341,7 +341,7 @@ fn keep_edits_in_ranges(
     editor: &mut Editor,
     buffer_snapshot: &MultiBufferSnapshot,
     thread: &Entity<AcpThread>,
-    ranges: Vec<Range<editor::Anchor>>,
+    ranges: Vec<Range<raijin_editor::Anchor>>,
     window: &mut Window,
     cx: &mut Context<Editor>,
 ) {
@@ -373,7 +373,7 @@ fn reject_edits_in_ranges(
     editor: &mut Editor,
     buffer_snapshot: &MultiBufferSnapshot,
     thread: &Entity<AcpThread>,
-    ranges: Vec<Range<editor::Anchor>>,
+    ranges: Vec<Range<raijin_editor::Anchor>>,
     workspace: WeakEntity<Workspace>,
     window: &mut Window,
     cx: &mut Context<Editor>,
@@ -431,7 +431,7 @@ fn reject_edits_in_ranges(
 fn update_editor_selection(
     editor: &mut Editor,
     buffer_snapshot: &MultiBufferSnapshot,
-    diff_hunks: &[multi_buffer::MultiBufferDiffHunk],
+    diff_hunks: &[raijin_multi_buffer::MultiBufferDiffHunk],
     window: &mut Window,
     cx: &mut Context<Editor>,
 ) {
@@ -442,7 +442,7 @@ fn update_editor_selection(
 
     if !diff_hunks.iter().any(|hunk| {
         hunk.row_range
-            .contains(&multi_buffer::MultiBufferRow(newest_cursor.row))
+            .contains(&raijin_multi_buffer::MultiBufferRow(newest_cursor.row))
     }) {
         return;
     }
@@ -454,7 +454,7 @@ fn update_editor_selection(
                 let last_kept_hunk_end = last_kept_hunk.multi_buffer_range().end;
                 editor
                     .diff_hunks_in_ranges(
-                        &[last_kept_hunk_end..editor::Anchor::max()],
+                        &[last_kept_hunk_end..raijin_editor::Anchor::max()],
                         buffer_snapshot,
                     )
                     .nth(1)
@@ -464,7 +464,7 @@ fn update_editor_selection(
                 let first_kept_hunk_start = first_kept_hunk.multi_buffer_range().start;
                 editor
                     .diff_hunks_in_ranges(
-                        &[editor::Anchor::min()..first_kept_hunk_start],
+                        &[raijin_editor::Anchor::min()..first_kept_hunk_start],
                         buffer_snapshot,
                     )
                     .next()
@@ -547,7 +547,7 @@ impl Item for AgentDiffPane {
     fn for_each_project_item(
         &self,
         cx: &App,
-        f: &mut dyn FnMut(inazuma::EntityId, &dyn project::ProjectItem),
+        f: &mut dyn FnMut(inazuma::EntityId, &dyn raijin_project::ProjectItem),
     ) {
         self.editor.for_each_project_item(cx, f)
     }
@@ -569,7 +569,7 @@ impl Item for AgentDiffPane {
 
     fn clone_on_split(
         &self,
-        _workspace_id: Option<workspace::WorkspaceId>,
+        _workspace_id: Option<raijin_workspace::WorkspaceId>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Task<Option<Entity<Self>>>
@@ -678,7 +678,7 @@ impl Render for AgentDiffPane {
                         .child("No changes to review")
                         .child(
                             Button::new("continue-iterating", "Continue Iterating")
-                                .style(ButtonStyle::Filled)
+                                .style(ButtonStyle::FILLED)
                                 .start_icon(
                                     Icon::new(IconName::ForwardArrow)
                                         .size(IconSize::Small)
@@ -703,7 +703,7 @@ impl Render for AgentDiffPane {
 fn diff_hunk_controls(
     thread: &Entity<AcpThread>,
     workspace: WeakEntity<Workspace>,
-) -> editor::RenderDiffHunkControlsFn {
+) -> raijin_editor::RenderDiffHunkControlsFn {
     let thread = thread.clone();
 
     Arc::new(
@@ -728,7 +728,7 @@ fn diff_hunk_controls(
 fn render_diff_hunk_controls(
     row: u32,
     _status: &DiffHunkStatus,
-    hunk_range: Range<editor::Anchor>,
+    hunk_range: Range<raijin_editor::Anchor>,
     is_created_file: bool,
     line_height: Pixels,
     thread: &Entity<AcpThread>,
@@ -877,7 +877,7 @@ fn render_diff_hunk_controls(
 
 struct AgentDiffAddon;
 
-impl editor::Addon for AgentDiffAddon {
+impl raijin_editor::Addon for AgentDiffAddon {
     fn to_any(&self) -> &dyn std::any::Any {
         self
     }
@@ -1422,11 +1422,11 @@ impl AgentDiff {
     fn handle_workspace_event(
         &mut self,
         workspace: &Entity<Workspace>,
-        event: &workspace::Event,
+        event: &raijin_workspace::Event,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        if let workspace::Event::ItemAdded { item } = event
+        if let raijin_workspace::Event::ItemAdded { item } = event
             && let Some(editor) = item.downcast::<Editor>()
             && let Some(buffer) = Self::full_editor_buffer(editor.read(cx), cx)
         {
@@ -1647,7 +1647,7 @@ impl AgentDiff {
                 editor,
                 &snapshot,
                 thread,
-                vec![editor::Anchor::min()..editor::Anchor::max()],
+                vec![raijin_editor::Anchor::min()..raijin_editor::Anchor::max()],
                 window,
                 cx,
             );
@@ -1668,7 +1668,7 @@ impl AgentDiff {
                 editor,
                 &snapshot,
                 thread,
-                vec![editor::Anchor::min()..editor::Anchor::max()],
+                vec![raijin_editor::Anchor::min()..raijin_editor::Anchor::max()],
                 workspace.clone(),
                 window,
                 cx,
@@ -1774,7 +1774,7 @@ enum PostReviewState {
 
 pub struct EditorAgentDiffAddon;
 
-impl editor::Addon for EditorAgentDiffAddon {
+impl raijin_editor::Addon for EditorAgentDiffAddon {
     fn to_any(&self) -> &dyn std::any::Any {
         self
     }
@@ -1790,7 +1790,7 @@ mod tests {
     use super::*;
     use crate::Keep;
     use raijin_acp_thread::AgentConnection as _;
-    use raijin_agent_settings::AgentSettings;
+    use raijin_raijin_agent_settings::AgentSettings;
     use raijin_editor::EditorSettings;
     use inazuma::{TestAppContext, UpdateGlobal, VisualTestContext};
     use raijin_project::{FakeFs, Project};
@@ -1805,9 +1805,9 @@ mod tests {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
-            prompt_store::init(cx);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
-            language_model::init_settings(cx);
+            raijin_prompt_store::init(cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+            raijin_language_model::init_settings(cx);
         });
 
         let fs = FakeFs::new(cx.executor());
@@ -1823,7 +1823,7 @@ mod tests {
             })
             .unwrap();
 
-        let connection = Rc::new(acp_thread::StubAgentConnection::new());
+        let connection = Rc::new(raijin_acp_thread::StubAgentConnection::new());
         let thread = cx
             .update(|cx| {
                 connection.clone().new_session(
@@ -1962,10 +1962,10 @@ mod tests {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
-            prompt_store::init(cx);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
-            language_model::init_settings(cx);
-            workspace::register_project_item::<Editor>(cx);
+            raijin_prompt_store::init(cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+            raijin_language_model::init_settings(cx);
+            raijin_workspace::register_project_item::<Editor>(cx);
         });
 
         cx.update(|cx| {
@@ -2016,7 +2016,7 @@ mod tests {
             }
         });
 
-        let connection = Rc::new(acp_thread::StubAgentConnection::new());
+        let connection = Rc::new(raijin_acp_thread::StubAgentConnection::new());
         let thread = cx
             .update(|_, cx| {
                 connection.clone().new_session(

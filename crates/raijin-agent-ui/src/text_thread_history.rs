@@ -205,7 +205,7 @@ impl TextThreadHistory {
 
                 const MAX_MATCHES: usize = 100;
 
-                let matches = fuzzy::match_strings(
+                let matches = inazuma_fuzzy::match_strings(
                     &candidates,
                     &query,
                     false,
@@ -269,7 +269,7 @@ impl TextThreadHistory {
         cx.notify();
     }
 
-    fn select_next(&mut self, _: &menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_next(&mut self, _: &inazuma_menu::SelectNext, _window: &mut Window, cx: &mut Context<Self>) {
         if self.selected_index == self.visible_items.len() - 1 {
             self.set_selected_index(0, Bias::Right, cx);
         } else {
@@ -279,7 +279,7 @@ impl TextThreadHistory {
 
     fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -292,18 +292,18 @@ impl TextThreadHistory {
 
     fn select_first(
         &mut self,
-        _: &menu::SelectFirst,
+        _: &inazuma_menu::SelectFirst,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) {
         self.set_selected_index(0, Bias::Right, cx);
     }
 
-    fn select_last(&mut self, _: &menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
+    fn select_last(&mut self, _: &inazuma_menu::SelectLast, _window: &mut Window, cx: &mut Context<Self>) {
         self.set_selected_index(self.visible_items.len() - 1, Bias::Left, cx);
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         self.confirm_entry(self.selected_index, cx);
     }
 
@@ -598,7 +598,7 @@ impl Render for TextThreadHistory {
                                         )
                                         .child(
                                             Button::new("confirm_delete", "Delete")
-                                                .style(ButtonStyle::Tinted(ui::TintColor::Error))
+                                                .style(ButtonStyle::tinted(raijin_ui::TintColor::Error))
                                                 .color(Color::Error)
                                                 .label_size(LabelSize::Small)
                                                 .on_click(cx.listener(|_, _, window, cx| {

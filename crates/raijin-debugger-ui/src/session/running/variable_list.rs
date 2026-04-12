@@ -8,7 +8,7 @@ use raijin_dap::{
 use raijin_editor::Editor;
 use inazuma::{
     Action, AnyElement, ClickEvent, ClipboardItem, Context, DismissEvent, Empty, Entity,
-    FocusHandle, Focusable, Hsla, MouseDownEvent, Point, Subscription, TextStyleRefinement,
+    FocusHandle, Focusable, Oklch, MouseDownEvent, Point, Subscription, TextStyleRefinement,
     UniformListScrollHandle, WeakEntity, actions, anchored, deferred, uniform_list,
 };
 use itertools::Itertools;
@@ -182,8 +182,8 @@ impl ListEntry {
 }
 
 struct VariableColor {
-    name: Option<Hsla>,
-    value: Option<Hsla>,
+    name: Option<Oklch>,
+    value: Option<Oklch>,
 }
 
 pub struct VariableList {
@@ -379,7 +379,7 @@ impl VariableList {
 
         self.entries = entries;
 
-        let text_pixels = ui::TextSize::Default.pixels(cx).to_f64() as f32;
+        let text_pixels = raijin_ui::TextSize::Default.pixels(cx).to_f64() as f32;
         let indent_size = INDENT_STEP_SIZE.to_f64() as f32;
 
         self.max_width_index = self
@@ -527,13 +527,13 @@ impl VariableList {
         }
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
         self.edited_path.take();
         self.focus_handle.focus(window, cx);
         cx.notify();
     }
 
-    fn confirm(&mut self, _: &menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
+    fn confirm(&mut self, _: &inazuma_menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         if let Some((var_path, editor)) = self.edited_path.take() {
             let Some(state) = self.entry_states.get(&var_path) else {
                 return;
@@ -1064,7 +1064,7 @@ impl VariableList {
             };
             editor.set_text_style_refinement(refinement);
             editor.set_text(default, window, cx);
-            editor.select_all(&editor::actions::SelectAll, window, cx);
+            editor.select_all(&raijin_editor::actions::SelectAll, window, cx);
             editor
         });
         editor.focus_handle(cx).focus(window, cx);
@@ -1345,7 +1345,7 @@ impl VariableList {
                     .tooltip(move |_window, cx| {
                         Tooltip::for_action_in("Remove Watch", &RemoveWatch, &focus_handle, cx)
                     })
-                    .icon_size(ui::IconSize::Indicator),
+                    .icon_size(raijin_ui::IconSize::Indicator),
                 ),
             )
             .into_any()
@@ -1586,7 +1586,7 @@ impl Render for VariableList {
             }))
             // .vertical_scrollbar_for(&self.list_handle, window, cx)
             .custom_scrollbars(
-                ui::Scrollbars::new(ScrollAxes::Both)
+                raijin_ui::Scrollbars::new(ScrollAxes::Both)
                     .tracked_scroll_handle(&self.list_handle)
                     .with_track_along(ScrollAxes::Both, cx.theme().colors().panel.background)
                     .tracked_entity(cx.entity_id()),
@@ -1597,16 +1597,16 @@ impl Render for VariableList {
 }
 
 struct EntryColors {
-    default: Hsla,
-    hover: Hsla,
-    marked_active: Hsla,
+    default: Oklch,
+    hover: Oklch,
+    marked_active: Oklch,
 }
 
 fn get_entry_color(cx: &Context<VariableList>) -> EntryColors {
     let colors = cx.theme().colors();
 
     EntryColors {
-        default: colors.panel_background,
+        default: colors.panel.background,
         hover: colors.ghost_element_hover,
         marked_active: colors.ghost_element_selected,
     }

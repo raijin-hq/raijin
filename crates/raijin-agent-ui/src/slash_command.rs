@@ -49,7 +49,7 @@ impl SlashCommandCompletionProvider {
         name_range: Range<Anchor>,
         window: &mut Window,
         cx: &mut App,
-    ) -> Task<Result<Vec<project::CompletionResponse>>> {
+    ) -> Task<Result<Vec<raijin_project::CompletionResponse>>> {
         let slash_commands = self.slash_commands.clone();
         let candidates = slash_commands
             .command_names(cx)
@@ -119,7 +119,7 @@ impl SlashCommandCompletionProvider {
                                         ) as Arc<_>
                                 });
 
-                        Some(project::Completion {
+                        Some(raijin_project::Completion {
                             replace_range: name_range.clone(),
                             documentation: Some(CompletionDocumentation::SingleLine(
                                 command.description().into(),
@@ -136,7 +136,7 @@ impl SlashCommandCompletionProvider {
                     })
                     .collect();
 
-                vec![project::CompletionResponse {
+                vec![raijin_project::CompletionResponse {
                     completions,
                     display_options: CompletionDisplayOptions::default(),
                     is_incomplete: false,
@@ -154,7 +154,7 @@ impl SlashCommandCompletionProvider {
         last_argument_range: Range<Anchor>,
         window: &mut Window,
         cx: &mut App,
-    ) -> Task<Result<Vec<project::CompletionResponse>>> {
+    ) -> Task<Result<Vec<raijin_project::CompletionResponse>>> {
         let new_cancel_flag = Arc::new(AtomicBool::new(false));
         let mut flag = self.cancel_flag.lock();
         flag.store(true, SeqCst);
@@ -224,7 +224,7 @@ impl SlashCommandCompletionProvider {
                             new_text.push(' ');
                         }
 
-                        project::Completion {
+                        raijin_project::Completion {
                             replace_range: if new_argument.replace_previous_arguments {
                                 argument_range.clone()
                             } else {
@@ -243,7 +243,7 @@ impl SlashCommandCompletionProvider {
                     })
                     .collect();
 
-                Ok(vec![project::CompletionResponse {
+                Ok(vec![raijin_project::CompletionResponse {
                     completions,
                     display_options: CompletionDisplayOptions::default(),
                     // TODO: Could have slash commands indicate whether their completions are incomplete.
@@ -251,7 +251,7 @@ impl SlashCommandCompletionProvider {
                 }])
             })
         } else {
-            Task::ready(Ok(vec![project::CompletionResponse {
+            Task::ready(Ok(vec![raijin_project::CompletionResponse {
                 completions: Vec::new(),
                 display_options: CompletionDisplayOptions::default(),
                 is_incomplete: true,
@@ -266,10 +266,10 @@ impl CompletionProvider for SlashCommandCompletionProvider {
         _excerpt_id: ExcerptId,
         buffer: &Entity<Buffer>,
         buffer_position: Anchor,
-        _: editor::CompletionContext,
+        _: raijin_editor::CompletionContext,
         window: &mut Window,
         cx: &mut Context<Editor>,
-    ) -> Task<Result<Vec<project::CompletionResponse>>> {
+    ) -> Task<Result<Vec<raijin_project::CompletionResponse>>> {
         let Some((name, arguments, command_range, last_argument_range)) =
             buffer.update(cx, |buffer, _cx| {
                 let position = buffer_position.to_point(buffer);
@@ -313,7 +313,7 @@ impl CompletionProvider for SlashCommandCompletionProvider {
                 Some((name, arguments, command_range, last_argument_range))
             })
         else {
-            return Task::ready(Ok(vec![project::CompletionResponse {
+            return Task::ready(Ok(vec![raijin_project::CompletionResponse {
                 completions: Vec::new(),
                 display_options: CompletionDisplayOptions::default(),
                 is_incomplete: false,
@@ -338,7 +338,7 @@ impl CompletionProvider for SlashCommandCompletionProvider {
     fn is_completion_trigger(
         &self,
         buffer: &Entity<Buffer>,
-        position: language::Anchor,
+        position: raijin_language::Anchor,
         _text: &str,
         _trigger_in_words: bool,
         cx: &mut Context<Editor>,

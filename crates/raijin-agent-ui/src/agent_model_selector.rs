@@ -1,7 +1,7 @@
 use crate::{
     ModelUsageContext,
     language_model_selector::{LanguageModelSelector, language_model_selector},
-    ui::ModelSelectorTooltip,
+    raijin_ui::ModelSelectorTooltip,
 };
 use raijin_fs::Fs;
 use inazuma::{Entity, FocusHandle, SharedString};
@@ -74,7 +74,7 @@ impl AgentModelSelector {
         self.menu_handle.toggle(window, cx);
     }
 
-    pub fn active_model(&self, cx: &App) -> Option<language_model::ConfiguredModel> {
+    pub fn active_model(&self, cx: &App) -> Option<raijin_language_model::ConfiguredModel> {
         self.selector.read(cx).delegate.active_model(cx)
     }
 
