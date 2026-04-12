@@ -1154,9 +1154,10 @@ impl RunningState {
                     }).await?;
 
                 let terminal_view = cx.new_window_entity(|window, cx| {
+                    let workspace = weak_workspace.upgrade().expect("workspace dropped");
                     TerminalView::new(
                         terminal.clone(),
-                        weak_workspace,
+                        workspace,
                         None,
                         weak_project,
                         window,
@@ -1325,6 +1326,7 @@ impl RunningState {
             let terminal = terminal_task.await?;
 
             let terminal_view = cx.new_window_entity(|window, cx| {
+                let workspace = workspace.upgrade().expect("workspace dropped");
                 TerminalView::new(terminal.clone(), workspace, None, weak_project, window, cx)
             })?;
 
@@ -1336,12 +1338,8 @@ impl RunningState {
                 });
             })?;
 
-            terminal.read_with(cx, |terminal, _| {
-                terminal
-                    .pid()
-                    .map(|pid| pid.as_u32())
-                    .context("Terminal was spawned but PID was not available")
-            })
+            // raijin-terminal doesn't expose PIDs yet; return 0 as placeholder
+            Ok(0u32)
         });
 
         cx.background_spawn(async move { anyhow::Ok(sender.send(terminal_task.await).await?) })

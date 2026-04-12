@@ -944,7 +944,7 @@ impl ConfigureMode {
                     .label("Stop on Entry")
                     .label_position(SwitchLabelPosition::Start)
                     .label_size(LabelSize::Default)
-                    .on_click({
+                    .on_toggle({
                         let this = cx.weak_entity();
                         move |state, _, cx| {
                             this.update(cx, |this, _| {
