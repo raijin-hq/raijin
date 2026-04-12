@@ -21,11 +21,11 @@ use crate::{
 async fn test_rust_inline_values(executor: BackgroundExecutor, cx: &mut TestAppContext) {
     init_test(cx);
 
-    fn stack_frame_for_line(line: u64) -> dap::StackFrame {
+    fn stack_frame_for_line(line: u64) -> raijin_dap::StackFrame {
         StackFrame {
             id: 1,
             name: "Stack Frame 1".into(),
-            source: Some(dap::Source {
+            source: Some(raijin_dap::Source {
                 name: Some("main.rs".into()),
                 path: Some(path!("/project/main.rs").into()),
                 source_reference: None,
@@ -93,25 +93,25 @@ fn main() {
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
         })
     });
 
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(4)],
             total_frames: None,
         })
     });
 
-    client.on_request::<dap::requests::Evaluate, _>(move |_, args| {
+    client.on_request::<raijin_dap::requests::Evaluate, _>(move |_, args| {
         assert_eq!("GLOBAL", args.expression);
-        Ok(dap::EvaluateResponse {
+        Ok(raijin_dap::EvaluateResponse {
             result: "1".into(),
             type_: None,
             presentation_hint: None,
@@ -168,14 +168,14 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
 
-    client.on_request::<dap::requests::Scopes, _>(move |_, _| {
-        Ok(dap::ScopesResponse {
+    client.on_request::<raijin_dap::requests::Scopes, _>(move |_, _| {
+        Ok(raijin_dap::ScopesResponse {
             scopes: vec![Scope {
                 name: "Locale".into(),
                 presentation_hint: None,
@@ -193,8 +193,8 @@ fn main() {
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -283,15 +283,15 @@ fn main() {
         );
     });
 
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(5)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -340,15 +340,15 @@ fn main() {
         );
     });
 
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(6)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -397,15 +397,15 @@ fn main() {
         );
     });
 
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(7)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -454,15 +454,15 @@ fn main() {
         );
     });
 
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(8)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -556,20 +556,20 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(9)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -663,20 +663,20 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(10)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -782,20 +782,20 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(11)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -901,20 +901,20 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(14)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1033,20 +1033,20 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(19)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1095,15 +1095,15 @@ fn main() {
         );
     });
 
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(15)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1168,20 +1168,20 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(16)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1300,14 +1300,14 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
-    client.on_request::<dap::requests::Evaluate, _>(move |_, args| {
+    client.on_request::<raijin_dap::requests::Evaluate, _>(move |_, args| {
         assert_eq!("GLOBAL", args.expression);
-        Ok(dap::EvaluateResponse {
+        Ok(raijin_dap::EvaluateResponse {
             result: "2".into(),
             type_: None,
             presentation_hint: None,
@@ -1318,15 +1318,15 @@ fn main() {
             value_location_reference: None,
         })
     });
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(25)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1458,20 +1458,20 @@ fn main() {
     client.on_request::<Variables, _>({
         let local_variables = Arc::new(local_variables.clone());
         move |_, _| {
-            Ok(dap::VariablesResponse {
+            Ok(raijin_dap::VariablesResponse {
                 variables: (*local_variables).clone(),
             })
         }
     });
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![stack_frame_for_line(26)],
             total_frames: None,
         })
     });
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1591,22 +1591,22 @@ def process_data(untyped_param, typed_param: int, another_typed: str):
 
     editor.update(cx, |editor, cx| editor.refresh_inline_values(cx));
 
-    client.on_request::<dap::requests::Threads, _>(move |_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(move |_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "Thread 1".into(),
             }],
         })
     });
 
-    client.on_request::<dap::requests::StackTrace, _>(move |_, args| {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, args| {
         assert_eq!(args.thread_id, 1);
-        Ok(dap::StackTraceResponse {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: vec![StackFrame {
                 id: 1,
                 name: "Stack Frame 1".into(),
-                source: Some(dap::Source {
+                source: Some(raijin_dap::Source {
                     name: Some("main.py".into()),
                     path: Some(path!("/project/main.py").into()),
                     source_reference: None,
@@ -1629,8 +1629,8 @@ def process_data(untyped_param, typed_param: int, another_typed: str):
         })
     });
 
-    client.on_request::<dap::requests::Scopes, _>(move |_, _| {
-        Ok(dap::ScopesResponse {
+    client.on_request::<raijin_dap::requests::Scopes, _>(move |_, _| {
+        Ok(raijin_dap::ScopesResponse {
             scopes: vec![
                 Scope {
                     name: "Local".into(),
@@ -1663,7 +1663,7 @@ def process_data(untyped_param, typed_param: int, another_typed: str):
     });
 
     client.on_request::<Variables, _>(move |_, args| match args.variables_reference {
-        1 => Ok(dap::VariablesResponse {
+        1 => Ok(raijin_dap::VariablesResponse {
             variables: vec![
                 Variable {
                     name: "untyped_param".into(),
@@ -1784,12 +1784,12 @@ def process_data(untyped_param, typed_param: int, another_typed: str):
                 },
             ],
         }),
-        _ => Ok(dap::VariablesResponse { variables: vec![] }),
+        _ => Ok(raijin_dap::VariablesResponse { variables: vec![] }),
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -1902,21 +1902,21 @@ async fn test_inline_values_util(
     let session = start_debug_session(&workspace, cx, |_| {}).unwrap();
     let client = session.update(cx, |session, _| session.adapter_client().unwrap());
 
-    client.on_request::<dap::requests::Threads, _>(|_, _| {
-        Ok(dap::ThreadsResponse {
-            threads: vec![dap::Thread {
+    client.on_request::<raijin_dap::requests::Threads, _>(|_, _| {
+        Ok(raijin_dap::ThreadsResponse {
+            threads: vec![raijin_dap::Thread {
                 id: 1,
                 name: "main".into(),
             }],
         })
     });
 
-    client.on_request::<dap::requests::StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
-            stack_frames: vec![dap::StackFrame {
+    client.on_request::<raijin_dap::requests::StackTrace, _>(move |_, _| {
+        Ok(raijin_dap::StackTraceResponse {
+            stack_frames: vec![raijin_dap::StackFrame {
                 id: 1,
                 name: "main".into(),
-                source: Some(dap::Source {
+                source: Some(raijin_dap::Source {
                     name: Some("main.rs".into()),
                     path: Some(path!("/project/main.rs").into()),
                     source_reference: None,
@@ -1982,12 +1982,12 @@ async fn test_inline_values_util(
                 3 => (*global_vars).clone(),
                 _ => vec![],
             };
-            Ok(dap::VariablesResponse { variables })
+            Ok(raijin_dap::VariablesResponse { variables })
         }
     });
 
-    client.on_request::<dap::requests::Scopes, _>(move |_, _| {
-        Ok(dap::ScopesResponse {
+    client.on_request::<raijin_dap::requests::Scopes, _>(move |_, _| {
+        Ok(raijin_dap::ScopesResponse {
             scopes: vec![
                 Scope {
                     name: "Local".into(),
@@ -2025,13 +2025,13 @@ async fn test_inline_values_util(
             .map(|(name, value)| (name.to_string(), value.to_string()))
             .collect();
 
-        client.on_request::<dap::requests::Evaluate, _>(move |_, args| {
+        client.on_request::<raijin_dap::requests::Evaluate, _>(move |_, args| {
             let value = global_evaluate_map
                 .get(&args.expression)
                 .unwrap_or(&"undefined".to_string())
                 .clone();
 
-            Ok(dap::EvaluateResponse {
+            Ok(raijin_dap::EvaluateResponse {
                 result: value,
                 type_: None,
                 presentation_hint: None,
@@ -2045,8 +2045,8 @@ async fn test_inline_values_util(
     }
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,

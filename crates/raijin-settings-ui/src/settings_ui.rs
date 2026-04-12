@@ -432,14 +432,9 @@ fn init_renderers(cx: &mut App) {
                     settings_window,
                     item,
                     settings_file,
-                    ButtonCommon::tab_index(
-                        ButtonCommon::size(
-                            Button::new("open-in-settings-file", "Edit in settings.toml")
-                                .style(ButtonStyle::Outlined),
-                            ButtonSize::Medium,
-                        ),
-                        0_isize,
-                    )
+                    Button::new("open-in-settings-file", "Edit in settings.toml")
+                        .style(ButtonStyle::Outlined)
+                        .size(ButtonSize::Medium)
                         .tooltip(Tooltip::for_action_title_in(
                             "Edit in settings.toml",
                             &OpenCurrentFile,
@@ -922,15 +917,10 @@ impl SettingsPageItem {
                         settings_window,
                         setting_item,
                         file.clone(),
-                        ButtonCommon::tab_index(
-                            ButtonCommon::size(
-                                Button::new("error-warning", warning)
-                                    .style(ButtonStyle::Outlined),
-                                ButtonSize::Medium,
-                            )
-                            .start_icon(Icon::new(IconName::Debug).color(Color::Error)),
-                            0_isize,
-                        )
+                        Button::new("error-warning", warning)
+                            .style(ButtonStyle::Outlined)
+                            .size(ButtonSize::Medium)
+                            .start_icon(Icon::new(IconName::Debug).color(Color::Error))
                             .tooltip(Tooltip::text(setting_item.field.type_name()))
                             .into_any_element(),
                         sub_field,
@@ -990,22 +980,17 @@ impl SettingsPageItem {
                                 ),
                         )
                         .child(
-                            ButtonCommon::size(
-                                ButtonCommon::tab_index(
-                                    Button::new(
-                                        ("sub-page".into(), sub_page_link.title.clone()),
-                                        "Configure",
-                                    ),
-                                    0_isize,
+                            Button::new(
+                                    ("sub-page".into(), sub_page_link.title.clone()),
+                                    "Configure",
                                 )
                                 .end_icon(
                                     Icon::new(IconName::ChevronRight)
                                         .size(IconSize::Small)
                                         .color(Color::Muted),
                                 )
-                                .style(ButtonStyle::Outlined),
-                                ButtonSize::Medium,
-                            )
+                                .style(ButtonStyle::Outlined)
+                                .size(ButtonSize::Medium)
                             .on_click({
                                 let sub_page_link = sub_page_link.clone();
                                 cx.listener(move |this, _, window, cx| {
@@ -1128,22 +1113,17 @@ impl SettingsPageItem {
                                 ),
                         )
                         .child(
-                            ButtonCommon::size(
-                                ButtonCommon::tab_index(
-                                    Button::new(
-                                        ("action-link".into(), action_link.title.clone()),
-                                        action_link.button_text.clone(),
-                                    ),
-                                    0_isize,
+                            Button::new(
+                                    ("action-link".into(), action_link.title.clone()),
+                                    action_link.button_text.clone(),
                                 )
                                 .end_icon(
                                     Icon::new(IconName::ArrowUpRight)
                                         .size(IconSize::Small)
                                         .color(Color::Muted),
                                 )
-                                .style(ButtonStyle::Outlined),
-                                ButtonSize::Medium,
-                            )
+                                .style(ButtonStyle::Outlined)
+                                .size(ButtonSize::Medium)
                             .on_click({
                                 let on_click = action_link.on_click.clone();
                                 cx.listener(move |this, _, window, cx| {

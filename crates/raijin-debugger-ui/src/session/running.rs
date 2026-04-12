@@ -1595,7 +1595,7 @@ impl RunningState {
         self.session_id
     }
 
-    pub(crate) fn selected_stack_frame_id(&self, cx: &App) -> Option<dap::StackFrameId> {
+    pub(crate) fn selected_stack_frame_id(&self, cx: &App) -> Option<raijin_dap::StackFrameId> {
         self.stack_frame_list.read(cx).opened_stack_frame_id()
     }
 

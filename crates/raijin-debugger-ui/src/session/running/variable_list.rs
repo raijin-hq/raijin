@@ -98,8 +98,8 @@ impl EntryPath {
 #[derive(Debug, Clone, PartialEq)]
 enum DapEntry {
     Watcher(Watcher),
-    Variable(dap::Variable),
-    Scope(dap::Scope),
+    Variable(raijin_dap::Variable),
+    Scope(raijin_dap::Scope),
 }
 
 impl DapEntry {
@@ -110,14 +110,14 @@ impl DapEntry {
         }
     }
 
-    fn as_variable(&self) -> Option<&dap::Variable> {
+    fn as_variable(&self) -> Option<&raijin_dap::Variable> {
         match self {
             DapEntry::Variable(dap) => Some(dap),
             _ => None,
         }
     }
 
-    fn as_scope(&self) -> Option<&dap::Scope> {
+    fn as_scope(&self) -> Option<&raijin_dap::Scope> {
         match self {
             DapEntry::Scope(dap) => Some(dap),
             _ => None,
@@ -145,11 +145,11 @@ impl ListEntry {
         self.entry.as_watcher()
     }
 
-    fn as_variable(&self) -> Option<&dap::Variable> {
+    fn as_variable(&self) -> Option<&raijin_dap::Variable> {
         self.entry.as_variable()
     }
 
-    fn as_scope(&self) -> Option<&dap::Scope> {
+    fn as_scope(&self) -> Option<&raijin_dap::Scope> {
         self.entry.as_scope()
     }
 
@@ -419,7 +419,7 @@ impl VariableList {
         }
     }
 
-    pub fn completion_variables(&self, _cx: &mut Context<Self>) -> Vec<dap::Variable> {
+    pub fn completion_variables(&self, _cx: &mut Context<Self>) -> Vec<raijin_dap::Variable> {
         self.entries
             .iter()
             .filter_map(|entry| match &entry.entry {
@@ -721,9 +721,9 @@ impl VariableList {
                                             format!(
                                                 "Toggle {} Data Breakpoint",
                                                 match access {
-                                                    dap::DataBreakpointAccessType::Read => "Read",
-                                                    dap::DataBreakpointAccessType::Write => "Write",
-                                                    dap::DataBreakpointAccessType::ReadWrite =>
+                                                    raijin_dap::DataBreakpointAccessType::Read => "Read",
+                                                    raijin_dap::DataBreakpointAccessType::Write => "Write",
+                                                    raijin_dap::DataBreakpointAccessType::ReadWrite =>
                                                         "Read/Write",
                                                 }
                                             ),
@@ -835,7 +835,7 @@ impl VariableList {
                 session.create_data_breakpoint(
                     context,
                     data_id.clone(),
-                    dap::DataBreakpoint {
+                    raijin_dap::DataBreakpoint {
                         data_id,
                         access_type,
                         condition: None,
@@ -1002,7 +1002,7 @@ impl VariableList {
 
     #[track_caller]
     #[cfg(test)]
-    pub(crate) fn scopes(&self) -> Vec<dap::Scope> {
+    pub(crate) fn scopes(&self) -> Vec<raijin_dap::Scope> {
         self.entries
             .iter()
             .filter_map(|entry| match &entry.entry {
@@ -1015,8 +1015,8 @@ impl VariableList {
 
     #[track_caller]
     #[cfg(test)]
-    pub(crate) fn variables_per_scope(&self) -> Vec<(dap::Scope, Vec<dap::Variable>)> {
-        let mut scopes: Vec<(dap::Scope, Vec<_>)> = Vec::new();
+    pub(crate) fn variables_per_scope(&self) -> Vec<(raijin_dap::Scope, Vec<raijin_dap::Variable>)> {
+        let mut scopes: Vec<(raijin_dap::Scope, Vec<_>)> = Vec::new();
         let mut idx = 0;
 
         for entry in self.entries.iter() {
@@ -1038,7 +1038,7 @@ impl VariableList {
 
     #[track_caller]
     #[cfg(test)]
-    pub(crate) fn variables(&self) -> Vec<dap::Variable> {
+    pub(crate) fn variables(&self) -> Vec<raijin_dap::Variable> {
         self.entries
             .iter()
             .filter_map(|entry| match &entry.entry {

@@ -32,7 +32,7 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
 
     let session = start_debug_session(&workspace, cx, |client| {
         client.on_request::<Initialize, _>(move |_, _| {
-            Ok(dap::Capabilities {
+            Ok(raijin_dap::Capabilities {
                 supports_modules_request: Some(true),
                 ..Default::default()
             })
@@ -44,8 +44,8 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
 
     let called_modules = Arc::new(AtomicBool::new(false));
     let modules = vec![
-        dap::Module {
-            id: dap::ModuleId::Number(1),
+        raijin_dap::Module {
+            id: raijin_dap::ModuleId::Number(1),
             name: "First Module".into(),
             address_range: None,
             date_time_stamp: None,
@@ -56,8 +56,8 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
             is_optimized: None,
             is_user_code: None,
         },
-        dap::Module {
-            id: dap::ModuleId::Number(2),
+        raijin_dap::Module {
+            id: raijin_dap::ModuleId::Number(2),
             name: "Second Module".into(),
             address_range: None,
             date_time_stamp: None,
@@ -83,7 +83,7 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
             );
             called_modules.store(true, Ordering::SeqCst);
 
-            Ok(dap::ModulesResponse {
+            Ok(raijin_dap::ModulesResponse {
                 modules: modules.clone(),
                 total_modules: Some(2u64),
             })
@@ -91,8 +91,8 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
     });
 
     client
-        .fake_event(dap::messages::Events::Stopped(StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -135,8 +135,8 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
     // Changed
     // Removed
 
-    let new_module = dap::Module {
-        id: dap::ModuleId::Number(3),
+    let new_module = raijin_dap::Module {
+        id: raijin_dap::ModuleId::Number(3),
         name: "Third Module".into(),
         address_range: None,
         date_time_stamp: None,
@@ -149,8 +149,8 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
     };
 
     client
-        .fake_event(dap::messages::Events::Module(dap::ModuleEvent {
-            reason: dap::ModuleEventReason::New,
+        .fake_event(raijin_dap::messages::Events::Module(raijin_dap::ModuleEvent {
+            reason: raijin_dap::ModuleEventReason::New,
             module: new_module.clone(),
         }))
         .await;
@@ -165,8 +165,8 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
         assert!(actual_modules.contains(&new_module));
     });
 
-    let changed_module = dap::Module {
-        id: dap::ModuleId::Number(2),
+    let changed_module = raijin_dap::Module {
+        id: raijin_dap::ModuleId::Number(2),
         name: "Modified Second Module".into(),
         address_range: None,
         date_time_stamp: None,
@@ -179,8 +179,8 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
     };
 
     client
-        .fake_event(dap::messages::Events::Module(dap::ModuleEvent {
-            reason: dap::ModuleEventReason::Changed,
+        .fake_event(raijin_dap::messages::Events::Module(raijin_dap::ModuleEvent {
+            reason: raijin_dap::ModuleEventReason::Changed,
             module: changed_module.clone(),
         }))
         .await;
@@ -197,8 +197,8 @@ async fn test_module_list(executor: BackgroundExecutor, cx: &mut TestAppContext)
     });
 
     client
-        .fake_event(dap::messages::Events::Module(dap::ModuleEvent {
-            reason: dap::ModuleEventReason::Removed,
+        .fake_event(raijin_dap::messages::Events::Module(raijin_dap::ModuleEvent {
+            reason: raijin_dap::ModuleEventReason::Removed,
             module: changed_module.clone(),
         }))
         .await;

@@ -212,7 +212,7 @@ async fn test_matching_paths(cx: &mut TestAppContext) {
         "bandana",
         "./bandana",
         ".\\bandana",
-        util::path!("a/bandana"),
+        inazuma_util::path!("a/bandana"),
         "b/bandana",
         "b\\bandana",
         " bandana",
@@ -234,7 +234,7 @@ async fn test_matching_paths(cx: &mut TestAppContext) {
             assert_eq!(
                 picker.delegate.matches.len(),
                 // existence of CreateNew option depends on whether path already exists
-                if bandana_query == util::path!("a/bandana") {
+                if bandana_query == inazuma_util::path!("a/bandana") {
                     1
                 } else {
                     2
@@ -292,7 +292,7 @@ async fn test_matching_paths_with_colon(cx: &mut TestAppContext) {
         assert_match_at_position(picker, 0, "foo:bar.rs");
     });
 
-    cx.dispatch_action(editor::actions::Backspace);
+    cx.dispatch_action(raijin_editor::actions::Backspace);
 
     // 'foo:1' matches both files, specifying which row to jump to
     cx.simulate_input("1");
@@ -1232,7 +1232,7 @@ async fn test_history_items_uniqueness_for_multiple_worktree(cx: &mut TestAppCon
         .await
         .unwrap();
 
-    cx.dispatch_action(workspace::CloseActiveItem {
+    cx.dispatch_action(raijin_workspace::CloseActiveItem {
         save_intent: None,
         close_pinned: false,
     });
@@ -2164,7 +2164,7 @@ async fn test_external_files_history(cx: &mut inazuma::TestAppContext) {
             .read(cx)
             .id()
     });
-    cx.dispatch_action(workspace::CloseActiveItem {
+    cx.dispatch_action(raijin_workspace::CloseActiveItem {
         save_intent: None,
         close_pinned: false,
     });
@@ -3100,7 +3100,7 @@ async fn test_search_results_refreshed_on_standalone_file_creation(cx: &mut inaz
         open_paths(
             &[PathBuf::from(path!("/test/new.rs"))],
             app_state,
-            workspace::OpenOptions::default(),
+            raijin_workspace::OpenOptions::default(),
             cx,
         )
     })
@@ -3264,7 +3264,7 @@ async fn test_history_items_uniqueness_for_multiple_worktree_open_all_files(
         .await
         .unwrap();
 
-    cx.dispatch_action(workspace::CloseActiveItem {
+    cx.dispatch_action(raijin_workspace::CloseActiveItem {
         save_intent: None,
         close_pinned: false,
     });
@@ -3284,7 +3284,7 @@ async fn test_history_items_uniqueness_for_multiple_worktree_open_all_files(
         .await
         .unwrap();
 
-    cx.dispatch_action(workspace::CloseActiveItem {
+    cx.dispatch_action(raijin_workspace::CloseActiveItem {
         save_intent: None,
         close_pinned: false,
     });
@@ -3628,7 +3628,7 @@ async fn test_switches_between_release_norelease_modes_on_backward_nav(
     // Switch to navigating with other shortcuts
     // Don't open file on modifiers release
     cx.simulate_modifiers_change(Modifiers::control());
-    cx.dispatch_action(menu::SelectPrevious);
+    cx.dispatch_action(inazuma_menu::SelectPrevious);
     cx.simulate_modifiers_change(Modifiers::none());
     picker.update(cx, |finder, _| {
         assert_eq!(finder.delegate.matches.len(), 3);
@@ -3744,7 +3744,7 @@ async fn open_close_queried_buffer(
     )
     .await;
 
-    cx.dispatch_action(workspace::CloseActiveItem {
+    cx.dispatch_action(raijin_workspace::CloseActiveItem {
         save_intent: None,
         close_pinned: false,
     });
@@ -3791,7 +3791,7 @@ fn init_test(cx: &mut TestAppContext) -> Arc<AppState> {
         let state = AppState::test(cx);
         theme_settings::init(theme::LoadThemes::JustBase, cx);
         super::init(cx);
-        editor::init(cx);
+        raijin_editor::init(cx);
         state
     })
 }
@@ -4112,7 +4112,7 @@ async fn test_clear_navigation_history(cx: &mut TestAppContext) {
         );
     });
     workspace.update_in(cx, |_, window, cx| {
-        window.dispatch_action(menu::Cancel.boxed_clone(), cx);
+        window.dispatch_action(inazuma_menu::Cancel.boxed_clone(), cx);
     });
 
     // Verify navigation state before clear
@@ -4122,7 +4122,7 @@ async fn test_clear_navigation_history(cx: &mut TestAppContext) {
     });
 
     // Clear navigation history
-    cx.dispatch_action(workspace::ClearNavigationHistory);
+    cx.dispatch_action(raijin_workspace::ClearNavigationHistory);
 
     // Verify that navigation is disabled immediately after clear
     workspace.update(cx, |workspace, cx| {
@@ -4148,7 +4148,7 @@ async fn test_clear_navigation_history(cx: &mut TestAppContext) {
         );
     });
     workspace.update_in(cx, |_, window, cx| {
-        window.dispatch_action(menu::Cancel.boxed_clone(), cx);
+        window.dispatch_action(inazuma_menu::Cancel.boxed_clone(), cx);
     });
 
     // Verify history is empty by opening a new file

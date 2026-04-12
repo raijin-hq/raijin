@@ -2,7 +2,7 @@
 mod file_finder_tests;
 
 use futures::future::join_all;
-pub use open_path_prompt::OpenPathDelegate;
+pub use raijin_open_path_prompt::OpenPathDelegate;
 
 use raijin_channel::ChannelStore;
 use raijin_client::ChannelId;
@@ -15,7 +15,7 @@ use inazuma::{
     KeyContext, Modifiers, ModifiersChangedEvent, ParentElement, Render, Styled, Task, WeakEntity,
     Window, actions, rems,
 };
-use open_path_prompt::{
+use raijin_open_path_prompt::{
     OpenPathPrompt,
     file_finder_settings::{FileFinderSettings, FileFinderWidth},
 };
@@ -68,7 +68,7 @@ impl ModalView for FileFinder {
         &mut self,
         window: &mut Window,
         cx: &mut Context<Self>,
-    ) -> workspace::DismissDecision {
+    ) -> raijin_workspace::DismissDecision {
         let submenu_focused = self.picker.update(cx, |picker, cx| {
             picker
                 .delegate
@@ -79,7 +79,7 @@ impl ModalView for FileFinder {
                     .split_popover_menu_handle
                     .is_focused(window, cx)
         });
-        workspace::DismissDecision::Dismiss(!submenu_focused)
+        raijin_workspace::DismissDecision::Dismiss(!submenu_focused)
     }
 }
 
@@ -102,7 +102,7 @@ impl FileFinder {
         _: &mut Context<Workspace>,
     ) {
         workspace.register_action(
-            |workspace, action: &workspace::ToggleFileFinder, window, cx| {
+            |workspace, action: &raijin_workspace::ToggleFileFinder, window, cx| {
                 let Some(file_finder) = workspace.active_modal::<Self>(cx) else {
                     Self::open(workspace, action.separate_history, window, cx).detach();
                     return;
@@ -210,7 +210,7 @@ impl FileFinder {
             && (!event.modified() || !init_modifiers.is_subset_of(event))
         {
             self.init_modifiers = None;
-            window.dispatch_action(menu::Confirm.boxed_clone(), cx);
+            window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx);
         }
     }
 
@@ -221,7 +221,7 @@ impl FileFinder {
         cx: &mut Context<Self>,
     ) {
         self.init_modifiers = Some(window.modifiers());
-        window.dispatch_action(Box::new(menu::SelectPrevious), cx);
+        window.dispatch_action(Box::new(inazuma_menu::SelectPrevious), cx);
     }
 
     fn handle_filter_toggle_menu(
@@ -768,7 +768,7 @@ fn matching_history_items<'a>(
             .as_ref()
             .and_then(|w| w.get(&worktree).cloned());
         matching_history_paths.extend(
-            fuzzy::match_fixed_path_set(
+            inazuma_fuzzy::match_fixed_path_set(
                 candidates,
                 worktree.to_usize(),
                 worktree_root_name,
@@ -893,9 +893,9 @@ impl FileFinderDelegate {
     ) {
         cx.subscribe_in(project, window, |file_finder, _, event, window, cx| {
             match event {
-                project::Event::WorktreeUpdatedEntries(_, _)
-                | project::Event::WorktreeAdded(_)
-                | project::Event::WorktreeRemoved(_) => file_finder
+                raijin_project::Event::WorktreeUpdatedEntries(_, _)
+                | raijin_project::Event::WorktreeAdded(_)
+                | raijin_project::Event::WorktreeRemoved(_) => file_finder
                     .picker
                     .update(cx, |picker, cx| picker.refresh(window, cx)),
                 _ => {}
@@ -930,17 +930,17 @@ impl FileFinderDelegate {
                         worktree.root_entry().is_some_and(|entry| entry.is_ignored)
                     }),
                     include_root_name,
-                    candidates: project::Candidates::Files,
+                    candidates: raijin_project::Candidates::Files,
                 }
             })
             .collect::<Vec<_>>();
 
-        let search_id = util::post_inc(&mut self.search_count);
+        let search_id = inazuma_util::post_inc(&mut self.search_count);
         self.cancel_flag.store(true, atomic::Ordering::Release);
         self.cancel_flag = Arc::new(AtomicBool::new(false));
         let cancel_flag = self.cancel_flag.clone();
         cx.spawn_in(window, async move |picker, cx| {
-            let matches = fuzzy::match_path_sets(
+            let matches = inazuma_fuzzy::match_path_sets(
                 candidate_sets.as_slice(),
                 query.path_query(),
                 &relative_to,
@@ -1194,7 +1194,7 @@ impl FileFinderDelegate {
             };
 
         if file_name_positions.is_empty() {
-            let user_home_path = util::paths::home_dir().to_string_lossy();
+            let user_home_path = inazuma_util::paths::home_dir().to_string_lossy();
             if !user_home_path.is_empty() && full_path.starts_with(&*user_home_path) {
                 full_path.replace_range(0..user_home_path.len(), "~");
                 full_path_positions.retain_mut(|pos| {
@@ -1358,7 +1358,7 @@ impl FileFinderDelegate {
             picker
                 .update_in(cx, |picker, _, cx| {
                     let picker_delegate = &mut picker.delegate;
-                    let search_id = util::post_inc(&mut picker_delegate.search_count);
+                    let search_id = inazuma_util::post_inc(&mut picker_delegate.search_count);
                     picker_delegate.set_search_matches(search_id, false, query, path_matches, cx);
 
                     anyhow::Ok(())
@@ -1835,7 +1835,7 @@ impl PickerDelegate for FileFinderDelegate {
                                             .toggleable_entry(
                                                 "Include Ignored Files",
                                                 include_ignored.unwrap_or(false),
-                                                ui::IconPosition::End,
+                                                raijin_ui::IconPosition::End,
                                                 Some(ToggleIncludeIgnored.boxed_clone()),
                                                 move |window, cx| {
                                                     window.focus(&focus_handle, cx);
@@ -1865,7 +1865,7 @@ impl PickerDelegate for FileFinderDelegate {
                                 .trigger(
                                     ButtonLike::new("split-trigger")
                                         .child(Label::new("Split…"))
-                                        .selected_style(ButtonStyle::Tinted(TintColor::Accent))
+                                        .selected_style(ButtonStyle::tinted(TintColor::Accent))
                                         .child(
                                             KeyBinding::for_action_in(
                                                 &ToggleSplitMenu,
@@ -1907,11 +1907,11 @@ impl PickerDelegate for FileFinderDelegate {
                         .child(
                             Button::new("open-selection", "Open")
                                 .key_binding(
-                                    KeyBinding::for_action_in(&menu::Confirm, &focus_handle, cx)
+                                    KeyBinding::for_action_in(&inazuma_menu::Confirm, &focus_handle, cx)
                                         .map(|kb| kb.size(rems_from_px(12.))),
                                 )
                                 .on_click(|_, window, cx| {
-                                    window.dispatch_action(menu::Confirm.boxed_clone(), cx)
+                                    window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx)
                                 }),
                         ),
                 )

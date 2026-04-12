@@ -37,14 +37,14 @@ async fn test_handle_output_event(executor: BackgroundExecutor, cx: &mut TestApp
     let client = session.read_with(cx, |session, _| session.adapter_client().unwrap());
 
     client.on_request::<StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: Vec::default(),
             total_frames: None,
         })
     });
 
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
             category: None,
             output: "First console output line before thread stopped!".to_string(),
             data: None,
@@ -58,8 +58,8 @@ async fn test_handle_output_event(executor: BackgroundExecutor, cx: &mut TestApp
         .await;
 
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-            category: Some(dap::OutputEventCategory::Stdout),
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+            category: Some(raijin_dap::OutputEventCategory::Stdout),
             output: "First output line before thread stopped!".to_string(),
             data: None,
             variables_reference: None,
@@ -72,8 +72,8 @@ async fn test_handle_output_event(executor: BackgroundExecutor, cx: &mut TestApp
         .await;
 
     client
-        .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-            reason: dap::StoppedEventReason::Pause,
+        .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+            reason: raijin_dap::StoppedEventReason::Pause,
             description: None,
             thread_id: Some(1),
             preserve_focus_hint: None,
@@ -109,8 +109,8 @@ async fn test_handle_output_event(executor: BackgroundExecutor, cx: &mut TestApp
         .unwrap();
 
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-            category: Some(dap::OutputEventCategory::Stdout),
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+            category: Some(raijin_dap::OutputEventCategory::Stdout),
             output: "\tSecond output line after thread stopped!".to_string(),
             data: None,
             variables_reference: None,
@@ -123,8 +123,8 @@ async fn test_handle_output_event(executor: BackgroundExecutor, cx: &mut TestApp
         .await;
 
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-            category: Some(dap::OutputEventCategory::Console),
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+            category: Some(raijin_dap::OutputEventCategory::Console),
             output: "\tSecond console output line after thread stopped!".to_string(),
             data: None,
             variables_reference: None,
@@ -185,14 +185,14 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
     let client = session.read_with(cx, |session, _| session.adapter_client().unwrap());
 
     client.on_request::<StackTrace, _>(move |_, _| {
-        Ok(dap::StackTraceResponse {
+        Ok(raijin_dap::StackTraceResponse {
             stack_frames: Vec::default(),
             total_frames: None,
         })
     });
 
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
             category: None,
             output: "Checking latest version of JavaScript...".to_string(),
             data: None,
@@ -205,7 +205,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
         }))
         .await;
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
             category: None,
             output: "   \u{1b}[1m\u{1b}[38;2;173;127;168m▲ Next.js 15.1.5\u{1b}[39m\u{1b}[22m"
                 .to_string(),
@@ -219,7 +219,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
         }))
         .await;
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
             category: None,
             output: "   - Local:        http://localhost:3000\n   - Network:      http://192.168.1.144:3000\n\n \u{1b}[32m\u{1b}[1m✓\u{1b}[22m\u{1b}[39m Starting..."
                 .to_string(),
@@ -233,7 +233,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
         }))
         .await;
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
             category: None,
             output: "Something else...".to_string(),
             data: None,
@@ -246,7 +246,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
         }))
         .await;
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
             category: None,
             output: " \u{1b}[32m\u{1b}[1m✓\u{1b}[22m\u{1b}[39m Ready in 1009ms\n".to_string(),
             data: None,
@@ -260,7 +260,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
         .await;
 
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
             category: None,
             output: "\u{1b}[41m\u{1b}[37mBoth background and foreground!".to_string(),
             data: None,
@@ -273,7 +273,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
         }))
         .await;
     client
-        .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+        .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
             category: None,
             output: "Even more...".to_string(),
             data: None,
@@ -376,7 +376,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 
 //     let task = project.update(cx, |project, cx| {
 //         project.start_debug_session(
-//             dap::test_config(dap::DebugRequestType::Launch, None, None),
+//             raijin_dap::test_config(raijin_dap::DebugRequestType::Launch, None, None),
 //             cx,
 //         )
 //     });
@@ -386,7 +386,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 
 //     client
 //         .on_request::<StackTrace, _>(move |_, _| {
-//             Ok(dap::StackTraceResponse {
+//             Ok(raijin_dap::StackTraceResponse {
 //                 stack_frames: Vec::default(),
 //                 total_frames: None,
 //             })
@@ -394,8 +394,8 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-//             reason: dap::StoppedEventReason::Pause,
+//         .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+//             reason: raijin_dap::StoppedEventReason::Pause,
 //             description: None,
 //             thread_id: Some(1),
 //             preserve_focus_hint: None,
@@ -406,7 +406,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
 //             category: None,
 //             output: "First line".to_string(),
 //             data: None,
@@ -420,22 +420,22 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "First group".to_string(),
 //             data: None,
 //             variables_reference: None,
 //             source: None,
 //             line: None,
 //             column: None,
-//             group: Some(dap::OutputEventGroup::Start),
+//             group: Some(raijin_dap::OutputEventGroup::Start),
 //             location_reference: None,
 //         }))
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "First item in group 1".to_string(),
 //             data: None,
 //             variables_reference: None,
@@ -448,8 +448,8 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "Second item in group 1".to_string(),
 //             data: None,
 //             variables_reference: None,
@@ -462,22 +462,22 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "Second group".to_string(),
 //             data: None,
 //             variables_reference: None,
 //             source: None,
 //             line: None,
 //             column: None,
-//             group: Some(dap::OutputEventGroup::Start),
+//             group: Some(raijin_dap::OutputEventGroup::Start),
 //             location_reference: None,
 //         }))
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "First item in group 2".to_string(),
 //             data: None,
 //             variables_reference: None,
@@ -490,8 +490,8 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "Second item in group 2".to_string(),
 //             data: None,
 //             variables_reference: None,
@@ -504,36 +504,36 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "End group 2".to_string(),
 //             data: None,
 //             variables_reference: None,
 //             source: None,
 //             line: None,
 //             column: None,
-//             group: Some(dap::OutputEventGroup::End),
+//             group: Some(raijin_dap::OutputEventGroup::End),
 //             location_reference: None,
 //         }))
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "Third group".to_string(),
 //             data: None,
 //             variables_reference: None,
 //             source: None,
 //             line: None,
 //             column: None,
-//             group: Some(dap::OutputEventGroup::StartCollapsed),
+//             group: Some(raijin_dap::OutputEventGroup::StartCollapsed),
 //             location_reference: None,
 //         }))
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "First item in group 3".to_string(),
 //             data: None,
 //             variables_reference: None,
@@ -546,8 +546,8 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "Second item in group 3".to_string(),
 //             data: None,
 //             variables_reference: None,
@@ -560,22 +560,22 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "End group 3".to_string(),
 //             data: None,
 //             variables_reference: None,
 //             source: None,
 //             line: None,
 //             column: None,
-//             group: Some(dap::OutputEventGroup::End),
+//             group: Some(raijin_dap::OutputEventGroup::End),
 //             location_reference: None,
 //         }))
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "Third item in group 1".to_string(),
 //             data: None,
 //             variables_reference: None,
@@ -588,15 +588,15 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Output(dap::OutputEvent {
-//             category: Some(dap::OutputEventCategory::Stdout),
+//         .fake_event(raijin_dap::messages::Events::Output(raijin_dap::OutputEvent {
+//             category: Some(raijin_dap::OutputEventCategory::Stdout),
 //             output: "Second item".to_string(),
 //             data: None,
 //             variables_reference: None,
 //             source: None,
 //             line: None,
 //             column: None,
-//             group: Some(dap::OutputEventGroup::End),
+//             group: Some(raijin_dap::OutputEventGroup::End),
 //             location_reference: None,
 //         }))
 //         .await;
@@ -678,7 +678,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //     let cx = &mut VisualTestContext::from_window(*workspace, cx);
 
 //     let task = project.update(cx, |project, cx| {
-//         project.start_debug_session(dap::test_config(None), cx)
+//         project.start_debug_session(raijin_dap::test_config(None), cx)
 //     });
 
 //     let session = task.await.unwrap();
@@ -686,8 +686,8 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 
 //     client
 //         .on_request::<Threads, _>(move |_, _| {
-//             Ok(dap::ThreadsResponse {
-//                 threads: vec![dap::Thread {
+//             Ok(raijin_dap::ThreadsResponse {
+//                 threads: vec![raijin_dap::Thread {
 //                     id: 1,
 //                     name: "Thread 1".into(),
 //                 }],
@@ -698,7 +698,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //     let stack_frames = vec![StackFrame {
 //         id: 1,
 //         name: "Stack Frame 1".into(),
-//         source: Some(dap::Source {
+//         source: Some(raijin_dap::Source {
 //             name: Some("test.js".into()),
 //             path: Some("/project/src/test.js".into()),
 //             source_reference: None,
@@ -724,7 +724,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //             move |_, args| {
 //                 assert_eq!(1, args.thread_id);
 
-//                 Ok(dap::StackTraceResponse {
+//                 Ok(raijin_dap::StackTraceResponse {
 //                     stack_frames: (*stack_frames).clone(),
 //                     total_frames: None,
 //                 })
@@ -767,7 +767,7 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //             move |_, args| {
 //                 assert_eq!(1, args.frame_id);
 
-//                 Ok(dap::ScopesResponse {
+//                 Ok(raijin_dap::ScopesResponse {
 //                     scopes: (*scopes).clone(),
 //                 })
 //             }
@@ -852,13 +852,13 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //             let nested_variables = Arc::new(nested_variables.clone());
 //             let scope2_variables = Arc::new(scope2_variables.clone());
 //             move |_, args| match args.variables_reference {
-//                 4 => Ok(dap::VariablesResponse {
+//                 4 => Ok(raijin_dap::VariablesResponse {
 //                     variables: (*scope2_variables).clone(),
 //                 }),
-//                 3 => Ok(dap::VariablesResponse {
+//                 3 => Ok(raijin_dap::VariablesResponse {
 //                     variables: (*nested_variables).clone(),
 //                 }),
-//                 2 => Ok(dap::VariablesResponse {
+//                 2 => Ok(raijin_dap::VariablesResponse {
 //                     variables: scope1_variables.lock().unwrap().clone(),
 //                 }),
 //                 id => unreachable!("unexpected variables reference {id}"),
@@ -875,11 +875,11 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 
 //                 assert_eq!(format!("$variable1 = {}", NEW_VALUE), args.expression);
 //                 assert_eq!(Some(1), args.frame_id);
-//                 assert_eq!(Some(dap::EvaluateArgumentsContext::Variables), args.context);
+//                 assert_eq!(Some(raijin_dap::EvaluateArgumentsContext::Variables), args.context);
 
 //                 scope1_variables.lock().unwrap()[0].value = NEW_VALUE.to_string();
 
-//                 Ok(dap::EvaluateResponse {
+//                 Ok(raijin_dap::EvaluateResponse {
 //                     result: NEW_VALUE.into(),
 //                     type_: None,
 //                     presentation_hint: None,
@@ -894,8 +894,8 @@ async fn test_escape_code_processing(executor: BackgroundExecutor, cx: &mut Test
 //         .await;
 
 //     client
-//         .fake_event(dap::messages::Events::Stopped(dap::StoppedEvent {
-//             reason: dap::StoppedEventReason::Pause,
+//         .fake_event(raijin_dap::messages::Events::Stopped(raijin_dap::StoppedEvent {
+//             reason: raijin_dap::StoppedEventReason::Pause,
 //             description: None,
 //             thread_id: Some(1),
 //             preserve_focus_hint: None,
