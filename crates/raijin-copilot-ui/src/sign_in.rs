@@ -594,8 +594,8 @@ impl ConfigurationView {
                     .size(IconSize::Small)
                     .color(Color::Muted),
             )
-            .when(edit_prediction, |this: Button| {
-                ButtonCommon::tab_index(this, 0isize)
+            .when(edit_prediction, |this| {
+                this.tab_index(0isize)
             })
             .on_click(|_, window, cx| {
                 if let Some(app_state) = AppState::global(cx).upgrade()

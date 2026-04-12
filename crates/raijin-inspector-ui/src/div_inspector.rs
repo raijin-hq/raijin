@@ -29,7 +29,7 @@ use inazuma_util::split_str_with_ranges;
 
 /// Path used for unsaved buffer that contains style json. To support the json language server, this
 /// matches the name used in the generated schemas.
-const ZED_INSPECTOR_STYLE_JSON: &str = util_macros::path!("/zed-inspector-style.json");
+const RAIJIN_INSPECTOR_STYLE_JSON: &str = inazuma_util_macros::path!("/raijin-inspector-style.json");
 
 pub(crate) struct DivInspector {
     state: State,
@@ -81,7 +81,7 @@ impl DivInspector {
                 // Open the JSON style buffer in the inspector-specific project, so that it runs the
                 // JSON language server.
                 let json_style_buffer =
-                    Self::create_buffer_in_project(ZED_INSPECTOR_STYLE_JSON, &project, cx).await;
+                    Self::create_buffer_in_project(RAIJIN_INSPECTOR_STYLE_JSON, &project, cx).await;
 
                 // Create Rust style buffer without adding it to the project / buffer_store, so that
                 // Rust Analyzer doesn't get started for it.
@@ -644,7 +644,7 @@ impl CompletionProvider for RustStyleCompletionProvider {
         _excerpt_id: ExcerptId,
         buffer: &Entity<Buffer>,
         position: Anchor,
-        _: editor::CompletionContext,
+        _: raijin_editor::CompletionContext,
         _window: &mut Window,
         cx: &mut Context<Editor>,
     ) -> Task<Result<Vec<CompletionResponse>>> {
@@ -682,8 +682,8 @@ impl CompletionProvider for RustStyleCompletionProvider {
 
     fn is_completion_trigger(
         &self,
-        buffer: &Entity<language::Buffer>,
-        position: language::Anchor,
+        buffer: &Entity<raijin_language::Buffer>,
+        position: raijin_language::Anchor,
         _text: &str,
         _trigger_in_words: bool,
         cx: &mut Context<Editor>,

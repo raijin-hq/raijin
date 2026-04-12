@@ -57,14 +57,14 @@ fn render_inspector(
     window: &mut Window,
     cx: &mut Context<Inspector>,
 ) -> AnyElement {
-    let ui_font = theme_settings::setup_ui_font(window, cx);
+    let ui_font = raijin_theme_settings::setup_ui_font(window, cx);
     let colors = cx.theme().colors();
     let inspector_id = inspector.active_element_id();
     let toolbar_height = platform_title_bar_height(window);
 
     v_flex()
         .size_full()
-        .bg(colors.panel_background)
+        .bg(colors.panel.background)
         .text_color(colors.text)
         .font(ui_font)
         .border_l_1()
@@ -110,7 +110,7 @@ fn render_inspector_id(inspector_id: &InspectorElementId, cx: &App) -> Div {
     // For unknown reasons, for some elements the path is absolute.
     let source_location_string = source_location.to_string();
     let source_location_string = source_location_string
-        .strip_prefix(env!("ZED_REPO_DIR"))
+        .strip_prefix(env!("RAIJIN_REPO_DIR"))
         .and_then(|s| s.strip_prefix("/"))
         .map(|s| s.to_string())
         .unwrap_or(source_location_string);
@@ -160,7 +160,7 @@ fn render_inspector_id(inspector_id: &InspectorElementId, cx: &App) -> Div {
 async fn open_zed_source_location(
     location: &'static std::panic::Location<'static>,
 ) -> anyhow::Result<()> {
-    let mut path = Path::new(env!("ZED_REPO_DIR")).to_path_buf();
+    let mut path = Path::new(env!("RAIJIN_REPO_DIR")).to_path_buf();
     path.push(Path::new(location.file()));
     let path_arg = format!(
         "{}:{}:{}",
