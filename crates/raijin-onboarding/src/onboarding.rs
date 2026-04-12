@@ -265,9 +265,11 @@ impl Render for Onboarding {
                                             ),
                                     )
                                     .child({
-                                        Button::new("finish_setup", "Finish Setup")
-                                            .style(ButtonStyle::FILLED)
-                                            .size(ButtonSize::Medium)
+                                        ButtonCommon::size(
+                                            Button::new("finish_setup", "Finish Setup")
+                                                .style(ButtonStyle::FILLED),
+                                            ButtonSize::Medium,
+                                        )
                                             .width(Rems(12.0))
                                             .key_binding(
                                                 KeyBinding::for_action_in(
@@ -277,7 +279,7 @@ impl Render for Onboarding {
                                                 )
                                                 .size(rems_from_px(12.)),
                                             )
-                                            .on_click(|_, window, cx| {
+                                            .on_click(|_, window: &mut Window, cx| {
                                                 window.dispatch_action(Finish.boxed_clone(), cx);
                                             })
                                     }),

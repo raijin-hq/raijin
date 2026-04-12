@@ -260,7 +260,7 @@ pub struct MarksState {
     workspace: WeakEntity<Workspace>,
 
     multibuffer_marks: HashMap<EntityId, HashMap<String, Vec<Anchor>>>,
-    buffer_marks: HashMap<BufferId, HashMap<String, Vec<text::Anchor>>>,
+    buffer_marks: HashMap<BufferId, HashMap<String, Vec<inazuma_text::Anchor>>>,
     watched_buffers: HashMap<BufferId, (MarkLocation, Subscription, Subscription)>,
 
     serialized_marks: HashMap<Arc<Path>, HashMap<String, Vec<Point>>>,
@@ -1771,7 +1771,7 @@ impl Domain for VimDb {
     ];
 }
 
-db::static_connection!(VimDb, [WorkspaceDb]);
+raijin_db::static_connection!(VimDb, [WorkspaceDb]);
 
 struct SerializedMark {
     path: Arc<Path>,

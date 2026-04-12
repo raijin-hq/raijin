@@ -725,7 +725,7 @@ mod test {
         );
         cx.set_head_text(diff_base);
         cx.update_editor(|editor, window, cx| {
-            editor.expand_all_diff_hunks(&editor::actions::ExpandAllDiffHunks, window, cx);
+            editor.expand_all_diff_hunks(&raijin_editor::actions::ExpandAllDiffHunks, window, cx);
         });
 
         // Enter visual mode and move up so the selection spans from the

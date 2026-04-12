@@ -29,10 +29,10 @@ impl ComponentStory {
     pub fn story(&self, window: &mut Window, cx: &mut App) -> AnyView {
         match self {
             Self::ApplicationMenu => cx
-                .new(|cx| title_bar::ApplicationMenuStory::new(window, cx))
+                .new(|cx| raijin_title_bar::ApplicationMenuStory::new(window, cx))
                 .into(),
             Self::AutoHeightEditor => AutoHeightEditorStory::new(window, cx).into(),
-            Self::ContextMenu => cx.new(|_| ui::ContextMenuStory).into(),
+            Self::ContextMenu => cx.new(|_| raijin_ui::ContextMenuStory).into(),
             Self::Cursor => cx.new(|_| crate::stories::CursorStory).into(),
             Self::Focus => FocusStory::model(window, cx).into(),
             Self::OverflowScroll => cx.new(|_| crate::stories::OverflowScrollStory).into(),

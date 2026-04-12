@@ -58,12 +58,12 @@ impl FocusStory {
 impl Render for FocusStory {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let theme = cx.theme();
-        let color_1 = theme.status().created;
-        let color_2 = theme.status().modified;
-        let color_4 = theme.status().conflict;
-        let color_5 = theme.status().ignored;
-        let color_6 = theme.status().renamed;
-        let color_7 = theme.status().hint;
+        let color_1 = theme.status().created.color;
+        let color_2 = theme.status().modified.color;
+        let color_4 = theme.status().conflict.color;
+        let color_5 = theme.status().ignored.color;
+        let color_6 = theme.status().renamed.color;
+        let color_7 = theme.status().hint.color;
 
         div()
             .id("parent")

@@ -13,8 +13,8 @@ impl ScrollStory {
 impl Render for ScrollStory {
     fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let theme = cx.theme();
-        let color_1 = theme.status().created;
-        let color_2 = theme.status().modified;
+        let color_1 = theme.status().created.color;
+        let color_2 = theme.status().modified.color;
 
         div()
             .id("parent")

@@ -12,13 +12,13 @@ impl AutoHeightEditorStory {
     pub fn new(window: &mut Window, cx: &mut App) -> inazuma::Entity<Self> {
         cx.bind_keys([KeyBinding::new(
             "enter",
-            editor::actions::Newline,
+            raijin_editor::actions::Newline,
             Some("Editor"),
         )]);
         cx.new(|cx| Self {
             editor: cx.new(|cx| {
                 let mut editor = Editor::auto_height(1, 3, window, cx);
-                editor.set_soft_wrap_mode(language::language_settings::SoftWrap::EditorWidth, cx);
+                editor.set_soft_wrap_mode(raijin_language::language_settings::SoftWrap::EditorWidth, cx);
                 editor
             }),
         })

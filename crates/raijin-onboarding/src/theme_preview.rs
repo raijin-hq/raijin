@@ -9,11 +9,22 @@ use raijin_ui::{
     IntoElement, RenderOnce, component_prelude::Documented, prelude::*, utils::inner_corner_radius,
 };
 
-#[derive(Clone, PartialEq)]
+#[derive(Clone)]
 pub enum ThemePreviewStyle {
     Bordered,
     Borderless,
     SideBySide(Arc<Theme>),
+}
+
+impl PartialEq for ThemePreviewStyle {
+    fn eq(&self, other: &Self) -> bool {
+        match (self, other) {
+            (Self::Bordered, Self::Bordered) => true,
+            (Self::Borderless, Self::Borderless) => true,
+            (Self::SideBySide(a), Self::SideBySide(b)) => a.name == b.name,
+            _ => false,
+        }
+    }
 }
 
 /// Shows a preview of a theme as an abstract illustration

@@ -504,7 +504,7 @@ pub(crate) struct Vim {
     pub exit_temporary_mode: bool,
 
     operator_stack: Vec<Operator>,
-    pub(crate) replacements: Vec<(Range<editor::Anchor>, String)>,
+    pub(crate) replacements: Vec<(Range<raijin_editor::Anchor>, String)>,
 
     pub(crate) stored_visual_mode: Option<(Mode, Vec<bool>)>,
 
@@ -901,7 +901,7 @@ impl Vim {
             Vim::action(
                 editor,
                 cx,
-                |vim, action: &editor::actions::AcceptEditPrediction, window, cx| {
+                |vim, action: &raijin_editor::actions::AcceptEditPrediction, window, cx| {
                     vim.update_editor(cx, |_, editor, cx| {
                         editor.accept_edit_prediction(action, window, cx);
                     });
@@ -942,7 +942,7 @@ impl Vim {
             Vim::action(
                 editor,
                 cx,
-                |vim, _: &editor::actions::Paste, window, cx| match vim.mode {
+                |vim, _: &raijin_editor::actions::Paste, window, cx| match vim.mode {
                     Mode::Replace => vim.paste_replace(window, cx),
                     Mode::Visual | Mode::VisualLine | Mode::VisualBlock => {
                         vim.selected_register.replace('+');
@@ -2058,7 +2058,7 @@ impl Vim {
                 if self.mode == Mode::Normal {
                     self.update_editor(cx, |_, editor, cx| {
                         editor.accept_edit_prediction(
-                            &editor::actions::AcceptEditPrediction {},
+                            &raijin_editor::actions::AcceptEditPrediction {},
                             window,
                             cx,
                         );
@@ -2200,7 +2200,7 @@ impl From<inazuma_settings_framework::CursorShapeSettings> for CursorShapeSettin
     }
 }
 
-impl From<settings::ModeContent> for Mode {
+impl From<inazuma_settings_framework::ModeContent> for Mode {
     fn from(mode: ModeContent) -> Self {
         match mode {
             ModeContent::Normal => Self::Normal,
@@ -2210,7 +2210,7 @@ impl From<settings::ModeContent> for Mode {
 }
 
 impl Settings for VimSettings {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &inazuma_settings_framework::SettingsContent) -> Self {
         let vim = content.vim.clone().unwrap();
         Self {
             default_mode: vim.default_mode.unwrap().into(),

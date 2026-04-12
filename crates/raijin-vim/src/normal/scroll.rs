@@ -148,7 +148,7 @@ impl Vim {
                 .scroll_top_display_point(&display_snapshot, cx);
             let vertical_scroll_margin = EditorSettings::get_global(cx).vertical_scroll_margin;
 
-            let mut move_cursor = |map: &editor::display_map::DisplaySnapshot,
+            let mut move_cursor = |map: &raijin_editor::display_map::DisplaySnapshot,
                                    mut head: DisplayPoint,
                                    goal: SelectionGoal| {
                 // TODO: Improve the logic and function calls below to be dependent on

@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use raijin_client::TelemetrySettings;
 use raijin_fs::Fs;
-use inazuma::{Action, App, IntoElement};
+use inazuma::{Action, App, Edges, IntoElement};
 use raijin_project::project_settings::ProjectSettings;
 use inazuma_settings_framework::{BaseKeymap, Settings, update_settings_file};
 use raijin_theme::{Appearance, SystemAppearance, ThemeRegistry};
@@ -149,7 +149,7 @@ fn render_theme_section(tab_index: &mut isize, cx: &mut App) -> impl IntoElement
                             *tab_index - 1
                         })
                         .focus(|mut style| {
-                            style.border_color = Some(colors.border_focused);
+                            style.border_colors = Some(Edges::all(Some(colors.border_focused)));
                             style
                         })
                         .on_click({
@@ -242,21 +242,11 @@ fn render_telemetry_section(tab_index: &mut isize, cx: &App) -> impl IntoElement
                 "onboarding-telemetry-metrics",
                 None::<&str>,
                 Some("Help improve Raijin by sending anonymous usage data".into()),
-                if TelemetrySettings::get_global(cx).metrics {
-                    raijin_ui::ToggleState::Selected
-                } else {
-                    raijin_ui::ToggleState::Unselected
-                },
+                TelemetrySettings::get_global(cx).metrics,
                 {
                     let fs = fs.clone();
-                    move |selection, _, cx| {
-                        let enabled = match selection {
-                            ToggleState::Selected => true,
-                            ToggleState::Unselected => false,
-                            ToggleState::Indeterminate => {
-                                return;
-                            }
-                        };
+                    move |enabled, _, cx| {
+                        let enabled = *enabled;
 
                         update_settings_file(fs.clone(), cx, move |setting, _| {
                             setting.telemetry.get_or_insert_default().metrics = Some(enabled);
@@ -284,21 +274,11 @@ fn render_telemetry_section(tab_index: &mut isize, cx: &App) -> impl IntoElement
                     "Help fix Raijin by sending crash reports so we can fix critical issues fast"
                         .into(),
                 ),
-                if TelemetrySettings::get_global(cx).diagnostics {
-                    raijin_ui::ToggleState::Selected
-                } else {
-                    raijin_ui::ToggleState::Unselected
-                },
+                TelemetrySettings::get_global(cx).diagnostics,
                 {
                     let fs = fs.clone();
-                    move |selection, _, cx| {
-                        let enabled = match selection {
-                            ToggleState::Selected => true,
-                            ToggleState::Unselected => false,
-                            ToggleState::Indeterminate => {
-                                return;
-                            }
-                        };
+                    move |enabled, _, cx| {
+                        let enabled = *enabled;
 
                         update_settings_file(fs.clone(), cx, move |setting, _| {
                             setting.telemetry.get_or_insert_default().diagnostics = Some(enabled);
@@ -378,26 +358,15 @@ fn render_base_keymap_section(tab_index: &mut isize, cx: &mut App) -> impl IntoE
 }
 
 fn render_vim_mode_switch(tab_index: &mut isize, cx: &mut App) -> impl IntoElement {
-    let toggle_state = if VimModeSetting::get_global(cx).0 {
-        raijin_ui::ToggleState::Selected
-    } else {
-        raijin_ui::ToggleState::Unselected
-    };
     SwitchField::new(
         "onboarding-vim-mode",
         Some("Vim Mode"),
         Some("Coming from Neovim? Use our first-class implementation of Vim Mode".into()),
-        toggle_state,
+        VimModeSetting::get_global(cx).0,
         {
             let fs = <dyn Fs>::global(cx);
-            move |&selection, _, cx| {
-                let vim_mode = match selection {
-                    ToggleState::Selected => true,
-                    ToggleState::Unselected => false,
-                    ToggleState::Indeterminate => {
-                        return;
-                    }
-                };
+            move |enabled, _, cx| {
+                let vim_mode = *enabled;
                 update_settings_file(fs.clone(), cx, move |setting, _| {
                     setting.vim_mode = Some(vim_mode);
                 });
@@ -416,29 +385,17 @@ fn render_vim_mode_switch(tab_index: &mut isize, cx: &mut App) -> impl IntoEleme
 }
 
 fn render_worktree_auto_trust_switch(tab_index: &mut isize, cx: &mut App) -> impl IntoElement {
-    let toggle_state = if ProjectSettings::get_global(cx).session.trust_all_worktrees {
-        raijin_ui::ToggleState::Selected
-    } else {
-        raijin_ui::ToggleState::Unselected
-    };
-
     let tooltip_description = "Raijin can only allow services like language servers, project settings, and MCP servers to run after you mark a new project as trusted.";
 
     SwitchField::new(
         "onboarding-auto-trust-worktrees",
         Some("Trust All Projects By Default"),
         Some("Automatically mark all new projects as trusted to unlock all Raijin's features".into()),
-        toggle_state,
+        ProjectSettings::get_global(cx).session.trust_all_worktrees,
         {
             let fs = <dyn Fs>::global(cx);
-            move |&selection, _, cx| {
-                let trust = match selection {
-                    ToggleState::Selected => true,
-                    ToggleState::Unselected => false,
-                    ToggleState::Indeterminate => {
-                        return;
-                    }
-                };
+            move |enabled, _, cx| {
+                let trust = *enabled;
                 update_settings_file(fs.clone(), cx, move |setting, _| {
                     setting.session.get_or_insert_default().trust_all_worktrees = Some(trust);
                 });

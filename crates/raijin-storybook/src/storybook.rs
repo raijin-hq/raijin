@@ -98,7 +98,7 @@ fn main() {
                     ..Default::default()
                 },
                 move |window, cx| {
-                    theme_settings::setup_ui_font(window, cx);
+                    raijin_theme_settings::setup_ui_font(window, cx);
 
                     cx.new(|cx| StoryWrapper::new(selector.story(window, cx)))
                 },

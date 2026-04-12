@@ -56,9 +56,9 @@ impl Render for IndentGuidesStory {
                     )
                     .with_sizing_behavior(inazuma::ListSizingBehavior::Infer)
                     .with_decoration(
-                        ui::indent_guides(
+                        raijin_ui::indent_guides(
                             px(16.),
-                            ui::IndentGuideColors {
+                            raijin_ui::IndentGuideColors {
                                 default: Color::Info.color(cx),
                                 hover: Color::Accent.color(cx),
                                 active: Color::Accent.color(cx),

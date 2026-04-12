@@ -241,7 +241,7 @@ pub(crate) fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
         Vim::take_forced_motion(cx);
         vim.update_editor(cx, |_, editor, cx| {
             for _ in 0..times.unwrap_or(1) {
-                editor.undo(&editor::actions::Undo, window, cx);
+                editor.undo(&raijin_editor::actions::Undo, window, cx);
             }
         });
     });
@@ -250,7 +250,7 @@ pub(crate) fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
         Vim::take_forced_motion(cx);
         vim.update_editor(cx, |_, editor, cx| {
             for _ in 0..times.unwrap_or(1) {
-                editor.redo(&editor::actions::Redo, window, cx);
+                editor.redo(&raijin_editor::actions::Redo, window, cx);
             }
         });
     });
@@ -1030,7 +1030,7 @@ impl Vim {
 
                 editor.edit(edits, cx);
                 if is_return_char {
-                    editor.newline(&editor::actions::Newline, window, cx);
+                    editor.newline(&raijin_editor::actions::Newline, window, cx);
                 }
                 editor.set_clip_at_line_ends(true, cx);
                 editor.change_selections(SelectionEffects::no_scroll(), window, cx, |s| {

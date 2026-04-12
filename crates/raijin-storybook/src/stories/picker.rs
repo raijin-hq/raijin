@@ -94,7 +94,7 @@ impl PickerDelegate for Delegate {
         let candidates = self.candidates.clone();
         self.matches = cx
             .foreground_executor()
-            .block_on(fuzzy::match_strings(
+            .block_on(inazuma_fuzzy::match_strings(
                 &candidates,
                 &query,
                 true,
@@ -115,21 +115,21 @@ impl PickerStory {
     pub fn new(window: &mut Window, cx: &mut App) -> Entity<Self> {
         cx.new(|cx| {
             cx.bind_keys([
-                KeyBinding::new("up", menu::SelectPrevious, Some("picker")),
-                KeyBinding::new("pageup", menu::SelectFirst, Some("picker")),
-                KeyBinding::new("shift-pageup", menu::SelectFirst, Some("picker")),
-                KeyBinding::new("ctrl-p", menu::SelectPrevious, Some("picker")),
-                KeyBinding::new("down", menu::SelectNext, Some("picker")),
-                KeyBinding::new("pagedown", menu::SelectLast, Some("picker")),
-                KeyBinding::new("shift-pagedown", menu::SelectFirst, Some("picker")),
-                KeyBinding::new("ctrl-n", menu::SelectNext, Some("picker")),
-                KeyBinding::new("cmd-up", menu::SelectFirst, Some("picker")),
-                KeyBinding::new("cmd-down", menu::SelectLast, Some("picker")),
-                KeyBinding::new("enter", menu::Confirm, Some("picker")),
-                KeyBinding::new("ctrl-enter", menu::SecondaryConfirm, Some("picker")),
-                KeyBinding::new("cmd-enter", menu::SecondaryConfirm, Some("picker")),
-                KeyBinding::new("escape", menu::Cancel, Some("picker")),
-                KeyBinding::new("ctrl-c", menu::Cancel, Some("picker")),
+                KeyBinding::new("up", inazuma_menu::SelectPrevious, Some("picker")),
+                KeyBinding::new("pageup", inazuma_menu::SelectFirst, Some("picker")),
+                KeyBinding::new("shift-pageup", inazuma_menu::SelectFirst, Some("picker")),
+                KeyBinding::new("ctrl-p", inazuma_menu::SelectPrevious, Some("picker")),
+                KeyBinding::new("down", inazuma_menu::SelectNext, Some("picker")),
+                KeyBinding::new("pagedown", inazuma_menu::SelectLast, Some("picker")),
+                KeyBinding::new("shift-pagedown", inazuma_menu::SelectFirst, Some("picker")),
+                KeyBinding::new("ctrl-n", inazuma_menu::SelectNext, Some("picker")),
+                KeyBinding::new("cmd-up", inazuma_menu::SelectFirst, Some("picker")),
+                KeyBinding::new("cmd-down", inazuma_menu::SelectLast, Some("picker")),
+                KeyBinding::new("enter", inazuma_menu::Confirm, Some("picker")),
+                KeyBinding::new("ctrl-enter", inazuma_menu::SecondaryConfirm, Some("picker")),
+                KeyBinding::new("cmd-enter", inazuma_menu::SecondaryConfirm, Some("picker")),
+                KeyBinding::new("escape", inazuma_menu::Cancel, Some("picker")),
+                KeyBinding::new("ctrl-c", inazuma_menu::Cancel, Some("picker")),
             ]);
 
             PickerStory {

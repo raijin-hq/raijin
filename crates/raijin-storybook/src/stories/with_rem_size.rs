@@ -1,4 +1,4 @@
-use inazuma::{AnyElement, Hsla, Render};
+use inazuma::{AnyElement, Oklch, Render};
 use inazuma_story::Story;
 
 use raijin_ui::{prelude::*, utils::WithRemSize};
@@ -26,12 +26,12 @@ impl Render for WithRemSizeStory {
 #[derive(IntoElement)]
 struct Example {
     rem_size: Pixels,
-    border_color: Hsla,
+    border_color: Oklch,
     children: Vec<AnyElement>,
 }
 
 impl Example {
-    pub fn new(rem_size: impl Into<Pixels>, border_color: Hsla) -> Self {
+    pub fn new(rem_size: impl Into<Pixels>, border_color: Oklch) -> Self {
         Self {
             rem_size: rem_size.into(),
             border_color,

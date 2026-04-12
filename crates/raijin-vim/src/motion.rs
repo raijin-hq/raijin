@@ -2523,7 +2523,7 @@ fn matching(
     let is_quote_char = |ch: char| matches!(ch, '\'' | '"' | '`');
 
     let make_range_filter = |require_on_bracket: bool| {
-        move |buffer: &language::BufferSnapshot,
+        move |buffer: &raijin_language::BufferSnapshot,
               opening_range: Range<BufferOffset>,
               closing_range: Range<BufferOffset>| {
             if !match_quotes
@@ -3212,8 +3212,8 @@ fn section_motion(
 }
 
 fn matches_indent_type(
-    target_indent: &text::LineIndent,
-    current_indent: &text::LineIndent,
+    target_indent: &inazuma_text::LineIndent,
+    current_indent: &inazuma_text::LineIndent,
     indent_type: IndentType,
 ) -> bool {
     match indent_type {
@@ -5178,7 +5178,7 @@ mod test {
         cx.set_state(&format!("ˇ{}", current_text), Mode::Normal);
         cx.set_head_text(diff_base);
         cx.update_editor(|editor, window, cx| {
-            editor.expand_all_diff_hunks(&editor::actions::ExpandAllDiffHunks, window, cx);
+            editor.expand_all_diff_hunks(&raijin_editor::actions::ExpandAllDiffHunks, window, cx);
         });
 
         // When diff hunks are expanded, the deleted line from the diff base
@@ -5277,7 +5277,7 @@ mod test {
         cx.set_state(&format!("ˇ{}", current_text), Mode::Normal);
         cx.set_head_text(diff_base);
         cx.update_editor(|editor, window, cx| {
-            editor.expand_all_diff_hunks(&editor::actions::ExpandAllDiffHunks, window, cx);
+            editor.expand_all_diff_hunks(&raijin_editor::actions::ExpandAllDiffHunks, window, cx);
         });
 
         // The first `] /` (vim::NextComment) should go to the end of the first
