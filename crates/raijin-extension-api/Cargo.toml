@@ -1,12 +1,11 @@
 [package]
 name = "raijin-extension-api"
-version = "0.8.0"
+version = "0.1.0"
 description = "APIs for creating Raijin extensions in Rust"
 repository = "https://github.com/raijin-hq/raijin"
 documentation = "https://docs.rs/raijin_extension_api"
 keywords = ["raijin", "extension"]
 edition.workspace = true
-# Change back to `true` when we're ready to publish v0.8.0.
 publish = false
 license = "GPL-3.0-or-later"
 

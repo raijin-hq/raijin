@@ -20,7 +20,6 @@ use inazuma::{
 };
 use num_format::{Locale, ToFormattedString};
 use raijin_project::DirectoryLister;
-use raijin_release_channel::ReleaseChannel;
 use inazuma_settings_framework::{Settings, SettingsContent};
 use strum::IntoEnumIterator as _;
 use raijin_theme_settings::ThemeSettings;
@@ -1028,7 +1027,7 @@ impl ExtensionsPage {
         cx: &mut Context<Self>,
     ) -> ExtensionCardButtons {
         let is_compatible =
-            extension_host::is_version_compatible(ReleaseChannel::global(cx), extension);
+            extension_host::is_version_compatible(extension);
 
         if has_dev_extension {
             // If we have a dev extension for the given extension, just treat it as uninstalled.

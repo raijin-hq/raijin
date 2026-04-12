@@ -28,7 +28,6 @@ log.workspace = true
 num-format.workspace = true
 inazuma-picker.workspace = true
 raijin-project.workspace = true
-raijin-release-channel.workspace = true
 semver.workspace = true
 serde.workspace = true
 inazuma-settings-framework.workspace = true

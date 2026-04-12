@@ -187,7 +187,7 @@ pub fn parse_wasm_extension_version(extension_id: &str, wasm_bytes: &[u8]) -> Re
     for part in wasmparser::Parser::new(0).parse_all(wasm_bytes) {
         if let wasmparser::Payload::CustomSection(s) =
             part.context("error parsing wasm extension")?
-            && s.name() == "zed:api-version"
+            && s.name() == "raijin:api-version"
         {
             version = parse_wasm_extension_version_custom_section(s.data());
             if version.is_none() {

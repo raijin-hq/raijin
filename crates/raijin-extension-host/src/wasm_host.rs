@@ -27,7 +27,6 @@ use raijin_language::LanguageName;
 use raijin_lsp::LanguageServerName;
 use moka::sync::Cache;
 use raijin_node_runtime::NodeRuntime;
-use raijin_release_channel::ReleaseChannel;
 use semver::Version;
 use inazuma_settings_framework::Settings;
 use std::{
@@ -42,12 +41,11 @@ use wasmtime::{
     CacheStore, Engine, Store,
     component::{Component, ResourceTable},
 };
-use wasmtime_wasi::p2::{self as wasi, IoView as _};
+use wasmtime_wasi::{self as wasi};
 use wit::Extension;
 
 pub struct WasmHost {
     engine: Engine,
-    release_channel: ReleaseChannel,
     http_client: Arc<dyn HttpClient>,
     node_runtime: NodeRuntime,
     pub(crate) proxy: Arc<ExtensionHostProxy>,
@@ -65,7 +63,7 @@ pub struct WasmExtension {
     pub manifest: Arc<ExtensionManifest>,
     pub work_dir: Arc<Path>,
     #[allow(unused)]
-    pub zed_api_version: Version,
+    pub raijin_api_version: Version,
     _task: Arc<Task<Result<(), inazuma_tokio::JoinError>>>,
 }
 
@@ -88,17 +86,16 @@ impl raijin_extension::Extension for WasmExtension {
     async fn language_server_command(
         &self,
         language_server_id: LanguageServerName,
-        language_name: LanguageName,
+        _language_name: LanguageName,
         worktree: Arc<dyn WorktreeDelegate>,
     ) -> Result<Command> {
         self.call(|extension, store| {
             async move {
-                let resource = store.data_mut().table().push(worktree)?;
+                let resource = store.data_mut().table.push(worktree)?;
                 let command = extension
                     .call_language_server_command(
                         store,
                         &language_server_id,
-                        &language_name,
                         resource,
                     )
                     .await?
@@ -114,17 +111,16 @@ impl raijin_extension::Extension for WasmExtension {
     async fn language_server_initialization_options(
         &self,
         language_server_id: LanguageServerName,
-        language_name: LanguageName,
+        _language_name: LanguageName,
         worktree: Arc<dyn WorktreeDelegate>,
     ) -> Result<Option<String>> {
         self.call(|extension, store| {
             async move {
-                let resource = store.data_mut().table().push(worktree)?;
+                let resource = store.data_mut().table.push(worktree)?;
                 let options = extension
                     .call_language_server_initialization_options(
                         store,
                         &language_server_id,
-                        &language_name,
                         resource,
                     )
                     .await?
@@ -143,7 +139,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<Option<String>> {
         self.call(|extension, store| {
             async move {
-                let resource = store.data_mut().table().push(worktree)?;
+                let resource = store.data_mut().table.push(worktree)?;
                 let options = extension
                     .call_language_server_workspace_configuration(
                         store,
@@ -166,7 +162,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<Option<String>> {
         self.call(|extension, store| {
             async move {
-                let resource = store.data_mut().table().push(worktree)?;
+                let resource = store.data_mut().table.push(worktree)?;
                 extension
                     .call_language_server_initialization_options_schema(
                         store,
@@ -187,7 +183,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<Option<String>> {
         self.call(|extension, store| {
             async move {
-                let resource = store.data_mut().table().push(worktree)?;
+                let resource = store.data_mut().table.push(worktree)?;
                 extension
                     .call_language_server_workspace_configuration_schema(
                         store,
@@ -209,7 +205,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<Option<String>> {
         self.call(|extension, store| {
             async move {
-                let resource = store.data_mut().table().push(worktree)?;
+                let resource = store.data_mut().table.push(worktree)?;
                 let options = extension
                     .call_language_server_additional_initialization_options(
                         store,
@@ -234,7 +230,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<Option<String>> {
         self.call(|extension, store| {
             async move {
-                let resource = store.data_mut().table().push(worktree)?;
+                let resource = store.data_mut().table.push(worktree)?;
                 let options = extension
                     .call_language_server_additional_workspace_configuration(
                         store,
@@ -331,7 +327,7 @@ impl raijin_extension::Extension for WasmExtension {
         self.call(|extension, store| {
             async move {
                 let resource = if let Some(delegate) = delegate {
-                    Some(store.data_mut().table().push(delegate)?)
+                    Some(store.data_mut().table.push(delegate)?)
                 } else {
                     None
                 };
@@ -355,7 +351,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<Command> {
         self.call(|extension, store| {
             async move {
-                let project_resource = store.data_mut().table().push(project)?;
+                let project_resource = store.data_mut().table.push(project)?;
                 let command = extension
                     .call_context_server_command(store, context_server_id.clone(), project_resource)
                     .await?
@@ -374,7 +370,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<Option<ContextServerConfiguration>> {
         self.call(|extension, store| {
             async move {
-                let project_resource = store.data_mut().table().push(project)?;
+                let project_resource = store.data_mut().table.push(project)?;
                 let Some(configuration) = extension
                     .call_context_server_configuration(
                         store,
@@ -417,7 +413,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<()> {
         self.call(|extension, store| {
             async move {
-                let kv_store_resource = store.data_mut().table().push(kv_store)?;
+                let kv_store_resource = store.data_mut().table.push(kv_store)?;
                 extension
                     .call_index_docs(
                         store,
@@ -444,7 +440,7 @@ impl raijin_extension::Extension for WasmExtension {
     ) -> Result<DebugAdapterBinary> {
         self.call(|extension, store| {
             async move {
-                let resource = store.data_mut().table().push(worktree)?;
+                let resource = store.data_mut().table.push(worktree)?;
                 let dap_binary = extension
                     .call_get_dap_binary(store, dap_name, config, user_installed_path, resource)
                     .await?
@@ -623,7 +619,6 @@ impl WasmHost {
             http_client,
             node_runtime,
             proxy,
-            release_channel: ReleaseChannel::global(cx),
             granted_capabilities: extension_settings.granted_capabilities.clone(),
             _main_thread_message_task: task,
             main_thread_message_tx: tx,
@@ -647,15 +642,15 @@ impl WasmHost {
             let engine = this.engine.clone();
 
             executor.spawn(async move {
-                let zed_api_version = parse_wasm_extension_version(&manifest_id, &wasm_bytes)?;
+                let raijin_api_version = parse_wasm_extension_version(&manifest_id, &wasm_bytes)?;
                 let component = Component::from_binary(&engine, &wasm_bytes)
                     .context("failed to compile wasm component")?;
 
-                anyhow::Ok((zed_api_version, component))
+                anyhow::Ok((raijin_api_version, component))
             })
         };
 
-        let load_extension = |zed_api_version: Version, component| async move {
+        let load_extension = |raijin_api_version: Version, component| async move {
             let wasi_ctx = this.build_wasi_ctx(&manifest).await?;
             let mut store = wasmtime::Store::new(
                 &this.engine,
@@ -677,8 +672,6 @@ impl WasmHost {
             let mut extension = Extension::instantiate_async(
                 &executor,
                 &mut store,
-                this.release_channel,
-                zed_api_version.clone(),
                 &component,
             )
             .await?;
@@ -700,17 +693,17 @@ impl WasmHost {
                 manifest.clone(),
                 this.work_dir.join(manifest.id.as_ref()).into(),
                 tx,
-                zed_api_version,
+                raijin_api_version,
             ))
         };
 
         cx.spawn(async move |cx| {
-            let (zed_api_version, component) = compile_task.await?;
+            let (raijin_api_version, component) = compile_task.await?;
 
             // Run wasi-dependent operations on tokio.
             // wasmtime_wasi internally uses tokio for I/O operations.
-            let (extension_task, manifest, work_dir, tx, zed_api_version) =
-                inazuma_tokio::Tokio::spawn(cx, load_extension(zed_api_version, component)).await??;
+            let (extension_task, manifest, work_dir, tx, raijin_api_version) =
+                inazuma_tokio::Tokio::spawn(cx, load_extension(raijin_api_version, component)).await??;
 
             // Run the extension message loop on tokio since extension
             // calls may invoke wasi functions that require a tokio runtime.
@@ -720,7 +713,7 @@ impl WasmHost {
                 manifest,
                 work_dir,
                 tx,
-                zed_api_version,
+                raijin_api_version,
                 _task: task,
             })
         })
@@ -810,12 +803,12 @@ pub fn parse_wasm_extension_version(extension_id: &str, wasm_bytes: &[u8]) -> Re
     for part in wasmparser::Parser::new(0).parse_all(wasm_bytes) {
         if let wasmparser::Payload::CustomSection(s) =
             part.context("error parsing wasm extension")?
-            && s.name() == "zed:api-version"
+            && s.name() == "raijin:api-version"
         {
             version = parse_wasm_extension_version_custom_section(s.data());
             if version.is_none() {
                 bail!(
-                    "extension {} has invalid zed:api-version section: {:?}",
+                    "extension {} has invalid raijin:api-version section: {:?}",
                     extension_id,
                     s.data()
                 );
@@ -828,7 +821,7 @@ pub fn parse_wasm_extension_version(extension_id: &str, wasm_bytes: &[u8]) -> Re
     //
     // By parsing the entirety of the Wasm bytes before we return, we're able to detect this problem
     // earlier as an `Err` rather than as a panic.
-    version.with_context(|| format!("extension {extension_id} has no zed:api-version section"))
+    version.with_context(|| format!("extension {extension_id} has no raijin:api-version section"))
 }
 
 fn parse_wasm_extension_version_custom_section(data: &[u8]) -> Option<Version> {
@@ -947,15 +940,12 @@ impl WasmState {
     }
 }
 
-impl wasi::IoView for WasmState {
-    fn table(&mut self) -> &mut ResourceTable {
-        &mut self.table
-    }
-}
-
 impl wasi::WasiView for WasmState {
-    fn ctx(&mut self) -> &mut wasi::WasiCtx {
-        &mut self.ctx
+    fn ctx(&mut self) -> wasi::WasiCtxView<'_> {
+        wasi::WasiCtxView {
+            ctx: &mut self.ctx,
+            table: &mut self.table,
+        }
     }
 }
 

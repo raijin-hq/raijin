@@ -13201,7 +13201,7 @@ dependencies = [
 
 [[package]]
 name = "raijin-extension-api"
-version = "0.8.0"
+version = "0.1.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -13312,7 +13312,6 @@ dependencies = [
  "raijin-fs",
  "raijin-language",
  "raijin-project",
- "raijin-release-channel",
  "raijin-telemetry",
  "raijin-theme-settings",
  "raijin-ui",

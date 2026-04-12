@@ -501,7 +501,7 @@ impl ExtensionBuilder {
             name != "name"
                 && !name.starts_with("component-type:")
                 && name != "dylink.0"
-                && name != "zed:api-version"
+                && name != "raijin:api-version"
         };
 
         let mut output = Vec::new();

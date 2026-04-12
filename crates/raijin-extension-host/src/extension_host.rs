@@ -42,7 +42,6 @@ use raijin_language::{
 };
 use raijin_node_runtime::NodeRuntime;
 use raijin_project::ContextProviderWithTasks;
-use raijin_release_channel::ReleaseChannel;
 use raijin_remote::RemoteClient;
 use semver::Version;
 use serde::{Deserialize, Serialize};
@@ -58,10 +57,7 @@ use std::{
 use raijin_task::TaskTemplates;
 use url::Url;
 use inazuma_util::{ResultExt, paths::RemotePathBuf};
-use wasm_host::{
-    WasmExtension, WasmHost,
-    wit::{is_supported_wasm_api_version, wasm_api_version_range},
-};
+use wasm_host::{WasmExtension, WasmHost};
 
 pub use raijin_extension::{
     ExtensionLibraryKind, GrammarManifestEntry, OldExtensionManifest, SchemaVersion,
@@ -71,7 +67,7 @@ pub use extension_settings::ExtensionSettings;
 pub const RELOAD_DEBOUNCE_DURATION: Duration = Duration::from_millis(200);
 const FS_WATCH_LATENCY: Duration = Duration::from_millis(100);
 
-/// The current extension [`SchemaVersion`] supported by Zed.
+/// The current extension [`SchemaVersion`] supported by Raijin.
 const CURRENT_SCHEMA_VERSION: SchemaVersion = SchemaVersion(1);
 
 /// Extensions that should no longer be loaded or downloaded.
@@ -80,32 +76,15 @@ const CURRENT_SCHEMA_VERSION: SchemaVersion = SchemaVersion(1);
 /// functionality has been integrated into the core editor.
 const SUPPRESSED_EXTENSIONS: &[&str] = &["snippets", "ruff", "ty", "basedpyright"];
 
-/// Returns the [`SchemaVersion`] range that is compatible with this version of Zed.
+/// Returns the [`SchemaVersion`] range that is compatible with this version of Raijin.
 pub fn schema_version_range() -> RangeInclusive<SchemaVersion> {
     SchemaVersion::ZERO..=CURRENT_SCHEMA_VERSION
 }
 
-/// Returns whether the given extension version is compatible with this version of Zed.
-pub fn is_version_compatible(
-    release_channel: ReleaseChannel,
-    extension_version: &ExtensionMetadata,
-) -> bool {
+/// Returns whether the given extension version is compatible with this version of Raijin.
+pub fn is_version_compatible(extension_version: &ExtensionMetadata) -> bool {
     let schema_version = extension_version.manifest.schema_version.unwrap_or(0);
-    if CURRENT_SCHEMA_VERSION.0 < schema_version {
-        return false;
-    }
-
-    if let Some(wasm_api_version) = extension_version
-        .manifest
-        .wasm_api_version
-        .as_ref()
-        .and_then(|wasm_api_version| Version::from_str(wasm_api_version).ok())
-        && !is_supported_wasm_api_version(release_channel, wasm_api_version)
-    {
-        return false;
-    }
-
-    true
+    CURRENT_SCHEMA_VERSION.0 >= schema_version
 }
 
 pub struct ExtensionStore {
@@ -531,7 +510,7 @@ impl ExtensionStore {
         cx: &mut Context<Self>,
     ) -> Task<Result<Vec<ExtensionMetadata>>> {
         let schema_versions = schema_version_range();
-        let wasm_api_versions = wasm_api_version_range(ReleaseChannel::global(cx));
+        let wasm_api_version = wasm_host::wit::latest::MIN_VERSION.to_string();
         let extension_settings = ExtensionSettings::get_global(cx);
         let extension_ids = self
             .extension_index
@@ -546,11 +525,8 @@ impl ExtensionStore {
             &[
                 ("min_schema_version", &schema_versions.start().to_string()),
                 ("max_schema_version", &schema_versions.end().to_string()),
-                (
-                    "min_wasm_api_version",
-                    &wasm_api_versions.start().to_string(),
-                ),
-                ("max_wasm_api_version", &wasm_api_versions.end().to_string()),
+                ("min_wasm_api_version", &wasm_api_version),
+                ("max_wasm_api_version", &wasm_api_version),
                 ("ids", &extension_ids),
             ],
             cx,
@@ -786,7 +762,7 @@ impl ExtensionStore {
         log::info!("installing extension {extension_id} latest version");
 
         let schema_versions = schema_version_range();
-        let wasm_api_versions = wasm_api_version_range(ReleaseChannel::global(cx));
+        let wasm_api_version = wasm_host::wit::latest::MIN_VERSION.to_string();
 
         let Some(url) = self
             .http_client
@@ -795,11 +771,8 @@ impl ExtensionStore {
                 &[
                     ("min_schema_version", &schema_versions.start().to_string()),
                     ("max_schema_version", &schema_versions.end().to_string()),
-                    (
-                        "min_wasm_api_version",
-                        &wasm_api_versions.start().to_string(),
-                    ),
-                    ("max_wasm_api_version", &wasm_api_versions.end().to_string()),
+                    ("min_wasm_api_version", &wasm_api_version),
+                    ("max_wasm_api_version", &wasm_api_version),
                 ],
             )
             .log_err()

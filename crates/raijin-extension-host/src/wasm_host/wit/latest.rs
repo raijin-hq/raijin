@@ -1,12 +1,10 @@
-use crate::wasm_host::wit::since_v0_6_0::{
-    dap::{
-        BuildTaskDefinition, BuildTaskDefinitionTemplatePayload, StartDebuggingRequestArguments,
-        TcpArguments, TcpArgumentsTemplate,
-    },
-    slash_command::SlashCommandOutputSection,
-};
 use crate::wasm_host::wit::{CompletionKind, CompletionLabelDetails, InsertTextFormat, SymbolKind};
 use crate::wasm_host::{WasmState, wit::ToWasmtimeResult};
+use self::raijin::extension::dap::{
+    BuildTaskDefinition, BuildTaskDefinitionTemplatePayload, StartDebuggingRequestArguments,
+    TcpArguments, TcpArgumentsTemplate,
+};
+use self::raijin::extension::slash_command::SlashCommandOutputSection;
 use ::raijin_http_client::{AsyncBody, HttpRequestExt};
 use ::inazuma_settings_framework::{Settings, WorktreeId};
 use anyhow::{Context as _, Result, bail};
@@ -34,28 +32,27 @@ use url::Url;
 use inazuma_util::{
     archive::extract_zip, fs::make_file_executable, maybe, paths::PathStyle, rel_path::RelPath,
 };
-use wasmtime::component::{Linker, Resource};
+use wasmtime::component::{HasSelf, Linker, Resource};
 
-pub const MIN_VERSION: Version = Version::new(0, 8, 0);
-pub const MAX_VERSION: Version = Version::new(0, 8, 0);
+pub const MIN_VERSION: Version = Version::new(0, 1, 0);
 
 wasmtime::component::bindgen!({
-    async: true,
-    trappable_imports: true,
-    path: "../raijin-extension-api/wit/since_v0.8.0",
+    path: "../raijin-extension-api/wit",
     with: {
          "worktree": ExtensionWorktree,
          "project": ExtensionProject,
          "key-value-store": ExtensionKeyValueStore,
-         "zed:extension/http-client/http-response-stream": ExtensionHttpResponseStream
+         "raijin:extension/http-client/http-response-stream": ExtensionHttpResponseStream
     },
+    imports: { default: async | trappable },
+    exports: { default: async },
 });
 
-pub use self::zed::extension::*;
+pub use self::raijin::extension::*;
 
 mod settings {
     #![allow(dead_code)]
-    include!(concat!(env!("OUT_DIR"), "/since_v0.8.0/settings.rs"));
+    include!(concat!(env!("OUT_DIR"), "/settings.rs"));
 }
 
 pub type ExtensionWorktree = Arc<dyn WorktreeDelegate>;
@@ -65,7 +62,11 @@ pub type ExtensionHttpResponseStream = Arc<Mutex<::raijin_http_client::Response<
 
 pub fn linker(executor: &BackgroundExecutor) -> &'static Linker<WasmState> {
     static LINKER: OnceLock<Linker<WasmState>> = OnceLock::new();
-    LINKER.get_or_init(|| super::new_linker(executor, Extension::add_to_linker))
+    LINKER.get_or_init(|| {
+        super::new_linker(executor, |linker| {
+            Extension::add_to_linker::<_, HasSelf<_>>(linker, |state| state)
+        })
+    })
 }
 
 impl From<Range> for std::ops::Range<usize> {

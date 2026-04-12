@@ -1,4 +1,4 @@
-//! The Zed Rust Extension API allows you write extensions for [Zed](https://zed.dev/) in Rust.
+//! The Raijin Rust Extension API allows you write extensions for Raijin in Rust.
 
 pub mod http_client;
 pub mod process;
@@ -18,23 +18,23 @@ pub use wit::{
     CodeLabel, CodeLabelSpan, CodeLabelSpanLiteral, Command, DownloadedFileType, EnvVars,
     KeyValueStore, LanguageServerInstallationStatus, Project, Range, Worktree, download_file,
     make_file_executable,
-    zed::extension::context_server::ContextServerConfiguration,
-    zed::extension::dap::{
+    raijin::extension::context_server::ContextServerConfiguration,
+    raijin::extension::dap::{
         AttachRequest, BuildTaskDefinition, BuildTaskDefinitionTemplatePayload, BuildTaskTemplate,
         DebugAdapterBinary, DebugConfig, DebugRequest, DebugScenario, DebugTaskDefinition,
         LaunchRequest, StartDebuggingRequestArguments, StartDebuggingRequestArgumentsRequest,
         TaskTemplate, TcpArguments, TcpArgumentsTemplate, resolve_tcp_template,
     },
-    zed::extension::github::{
+    raijin::extension::github::{
         GithubRelease, GithubReleaseAsset, GithubReleaseOptions, github_release_by_tag_name,
         latest_github_release,
     },
-    zed::extension::nodejs::{
+    raijin::extension::nodejs::{
         node_binary_path, npm_install_package, npm_package_installed_version,
         npm_package_latest_version,
     },
-    zed::extension::platform::{Architecture, Os, current_platform},
-    zed::extension::slash_command::{
+    raijin::extension::platform::{Architecture, Os, current_platform},
+    raijin::extension::slash_command::{
         SlashCommand, SlashCommandArgumentCompletion, SlashCommandOutput, SlashCommandOutputSection,
     },
 };
@@ -49,12 +49,12 @@ pub use wit::Guest;
 /// Constructs for interacting with language servers over the
 /// Language Server Protocol (LSP).
 pub mod lsp {
-    pub use crate::wit::zed::extension::lsp::{
+    pub use crate::wit::raijin::extension::lsp::{
         Completion, CompletionKind, InsertTextFormat, Symbol, SymbolKind,
     };
 }
 
-/// A result returned from a Zed extension.
+/// A result returned from a Raijin extension.
 pub type Result<T, E = String> = core::result::Result<T, E>;
 
 /// Updates the installation status for the given language server.
@@ -65,7 +65,7 @@ pub fn set_language_server_installation_status(
     wit::set_language_server_installation_status(&language_server_id.0, status)
 }
 
-/// A Zed extension.
+/// A Raijin extension.
 pub trait Extension: Send + Sync {
     /// Returns a new instance of the extension.
     fn new() -> Self
@@ -245,10 +245,10 @@ pub trait Extension: Send + Sync {
         Err("`dap_config_to_scenario` not implemented".to_string())
     }
 
-    /// Locators are entities that convert a Zed task into a debug scenario.
+    /// Locators are entities that convert a Raijin task into a debug scenario.
     ///
     /// They can be provided even by extensions that don't provide a debug adapter.
-    /// For all tasks applicable to a given buffer, Zed will query all locators to find one that can turn the task into a debug scenario.
+    /// For all tasks applicable to a given buffer, Raijin will query all locators to find one that can turn the task into a debug scenario.
     /// A converted debug scenario can include a build task (it shouldn't contain any configuration in such case); a build task result will later
     /// be resolved with [`Extension::run_dap_locator`].
     ///
@@ -260,7 +260,7 @@ pub trait Extension: Send + Sync {
     ///    found the artifact path by themselves.
     ///
     /// Note that you're not obliged to use build tasks with locators. Specifically, it is sufficient to provide a debug configuration directly in the return value of
-    /// `dap_locator_create_scenario` if you're able to do that. Make sure to not fill out `build` field in that case, as that will prevent Zed from running second phase of resolution in such case.
+    /// `dap_locator_create_scenario` if you're able to do that. Make sure to not fill out `build` field in that case, as that will prevent Raijin from running second phase of resolution in such case.
     /// This might be of particular relevance to interpreted languages.
     fn dap_locator_create_scenario(
         &mut self,
@@ -283,7 +283,7 @@ pub trait Extension: Send + Sync {
     }
 }
 
-/// Registers the provided type as a Zed extension.
+/// Registers the provided type as a Raijin extension.
 ///
 /// The type must implement the [`Extension`] trait.
 #[macro_export]
@@ -348,14 +348,14 @@ fn extension() -> &'static mut dyn Extension {
 static mut EXTENSION: Option<Box<dyn Extension>> = None;
 
 #[cfg(target_arch = "wasm32")]
-#[unsafe(link_section = "zed:api-version")]
+#[unsafe(link_section = "raijin:api-version")]
 #[doc(hidden)]
 pub static ZED_API_VERSION: [u8; 6] = *include_bytes!(concat!(env!("OUT_DIR"), "/version_bytes"));
 
 mod wit {
     wit_bindgen::generate!({
         skip: ["init-extension"],
-        path: "./wit/since_v0.8.0",
+        path: "./wit",
     });
 }
 
