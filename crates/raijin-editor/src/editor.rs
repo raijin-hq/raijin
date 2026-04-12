@@ -39,7 +39,6 @@ mod persistence;
 mod runnables;
 mod rust_analyzer_ext;
 pub mod scroll;
-pub(crate) mod scrollbar_types;
 mod selections_collection;
 pub mod semantic_tokens;
 mod split;
@@ -56,7 +55,7 @@ mod signature_help;
 pub mod test;
 
 pub(crate) use actions::*;
-use scrollbar_types::ScrollbarAutoHide;
+use raijin_ui::ScrollbarAutoHide;
 pub use display_map::{
     ChunkRenderer, ChunkRendererContext, DisplayPoint, FoldPlaceholder, HighlightKey,
     SemanticTokenHighlight,

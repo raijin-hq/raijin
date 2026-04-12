@@ -16,10 +16,7 @@ use raijin_project::lsp_store::language_server_settings;
 use semver::Version;
 use serde_json::{Value, json};
 use inazuma_settings_framework::SettingsLocation;
-use smol::{
-    raijin_fs::{self},
-    io::BufReader,
-};
+use smol::{fs, io::BufReader};
 use std::{
     borrow::Cow,
     env::consts,
@@ -30,8 +27,8 @@ use std::{
 };
 use raijin_task::{TaskTemplate, TaskTemplates, VariableName};
 use inazuma_util::{
-    ResultExt, archive::extract_zip, raijin_fs::remove_matching, maybe, merge_json_value_into,
-    raijin_paths::PathStyle, rel_path::RelPath,
+    ResultExt, archive::extract_zip, fs::remove_matching, maybe, merge_json_value_into,
+    paths::PathStyle, rel_path::RelPath,
 };
 
 use crate::PackageJsonData;
@@ -452,7 +449,7 @@ impl LspInstaller for NodeVersionAdapter {
         ));
         let destination_container_path =
             container_dir.join(format!("{}-{}-tmp", Self::SERVER_NAME, version.name));
-        if raijin_fs::metadata(&destination_path).await.is_err() {
+        if fs::metadata(&destination_path).await.is_err() {
             let mut response = delegate
                 .http_client()
                 .get(&version.url, Default::default(), true)
@@ -466,7 +463,7 @@ impl LspInstaller for NodeVersionAdapter {
                 archive.unpack(&destination_container_path).await?;
             }
 
-            raijin_fs::copy(
+            fs::copy(
                 destination_container_path.join(format!(
                     "{}{}",
                     Self::SERVER_NAME,
@@ -503,7 +500,7 @@ impl LspAdapter for NodeVersionAdapter {
 async fn get_cached_version_server_binary(container_dir: PathBuf) -> Option<LanguageServerBinary> {
     maybe!(async {
         let mut last = None;
-        let mut entries = raijin_fs::read_dir(&container_dir).await?;
+        let mut entries = fs::read_dir(&container_dir).await?;
         while let Some(entry) = entries.next().await {
             last = Some(entry?.path());
         }

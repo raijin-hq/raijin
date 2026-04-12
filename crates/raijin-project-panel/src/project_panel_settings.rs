@@ -6,10 +6,7 @@ use inazuma_settings_framework::{
     DockSide, ProjectPanelEntrySpacing, ProjectPanelSortMode, RegisterSetting, Settings,
     ShowDiagnostics, ShowIndentGuides,
 };
-use raijin_ui::{
-    px,
-    scrollbars::{ScrollbarVisibility, ShowScrollbar},
-};
+use raijin_ui::{px, ScrollbarVisibility, ShowScrollbar};
 
 #[derive(Deserialize, Debug, Clone, Copy, PartialEq, RegisterSetting)]
 pub struct ProjectPanelSettings {
@@ -82,7 +79,7 @@ impl AutoOpenSettings {
 }
 
 impl ScrollbarVisibility for ProjectPanelSettings {
-    fn visibility(&self, cx: &ui::App) -> ShowScrollbar {
+    fn visibility(&self, cx: &inazuma::App) -> ShowScrollbar {
         self.scrollbar
             .show
             .unwrap_or_else(|| EditorSettings::get_global(cx).scrollbar.show)
@@ -90,7 +87,7 @@ impl ScrollbarVisibility for ProjectPanelSettings {
 }
 
 impl Settings for ProjectPanelSettings {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &inazuma_settings_framework::SettingsContent) -> Self {
         let project_panel = content.project_panel.clone().unwrap();
         Self {
             button: project_panel.button.unwrap(),

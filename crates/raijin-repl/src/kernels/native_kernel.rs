@@ -52,7 +52,7 @@ impl LocalKernelSpecification {
             self.name
         );
 
-        let mut cmd = util::command::new_std_command(&argv[0]);
+        let mut cmd = inazuma_util::command::new_std_command(&argv[0]);
 
         for arg in &argv[1..] {
             if arg == "{connection_file}" {
@@ -91,7 +91,7 @@ async fn peek_ports(ip: IpAddr) -> Result<[u16; 5]> {
 }
 
 pub struct NativeRunningKernel {
-    pub process: util::process::Child,
+    pub process: inazuma_util::process::Child,
     connection_path: PathBuf,
     _process_status_task: Option<Task<()>>,
     pub working_directory: PathBuf,
@@ -148,7 +148,7 @@ impl NativeRunningKernel {
             let mut cmd = kernel_specification.command(&connection_path)?;
             cmd.current_dir(&working_directory);
 
-            let mut process = util::process::Child::spawn(
+            let mut process = inazuma_util::process::Child::spawn(
                 cmd,
                 std::process::Stdio::piped(),
                 std::process::Stdio::piped(),
@@ -364,7 +364,7 @@ pub async fn local_kernel_specifications(fs: Arc<dyn Fs>) -> Result<Vec<LocalKer
     }
 
     // Search for kernels inside the base python environment
-    let command = util::command::new_command("python")
+    let command = inazuma_util::command::new_command("python")
         .arg("-c")
         .arg("import sys; print(sys.prefix)")
         .output()

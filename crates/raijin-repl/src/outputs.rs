@@ -36,7 +36,7 @@
 use raijin_editor::{Editor, MultiBuffer};
 use inazuma::{AnyElement, ClipboardItem, Entity, EventEmitter, Render, WeakEntity};
 use raijin_language::Buffer;
-use menu;
+use inazuma_menu;
 use runtimelib::{ExecutionState, JupyterMessage, JupyterMessageContent, MimeBundle, MimeType};
 use raijin_ui::{CommonAnimationExt, CopyButton, IconButton, Tooltip, prelude::*};
 
@@ -59,7 +59,7 @@ use plain::TerminalOutput;
 
 pub(crate) mod user_error;
 use user_error::ErrorView;
-use raijin_workspace::Workspace;
+use raijin_raijin_workspace::Workspace;
 
 use crate::repl_settings::ReplSettings;
 use inazuma_settings_framework::Settings;
@@ -343,9 +343,9 @@ impl Output {
                                             format!("{}: {}\n{}", ename, evalue, traceback_text);
                                         let buffer = cx.new(|cx| {
                                             let mut buffer = Buffer::local(full_error, cx)
-                                                .with_language(language::PLAIN_TEXT.clone(), cx);
+                                                .with_language(raijin_language::PLAIN_TEXT.clone(), cx);
                                             buffer
-                                                .set_capability(language::Capability::ReadOnly, cx);
+                                                .set_capability(raijin_language::Capability::ReadOnly, cx);
                                             buffer
                                         });
                                         let editor = Box::new(cx.new(|cx| {
@@ -797,7 +797,7 @@ impl Render for ExecutionView {
             };
 
             div()
-                .on_action(cx.listener(|this, _: &menu::Confirm, window, cx| {
+                .on_action(cx.listener(|this, _: &inazuma_menu::Confirm, window, cx| {
                     this.submit_input(window, cx);
                 }))
                 .w_full()
@@ -891,16 +891,16 @@ mod tests {
 
     async fn init_test(
         cx: &mut TestAppContext,
-    ) -> (inazuma::VisualTestContext, WeakEntity<workspace::Workspace>) {
+    ) -> (inazuma::VisualTestContext, WeakEntity<raijin_workspace::Workspace>) {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
         });
-        let fs = project::FakeFs::new(cx.background_executor.clone());
-        let project = project::Project::test(fs, [] as [&Path; 0], cx).await;
+        let fs = raijin_project::FakeFs::new(cx.background_executor.clone());
+        let project = raijin_project::Project::test(fs, [] as [&Path; 0], cx).await;
         let window =
-            cx.add_window(|window, cx| workspace::MultiWorkspace::test_new(project, window, cx));
+            cx.add_window(|window, cx| raijin_workspace::MultiWorkspace::test_new(project, window, cx));
         let workspace = window
             .read_with(cx, |mw, _| mw.workspace().clone())
             .unwrap();
@@ -911,7 +911,7 @@ mod tests {
 
     fn create_execution_view(
         cx: &mut inazuma::VisualTestContext,
-        weak_workspace: WeakEntity<workspace::Workspace>,
+        weak_workspace: WeakEntity<raijin_workspace::Workspace>,
     ) -> Entity<ExecutionView> {
         cx.update(|_window, cx| {
             cx.new(|cx| ExecutionView::new(ExecutionStatus::Queued, weak_workspace, cx))

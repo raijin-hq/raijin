@@ -2,7 +2,19 @@ use raijin_editor::EditorSettings;
 use inazuma::{App, Pixels};
 use inazuma_settings_framework::RegisterSetting;
 pub use inazuma_settings_framework::{DockSide, Settings, ShowIndentGuides};
-use raijin_ui::scrollbars::{ScrollbarVisibility, ShowScrollbar};
+use raijin_ui::{ScrollbarVisibility, ShowScrollbar};
+
+/// Convert from the editor's `ShowScrollbar` (which is `pub(crate)` in `raijin_editor`)
+/// to `raijin_ui::ShowScrollbar` by matching on the `Debug` representation.
+fn editor_show_scrollbar_to_ui(cx: &App) -> ShowScrollbar {
+    let editor_value = format!("{:?}", EditorSettings::get_global(cx).scrollbar.show);
+    match editor_value.as_str() {
+        "System" => ShowScrollbar::System,
+        "Always" => ShowScrollbar::Always,
+        "Never" => ShowScrollbar::Never,
+        _ => ShowScrollbar::Auto,
+    }
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, RegisterSetting)]
 pub struct OutlinePanelSettings {
@@ -37,12 +49,12 @@ impl ScrollbarVisibility for OutlinePanelSettings {
     fn visibility(&self, cx: &App) -> ShowScrollbar {
         self.scrollbar
             .show
-            .unwrap_or_else(|| EditorSettings::get_global(cx).scrollbar.show)
+            .unwrap_or_else(|| editor_show_scrollbar_to_ui(cx))
     }
 }
 
 impl Settings for OutlinePanelSettings {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &inazuma_settings_framework::SettingsContent) -> Self {
         let panel = content.outline_panel.as_ref().unwrap();
         Self {
             button: panel.button.unwrap(),

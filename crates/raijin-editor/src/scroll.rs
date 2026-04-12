@@ -23,7 +23,7 @@ use std::{
     cmp::Ordering,
     time::{Duration, Instant},
 };
-use crate::scrollbar_types::ScrollbarAutoHide;
+use raijin_ui::ScrollbarAutoHide;
 use inazuma_util::ResultExt;
 use raijin_workspace::{ItemId, WorkspaceId};
 

@@ -12,7 +12,7 @@ use inazuma_settings_framework::Settings;
 use smallvec::smallvec;
 use inazuma_text::BufferId;
 use raijin_theme::ActiveTheme;
-use crate::scrollbar_types::ShowScrollbar;
+use raijin_ui::ShowScrollbar;
 use raijin_ui::{h_flex, prelude::*, v_flex};
 
 use inazuma::ContentMask;

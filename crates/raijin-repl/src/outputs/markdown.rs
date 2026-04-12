@@ -34,8 +34,8 @@ impl OutputContent for MarkdownView {
         let source = self.markdown.read(cx).source().to_string();
         let buffer = cx.new(|cx| {
             let mut buffer =
-                Buffer::local(source.clone(), cx).with_language(language::PLAIN_TEXT.clone(), cx);
-            buffer.set_capability(language::Capability::ReadOnly, cx);
+                Buffer::local(source.clone(), cx).with_language(raijin_language::PLAIN_TEXT.clone(), cx);
+            buffer.set_capability(raijin_language::Capability::ReadOnly, cx);
             buffer
         });
         Some(buffer)

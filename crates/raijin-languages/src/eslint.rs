@@ -19,7 +19,7 @@ use std::{
     sync::Arc,
 };
 use inazuma_util::merge_json_value_into;
-use inazuma_util::{raijin_fs::remove_matching, rel_path::RelPath};
+use inazuma_util::{fs::remove_matching, rel_path::RelPath};
 
 fn eslint_server_binary_arguments(server_path: &Path) -> Vec<OsString> {
     vec![
@@ -94,7 +94,7 @@ impl LspInstaller for EsLintLspAdapter {
         let destination_path = Self::build_destination_path(&container_dir);
         let server_path = destination_path.join(Self::SERVER_PATH);
 
-        if raijin_fs::metadata(&server_path).await.is_err() {
+        if fs::metadata(&server_path).await.is_err() {
             remove_matching(&container_dir, |_| true).await;
 
             download_server_binary(
@@ -106,10 +106,10 @@ impl LspInstaller for EsLintLspAdapter {
             )
             .await?;
 
-            let mut dir = raijin_fs::read_dir(&destination_path).await?;
+            let mut dir = fs::read_dir(&destination_path).await?;
             let first = dir.next().await.context("missing first file")??;
             let repo_root = destination_path.join("vscode-eslint");
-            raijin_fs::rename(first.path(), &repo_root).await?;
+            fs::rename(first.path(), &repo_root).await?;
 
             #[cfg(target_os = "windows")]
             {
@@ -408,19 +408,19 @@ fn match_glob_pattern(pattern: &str, file_path: &Path) -> Option<String> {
 #[cfg(target_os = "windows")]
 async fn handle_symlink(src_dir: PathBuf, dest_dir: PathBuf) -> Result<()> {
     anyhow::ensure!(
-        raijin_fs::metadata(&src_dir).await.is_ok(),
+        fs::metadata(&src_dir).await.is_ok(),
         "Directory {src_dir:?} is not present"
     );
-    if raijin_fs::metadata(&dest_dir).await.is_ok() {
-        raijin_fs::remove_file(&dest_dir).await?;
+    if fs::metadata(&dest_dir).await.is_ok() {
+        fs::remove_file(&dest_dir).await?;
     }
-    raijin_fs::create_dir_all(&dest_dir).await?;
-    let mut entries = raijin_fs::read_dir(&src_dir).await?;
+    fs::create_dir_all(&dest_dir).await?;
+    let mut entries = fs::read_dir(&src_dir).await?;
     while let Some(entry) = entries.try_next().await? {
         let entry_path = entry.path();
         let entry_name = entry.file_name();
         let dest_path = dest_dir.join(&entry_name);
-        raijin_fs::copy(&entry_path, &dest_path).await?;
+        fs::copy(&entry_path, &dest_path).await?;
     }
     Ok(())
 }

@@ -29,7 +29,7 @@ use std::{
     },
 };
 use raijin_task::{TaskTemplate, TaskTemplates, TaskVariables, VariableName};
-use inazuma_util::{ResultExt, raijin_fs::remove_matching, maybe, merge_json_value_into};
+use inazuma_util::{ResultExt, fs::remove_matching, maybe, merge_json_value_into};
 
 pub(crate) fn semantic_token_rules() -> SemanticTokenRules {
     let content = raijin_grammars::get_file("go/semantic_token_rules.json")
@@ -133,7 +133,7 @@ impl LspInstaller for GoLspAdapter {
 
         if let Some(version) = version {
             let binary_path = container_dir.join(format!("gopls_{version}_go_{go_version}"));
-            if let Ok(metadata) = raijin_fs::metadata(&binary_path).await
+            if let Ok(metadata) = fs::metadata(&binary_path).await
                 && metadata.is_file()
             {
                 remove_matching(&container_dir, |entry| {
@@ -152,7 +152,7 @@ impl LspInstaller for GoLspAdapter {
         }
 
         let gobin_dir = container_dir.join("gobin");
-        raijin_fs::create_dir_all(&gobin_dir).await?;
+        fs::create_dir_all(&gobin_dir).await?;
         let install_output = inazuma_util::command::new_command(go)
             .env("GO111MODULE", "on")
             .env("GOBIN", &gobin_dir)
@@ -179,7 +179,7 @@ impl LspInstaller for GoLspAdapter {
             .context("failed to run installed gopls binary")?;
         let gopls_version = parse_version_output(&version_output)?;
         let binary_path = container_dir.join(format!("gopls_{gopls_version}_go_{go_version}"));
-        raijin_fs::rename(&installed_binary_path, &binary_path).await?;
+        fs::rename(&installed_binary_path, &binary_path).await?;
 
         Ok(LanguageServerBinary {
             path: binary_path.to_path_buf(),
@@ -460,7 +460,7 @@ fn parse_version_output(output: &Output) -> Result<&str> {
 async fn get_cached_server_binary(container_dir: &Path) -> Option<LanguageServerBinary> {
     maybe!(async {
         let mut last_binary_path = None;
-        let mut entries = raijin_fs::read_dir(container_dir).await?;
+        let mut entries = fs::read_dir(container_dir).await?;
         while let Some(entry) = entries.next().await {
             let entry = entry?;
             if entry.file_type().await?.is_file()

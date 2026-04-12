@@ -297,7 +297,7 @@ impl Session {
                 .unwrap_or_else(temp_dir)
         };
 
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Kernel Status Changed",
             kernel_language,
             kernel_status = KernelStatus::Starting.to_string(),
@@ -414,10 +414,10 @@ impl Session {
     fn on_buffer_event(
         &mut self,
         buffer: Entity<MultiBuffer>,
-        event: &multi_buffer::Event,
+        event: &raijin_multi_buffer::Event,
         cx: &mut Context<Self>,
     ) {
-        if let multi_buffer::Event::Edited { .. } = event {
+        if let raijin_multi_buffer::Event::Edited { .. } = event {
             let snapshot = buffer.read(cx).snapshot(cx);
 
             let mut blocks_to_remove: HashSet<CustomBlockId> = HashSet::default();
@@ -826,7 +826,7 @@ impl Session {
         let kernel_status = KernelStatus::from(&kernel).to_string();
         let kernel_language = self.kernel_specification.language();
 
-        telemetry::event!(
+        raijin_telemetry::event!(
             "Kernel Status Changed",
             kernel_language,
             kernel_status,
@@ -986,7 +986,7 @@ impl KernelSession for Session {
             JupyterMessageContent::Status(status) => {
                 self.kernel.set_execution_state(&status.execution_state);
 
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Kernel Status Changed",
                     kernel_language = self.kernel_specification.language(),
                     kernel_status = KernelStatus::from(&self.kernel).to_string(),

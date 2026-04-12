@@ -1,9 +1,9 @@
 use anyhow::Result;
-use html_to_markdown::markdown::{
+use raijin_html_to_markdown::markdown::{
     CodeHandler, HeadingHandler, ListHandler, ParagraphHandler, StyledTextHandler, TableHandler,
     WebpageChromeRemover,
 };
-use html_to_markdown::{TagHandler, convert_html_to_markdown};
+use raijin_html_to_markdown::{TagHandler, convert_html_to_markdown};
 use std::cell::RefCell;
 use std::rc::Rc;
 

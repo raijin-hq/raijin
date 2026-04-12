@@ -4,7 +4,7 @@ use std::time::{Duration, Instant};
 use raijin_editor::{Editor, EditorMode, MultiBuffer, SizingBehavior};
 use futures::future::Shared;
 use inazuma::{
-    App, Entity, EventEmitter, Focusable, Hsla, InteractiveElement, RetainAllImageCache,
+    App, Entity, EventEmitter, Focusable, Oklch, InteractiveElement, RetainAllImageCache,
     StatefulInteractiveElement, Task, TextStyleRefinement, prelude::*,
 };
 use raijin_language::{Buffer, Language, LanguageRegistry};
@@ -234,7 +234,7 @@ pub trait RenderableCell: Render {
     fn source(&self) -> &String;
     fn selected(&self) -> bool;
     fn set_selected(&mut self, selected: bool) -> &mut Self;
-    fn selected_bg_color(&self, _window: &mut Window, cx: &mut Context<Self>) -> Hsla {
+    fn selected_bg_color(&self, _window: &mut Window, cx: &mut Context<Self>) -> Oklch {
         if self.selected() {
             let mut color = cx.theme().colors().element_hover;
             color.fade_out(0.5);
@@ -385,7 +385,7 @@ impl MarkdownCell {
 
         let editor_subscription =
             cx.subscribe(&editor, move |this, _editor, event, cx| match event {
-                editor::EditorEvent::Blurred => {
+                raijin_raijin_editor::EditorEvent::Blurred => {
                     if this.editing {
                         this.editing = false;
                         cx.emit(MarkdownCellEvent::FinishedEditing);
@@ -595,7 +595,7 @@ pub struct CodeCell {
     metadata: CellMetadata,
     execution_count: Option<i32>,
     source: String,
-    editor: Entity<editor::Editor>,
+    editor: Entity<raijin_editor::Editor>,
     outputs: Vec<Output>,
     selected: bool,
     cell_position: Option<CellPosition>,
@@ -748,7 +748,7 @@ impl CodeCell {
         }
     }
 
-    pub fn editor(&self) -> &Entity<editor::Editor> {
+    pub fn editor(&self) -> &Entity<raijin_editor::Editor> {
         &self.editor
     }
 

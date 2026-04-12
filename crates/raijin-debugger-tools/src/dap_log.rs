@@ -25,11 +25,11 @@ use std::{
     sync::Arc,
 };
 use inazuma_util::maybe;
+use raijin_ui::{Button, Color, ContextMenu, Label, LabelCommon, PopoverMenu, h_flex};
 use raijin_workspace::{
-    ToolbarItemEvent, ToolbarItemView, Workspace,
-    item::Item,
-    searchable::{Direction, SearchEvent, SearchToken, SearchableItem, SearchableItemHandle},
-    ui::{Button, Clickable, ContextMenu, Label, LabelCommon, PopoverMenu, h_flex},
+    ToolbarItemEvent, ToolbarItemLocation, ToolbarItemView, Workspace,
+    item::{Item, ItemEvent, ItemHandle},
+    searchable::{Direction, SearchEvent, SearchOptions, SearchToken, SearchableItem, SearchableItemHandle},
 };
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
@@ -551,7 +551,7 @@ impl Render for DapLogToolbarItemView {
                                         "{} - {}",
                                         row.adapter_name, row.session_label
                                     ))
-                                    .color(workspace::ui::Color::Muted),
+                                    .color(Color::Muted),
                                 )
                                 .into_any_element()
                         });
@@ -657,21 +657,21 @@ impl EventEmitter<ToolbarItemEvent> for DapLogToolbarItemView {}
 impl ToolbarItemView for DapLogToolbarItemView {
     fn set_active_pane_item(
         &mut self,
-        active_pane_item: Option<&dyn workspace::item::ItemHandle>,
+        active_pane_item: Option<&dyn ItemHandle>,
         _window: &mut Window,
         cx: &mut Context<Self>,
-    ) -> workspace::ToolbarItemLocation {
+    ) -> ToolbarItemLocation {
         if let Some(item) = active_pane_item
             && let Some(log_view) = item.downcast::<DapLogView>()
         {
             self.log_view = Some(log_view);
-            return workspace::ToolbarItemLocation::PrimaryLeft;
+            return ToolbarItemLocation::PrimaryLeft;
         }
         self.log_view = None;
 
         cx.notify();
 
-        workspace::ToolbarItemLocation::Hidden
+        ToolbarItemLocation::Hidden
     }
 }
 
@@ -759,7 +759,7 @@ impl DapLogView {
         let editor = cx.new(|cx| {
             let mut editor = Editor::multi_line(window, cx);
             editor.set_text(log_contents, window, cx);
-            editor.move_to_end(&editor::actions::MoveToEnd, window, cx);
+            editor.move_to_end(&raijin_editor::actions::MoveToEnd, window, cx);
             editor.set_show_code_actions(false, cx);
             editor.set_show_breakpoints(false, cx);
             editor.set_show_git_diff_gutter(false, cx);
@@ -986,7 +986,7 @@ pub fn init(cx: &mut App) {
 impl Item for DapLogView {
     type Event = EditorEvent;
 
-    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(workspace::item::ItemEvent)) {
+    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(ItemEvent)) {
         Editor::to_item_events(event, f)
     }
 
@@ -1058,7 +1058,7 @@ impl SearchableItem for DapLogView {
 
     fn find_matches(
         &mut self,
-        query: Arc<project::search::SearchQuery>,
+        query: Arc<raijin_project::search::SearchQuery>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> inazuma::Task<Vec<Self::Match>> {
@@ -1077,8 +1077,8 @@ impl SearchableItem for DapLogView {
         // Since DAP Log is read-only, it doesn't make sense to support replace operation.
     }
 
-    fn supported_options(&self) -> workspace::searchable::SearchOptions {
-        workspace::searchable::SearchOptions {
+    fn supported_options(&self) -> SearchOptions {
+        SearchOptions {
             case: true,
             word: true,
             regex: true,

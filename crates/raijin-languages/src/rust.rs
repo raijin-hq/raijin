@@ -1252,7 +1252,7 @@ fn package_name_from_pkgid(pkgid: &str) -> Option<&str> {
 async fn get_cached_server_binary(container_dir: PathBuf) -> Option<LanguageServerBinary> {
     let binary_result = maybe!(async {
         let mut last = None;
-        let mut entries = raijin_fs::read_dir(&container_dir)
+        let mut entries = fs::read_dir(&container_dir)
             .await
             .with_context(|| format!("listing {container_dir:?}"))?;
         while let Some(entry) = entries.next().await {

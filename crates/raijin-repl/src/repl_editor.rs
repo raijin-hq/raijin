@@ -96,7 +96,7 @@ pub fn install_ipykernel_and_assign(
     if let Some(workspace) = &workspace {
         workspace.update(cx, |workspace, cx| {
             workspace.show_toast(
-                workspace::Toast::new(
+                raijin_workspace::Toast::new(
                     notification_id.clone(),
                     format!("Installing ipykernel in {}...", env_name),
                 ),
@@ -109,7 +109,7 @@ pub fn install_ipykernel_and_assign(
     let window_handle = window.window_handle();
 
     let install_task = cx.background_spawn(async move {
-        let output = util::command::new_command(python_path.to_string_lossy().as_ref())
+        let output = inazuma_util::command::new_command(python_path.to_string_lossy().as_ref())
             .args(&["-m", "pip", "install", "ipykernel"])
             .output()
             .await
@@ -133,7 +133,7 @@ pub fn install_ipykernel_and_assign(
                         .update(cx, |workspace, cx| {
                             workspace.dismiss_toast(&notification_id, cx);
                             workspace.show_toast(
-                                workspace::Toast::new(
+                                raijin_workspace::Toast::new(
                                     notification_id.clone(),
                                     format!("ipykernel installed in {}", env_name),
                                 )
@@ -161,7 +161,7 @@ pub fn install_ipykernel_and_assign(
                         .update(cx, |workspace, cx| {
                             workspace.dismiss_toast(&notification_id, cx);
                             workspace.show_toast(
-                                workspace::Toast::new(
+                                raijin_workspace::Toast::new(
                                     notification_id.clone(),
                                     format!(
                                         "Failed to install ipykernel in {}: {}",
@@ -815,11 +815,11 @@ mod tests {
         use jupyter_protocol::JupyterKernelspec;
 
         // Initialize settings
-        settings::init(cx);
-        editor::init(cx);
+        inazuma_settings_framework::init(cx);
+        raijin_editor::init(cx);
 
         // Initialize the ReplStore with a fake filesystem
-        let fs = Arc::new(project::RealFs::new(None, cx.background_executor().clone()));
+        let fs = Arc::new(raijin_project::RealFs::new(None, cx.background_executor().clone()));
         ReplStore::init(fs, cx);
 
         // Add mock kernel specifications for TypeScript and Python

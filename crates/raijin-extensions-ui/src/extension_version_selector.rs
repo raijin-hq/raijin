@@ -1,7 +1,7 @@
 use std::str::FromStr;
 use std::sync::Arc;
 
-use cloud_api_types::ExtensionMetadata;
+use raijin_cloud_api_types::ExtensionMetadata;
 use raijin_extension_host::ExtensionStore;
 use raijin_fs::Fs;
 use inazuma_fuzzy::{StringMatch, StringMatchCandidate, match_strings};
@@ -89,7 +89,7 @@ impl ExtensionVersionSelectorDelegate {
 }
 
 impl PickerDelegate for ExtensionVersionSelectorDelegate {
-    type ListItem = ui::ListItem;
+    type ListItem = raijin_ui::ListItem;
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
         "Select extension version...".into()
@@ -173,7 +173,7 @@ impl PickerDelegate for ExtensionVersionSelectorDelegate {
         let candidate_id = self.matches[self.selected_index].candidate_id;
         let extension_version = &self.extension_versions[candidate_id];
 
-        if !extension_host::is_version_compatible(extension_version) {
+        if !raijin_extension_host::is_version_compatible(extension_version) {
             return;
         }
 
@@ -213,7 +213,7 @@ impl PickerDelegate for ExtensionVersionSelectorDelegate {
         let extension_version = &self.extension_versions.get(version_match.candidate_id)?;
 
         let is_version_compatible =
-            extension_host::is_version_compatible(extension_version);
+            raijin_extension_host::is_version_compatible(extension_version);
         let disabled = !is_version_compatible;
 
         Some(

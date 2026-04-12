@@ -308,7 +308,7 @@ impl KernelSpecification {
             Self::WslRemote(spec) => spec.kernelspec.language.clone(),
         };
 
-        file_icons::FileIcons::get(cx)
+        raijin_file_icons::FileIcons::get(cx)
             .get_icon_for_type(&lang_name.to_lowercase(), cx)
             .map(Icon::from_path)
             .unwrap_or(Icon::new(IconName::ReplNeutral))
@@ -444,7 +444,7 @@ pub fn python_env_kernel_specifications(
                     let python_path = toolchain.path.to_string();
                     let environment_kind = extract_environment_kind(&toolchain.as_json);
 
-                    let has_ipykernel = util::command::new_command(&python_path)
+                    let has_ipykernel = inazuma_util::command::new_command(&python_path)
                         .args(&["-c", "import ipykernel"])
                         .output()
                         .await
@@ -536,7 +536,7 @@ pub fn python_env_kernel_specifications(
 
                 if let (Some(distro), Some(internal_path)) = (distro, internal_path) {
                     let python_path = format!("{}/.venv/bin/python", internal_path);
-                    let check = util::command::new_command("wsl")
+                    let check = inazuma_util::command::new_command("wsl")
                         .args(&["-d", distro, "test", "-f", &python_path])
                         .output()
                         .await;
@@ -563,7 +563,7 @@ pub fn python_env_kernel_specifications(
                             distro: distro.to_string(),
                         }));
                     } else {
-                        let check_system = util::command::new_command("wsl")
+                        let check_system = inazuma_util::command::new_command("wsl")
                             .args(&["-d", distro, "command", "-v", "python3"])
                             .output()
                             .await;

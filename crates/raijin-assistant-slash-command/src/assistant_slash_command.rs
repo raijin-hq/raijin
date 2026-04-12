@@ -19,7 +19,8 @@ use std::{
     sync::{Arc, atomic::AtomicBool},
 };
 use raijin_ui::ActiveTheme;
-use raijin_workspace::{Workspace, ui::IconName};
+use raijin_ui::IconName;
+use raijin_workspace::Workspace;
 
 /// Deserializes IconName, falling back to Code for unknown variants.
 /// This handles old saved data that may contain removed or renamed icon variants.
@@ -106,7 +107,7 @@ pub trait SlashCommand: 'static + Send + Sync {
     fn run(
         self: Arc<Self>,
         arguments: &[String],
-        context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         context_buffer: BufferSnapshot,
         workspace: WeakEntity<Workspace>,
         // TODO: We're just using the `LspAdapterDelegate` here because that is
@@ -274,8 +275,8 @@ pub struct SlashCommandOutputSection<T> {
     pub metadata: Option<serde_json::Value>,
 }
 
-impl SlashCommandOutputSection<language::Anchor> {
-    pub fn is_valid(&self, buffer: &language::TextBuffer) -> bool {
+impl SlashCommandOutputSection<raijin_language::Anchor> {
+    pub fn is_valid(&self, buffer: &raijin_language::TextBuffer) -> bool {
         self.range.start.is_valid(buffer) && !self.range.to_offset(buffer).is_empty()
     }
 }

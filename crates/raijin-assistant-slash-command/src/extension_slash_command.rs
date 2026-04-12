@@ -28,7 +28,7 @@ impl ExtensionSlashCommandProxy for SlashCommandRegistryProxy {
     fn register_slash_command(
         &self,
         extension: Arc<dyn Extension>,
-        command: extension::SlashCommand,
+        command: raijin_extension::SlashCommand,
     ) {
         self.slash_command_registry
             .register_command(ExtensionSlashCommand::new(extension, command), false)
@@ -71,11 +71,11 @@ impl WorktreeDelegate for WorktreeDelegateAdapter {
 
 pub struct ExtensionSlashCommand {
     extension: Arc<dyn Extension>,
-    command: extension::SlashCommand,
+    command: raijin_extension::SlashCommand,
 }
 
 impl ExtensionSlashCommand {
-    pub fn new(extension: Arc<dyn Extension>, command: extension::SlashCommand) -> Self {
+    pub fn new(extension: Arc<dyn Extension>, command: raijin_extension::SlashCommand) -> Self {
         Self { extension, command }
     }
 }
@@ -130,7 +130,7 @@ impl SlashCommand for ExtensionSlashCommand {
     fn run(
         self: Arc<Self>,
         arguments: &[String],
-        _context_slash_command_output_sections: &[SlashCommandOutputSection<language::Anchor>],
+        _context_slash_command_output_sections: &[SlashCommandOutputSection<raijin_language::Anchor>],
         _context_buffer: BufferSnapshot,
         _workspace: WeakEntity<Workspace>,
         delegate: Option<Arc<dyn LspAdapterDelegate>>,

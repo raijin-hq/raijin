@@ -86,8 +86,8 @@ use inazuma_text::{BufferId, SelectionGoal};
 use raijin_theme::{ActiveTheme, Appearance, PlayerColor};
 use raijin_theme_settings::BufferLineHeight;
 use crate::apca_contrast::ensure_minimum_contrast;
-use crate::scrollbar_types::ShowScrollbar;
 use raijin_ui::{
+    ShowScrollbar,
     ButtonLike, ContextMenu, Indicator, KeyBinding, POPOVER_Y_PADDING, Tooltip, prelude::*,
     right_click_menu, text_for_keystroke,
 };

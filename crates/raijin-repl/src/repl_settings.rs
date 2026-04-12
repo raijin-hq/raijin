@@ -30,7 +30,7 @@ pub struct ReplSettings {
 }
 
 impl Settings for ReplSettings {
-    fn from_settings(content: &settings::SettingsContent) -> Self {
+    fn from_settings(content: &inazuma_settings_framework::SettingsContent) -> Self {
         let repl = content.repl.as_ref().unwrap();
 
         Self {

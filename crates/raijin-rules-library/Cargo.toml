@@ -27,6 +27,7 @@ raijin-prompt-store.workspace = true
 raijin-release-channel.workspace = true
 inazuma-rope.workspace = true
 serde.workspace = true
+inazuma-settings-content.workspace = true
 inazuma-settings-framework.workspace = true
 raijin-theme-settings.workspace = true
 raijin-ui.workspace = true

@@ -1,5 +1,6 @@
 use inazuma_collections::HashMap;
 use inazuma_settings_framework::Settings;
+pub use inazuma_settings_framework::CondaManager;
 use raijin_task::Shell;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -32,14 +33,31 @@ pub enum VenvSettings {
     On {
         activate_script: Option<String>,
         directories: Option<Vec<String>>,
+        #[serde(default)]
+        conda_manager: CondaManager,
     },
 }
 
+/// View into the active venv settings.
+pub struct VenvSettingsView<'a> {
+    pub activate_script: Option<&'a str>,
+    pub directories: Option<&'a [String]>,
+    pub conda_manager: CondaManager,
+}
+
 impl VenvSettings {
-    pub fn as_option(&self) -> Option<&Self> {
+    pub fn as_option(&self) -> Option<VenvSettingsView<'_>> {
         match self {
             VenvSettings::Off => None,
-            _ => Some(self),
+            VenvSettings::On {
+                activate_script,
+                directories,
+                conda_manager,
+            } => Some(VenvSettingsView {
+                activate_script: activate_script.as_deref(),
+                directories: directories.as_deref(),
+                conda_manager: *conda_manager,
+            }),
         }
     }
 }

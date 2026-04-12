@@ -15,18 +15,16 @@ use raijin_editor::{
 };
 use raijin_feature_flags::{FeatureFlagAppExt, ProjectPanelUndoRedoFeatureFlag};
 use raijin_file_icons::FileIcons;
-use git;
 use raijin_git::status::GitSummary;
-use git_ui;
 use raijin_git_ui::file_diff_view::FileDiffView;
 use inazuma::{
     Action, AnyElement, App, AsyncWindowContext, Bounds, ClipboardEntry as GpuiClipboardEntry,
     ClipboardItem, Context, CursorStyle, DismissEvent, Div, DragMoveEvent, Entity, EventEmitter,
-    ExternalPaths, FocusHandle, Focusable, FontWeight, Hsla, InteractiveElement, KeyContext,
+    ExternalPaths, FocusHandle, Focusable, FontWeight, Oklch, InteractiveElement, KeyContext,
     ListHorizontalSizingBehavior, ListSizingBehavior, Modifiers, ModifiersChangedEvent,
     MouseButton, MouseDownEvent, ParentElement, PathPromptOptions, Pixels, Point, PromptLevel,
     Render, ScrollStrategy, Stateful, Styled, Subscription, Task, UniformListScrollHandle,
-    WeakEntity, Window, actions, anchored, deferred, div, hsla, linear_color_stop, linear_gradient,
+    WeakEntity, Window, actions, anchored, deferred, div, linear_color_stop, linear_gradient, oklcha,
     point, px, size, transparent_white, uniform_list,
 };
 use raijin_language::DiagnosticSeverity;
@@ -77,10 +75,8 @@ use raijin_workspace::{
     notifications::{DetachAndPromptErr, NotifyResultExt, NotifyTaskExt},
 };
 use raijin_worktree::CreatedEntry;
-use raijin_actions::{
-    project_panel::{Toggle, ToggleFocus},
-    workspace::OpenWithSystem,
-};
+use raijin_actions::project_panel::{Toggle, ToggleFocus};
+use raijin_actions::workspace::OpenWithSystem;
 
 use crate::undo::{ProjectPanelOperation, UndoManager};
 
@@ -521,7 +517,7 @@ pub fn init(cx: &mut App) {
             }
         });
 
-        workspace.register_action(|workspace, _: &git::FileHistory, window, cx| {
+        workspace.register_action(|workspace, _: &raijin_git::FileHistory, window, cx| {
             // First try to get from project panel if it's focused
             if let Some(panel) = workspace.panel::<ProjectPanel>(cx) {
                 let maybe_project_path = panel.read(cx).selection.and_then(|selection| {
@@ -545,7 +541,7 @@ pub fn init(cx: &mut App) {
                         .read(cx)
                         .repository_and_path_for_project_path(&project_path, cx)
                     {
-                        git_ui::file_history_view::FileHistoryView::open(
+                        raijin_git_ui::file_history_view::FileHistoryView::open(
                             repo_path,
                             git_store.downgrade(),
                             repo.downgrade(),
@@ -575,7 +571,7 @@ pub fn init(cx: &mut App) {
                     .read(cx)
                     .repository_and_path_for_project_path(&project_path, cx)
                 {
-                    git_ui::file_history_view::FileHistoryView::open(
+                    raijin_git_ui::file_history_view::FileHistoryView::open(
                         repo_path,
                         git_store.downgrade(),
                         repo.downgrade(),
@@ -614,11 +610,11 @@ struct DraggedProjectEntryView {
 }
 
 struct ItemColors {
-    default: Hsla,
-    hover: Hsla,
-    drag_over: Hsla,
-    marked: Hsla,
-    focused: Hsla,
+    default: Oklch,
+    hover: Oklch,
+    drag_over: Oklch,
+    marked: Oklch,
+    focused: Oklch,
 }
 
 fn get_item_color(is_sticky: bool, cx: &App) -> ItemColors {
@@ -626,17 +622,17 @@ fn get_item_color(is_sticky: bool, cx: &App) -> ItemColors {
 
     ItemColors {
         default: if is_sticky {
-            colors.panel_overlay_background
+            colors.panel.overlay_background
         } else {
-            colors.panel_background
+            colors.panel.background
         },
         hover: if is_sticky {
-            colors.panel_overlay_hover
+            colors.panel.overlay_hover
         } else {
             colors.element_hover
         },
         marked: colors.element_selected,
-        focused: colors.panel_focused_border,
+        focused: colors.panel.focused_border,
         drag_over: colors.drop_target_background,
     }
 }
@@ -673,13 +669,13 @@ impl ProjectPanel {
                 &project,
                 window,
                 |this, project, event, window, cx| match event {
-                    project::Event::ActiveEntryChanged(Some(entry_id)) => {
+                    raijin_project::Event::ActiveEntryChanged(Some(entry_id)) => {
                         if ProjectPanelSettings::get_global(cx).auto_reveal_entries {
                             this.reveal_entry(project.clone(), *entry_id, true, window, cx)
                                 .ok();
                         }
                     }
-                    project::Event::ActiveEntryChanged(None) => {
+                    raijin_project::Event::ActiveEntryChanged(None) => {
                         let is_active_item_file_diff_view = this
                             .workspace
                             .upgrade()
@@ -692,7 +688,7 @@ impl ProjectPanel {
                             this.marked_entries.clear();
                         }
                     }
-                    project::Event::RevealInProjectPanel(entry_id) => {
+                    raijin_project::Event::RevealInProjectPanel(entry_id) => {
                         if let Some(()) = this
                             .reveal_entry(project.clone(), *entry_id, false, window, cx)
                             .log_err()
@@ -700,11 +696,11 @@ impl ProjectPanel {
                             cx.emit(PanelEvent::Activate);
                         }
                     }
-                    project::Event::ActivateProjectPanel => {
+                    raijin_project::Event::ActivateProjectPanel => {
                         cx.emit(PanelEvent::Activate);
                     }
-                    project::Event::DiskBasedDiagnosticsFinished { .. }
-                    | project::Event::DiagnosticsUpdated { .. } => {
+                    raijin_project::Event::DiskBasedDiagnosticsFinished { .. }
+                    | raijin_project::Event::DiagnosticsUpdated { .. } => {
                         if ProjectPanelSettings::get_global(cx).show_diagnostics
                             != ShowDiagnostics::Off
                         {
@@ -720,18 +716,18 @@ impl ProjectPanel {
                             });
                         }
                     }
-                    project::Event::WorktreeRemoved(id) => {
+                    raijin_project::Event::WorktreeRemoved(id) => {
                         this.state.expanded_dir_ids.remove(id);
                         this.update_visible_entries(None, false, false, window, cx);
                         cx.notify();
                     }
-                    project::Event::WorktreeUpdatedEntries(_, _)
-                    | project::Event::WorktreeAdded(_)
-                    | project::Event::WorktreeOrderChanged => {
+                    raijin_project::Event::WorktreeUpdatedEntries(_, _)
+                    | raijin_project::Event::WorktreeAdded(_)
+                    | raijin_project::Event::WorktreeOrderChanged => {
                         this.update_visible_entries(None, false, false, window, cx);
                         cx.notify();
                     }
-                    project::Event::ExpandedAllForEntry(worktree_id, entry_id) => {
+                    raijin_project::Event::ExpandedAllForEntry(worktree_id, entry_id) => {
                         if let Some((worktree, expanded_dir_ids)) = project
                             .read(cx)
                             .worktree_for_id(*worktree_id, cx)
@@ -1111,7 +1107,7 @@ impl ProjectPanel {
             let should_show_compare = !is_dir && self.file_abs_paths_to_diff(cx).is_some();
 
             let has_git_repo = !is_dir && {
-                let project_path = project::ProjectPath {
+                let project_path = raijin_project::ProjectPath {
                     worktree_id,
                     path: entry.path.clone(),
                 };
@@ -1136,7 +1132,7 @@ impl ProjectPanel {
                             .separator()
                             .when(is_local, |menu| {
                                 menu.action(
-                                    ui::utils::reveal_in_file_manager_label(is_remote),
+                                    raijin_ui::utils::reveal_in_file_manager_label(is_remote),
                                     Box::new(RevealInFileManager),
                                 )
                             })
@@ -1176,20 +1172,20 @@ impl ProjectPanel {
                                     .action("Download...", Box::new(DownloadFromRemote))
                             })
                             .separator()
-                            .action("Copy Path", Box::new(zed_actions::workspace::CopyPath))
+                            .action("Copy Path", Box::new(raijin_actions::workspace::CopyPath))
                             .action(
                                 "Copy Relative Path",
-                                Box::new(zed_actions::workspace::CopyRelativePath),
+                                Box::new(raijin_actions::workspace::CopyRelativePath),
                             )
                             .when(!is_dir && self.has_git_changes(entry_id), |menu| {
                                 menu.separator().action(
                                     "Restore File",
-                                    Box::new(git::RestoreFile { skip_prompt: false }),
+                                    Box::new(raijin_git::RestoreFile { skip_prompt: false }),
                                 )
                             })
                             .when(has_git_repo, |menu| {
                                 menu.separator()
-                                    .action("View File History", Box::new(git::FileHistory))
+                                    .action("View File History", Box::new(raijin_git::FileHistory))
                             })
                             .when(!should_hide_rename, |menu| {
                                 menu.separator().action("Rename", Box::new(Rename))
@@ -1204,7 +1200,7 @@ impl ProjectPanel {
                                 menu.separator()
                                     .action(
                                         "Add Project to Workspace…",
-                                        Box::new(workspace::AddFolderToProject),
+                                        Box::new(raijin_workspace::AddFolderToProject),
                                     )
                                     .action("Remove from Workspace", Box::new(RemoveFromProject))
                             })
@@ -1599,7 +1595,7 @@ impl ProjectPanel {
         {
             self.filename_editor.update(cx, |editor, cx| {
                 editor.move_to_beginning_of_line(
-                    &editor::actions::MoveToBeginningOfLine {
+                    &raijin_editor::actions::MoveToBeginningOfLine {
                         stop_at_soft_wraps: false,
                         stop_at_indent: false,
                     },
@@ -1921,7 +1917,7 @@ impl ProjectPanel {
 
                             if is_dir {
                                 project_panel.project.update(cx, |_, cx| {
-                                    cx.emit(project::Event::Toast {
+                                    cx.emit(raijin_project::Event::Toast {
                                         notification_id: "excluded-directory".into(),
                                         message: format!(
                                             concat!(
@@ -1991,7 +1987,7 @@ impl ProjectPanel {
         }
     }
 
-    fn cancel(&mut self, _: &menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
+    fn cancel(&mut self, _: &inazuma_menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
         if cx.stop_active_drag(window) {
             self.drag_target_entry.take();
             self.hover_expand_task.take();
@@ -2209,7 +2205,7 @@ impl ProjectPanel {
 
     fn restore_file(
         &mut self,
-        action: &git::RestoreFile,
+        action: &raijin_git::RestoreFile,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -2627,7 +2623,7 @@ impl ProjectPanel {
         {
             self.filename_editor.update(cx, |editor, cx| {
                 editor.move_to_end_of_line(
-                    &editor::actions::MoveToEndOfLine {
+                    &raijin_editor::actions::MoveToEndOfLine {
                         stop_at_soft_wraps: false,
                     },
                     window,
@@ -3289,7 +3285,7 @@ impl ProjectPanel {
 
         let fs = self.fs.clone();
         let notification_id =
-            workspace::notifications::NotificationId::Named("download-progress".into());
+            raijin_workspace::notifications::NotificationId::Named("download-progress".into());
         cx.spawn_in(window, async move |this, cx| {
             if let Ok(Ok(Some(mut paths))) = destination_dir.await {
                 if let Some(dest_dir) = paths.pop() {
@@ -3297,7 +3293,7 @@ impl ProjectPanel {
                     workspace
                         .update(cx, |workspace, cx| {
                             workspace.show_toast(
-                                workspace::Toast::new(
+                                raijin_workspace::Toast::new(
                                     notification_id.clone(),
                                     format!("Downloading 0/{} files...", total_files),
                                 ),
@@ -3313,7 +3309,7 @@ impl ProjectPanel {
                         workspace
                             .update(cx, |workspace, cx| {
                                 workspace.show_toast(
-                                    workspace::Toast::new(
+                                    raijin_workspace::Toast::new(
                                         notification_id.clone(),
                                         format!(
                                             "Downloading {}/{} files...",
@@ -3350,7 +3346,7 @@ impl ProjectPanel {
                     workspace
                         .update(cx, |workspace, cx| {
                             workspace.show_toast(
-                                workspace::Toast::new(
+                                raijin_workspace::Toast::new(
                                     notification_id.clone(),
                                     format!("Downloaded {} files", total_files),
                                 ),
@@ -3371,7 +3367,7 @@ impl ProjectPanel {
 
     fn copy_path(
         &mut self,
-        _: &zed_actions::workspace::CopyPath,
+        _: &raijin_actions::workspace::CopyPath,
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -3399,7 +3395,7 @@ impl ProjectPanel {
 
     fn copy_relative_path(
         &mut self,
-        _: &zed_actions::workspace::CopyRelativePath,
+        _: &raijin_actions::workspace::CopyRelativePath,
         _: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -3512,7 +3508,7 @@ impl ProjectPanel {
             };
             if let Some(working_directory) = working_directory {
                 window.dispatch_action(
-                    workspace::OpenTerminal {
+                    raijin_workspace::OpenTerminal {
                         working_directory,
                         local: false,
                     }
@@ -3540,7 +3536,7 @@ impl ProjectPanel {
                         // File at root, open search with empty filter
                         self.workspace
                             .update(cx, |workspace, cx| {
-                                search::ProjectSearchView::new_search_in_directory(
+                                raijin_search::ProjectSearchView::new_search_in_directory(
                                     workspace,
                                     RelPath::empty(),
                                     window,
@@ -3562,7 +3558,7 @@ impl ProjectPanel {
 
             self.workspace
                 .update(cx, |workspace, cx| {
-                    search::ProjectSearchView::new_search_in_directory(
+                    raijin_search::ProjectSearchView::new_search_in_directory(
                         workspace, &dir_path, window, cx,
                     );
                 })
@@ -3767,7 +3763,7 @@ impl ProjectPanel {
             .unwrap_or(id)
     }
 
-    pub fn selected_entry<'a>(&self, cx: &'a App) -> Option<(&'a Worktree, &'a project::Entry)> {
+    pub fn selected_entry<'a>(&self, cx: &'a App) -> Option<(&'a Worktree, &'a raijin_project::Entry)> {
         let (worktree, entry) = self.selected_entry_handle(cx)?;
         Some((worktree.read(cx), entry))
     }
@@ -3777,7 +3773,7 @@ impl ProjectPanel {
     fn selected_sub_entry<'a>(
         &self,
         cx: &'a App,
-    ) -> Option<(Entity<Worktree>, &'a project::Entry)> {
+    ) -> Option<(Entity<Worktree>, &'a raijin_project::Entry)> {
         let (worktree, mut entry) = self.selected_entry_handle(cx)?;
 
         let resolved_id = self.resolve_entry(entry.id);
@@ -3849,7 +3845,7 @@ impl ProjectPanel {
     fn selected_entry_handle<'a>(
         &self,
         cx: &'a App,
-    ) -> Option<(Entity<Worktree>, &'a project::Entry)> {
+    ) -> Option<(Entity<Worktree>, &'a raijin_project::Entry)> {
         let selection = self.selection?;
         let project = self.project.read(cx);
         let worktree = project.worktree_for_id(selection.worktree_id, cx)?;
@@ -4192,7 +4188,7 @@ impl ProjectPanel {
                 }
                 let elapsed = now.elapsed();
                 if this.last_reported_update.elapsed() > Duration::from_secs(3600) {
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "Project Panel Updated",
                         elapsed_ms = elapsed.as_millis() as u64,
                         worktree_entries = this
@@ -5900,7 +5896,7 @@ impl ProjectPanel {
         is_active_or_marked: bool,
         drag_and_drop_enabled: bool,
         bold_folder_labels: bool,
-        drag_over_color: Hsla,
+        drag_over_color: Oklch,
         folded_directory_drag_target: Option<FoldedDirectoryDragTarget>,
         filename_text_color: Color,
         cx: &Context<Self>,
@@ -6444,8 +6440,8 @@ impl ProjectPanel {
                 );
                 self.render_entry(entry.id, details, window, cx)
                     .when(index == last_item_index, |this| {
-                        let shadow_color_top = hsla(0.0, 0.0, 0.0, 0.1);
-                        let shadow_color_bottom = hsla(0.0, 0.0, 0.0, 0.);
+                        let shadow_color_top = oklcha(0.0, 0.0, 0.0, 0.1);
+                        let shadow_color_bottom = oklcha(0.0, 0.0, 0.0, 0.0);
                         let sticky_shadow = div()
                             .absolute()
                             .left_0()
@@ -6679,7 +6675,7 @@ impl Render for ProjectPanel {
                             })
                             .when(show_indent_guides, |list| {
                                 list.with_decoration(
-                                    ui::indent_guides(
+                                    raijin_ui::indent_guides(
                                         px(indent_size),
                                         IndentGuideColors::panel(cx),
                                     )
@@ -6772,7 +6768,7 @@ impl Render for ProjectPanel {
                                                                 - offset * 2.,
                                                         ),
                                                     );
-                                                    ui::RenderedIndentGuide {
+                                                    raijin_ui::RenderedIndentGuide {
                                                         bounds,
                                                         layout,
                                                         is_active: Some(idx)
@@ -6796,7 +6792,7 @@ impl Render for ProjectPanel {
                                 )
                             })
                             .when(show_sticky_entries, |list| {
-                                let sticky_items = ui::sticky_items(
+                                let sticky_items = raijin_ui::sticky_items(
                                     cx.entity(),
                                     |this, range, window, cx| {
                                         let mut items =
@@ -6826,7 +6822,7 @@ impl Render for ProjectPanel {
                                 );
                                 list.with_decoration(if show_indent_guides {
                                     sticky_items.with_decoration(
-                                        ui::indent_guides(
+                                        raijin_ui::indent_guides(
                                             px(indent_size),
                                             IndentGuideColors::panel(cx),
                                         )
@@ -6853,7 +6849,7 @@ impl Render for ProjectPanel {
                                                                 layout.length * item_height,
                                                             ),
                                                         );
-                                                        ui::RenderedIndentGuide {
+                                                        raijin_ui::RenderedIndentGuide {
                                                             bounds,
                                                             layout,
                                                             is_active: false,
@@ -7075,7 +7071,7 @@ impl Render for ProjectPanel {
                     Button::new("open_project", "Open Project")
                         .full_width()
                         .key_binding(KeyBinding::for_action_in(
-                            &workspace::Open::default(),
+                            &raijin_workspace::Open::default(),
                             &focus_handle,
                             cx,
                         ))
@@ -7083,7 +7079,7 @@ impl Render for ProjectPanel {
                             this.workspace
                                 .update(cx, |_, cx| {
                                     window.dispatch_action(
-                                        workspace::Open::default().boxed_clone(),
+                                        raijin_workspace::Open::default().boxed_clone(),
                                         cx,
                                     );
                                 })
@@ -7104,7 +7100,7 @@ impl Render for ProjectPanel {
                         .on_click(cx.listener(|this, _, window, cx| {
                             this.workspace
                                 .update(cx, |_, cx| {
-                                    window.dispatch_action(git::Clone.boxed_clone(), cx);
+                                    window.dispatch_action(raijin_git::Clone.boxed_clone(), cx);
                                 })
                                 .log_err();
                         })),
@@ -7190,7 +7186,7 @@ impl Panel for ProjectPanel {
     }
 
     fn set_position(&mut self, position: DockPosition, _: &mut Window, cx: &mut Context<Self>) {
-        settings::update_settings_file(self.fs.clone(), cx, move |settings, _| {
+        inazuma_settings_framework::update_settings_file(self.fs.clone(), cx, move |settings, _| {
             let dock = match position {
                 DockPosition::Left | DockPosition::Bottom => DockSide::Left,
                 DockPosition::Right => DockSide::Right,
@@ -7270,38 +7266,38 @@ impl ClipboardEntry {
 
 #[inline]
 fn cmp_directories_first(a: &Entry, b: &Entry) -> cmp::Ordering {
-    util::paths::compare_rel_paths((&a.path, a.is_file()), (&b.path, b.is_file()))
+    inazuma_util::paths::compare_rel_paths((&a.path, a.is_file()), (&b.path, b.is_file()))
 }
 
 #[inline]
 fn cmp_mixed(a: &Entry, b: &Entry) -> cmp::Ordering {
-    util::paths::compare_rel_paths_mixed((&a.path, a.is_file()), (&b.path, b.is_file()))
+    inazuma_util::paths::compare_rel_paths_mixed((&a.path, a.is_file()), (&b.path, b.is_file()))
 }
 
 #[inline]
 fn cmp_files_first(a: &Entry, b: &Entry) -> cmp::Ordering {
-    util::paths::compare_rel_paths_files_first((&a.path, a.is_file()), (&b.path, b.is_file()))
+    inazuma_util::paths::compare_rel_paths_files_first((&a.path, a.is_file()), (&b.path, b.is_file()))
 }
 
 #[inline]
-fn cmp_with_mode(a: &Entry, b: &Entry, mode: &settings::ProjectPanelSortMode) -> cmp::Ordering {
+fn cmp_with_mode(a: &Entry, b: &Entry, mode: &inazuma_settings_framework::ProjectPanelSortMode) -> cmp::Ordering {
     match mode {
-        settings::ProjectPanelSortMode::DirectoriesFirst => cmp_directories_first(a, b),
-        settings::ProjectPanelSortMode::Mixed => cmp_mixed(a, b),
-        settings::ProjectPanelSortMode::FilesFirst => cmp_files_first(a, b),
+        inazuma_settings_framework::ProjectPanelSortMode::DirectoriesFirst => cmp_directories_first(a, b),
+        inazuma_settings_framework::ProjectPanelSortMode::Mixed => cmp_mixed(a, b),
+        inazuma_settings_framework::ProjectPanelSortMode::FilesFirst => cmp_files_first(a, b),
     }
 }
 
 pub fn sort_worktree_entries_with_mode(
     entries: &mut [impl AsRef<Entry>],
-    mode: settings::ProjectPanelSortMode,
+    mode: inazuma_settings_framework::ProjectPanelSortMode,
 ) {
     entries.sort_by(|lhs, rhs| cmp_with_mode(lhs.as_ref(), rhs.as_ref(), &mode));
 }
 
 pub fn par_sort_worktree_entries_with_mode(
     entries: &mut Vec<GitEntry>,
-    mode: settings::ProjectPanelSortMode,
+    mode: inazuma_settings_framework::ProjectPanelSortMode,
 ) {
     entries.par_sort_by(|lhs, rhs| cmp_with_mode(lhs, rhs, &mode));
 }

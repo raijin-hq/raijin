@@ -116,8 +116,8 @@ pub fn open_rules_library(
                 Ok(val) if val == "server" => inazuma::WindowDecorations::Server,
                 Ok(val) if val == "client" => inazuma::WindowDecorations::Client,
                 _ => match WorkspaceSettings::get_global(cx).window_decorations {
-                    settings::WindowDecorations::Server => inazuma::WindowDecorations::Server,
-                    settings::WindowDecorations::Client => inazuma::WindowDecorations::Client,
+                    inazuma_settings_content::WindowDecorations::Server => inazuma::WindowDecorations::Server,
+                    inazuma_settings_content::WindowDecorations::Client => inazuma::WindowDecorations::Client,
                 },
             };
             cx.open_window(
@@ -314,7 +314,7 @@ impl PickerDelegate for RulePickerDelegate {
                 this.delegate.filtered_entries = filtered_entries;
                 this.set_selected_index(
                     selected_index,
-                    Some(picker::Direction::Down),
+                    Some(inazuma_picker::Direction::Down),
                     true,
                     window,
                     cx,
@@ -352,7 +352,7 @@ impl PickerDelegate for RulePickerDelegate {
                     ListSubHeader::new(title.clone())
                         .end_slot(
                             IconButton::new("info", IconName::Info)
-                                .style(ButtonStyle::Transparent)
+                                .style(ButtonStyle::Ghost)
                                 .icon_size(IconSize::Small)
                                 .icon_color(Color::Muted)
                                 .tooltip(Tooltip::text(tooltip_text))
@@ -939,7 +939,7 @@ impl RulesLibrary {
         }
     }
 
-    fn focus_picker(&mut self, _: &menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
+    fn focus_picker(&mut self, _: &inazuma_menu::Cancel, window: &mut Window, cx: &mut Context<Self>) {
         self.picker
             .update(cx, |picker, cx| picker.focus(window, cx));
     }
@@ -988,7 +988,7 @@ impl RulesLibrary {
 
     fn move_down_from_title(
         &mut self,
-        _: &zed_actions::editor::MoveDown,
+        _: &raijin_actions::editor::MoveDown,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1001,7 +1001,7 @@ impl RulesLibrary {
 
     fn move_up_from_body(
         &mut self,
-        _: &zed_actions::editor::MoveUp,
+        _: &raijin_actions::editor::MoveUp,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1216,8 +1216,8 @@ impl RulesLibrary {
                     scrollbar_width: Pixels::ZERO,
                     syntax: cx.theme().syntax().clone(),
                     status: cx.theme().status().clone(),
-                    inlay_hints_style: editor::make_inlay_hints_style(cx),
-                    edit_prediction_styles: editor::make_suggestion_styles(cx),
+                    inlay_hints_style: raijin_editor::make_inlay_hints_style(cx),
+                    edit_prediction_styles: raijin_editor::make_suggestion_styles(cx),
                     ..EditorStyle::default()
                 },
             ))
@@ -1392,7 +1392,7 @@ impl RulesLibrary {
 
 impl Render for RulesLibrary {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let ui_font = theme_settings::setup_ui_font(window, cx);
+        let ui_font = raijin_theme_settings::setup_ui_font(cx);
         let theme = cx.theme().clone();
 
         client_side_decorations(

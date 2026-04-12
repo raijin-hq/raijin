@@ -246,8 +246,8 @@ impl OutputContent for JsonView {
         let json_text = serde_json::to_string_pretty(&self.root).ok()?;
         let buffer = cx.new(|cx| {
             let mut buffer =
-                Buffer::local(json_text, cx).with_language(language::PLAIN_TEXT.clone(), cx);
-            buffer.set_capability(language::Capability::ReadOnly, cx);
+                Buffer::local(json_text, cx).with_language(raijin_language::PLAIN_TEXT.clone(), cx);
+            buffer.set_capability(raijin_language::Capability::ReadOnly, cx);
             buffer
         });
         Some(buffer)

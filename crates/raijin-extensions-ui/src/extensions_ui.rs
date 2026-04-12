@@ -8,7 +8,7 @@ use std::{ops::Range, sync::Arc};
 
 use anyhow::Context as _;
 use raijin_client::zed_urls;
-use cloud_api_types::{ExtensionMetadata, ExtensionProvides};
+use raijin_cloud_api_types::{ExtensionMetadata, ExtensionProvides};
 use inazuma_collections::{BTreeMap, BTreeSet};
 use raijin_editor::{Editor, EditorElement, EditorStyle};
 use raijin_extension_host::{ExtensionManifest, ExtensionOperation, ExtensionStore};
@@ -28,7 +28,7 @@ use raijin_ui::{
     ToggleButtonGroupSize, ToggleButtonGroupStyle, ToggleButtonSimple, Tooltip, WithScrollbar,
     prelude::*,
 };
-use vim_mode_setting::VimModeSetting;
+use raijin_vim_mode_setting::VimModeSetting;
 use raijin_workspace::{
     Workspace,
     item::{Item, ItemEvent},
@@ -54,7 +54,7 @@ pub fn init(cx: &mut App) {
         };
         workspace
             .register_action(
-                move |workspace, action: &zed_actions::Extensions, window, cx| {
+                move |workspace, action: &raijin_actions::Extensions, window, cx| {
                     let provides_filter = action.category_filter.map(|category| match category {
                         ExtensionCategoryFilter::Themes => ExtensionProvides::Themes,
                         ExtensionCategoryFilter::IconThemes => ExtensionProvides::IconThemes,
@@ -170,7 +170,7 @@ pub fn init(cx: &mut App) {
             });
 
         cx.subscribe_in(workspace.project(), window, |_, _, event, window, cx| {
-            if let project::Event::LanguageNotFound(buffer) = event {
+            if let raijin_project::Event::LanguageNotFound(buffer) = event {
                 extension_suggest::suggest(buffer.clone(), window, cx);
             }
         })
@@ -348,10 +348,10 @@ impl ExtensionsPage {
                     &store,
                     window,
                     move |this, _, event, window, cx| match event {
-                        extension_host::Event::ExtensionsUpdated => {
+                        raijin_extension_host::Event::ExtensionsUpdated => {
                             this.fetch_extensions_debounced(None, cx)
                         }
-                        extension_host::Event::ExtensionInstalled(extension_id) => this
+                        raijin_extension_host::Event::ExtensionInstalled(extension_id) => this
                             .on_extension_installed(
                                 workspace_handle.clone(),
                                 extension_id,
@@ -419,7 +419,7 @@ impl ExtensionsPage {
             workspace
                 .update(cx, |_workspace, cx| {
                     window.dispatch_action(
-                        zed_actions::theme_selector::Toggle {
+                        raijin_actions::theme_selector::Toggle {
                             themes_filter: Some(themes),
                         }
                         .boxed_clone(),
@@ -438,7 +438,7 @@ impl ExtensionsPage {
             workspace
                 .update(cx, |_workspace, cx| {
                     window.dispatch_action(
-                        zed_actions::icon_theme_selector::Toggle {
+                        raijin_actions::icon_theme_selector::Toggle {
                             themes_filter: Some(icon_themes),
                         }
                         .boxed_clone(),
@@ -707,11 +707,11 @@ impl ExtensionsPage {
                                         let manifest = Arc::new(extension.clone());
                                         move |_, _, cx| {
                                             if let Some(events) =
-                                                extension::ExtensionEvents::try_global(cx)
+                                                raijin_extension::ExtensionEvents::try_global(cx)
                                             {
                                                 events.update(cx, |this, cx| {
                                                     this.emit(
-                                                        extension::Event::ConfigureExtensionRequested(
+                                                        raijin_extension::Event::ConfigureExtensionRequested(
                                                             manifest.clone(),
                                                         ),
                                                         cx,
@@ -1027,7 +1027,7 @@ impl ExtensionsPage {
         cx: &mut Context<Self>,
     ) -> ExtensionCardButtons {
         let is_compatible =
-            extension_host::is_version_compatible(extension);
+            raijin_extension_host::is_version_compatible(extension);
 
         if has_dev_extension {
             // If we have a dev extension for the given extension, just treat it as uninstalled.
@@ -1053,7 +1053,7 @@ impl ExtensionsPage {
                     extension_button_id(&extension.id, ExtensionOperation::Install),
                     "Install",
                 )
-                .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                 .start_icon(
                     Icon::new(IconName::Download)
                         .size(IconSize::Small)
@@ -1062,7 +1062,7 @@ impl ExtensionsPage {
                 .on_click({
                     let extension_id = extension.id.clone();
                     move |_, _, cx| {
-                        telemetry::event!("Extension Installed");
+                        raijin_telemetry::event!("Extension Installed");
                         ExtensionStore::global(cx).update(cx, |store, cx| {
                             store.install_latest_extension(extension_id.clone(), cx)
                         });
@@ -1076,7 +1076,7 @@ impl ExtensionsPage {
                     extension_button_id(&extension.id, ExtensionOperation::Install),
                     "Install",
                 )
-                .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                 .start_icon(
                     Icon::new(IconName::Download)
                         .size(IconSize::Small)
@@ -1091,7 +1091,7 @@ impl ExtensionsPage {
                     extension_button_id(&extension.id, ExtensionOperation::Remove),
                     "Uninstall",
                 )
-                .style(ButtonStyle::OutlinedGhost)
+                .style(ButtonStyle::OUTLINED_GHOST)
                 .disabled(true),
                 configure: is_configurable.then(|| {
                     Button::new(
@@ -1113,11 +1113,11 @@ impl ExtensionsPage {
                     extension_button_id(&extension.id, ExtensionOperation::Remove),
                     "Uninstall",
                 )
-                .style(ButtonStyle::OutlinedGhost)
+                .style(ButtonStyle::OUTLINED_GHOST)
                 .on_click({
                     let extension_id = extension.id.clone();
                     move |_, _, cx| {
-                        telemetry::event!("Extension Uninstalled", extension_id);
+                        raijin_telemetry::event!("Extension Uninstalled", extension_id);
                         ExtensionStore::global(cx).update(cx, |store, cx| {
                             store
                                 .uninstall_extension(extension_id.clone(), cx)
@@ -1130,7 +1130,7 @@ impl ExtensionsPage {
                         SharedString::from(format!("configure-{}", extension.id)),
                         "Configure",
                     )
-                    .style(ButtonStyle::OutlinedGhost)
+                    .style(ButtonStyle::OUTLINED_GHOST)
                     .on_click({
                         let extension_id = extension.id.clone();
                         move |_, _, cx| {
@@ -1138,11 +1138,11 @@ impl ExtensionsPage {
                                 .read(cx)
                                 .extension_manifest_for_id(&extension_id)
                                 .cloned()
-                                && let Some(events) = extension::ExtensionEvents::try_global(cx)
+                                && let Some(events) = raijin_extension::ExtensionEvents::try_global(cx)
                             {
                                 events.update(cx, |this, cx| {
                                     this.emit(
-                                        extension::Event::ConfigureExtensionRequested(manifest),
+                                        raijin_extension::Event::ConfigureExtensionRequested(manifest),
                                         cx,
                                     )
                                 });
@@ -1155,7 +1155,7 @@ impl ExtensionsPage {
                 } else {
                     Some(
                         Button::new(extension_button_id(&extension.id, ExtensionOperation::Upgrade), "Upgrade")
-                          .style(ButtonStyle::Tinted(ui::TintColor::Accent))
+                          .style(ButtonStyle::tinted(raijin_ui::TintColor::Accent))
                             .when(!is_compatible, |upgrade_button| {
                                 upgrade_button.disabled(true).tooltip({
                                     let version = extension.manifest.version.clone();
@@ -1174,7 +1174,7 @@ impl ExtensionsPage {
                                 let extension_id = extension.id.clone();
                                 let version = extension.manifest.version.clone();
                                 move |_, _, cx| {
-                                    telemetry::event!("Extension Installed", extension_id, version);
+                                    raijin_telemetry::event!("Extension Installed", extension_id, version);
                                     ExtensionStore::global(cx).update(cx, |store, cx| {
                                         store
                                             .upgrade_extension(
@@ -1194,7 +1194,7 @@ impl ExtensionsPage {
                     extension_button_id(&extension.id, ExtensionOperation::Remove),
                     "Uninstall",
                 )
-                .style(ButtonStyle::OutlinedGhost)
+                .style(ButtonStyle::OUTLINED_GHOST)
                 .disabled(true),
                 configure: is_configurable.then(|| {
                     Button::new(
@@ -1268,10 +1268,10 @@ impl ExtensionsPage {
     fn on_query_change(
         &mut self,
         _: Entity<Editor>,
-        event: &editor::EditorEvent,
+        event: &raijin_editor::EditorEvent,
         cx: &mut Context<Self>,
     ) {
-        if let editor::EditorEvent::Edited { .. } = event {
+        if let raijin_editor::EditorEvent::Edited { .. } = event {
             self.query_contains_error = false;
             self.refresh_search(cx);
         }
@@ -1395,21 +1395,14 @@ impl ExtensionsPage {
 
     fn update_settings(
         &mut self,
-        selection: &ToggleState,
-
+        checked: &bool,
         cx: &mut Context<Self>,
         callback: impl 'static + Send + Fn(&mut SettingsContent, bool),
     ) {
         if let Some(workspace) = self.workspace.upgrade() {
             let fs = workspace.read(cx).app_state().fs.clone();
-            let selection = *selection;
-            settings::update_settings_file(fs, cx, move |settings, _| {
-                let value = match selection {
-                    ToggleState::Unselected => false,
-                    ToggleState::Selected => true,
-                    _ => return,
-                };
-
+            let value = *checked;
+            inazuma_settings_framework::update_settings_file(fs, cx, move |settings, _| {
                 callback(settings, value)
             });
         }
@@ -1466,16 +1459,16 @@ impl ExtensionsPage {
         let registry_url = zed_urls::acp_registry_blog(cx);
 
         let view_registry = Button::new("view_registry", "View Registry")
-            .style(ButtonStyle::Tinted(ui::TintColor::Warning))
+            .style(ButtonStyle::tinted(raijin_ui::TintColor::Warning))
             .on_click({
                 let registry_url = registry_url.clone();
                 move |_, window, cx| {
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "ACP Registry Opened from Extensions",
                         source = "ACP Registry Upsell",
                         url = registry_url,
                     );
-                    window.dispatch_action(Box::new(zed_actions::AcpRegistry), cx)
+                    window.dispatch_action(Box::new(raijin_actions::AcpRegistry), cx)
                 }
             });
         let open_registry_button = Button::new("open_registry", "Learn More")
@@ -1486,7 +1479,7 @@ impl ExtensionsPage {
             )
             .on_click({
                 move |_event, _window, cx| {
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "ACP Registry Viewed",
                         source = "ACP Registry Upsell",
                         url = registry_url,
@@ -1524,7 +1517,7 @@ impl ExtensionsPage {
             .end_icon(Icon::new(IconName::ArrowUpRight).size(IconSize::Small))
             .on_click({
                 move |_event, _window, cx| {
-                    telemetry::event!(
+                    raijin_telemetry::event!(
                         "Documentation Viewed",
                         source = "Feature Upsell",
                         url = docs_url,
@@ -1546,29 +1539,23 @@ impl ExtensionsPage {
                                 h_flex()
                                     .gap_1()
                                     .child(docs_url_button)
-                                    .child(Divider::vertical().color(ui::DividerColor::Border))
+                                    .child(Divider::vertical().color(raijin_ui::DividerColor::Border))
                                     .child(
                                         h_flex()
                                             .pl_1()
                                             .gap_1()
                                             .child(Label::new("Enable Vim mode"))
                                             .child(
-                                                Switch::new(
-                                                    "enable-vim",
-                                                    if VimModeSetting::get_global(cx).0 {
-                                                        ui::ToggleState::Selected
-                                                    } else {
-                                                        ui::ToggleState::Unselected
-                                                    },
-                                                )
+                                                Switch::new("enable-vim")
+                                                    .checked(VimModeSetting::get_global(cx).0)
                                                 .on_click(cx.listener(
-                                                    move |this, selection, _, cx| {
-                                                        telemetry::event!(
+                                                    move |this, checked: &bool, _, cx| {
+                                                        raijin_telemetry::event!(
                                                             "Vim Mode Toggled",
                                                             source = "Feature Upsell"
                                                         );
                                                         this.update_settings(
-                                                            selection,
+                                                            checked,
                                                             cx,
                                                             |setting, value| {
                                                                 setting.vim_mode = Some(value)
@@ -1727,9 +1714,11 @@ impl Render for ExtensionsPage {
                             .justify_between()
                             .child(Headline::new("Extensions").size(HeadlineSize::Large))
                             .child(
-                                Button::new("install-dev-extension", "Install Dev Extension")
-                                    .style(ButtonStyle::Outlined)
-                                    .size(ButtonSize::Medium)
+                                ButtonCommon::size(
+                                    Button::new("install-dev-extension", "Install Dev Extension")
+                                        .style(ButtonStyle::Outlined),
+                                    ButtonSize::Medium,
+                                )
                                     .on_click(|_event, window, cx| {
                                         window.dispatch_action(Box::new(InstallDevExtension), cx)
                                     }),
@@ -1798,10 +1787,10 @@ impl Render for ExtensionsPage {
                     .child(
                         Button::new("filter-all-categories", "All")
                             .when(self.provides_filter.is_none(), |button| {
-                                button.style(ButtonStyle::Filled)
+                                button.style(ButtonStyle::FILLED)
                             })
                             .when(self.provides_filter.is_some(), |button| {
-                                button.style(ButtonStyle::Subtle)
+                                button.style(ButtonStyle::SUBTLE)
                             })
                             .toggle_state(self.provides_filter.is_none())
                             .on_click(cx.listener(|this, _event, _, cx| {
@@ -1821,9 +1810,9 @@ impl Render for ExtensionsPage {
                         Some(
                             Button::new(button_id, label)
                                 .style(if self.provides_filter == Some(provides) {
-                                    ButtonStyle::Filled
+                                    ButtonStyle::FILLED
                                 } else {
-                                    ButtonStyle::Subtle
+                                    ButtonStyle::SUBTLE
                                 })
                                 .toggle_state(self.provides_filter == Some(provides))
                                 .on_click({
@@ -1886,7 +1875,7 @@ impl Item for ExtensionsPage {
         false
     }
 
-    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(workspace::item::ItemEvent)) {
+    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(raijin_workspace::item::ItemEvent)) {
         f(*event)
     }
 }

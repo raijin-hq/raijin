@@ -83,7 +83,7 @@ pub fn text_style(window: &mut Window, cx: &App) -> TextStyle {
 }
 
 /// Returns the default terminal size for the terminal output.
-pub fn terminal_size(window: &mut Window, cx: &mut App) -> terminal::TerminalBounds {
+pub fn terminal_size(window: &mut Window, cx: &mut App) -> raijin_terminal::TerminalBounds {
     let text_style = text_style(window, cx);
     let text_system = window.text_system();
 
@@ -104,7 +104,7 @@ pub fn terminal_size(window: &mut Window, cx: &mut App) -> terminal::TerminalBou
     let width = columns as f32 * cell_width;
     let height = num_lines as f32 * window.line_height();
 
-    terminal::TerminalBounds {
+    raijin_terminal::TerminalBounds {
         cell_width,
         line_height,
         bounds: Bounds {
@@ -275,7 +275,7 @@ mod tests {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
             cx.set_global(settings_store);
-            theme_settings::init(theme::LoadThemes::JustBase, cx);
+            raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
         });
         cx.add_empty_window()
     }
@@ -327,7 +327,7 @@ impl Render for TerminalOutput {
             .handler
             .renderable_content()
             .display_iter
-            .map(|ic| terminal::IndexedCell {
+            .map(|ic| raijin_terminal::IndexedCell {
                 point: ic.point,
                 cell: ic.cell.clone(),
             });
@@ -361,7 +361,7 @@ impl Render for TerminalOutput {
                 for rect in rects {
                     rect.paint(
                         bounds.origin,
-                        &terminal::TerminalBounds {
+                        &raijin_terminal::TerminalBounds {
                             cell_width,
                             line_height: text_line_height,
                             bounds,
@@ -373,7 +373,7 @@ impl Render for TerminalOutput {
                 for batch in batched_text_runs {
                     batch.paint(
                         bounds.origin,
-                        &terminal::TerminalBounds {
+                        &raijin_terminal::TerminalBounds {
                             cell_width,
                             line_height: text_line_height,
                             bounds,
@@ -409,8 +409,8 @@ impl OutputContent for TerminalOutput {
 
         let buffer = cx.new(|cx| {
             let mut buffer =
-                Buffer::local(self.full_text(), cx).with_language(language::PLAIN_TEXT.clone(), cx);
-            buffer.set_capability(language::Capability::ReadOnly, cx);
+                Buffer::local(self.full_text(), cx).with_language(raijin_language::PLAIN_TEXT.clone(), cx);
+            buffer.set_capability(raijin_language::Capability::ReadOnly, cx);
             buffer
         });
 

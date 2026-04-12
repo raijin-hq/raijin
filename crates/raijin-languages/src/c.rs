@@ -10,7 +10,7 @@ use raijin_project::lsp_store::clangd_ext;
 use serde_json::json;
 use smol::fs;
 use std::{env::consts, path::PathBuf, sync::Arc};
-use inazuma_util::{ResultExt, raijin_fs::remove_matching, maybe, merge_json_value_into};
+use inazuma_util::{ResultExt, fs::remove_matching, maybe, merge_json_value_into};
 
 pub struct CLspAdapter;
 
@@ -380,7 +380,7 @@ impl super::LspAdapter for CLspAdapter {
 async fn get_cached_server_binary(container_dir: PathBuf) -> Option<LanguageServerBinary> {
     maybe!(async {
         let mut last_clangd_dir = None;
-        let mut entries = raijin_fs::read_dir(&container_dir).await?;
+        let mut entries = fs::read_dir(&container_dir).await?;
         while let Some(entry) = entries.next().await {
             let entry = entry?;
             if entry.file_type().await?.is_dir() {

@@ -79,13 +79,13 @@ pub(crate) const CONTROL_SIZE: f32 = 20.0;
 
 pub fn init(cx: &mut App) {
     if cx.has_flag::<NotebookFeatureFlag>() || std::env::var("LOCAL_NOTEBOOK_DEV").is_ok() {
-        workspace::register_project_item::<NotebookEditor>(cx);
+        raijin_workspace::register_project_item::<NotebookEditor>(cx);
     }
 
     cx.observe_flag::<NotebookFeatureFlag, _>({
         move |is_enabled, cx| {
             if is_enabled {
-                workspace::register_project_item::<NotebookEditor>(cx);
+                raijin_workspace::register_project_item::<NotebookEditor>(cx);
             } else {
                 // todo: there is no way to unregister a project item, so if the feature flag
                 // gets turned off they need to restart Zed.
@@ -98,7 +98,7 @@ pub fn init(cx: &mut App) {
 pub struct NotebookEditor {
     languages: Arc<LanguageRegistry>,
     project: Entity<Project>,
-    worktree_id: project::WorktreeId,
+    worktree_id: raijin_project::WorktreeId,
 
     focus_handle: FocusHandle,
     notebook_item: Entity<NotebookItem>,
@@ -166,7 +166,7 @@ impl NotebookEditor {
                     let cell_id_for_editor = cell_id.clone();
                     let editor = code_cell.read(cx).editor().clone();
                     cx.subscribe(&editor, move |this, _editor, event, cx| {
-                        if let editor::EditorEvent::Focused = event {
+                        if let raijin_editor::EditorEvent::Focused = event {
                             if let Some(index) = this
                                 .cell_order
                                 .iter()
@@ -205,7 +205,7 @@ impl NotebookEditor {
                     let cell_id_for_editor = cell_id.clone();
                     let editor = markdown_cell.read(cx).editor().clone();
                     cx.subscribe(&editor, move |this, _editor, event, cx| {
-                        if let editor::EditorEvent::Focused = event {
+                        if let raijin_editor::EditorEvent::Focused = event {
                             if let Some(index) = this
                                 .cell_order
                                 .iter()
@@ -708,7 +708,7 @@ impl NotebookEditor {
         let cell_id_for_editor = new_cell_id.clone();
         let editor = markdown_cell.read(cx).editor().clone();
         cx.subscribe(&editor, move |this, _editor, event, cx| {
-            if let editor::EditorEvent::Focused = event {
+            if let raijin_editor::EditorEvent::Focused = event {
                 if let Some(index) = this
                     .cell_order
                     .iter()
@@ -767,7 +767,7 @@ impl NotebookEditor {
         let cell_id_for_editor = new_cell_id.clone();
         let editor = code_cell.read(cx).editor().clone();
         cx.subscribe(&editor, move |this, _editor, event, cx| {
-            if let editor::EditorEvent::Focused = event {
+            if let raijin_editor::EditorEvent::Focused = event {
                 if let Some(index) = this
                     .cell_order
                     .iter()
@@ -812,7 +812,7 @@ impl NotebookEditor {
 
     pub fn select_next(
         &mut self,
-        _: &menu::SelectNext,
+        _: &inazuma_menu::SelectNext,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -831,7 +831,7 @@ impl NotebookEditor {
 
     pub fn select_previous(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -846,7 +846,7 @@ impl NotebookEditor {
 
     pub fn select_first(
         &mut self,
-        _: &menu::SelectFirst,
+        _: &inazuma_menu::SelectFirst,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -859,7 +859,7 @@ impl NotebookEditor {
 
     pub fn select_last(
         &mut self,
-        _: &menu::SelectLast,
+        _: &inazuma_menu::SelectLast,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1243,7 +1243,7 @@ impl Render for NotebookEditor {
                 cx.listener(|this, _: &AddCodeBlock, window, cx| this.add_code_block(window, cx)),
             )
             .on_action(cx.listener(|this, _: &MoveUp, window, cx| {
-                this.select_previous(&menu::SelectPrevious, window, cx);
+                this.select_previous(&inazuma_menu::SelectPrevious, window, cx);
                 if let Some(cell_id) = this.cell_order.get(this.selected_cell_index) {
                     if let Some(cell) = this.cell_map.get(cell_id) {
                         match cell {
@@ -1271,7 +1271,7 @@ impl Render for NotebookEditor {
                 }
             }))
             .on_action(cx.listener(|this, _: &MoveDown, window, cx| {
-                this.select_next(&menu::SelectNext, window, cx);
+                this.select_next(&inazuma_menu::SelectNext, window, cx);
                 if let Some(cell_id) = this.cell_order.get(this.selected_cell_index) {
                     if let Some(cell) = this.cell_map.get(cell_id) {
                         match cell {
@@ -1327,7 +1327,7 @@ impl Render for NotebookEditor {
                 });
 
                 if is_at_last_line {
-                    this.select_next(&menu::SelectNext, window, cx);
+                    this.select_next(&inazuma_menu::SelectNext, window, cx);
                     if let Some(cell_id) = this.cell_order.get(this.selected_cell_index) {
                         if let Some(cell) = this.cell_map.get(cell_id) {
                             match cell {
@@ -1387,7 +1387,7 @@ impl Render for NotebookEditor {
                 });
 
                 if is_at_first_line {
-                    this.select_previous(&menu::SelectPrevious, window, cx);
+                    this.select_previous(&inazuma_menu::SelectPrevious, window, cx);
                     if let Some(cell_id) = this.cell_order.get(this.selected_cell_index) {
                         if let Some(cell) = this.cell_map.get(cell_id) {
                             match cell {
@@ -1455,7 +1455,7 @@ pub struct NotebookItem {
     id: ProjectEntryId,
 }
 
-impl project::ProjectItem for NotebookItem {
+impl raijin_project::ProjectItem for NotebookItem {
     fn try_open(
         project: &Entity<Project>,
         path: &ProjectPath,
@@ -1641,7 +1641,7 @@ impl Item for NotebookEditor {
 
     fn clone_on_split(
         &self,
-        _workspace_id: Option<workspace::WorkspaceId>,
+        _workspace_id: Option<raijin_workspace::WorkspaceId>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Task<Option<Entity<Self>>>
@@ -1653,14 +1653,14 @@ impl Item for NotebookEditor {
         })))
     }
 
-    fn buffer_kind(&self, _: &App) -> workspace::item::ItemBufferKind {
-        workspace::item::ItemBufferKind::Singleton
+    fn buffer_kind(&self, _: &App) -> raijin_workspace::item::ItemBufferKind {
+        raijin_workspace::item::ItemBufferKind::Singleton
     }
 
     fn for_each_project_item(
         &self,
         cx: &App,
-        f: &mut dyn FnMut(inazuma::EntityId, &dyn project::ProjectItem),
+        f: &mut dyn FnMut(inazuma::EntityId, &dyn raijin_project::ProjectItem),
     ) {
         f(self.notebook_item.entity_id(), self.notebook_item.read(cx))
     }
@@ -1704,7 +1704,7 @@ impl Item for NotebookEditor {
 
     fn set_nav_history(
         &mut self,
-        _: workspace::ItemNavHistory,
+        _: raijin_workspace::ItemNavHistory,
         _window: &mut Window,
         _: &mut Context<Self>,
     ) {

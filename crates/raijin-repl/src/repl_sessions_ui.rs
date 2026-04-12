@@ -195,7 +195,7 @@ impl Item for ReplSessionsPage {
         false
     }
 
-    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(workspace::item::ItemEvent)) {
+    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(raijin_workspace::item::ItemEvent)) {
         f(*event)
     }
 }
