@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use raijin_client::{Client, UserStore, zed_urls};
+use raijin_client::{Client, UserStore, raijin_urls};
 use raijin_cloud_api_types::Plan;
 use inazuma::{AnyElement, App, Entity, IntoElement, RenderOnce, Window};
 use raijin_ui::{CommonAnimationExt, Divider, Vector, VectorName, prelude::*};
@@ -195,7 +195,7 @@ impl RenderOnce for AiUpsellCard {
                                                     "Upgrade To Pro Clicked",
                                                     state = "young-account"
                                                 );
-                                                cx.open_url(&zed_urls::upgrade_to_zed_pro_url(cx))
+                                                cx.open_url(&raijin_urls::upgrade_to_raijin_pro_url(cx))
                                             }),
                                     ),
                             )
@@ -221,7 +221,7 @@ impl RenderOnce for AiUpsellCard {
                                                     "Start Trial Clicked",
                                                     state = "post-sign-in"
                                                 );
-                                                cx.open_url(&zed_urls::start_trial_url(cx))
+                                                cx.open_url(&raijin_urls::start_trial_url(cx))
                                             }),
                                     )
                                     .child(

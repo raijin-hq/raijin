@@ -61,7 +61,7 @@ impl MultibufferHint {
         Self::counter(cx).store(count, Ordering::Relaxed);
 
         let kvp = KeyValueStore::global(cx);
-        db::write_and_log(cx, move || async move {
+        raijin_db::write_and_log(cx, move || async move {
             kvp.write_kvp(SHOWN_COUNT_KEY.to_string(), format!("{}", count))
                 .await
         });

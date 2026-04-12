@@ -179,7 +179,7 @@ pub fn init(cx: &mut App) {
 }
 
 pub fn show_onboarding_view(app_state: Arc<AppState>, cx: &mut App) -> Task<anyhow::Result<()>> {
-    telemetry::event!("Onboarding Page Opened");
+    raijin_telemetry::event!("Onboarding Page Opened");
     open_new(
         Default::default(),
         app_state,
@@ -195,7 +195,7 @@ pub fn show_onboarding_view(app_state: Arc<AppState>, cx: &mut App) -> Task<anyh
                 cx.notify();
             };
             let kvp = KeyValueStore::global(cx);
-            db::write_and_log(cx, move || async move {
+            raijin_db::write_and_log(cx, move || async move {
                 kvp.write_kvp(FIRST_OPEN.to_string(), "false".to_string())
                     .await
             });
@@ -236,7 +236,7 @@ impl Onboarding {
     }
 
     fn on_finish(_: &Finish, _: &mut Window, cx: &mut App) {
-        telemetry::event!("Finish Setup");
+        raijin_telemetry::event!("Finish Setup");
         go_to_welcome_page(cx);
     }
 
@@ -279,11 +279,11 @@ impl Render for Onboarding {
             .on_action(Self::on_finish)
             .on_action(cx.listener(Self::handle_sign_in))
             .on_action(Self::handle_open_account)
-            .on_action(cx.listener(|_, _: &menu::SelectNext, window, cx| {
+            .on_action(cx.listener(|_, _: &inazuma_menu::SelectNext, window, cx| {
                 window.focus_next(cx);
                 cx.notify();
             }))
-            .on_action(cx.listener(|_, _: &menu::SelectPrevious, window, cx| {
+            .on_action(cx.listener(|_, _: &inazuma_menu::SelectPrevious, window, cx| {
                 window.focus_prev(cx);
                 cx.notify();
             }))
@@ -343,7 +343,7 @@ impl Render for Onboarding {
                                             })
                                     }),
                             )
-                            .child(Divider::horizontal().color(ui::DividerColor::BorderVariant))
+                            .child(Divider::horizontal().color(raijin_ui::DividerColor::BorderVariant))
                             .child(self.render_page(cx))
                             .track_scroll(&self.scroll_handle),
                     )
@@ -394,7 +394,7 @@ impl Item for Onboarding {
         })))
     }
 
-    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(workspace::item::ItemEvent)) {
+    fn to_item_events(event: &Self::Event, f: &mut dyn FnMut(raijin_workspace::item::ItemEvent)) {
         f(*event)
     }
 }
@@ -445,10 +445,10 @@ pub async fn handle_import_vscode_settings(
     use inazuma_util::truncate_and_remove_front;
 
     let vscode_settings =
-        match settings::VsCodeSettings::load_user_settings(source, fs.clone()).await {
+        match inazuma_settings_framework::VsCodeSettings::load_user_settings(source, fs.clone()).await {
             Ok(vscode_settings) => vscode_settings,
             Err(err) => {
-                zlog::error!("{err:?}");
+                raijin_log::error!("{err:?}");
                 let _ = cx.prompt(
                     inazuma::PromptLevel::Info,
                     &format!("Could not find or load a {source} settings file"),
@@ -483,7 +483,7 @@ pub async fn handle_import_vscode_settings(
         let result_channel = cx
             .global::<SettingsStore>()
             .import_vscode_settings(fs, vscode_settings);
-        zlog::info!("Imported {source} settings from {}", path.display());
+        raijin_log::info!("Imported {source} settings from {}", path.display());
         result_channel
     }) else {
         return;
@@ -648,7 +648,7 @@ mod persistence {
         ];
     }
 
-    db::static_connection!(OnboardingPagesDb, [WorkspaceDb]);
+    raijin_db::static_connection!(OnboardingPagesDb, [WorkspaceDb]);
 
     impl OnboardingPagesDb {
         query! {

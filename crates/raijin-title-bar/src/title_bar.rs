@@ -23,7 +23,7 @@ use crate::application_menu::{
 
 use raijin_auto_update::AutoUpdateStatus;
 use raijin_call::ActiveCall;
-use raijin_client::{Client, UserStore, zed_urls};
+use raijin_client::{Client, UserStore, raijin_urls};
 use raijin_cloud_api_types::Plan;
 
 use inazuma::{
@@ -1173,7 +1173,7 @@ impl TitleBar {
                                     .into_any_element()
                             },
                             move |_, cx| {
-                                cx.open_url(&zed_urls::account_url(cx));
+                                cx.open_url(&raijin_urls::account_url(cx));
                             },
                         )
                         .separator()

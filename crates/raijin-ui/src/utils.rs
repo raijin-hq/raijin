@@ -2,8 +2,10 @@ pub mod actions;
 pub(crate) mod anchored;
 pub mod async_util;
 mod constants;
+mod corner_solver;
 
 pub use constants::*;
+pub use corner_solver::{CornerSolver, inner_corner_radius};
 pub mod color_contrast;
 pub mod focus_trap;
 pub mod history;

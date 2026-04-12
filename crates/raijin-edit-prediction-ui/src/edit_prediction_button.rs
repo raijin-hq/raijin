@@ -1,5 +1,5 @@
 use anyhow::Result;
-use raijin_client::{Client, UserStore, zed_urls};
+use raijin_client::{Client, UserStore, raijin_urls};
 use raijin_cloud_llm_client::UsageLimit;
 use raijin_codestral::{self, CodestralEditPredictionDelegate};
 use raijin_copilot::Status;
@@ -1080,7 +1080,7 @@ impl EditPredictionButton {
                     .link_with_handler(
                         "Learn More",
                         OpenBrowser {
-                            url: zed_urls::edit_prediction_docs(cx),
+                            url: raijin_urls::edit_prediction_docs(cx),
                         }
                         .boxed_clone(),
                         |_window, _cx| {
@@ -1147,7 +1147,7 @@ impl EditPredictionButton {
                                     )
                                     .into_any_element()
                             },
-                            move |_, cx| cx.open_url(&zed_urls::account_url(cx)),
+                            move |_, cx| cx.open_url(&raijin_urls::account_url(cx)),
                         )
                         .when(usage.over_limit(), |menu| -> ContextMenu {
                             menu.entry("Subscribe to increase your limit", None, |_window, cx| {
@@ -1156,7 +1156,7 @@ impl EditPredictionButton {
                                     action = "upsell_clicked",
                                     reason = "usage_limit",
                                 );
-                                cx.open_url(&zed_urls::account_url(cx))
+                                cx.open_url(&raijin_urls::account_url(cx))
                             })
                         })
                         .separator();
@@ -1169,7 +1169,7 @@ impl EditPredictionButton {
                                     .color(Color::Warning)
                                     .into_any_element()
                             },
-                            |_window, cx| cx.open_url(&zed_urls::account_url(cx)),
+                            |_window, cx| cx.open_url(&raijin_urls::account_url(cx)),
                         )
                         .entry("Upgrade to Zed Pro or contact us.", None, |_window, cx| {
                             raijin_telemetry::event!(
@@ -1177,7 +1177,7 @@ impl EditPredictionButton {
                                 action = "upsell_clicked",
                                 reason = "account_age",
                             );
-                            cx.open_url(&zed_urls::account_url(cx))
+                            cx.open_url(&raijin_urls::account_url(cx))
                         })
                         .separator();
                 } else if self.user_store.read(cx).has_overdue_invoices() {
@@ -1190,14 +1190,14 @@ impl EditPredictionButton {
                                     .into_any_element()
                             },
                             |_window, cx| {
-                                cx.open_url(&zed_urls::account_url(cx))
+                                cx.open_url(&raijin_urls::account_url(cx))
                             },
                         )
                         .entry(
                             "Check your payment status or contact us at billing-support@zed.dev to continue using this feature.",
                             None,
                             |_window, cx| {
-                                cx.open_url(&zed_urls::account_url(cx))
+                                cx.open_url(&raijin_urls::account_url(cx))
                             },
                         )
                         .separator();

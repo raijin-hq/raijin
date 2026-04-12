@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use ai_onboarding::{AgentPanelOnboardingCard, PlanDefinitions};
-use raijin_client::zed_urls;
+use raijin_client::raijin_urls;
 use inazuma::{AnyElement, App, IntoElement, RenderOnce, Window};
 use raijin_ui::{Divider, Tooltip, prelude::*};
 
@@ -38,7 +38,7 @@ impl RenderOnce for EndTrialUpsell {
                     .style(ButtonStyle::Tinted(ui::TintColor::Accent))
                     .on_click(move |_, _window, cx| {
                         telemetry::event!("Upgrade To Pro Clicked", state = "end-of-trial");
-                        cx.open_url(&zed_urls::upgrade_to_zed_pro_url(cx))
+                        cx.open_url(&raijin_urls::upgrade_to_raijin_pro_url(cx))
                     }),
             );
 

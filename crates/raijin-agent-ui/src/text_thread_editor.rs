@@ -6,7 +6,7 @@ use crate::{
 use anyhow::Result;
 use raijin_assistant_slash_command::{SlashCommand, SlashCommandOutputSection, SlashCommandWorkingSet};
 use assistant_slash_commands::{DefaultSlashCommand, FileSlashCommand, selections_creases};
-use raijin_client::{proto, zed_urls};
+use raijin_client::{proto, raijin_urls};
 use inazuma_collections::{BTreeSet, HashMap, HashSet, hash_map};
 use raijin_editor::{
     Anchor, Editor, EditorEvent, MenuEditPredictionsPolicy, MultiBuffer, MultiBufferOffset,
@@ -2341,7 +2341,7 @@ impl TextThreadEditor {
                     .child(Button::new("subscribe", "Subscribe").on_click(cx.listener(
                         |this, _, _window, cx| {
                             this.last_error = None;
-                            cx.open_url(&zed_urls::account_url(cx));
+                            cx.open_url(&raijin_urls::account_url(cx));
                             cx.notify();
                         },
                     )))

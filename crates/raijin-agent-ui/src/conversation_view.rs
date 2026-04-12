@@ -15,7 +15,7 @@ use raijin_agent_settings::{AgentProfileId, AgentSettings};
 use anyhow::{Result, anyhow};
 use audio::{Audio, Sound};
 use raijin_buffer_diff::BufferDiff;
-use raijin_client::zed_urls;
+use raijin_client::raijin_urls;
 use inazuma_collections::{HashMap, HashSet, IndexMap};
 use raijin_editor::scroll::Autoscroll;
 use raijin_editor::{

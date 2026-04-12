@@ -100,7 +100,7 @@ impl BaseKeymapSelectorDelegate {
 }
 
 impl PickerDelegate for BaseKeymapSelectorDelegate {
-    type ListItem = ui::ListItem;
+    type ListItem = raijin_ui::ListItem;
 
     fn placeholder_text(&self, _window: &mut Window, _cx: &mut App) -> Arc<str> {
         "Select a base keymap...".into()
@@ -180,7 +180,7 @@ impl PickerDelegate for BaseKeymapSelectorDelegate {
         if let Some(selection) = self.matches.get(self.selected_index) {
             let base_keymap = BaseKeymap::from_names(&selection.string);
 
-            telemetry::event!(
+            raijin_telemetry::event!(
                 "Settings Changed",
                 setting = "keymap",
                 value = base_keymap.to_string()

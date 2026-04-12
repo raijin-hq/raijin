@@ -1925,7 +1925,7 @@ impl ThreadView {
                 })
                 .await?;
 
-            let share_url = client::zed_urls::shared_agent_thread_url(&session_id);
+            let share_url = client::raijin_urls::shared_agent_thread_url(&session_id);
 
             cx.update(|cx| {
                 if let Some(workspace) = workspace.upgrade() {
@@ -7932,7 +7932,7 @@ impl ThreadView {
             .on_click(cx.listener({
                 move |this, _, _, cx| {
                     this.clear_thread_error(cx);
-                    cx.open_url(&zed_urls::upgrade_to_zed_pro_url(cx));
+                    cx.open_url(&raijin_urls::upgrade_to_raijin_pro_url(cx));
                 }
             }))
     }

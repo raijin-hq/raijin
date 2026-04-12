@@ -17,7 +17,7 @@ pub use young_account_banner::YoungAccountBanner;
 
 use std::sync::Arc;
 
-use raijin_client::{Client, UserStore, zed_urls};
+use raijin_client::{Client, UserStore, raijin_urls};
 use inazuma::{AnyElement, Entity, IntoElement, ParentElement};
 use raijin_ui::{Divider, RegisterComponent, Tooltip, prelude::*};
 
@@ -168,7 +168,7 @@ impl ZedAiOnboarding {
                                         "Upgrade To Pro Clicked",
                                         state = "young-account"
                                     );
-                                    cx.open_url(&zed_urls::upgrade_to_zed_pro_url(cx))
+                                    cx.open_url(&raijin_urls::upgrade_to_raijin_pro_url(cx))
                                 }),
                         ),
                 )
@@ -229,7 +229,7 @@ impl ZedAiOnboarding {
                                         "Start Trial Clicked",
                                         state = "post-sign-in"
                                     );
-                                    cx.open_url(&zed_urls::start_trial_url(cx))
+                                    cx.open_url(&raijin_urls::start_trial_url(cx))
                                 }),
                         ),
                 )

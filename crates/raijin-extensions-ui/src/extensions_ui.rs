@@ -7,7 +7,7 @@ use std::time::Duration;
 use std::{ops::Range, sync::Arc};
 
 use anyhow::Context as _;
-use raijin_client::zed_urls;
+use raijin_client::raijin_urls;
 use raijin_cloud_api_types::{ExtensionMetadata, ExtensionProvides};
 use inazuma_collections::{BTreeMap, BTreeSet};
 use raijin_editor::{Editor, EditorElement, EditorStyle};
@@ -1456,7 +1456,7 @@ impl ExtensionsPage {
     }
 
     fn render_acp_registry_upsell(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        let registry_url = zed_urls::acp_registry_blog(cx);
+        let registry_url = raijin_urls::acp_registry_blog(cx);
 
         let view_registry = Button::new("view_registry", "View Registry")
             .style(ButtonStyle::tinted(raijin_ui::TintColor::Warning))

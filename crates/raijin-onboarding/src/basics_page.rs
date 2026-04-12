@@ -37,7 +37,7 @@ fn get_theme_family_themes(theme_name: &str) -> Option<(&'static str, &'static s
 
 fn render_theme_section(tab_index: &mut isize, cx: &mut App) -> impl IntoElement {
     let theme_selection = ThemeSettings::get_global(cx).theme.clone();
-    let system_appearance = theme::SystemAppearance::global(cx);
+    let system_appearance = raijin_theme::SystemAppearance::global(cx);
 
     let theme_mode = theme_selection
         .mode()
@@ -68,7 +68,7 @@ fn render_theme_section(tab_index: &mut isize, cx: &mut App) -> impl IntoElement
                             move |_, _, cx| {
                                 write_mode_change(mode, cx);
 
-                                telemetry::event!(
+                                raijin_telemetry::event!(
                                     "Welcome Theme mode Changed",
                                     from = theme_mode,
                                     to = mode
@@ -159,7 +159,7 @@ fn render_theme_section(tab_index: &mut isize, cx: &mut App) -> impl IntoElement
 
                             move |_, _, cx| {
                                 write_theme_change(theme_name.clone(), theme_mode, cx);
-                                telemetry::event!(
+                                raijin_telemetry::event!(
                                     "Welcome Theme Changed",
                                     from = current_theme_name,
                                     to = theme_name
@@ -265,7 +265,7 @@ fn render_telemetry_section(tab_index: &mut isize, cx: &App) -> impl IntoElement
 
                         // This telemetry event shouldn't fire when it's off. If it does we'll be alerted
                         // and can fix it in a timely manner to respect a user's choice.
-                        telemetry::event!(
+                        raijin_telemetry::event!(
                             "Welcome Page Telemetry Metrics Toggled",
                             options = if enabled { "on" } else { "off" }
                         );
@@ -307,7 +307,7 @@ fn render_telemetry_section(tab_index: &mut isize, cx: &App) -> impl IntoElement
 
                         // This telemetry event shouldn't fire when it's off. If it does we'll be alerted
                         // and can fix it in a timely manner to respect a user's choice.
-                        telemetry::event!(
+                        raijin_telemetry::event!(
                             "Welcome Page Telemetry Diagnostics Toggled",
                             options = if enabled { "on" } else { "off" }
                         );
@@ -374,7 +374,7 @@ fn render_base_keymap_section(tab_index: &mut isize, cx: &mut App) -> impl IntoE
             setting.base_keymap = Some(keymap_base.into());
         });
 
-        telemetry::event!("Welcome Keymap Changed", keymap = keymap_base);
+        raijin_telemetry::event!("Welcome Keymap Changed", keymap = keymap_base);
     }
 }
 
@@ -403,7 +403,7 @@ fn render_vim_mode_switch(tab_index: &mut isize, cx: &mut App) -> impl IntoEleme
                     setting.vim_mode = Some(vim_mode);
                 });
 
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Welcome Vim Mode Toggled",
                     options = if vim_mode { "on" } else { "off" },
                 );
@@ -444,7 +444,7 @@ fn render_worktree_auto_trust_switch(tab_index: &mut isize, cx: &mut App) -> imp
                     setting.session.get_or_insert_default().trust_all_worktrees = Some(trust);
                 });
 
-                telemetry::event!(
+                raijin_telemetry::event!(
                     "Welcome Page Worktree Auto Trust Toggled",
                     options = if trust { "on" } else { "off" }
                 );
@@ -478,7 +478,7 @@ fn render_setting_import_button(
                 .color(Color::Success)
         })
         .on_click(move |_, window, cx| {
-            telemetry::event!("Welcome Import Settings", import_source = label,);
+            raijin_telemetry::event!("Welcome Import Settings", import_source = label,);
             window.dispatch_action(action.boxed_clone(), cx);
         })
 }

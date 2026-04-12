@@ -1,6 +1,6 @@
 use std::ops::Range;
 
-use raijin_client::zed_urls;
+use raijin_client::raijin_urls;
 use inazuma_collections::HashMap;
 use raijin_editor::{Editor, EditorElement, EditorStyle};
 use raijin_fs::Fs;
@@ -565,7 +565,7 @@ impl Render for AgentRegistryPage {
                                             .color(Color::Muted),
                                     )
                                     .on_click(move |_, _, cx| {
-                                        cx.open_url(&zed_urls::acp_registry_blog(cx))
+                                        cx.open_url(&raijin_urls::acp_registry_blog(cx))
                                     }),
                             ),
                     )

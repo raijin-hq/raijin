@@ -1,5 +1,5 @@
 #![allow(unused, dead_code)]
-use inazuma::{Hsla, Length};
+use inazuma::{Oklch, Length};
 use std::{
     cell::LazyCell,
     sync::{Arc, LazyLock, OnceLock},
@@ -56,7 +56,7 @@ impl ThemePreviewTile {
         self
     }
 
-    pub fn item_skeleton(w: Length, h: Length, bg: Hsla) -> impl IntoElement {
+    pub fn item_skeleton(w: Length, h: Length, bg: Oklch) -> impl IntoElement {
         div().w(w).h(h).rounded_full().bg(bg)
     }
 
@@ -122,7 +122,7 @@ impl ThemePreviewTile {
             }
         };
 
-        let pick_color = |line_idx: usize, block_idx: usize| -> Hsla {
+        let pick_color = |line_idx: usize, block_idx: usize| -> Oklch {
             let idx = ((seed * 10.0 + line_idx as f32 * 7.0 + block_idx as f32 * 3.0).sin() * 3.5)
                 .abs() as usize
                 % syntax_colors.len();
@@ -242,7 +242,7 @@ impl ThemePreviewTile {
         seed: f32,
         theme: Arc<Theme>,
         other_theme: Arc<Theme>,
-        border_color: Hsla,
+        border_color: Oklch,
     ) -> impl IntoElement {
         let sidebar_width = relative(0.20);
 
