@@ -1,5 +1,5 @@
 use inazuma::ElementId;
-use raijin_ui::{Tooltip, prelude::*};
+use raijin_ui::{ButtonCommon, Tooltip, prelude::*};
 
 use crate::{
     CsvPreviewView,
@@ -35,17 +35,19 @@ impl CsvPreviewView {
         cx: &mut Context<'_, CsvPreviewView>,
         col_idx: AnyColumn,
     ) -> Button {
-        let sort_btn = Button::new(
-            ElementId::NamedInteger("sort-button".into(), col_idx.get() as u64),
-            match self.engine.applied_sorting {
-                Some(ordering) if ordering.col_idx == col_idx => match ordering.direction {
-                    SortDirection::Asc => "↓",
-                    SortDirection::Desc => "↑",
+        let sort_btn = ButtonCommon::size(
+            Button::new(
+                ElementId::NamedInteger("sort-button".into(), col_idx.get() as u64),
+                match self.engine.applied_sorting {
+                    Some(ordering) if ordering.col_idx == col_idx => match ordering.direction {
+                        SortDirection::Asc => "↓",
+                        SortDirection::Desc => "↑",
+                    },
+                    _ => "↕", // Unsorted/available for sorting
                 },
-                _ => "↕", // Unsorted/available for sorting
-            },
+            ),
+            ButtonSize::Compact,
         )
-        .size(ButtonSize::Compact)
         .style(
             if self
                 .engine

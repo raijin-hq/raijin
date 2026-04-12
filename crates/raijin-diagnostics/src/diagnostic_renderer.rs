@@ -201,13 +201,13 @@ impl DiagnosticBlock {
         let max_width = bcx.em_width * 120.;
 
         let (background_color, border_color) = match self.severity {
-            DiagnosticSeverity::ERROR => (status_colors.error_background, status_colors.error),
+            DiagnosticSeverity::ERROR => (status_colors.error.background, status_colors.error.color),
             DiagnosticSeverity::WARNING => {
-                (status_colors.warning_background, status_colors.warning)
+                (status_colors.warning.background, status_colors.warning.color)
             }
-            DiagnosticSeverity::INFORMATION => (status_colors.info_background, status_colors.info),
-            DiagnosticSeverity::HINT => (status_colors.hint_background, status_colors.info),
-            _ => (status_colors.ignored_background, status_colors.ignored),
+            DiagnosticSeverity::INFORMATION => (status_colors.info.background, status_colors.info.color),
+            DiagnosticSeverity::HINT => (status_colors.hint.background, status_colors.info.color),
+            _ => (status_colors.ignored.background, status_colors.ignored.color),
         };
         let settings = ThemeSettings::get_global(cx);
         let editor_line_height = (settings.line_height() * settings.buffer_font_size(cx)).round();

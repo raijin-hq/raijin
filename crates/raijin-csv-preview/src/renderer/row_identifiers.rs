@@ -1,5 +1,5 @@
 use raijin_ui::{
-    ActiveTheme as _, AnyElement, Button, ButtonCommon as _, ButtonSize, ButtonStyle,
+    ActiveTheme as _, AnyElement, Button, ButtonCommon, ButtonSize, ButtonStyle,
     Clickable as _, Context, ElementId, FluentBuilder as _, IntoElement as _, ParentElement as _,
     SharedString, Styled as _, StyledTypography as _, Tooltip, div,
 };
@@ -124,12 +124,14 @@ impl CsvPreviewView {
                 FontType::Monospace => div.font_buffer(cx),
             })
             .child(
-                Button::new(
-                    ElementId::Name("row-identifier-toggle".into()),
-                    row_identifier_text,
+                ButtonCommon::size(
+                    Button::new(
+                        ElementId::Name("row-identifier-toggle".into()),
+                        row_identifier_text,
+                    )
+                    .style(ButtonStyle::SUBTLE),
+                    ButtonSize::Compact,
                 )
-                .style(ButtonStyle::SUBTLE)
-                .size(ButtonSize::Compact)
                 .tooltip(Tooltip::text(
                     "Toggle between: file line numbers or sequential row numbers",
                 ))

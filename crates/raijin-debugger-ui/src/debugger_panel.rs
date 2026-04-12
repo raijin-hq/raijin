@@ -637,7 +637,7 @@ impl DebugPanel {
             IconButton::new("debug-edit-debug-json", IconName::Code)
                 .icon_size(IconSize::Small)
                 .on_click(|_, window, cx| {
-                    window.dispatch_action(zed_actions::OpenProjectDebugTasks.boxed_clone(), cx);
+                    window.dispatch_action(raijin_actions::OpenProjectDebugTasks.boxed_clone(), cx);
                 })
                 .tooltip(Tooltip::text("Edit debug.json"))
         };
@@ -653,7 +653,7 @@ impl DebugPanel {
             IconButton::new("debug-open-logs", IconName::Notepad)
                 .icon_size(IconSize::Small)
                 .on_click(move |_, window, cx| {
-                    window.dispatch_action(debugger_tools::OpenDebugAdapterLogs.boxed_clone(), cx)
+                    window.dispatch_action(raijin_debugger_tools::OpenDebugAdapterLogs.boxed_clone(), cx)
                 })
                 .tooltip(Tooltip::text("Open Debug Adapter Logs"))
         };
@@ -663,7 +663,7 @@ impl DebugPanel {
                 IconButton::new("debug-close-panel", IconName::Close)
                     .icon_size(IconSize::Small)
                     .on_click(move |_, window, cx| {
-                        window.dispatch_action(workspace::ToggleBottomDock.boxed_clone(), cx)
+                        window.dispatch_action(raijin_workspace::ToggleBottomDock.boxed_clone(), cx)
                     })
                     .tooltip(Tooltip::text("Close Panel")),
             )
@@ -673,7 +673,7 @@ impl DebugPanel {
             .as_ref()
             .map(|session| session.read(cx).running_state())
             .and_then(|state| state.read(cx).thread_status(cx))
-            .unwrap_or(project::debugger::session::ThreadStatus::Exited);
+            .unwrap_or(raijin_project::debugger::session::ThreadStatus::Exited);
 
         Some(
             div.w_full()
@@ -926,7 +926,7 @@ impl DebugPanel {
                                                     )
                                                     .into_any_element(),
                                                 )
-                                                .style(ui::SplitButtonStyle::Outlined),
+                                                .style(raijin_ui::SplitButtonStyle::Outlined),
                                             )
                                         },
                                     )
@@ -1124,7 +1124,7 @@ impl DebugPanel {
                 });
                 if let Some(row) = row {
                     editor.go_to_singleton_buffer_point(
-                        text::Point::new(row as u32, 4),
+                        inazuma_text::Point::new(row as u32, 4),
                         window,
                         cx,
                     );
@@ -1157,20 +1157,20 @@ impl DebugPanel {
                     let fs =
                         workspace.read_with(cx, |workspace, _| workspace.app_state().fs.clone())?;
 
-                    path.push(paths::local_settings_folder_name());
+                    path.push(raijin_paths::local_settings_folder_name());
                     if !fs.is_dir(path.as_path()).await {
                         fs.create_dir(path.as_path()).await?;
                     }
                     path.pop();
 
-                    path.push(paths::local_debug_file_relative_path().as_std_path());
+                    path.push(raijin_paths::local_debug_file_relative_path().as_std_path());
                     let path = path.as_path();
 
                     if !fs.is_file(path).await {
                         fs.create_file(path, Default::default()).await?;
                         fs.write(
                             path,
-                            settings::initial_local_debug_tasks_content()
+                            inazuma_settings_framework::initial_local_debug_tasks_content()
                                 .to_string()
                                 .as_bytes(),
                         )
@@ -1302,7 +1302,7 @@ impl DebugPanel {
 
     fn toggle_zoom(
         &mut self,
-        _: &workspace::ToggleZoom,
+        _: &raijin_workspace::ToggleZoom,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -1373,9 +1373,9 @@ impl DebugPanel {
     ) -> impl IntoElement {
         PopoverMenu::new("debug-back-in-history-menu")
             .trigger(
-                ui::ButtonLike::new_rounded_right("debug-back-in-history-menu-trigger")
-                    .layer(ui::ElevationIndex::ModalSurface)
-                    .size(ui::ButtonSize::None)
+                raijin_ui::ButtonLike::new_rounded_right("debug-back-in-history-menu-trigger")
+                    .layer(raijin_ui::ElevationIndex::ModalSurface)
+                    .size(raijin_ui::ButtonSize::None)
                     .child(
                         div()
                             .px_1()
@@ -1461,7 +1461,7 @@ async fn register_session_inner(
     .ok();
     let serialized_layout = this
         .update(cx, |_, cx| {
-            persistence::get_serialized_layout(&adapter_name, &db::kvp::KeyValueStore::global(cx))
+            persistence::get_serialized_layout(&adapter_name, &raijin_db::kvp::KeyValueStore::global(cx))
         })
         .ok()
         .flatten();
@@ -1565,7 +1565,7 @@ impl Panel for DebugPanel {
             });
         }
 
-        settings::update_settings_file(self.fs.clone(), cx, move |settings, _| {
+        inazuma_settings_framework::update_settings_file(self.fs.clone(), cx, move |settings, _| {
             settings.debugger.get_or_insert_default().dock = Some(position.into());
         });
     }
@@ -1637,7 +1637,7 @@ impl Render for DebugPanel {
             .track_focus(&self.focus_handle(cx))
             .on_action({
                 let this = this.clone();
-                move |_: &workspace::ActivatePaneLeft, window, cx| {
+                move |_: &raijin_workspace::ActivatePaneLeft, window, cx| {
                     this.update(cx, |this, cx| {
                         this.activate_pane_in_direction(SplitDirection::Left, window, cx);
                     })
@@ -1646,7 +1646,7 @@ impl Render for DebugPanel {
             })
             .on_action({
                 let this = this.clone();
-                move |_: &workspace::ActivatePaneRight, window, cx| {
+                move |_: &raijin_workspace::ActivatePaneRight, window, cx| {
                     this.update(cx, |this, cx| {
                         this.activate_pane_in_direction(SplitDirection::Right, window, cx);
                     })
@@ -1655,7 +1655,7 @@ impl Render for DebugPanel {
             })
             .on_action({
                 let this = this.clone();
-                move |_: &workspace::ActivatePaneUp, window, cx| {
+                move |_: &raijin_workspace::ActivatePaneUp, window, cx| {
                     this.update(cx, |this, cx| {
                         this.activate_pane_in_direction(SplitDirection::Up, window, cx);
                     })
@@ -1664,7 +1664,7 @@ impl Render for DebugPanel {
             })
             .on_action({
                 let this = this.clone();
-                move |_: &workspace::ActivatePaneDown, window, cx| {
+                move |_: &raijin_workspace::ActivatePaneDown, window, cx| {
                     this.update(cx, |this, cx| {
                         this.activate_pane_in_direction(SplitDirection::Down, window, cx);
                     })
@@ -1831,7 +1831,7 @@ impl Render for DebugPanel {
                                 )
                                 .on_click(|_, window, cx| {
                                     window.dispatch_action(
-                                        zed_actions::OpenProjectDebugTasks.boxed_clone(),
+                                        raijin_actions::OpenProjectDebugTasks.boxed_clone(),
                                         cx,
                                     );
                                 }),
@@ -1857,9 +1857,9 @@ impl Render for DebugPanel {
                             )
                             .on_click(|_, window, cx| {
                                 window.dispatch_action(
-                                    zed_actions::Extensions {
+                                    raijin_actions::Extensions {
                                         category_filter: Some(
-                                            zed_actions::ExtensionCategoryFilter::DebugAdapters,
+                                            raijin_actions::ExtensionCategoryFilter::DebugAdapters,
                                         ),
                                         id: None,
                                     }
@@ -1950,7 +1950,7 @@ impl Render for DebugPanel {
 
 struct DebuggerProvider(Entity<DebugPanel>);
 
-impl workspace::DebuggerProvider for DebuggerProvider {
+impl raijin_workspace::DebuggerProvider for DebuggerProvider {
     fn start_session(
         &self,
         definition: DebugScenario,
@@ -1970,7 +1970,7 @@ impl workspace::DebuggerProvider for DebuggerProvider {
     fn spawn_task_or_modal(
         &self,
         workspace: &mut Workspace,
-        action: &tasks_ui::Spawn,
+        action: &raijin_tasks_ui::Spawn,
         window: &mut Window,
         cx: &mut Context<Workspace>,
     ) {

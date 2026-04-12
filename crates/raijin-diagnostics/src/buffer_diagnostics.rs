@@ -901,7 +901,7 @@ impl Render for BufferDiagnosticsEditor {
                         .child(Label::new(label).color(Color::Muted))
                         .child(
                             Button::new("open-file", filename)
-                                .style(ButtonStyle::Transparent)
+                                .style(ButtonStyle::TRANSPARENT)
                                 .tooltip(Tooltip::text("Open File"))
                                 .on_click(cx.listener(|buffer_diagnostics, _, window, cx| {
                                     if let Some(workspace) = Workspace::for_window(window, cx) {

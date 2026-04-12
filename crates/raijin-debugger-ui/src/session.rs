@@ -15,7 +15,7 @@ use raijin_workspace::{
 };
 
 pub struct DebugSession {
-    remote_id: Option<workspace::ViewId>,
+    remote_id: Option<raijin_workspace::ViewId>,
     pub(crate) running_state: Entity<RunningState>,
     pub(crate) quirks: SessionQuirks,
 }
@@ -106,7 +106,7 @@ impl Item for DebugSession {
 }
 
 impl FollowableItem for DebugSession {
-    fn remote_id(&self) -> Option<workspace::ViewId> {
+    fn remote_id(&self) -> Option<raijin_workspace::ViewId> {
         self.remote_id
     }
 
@@ -138,7 +138,7 @@ impl FollowableItem for DebugSession {
 
     fn apply_update_proto(
         &mut self,
-        _project: &Entity<project::Project>,
+        _project: &Entity<raijin_project::Project>,
         _message: proto::update_view::Variant,
         _window: &mut Window,
         _cx: &mut Context<Self>,
@@ -154,11 +154,11 @@ impl FollowableItem for DebugSession {
     ) {
     }
 
-    fn to_follow_event(_event: &Self::Event) -> Option<workspace::item::FollowEvent> {
+    fn to_follow_event(_event: &Self::Event) -> Option<raijin_workspace::item::FollowEvent> {
         None
     }
 
-    fn dedup(&self, existing: &Self, _window: &Window, cx: &App) -> Option<workspace::item::Dedup> {
+    fn dedup(&self, existing: &Self, _window: &Window, cx: &App) -> Option<raijin_workspace::item::Dedup> {
         if existing.session_id(cx) == self.session_id(cx) {
             Some(item::Dedup::KeepExisting)
         } else {

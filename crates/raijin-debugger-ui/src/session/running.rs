@@ -63,7 +63,7 @@ use raijin_workspace::{
 };
 
 static PROCESS_ID_PLACEHOLDER: LazyLock<String> =
-    LazyLock::new(|| task::VariableName::PickProcessId.template_value());
+    LazyLock::new(|| raijin_task::VariableName::PickProcessId.template_value());
 
 pub struct RunningState {
     session: Entity<Session>,
@@ -289,19 +289,19 @@ impl Item for SubView {
 
     fn tab_content(
         &self,
-        params: workspace::item::TabContentParams,
+        params: raijin_workspace::item::TabContentParams,
         _: &Window,
         cx: &App,
     ) -> AnyElement {
         let label = Label::new(self.kind.to_shared_string())
-            .size(ui::LabelSize::Small)
+            .size(raijin_ui::LabelSize::Small)
             .color(params.text_color())
-            .line_height_style(ui::LineHeightStyle::UiLabel);
+            .line_height_style(raijin_ui::LineHeightStyle::UiLabel);
 
         if !params.selected && self.show_indicator.as_ref()(cx) {
             return h_flex()
                 .justify_between()
-                .child(ui::Indicator::dot())
+                .child(raijin_ui::Indicator::dot())
                 .gap_2()
                 .child(label)
                 .into_any_element();
@@ -481,7 +481,7 @@ pub(crate) fn new_debugger_pane(
                     .border_b_1()
                     .border_color(cx.theme().colors().border)
                     .bg(cx.theme().colors().tab.bar_background)
-                    .on_action(|_: &menu::Cancel, window, cx| {
+                    .on_action(|_: &inazuma_menu::Cancel, window, cx| {
                         if cx.stop_active_drag(window) {
                         } else {
                             cx.propagate();
@@ -922,7 +922,7 @@ impl RunningState {
                 cx,
             )
         }) {
-            workspace::PaneGroup::with_root(root)
+            raijin_workspace::PaneGroup::with_root(root)
         } else {
             pane_close_subscriptions.clear();
 
@@ -940,7 +940,7 @@ impl RunningState {
                 cx,
             );
 
-            workspace::PaneGroup::with_root(root)
+            raijin_workspace::PaneGroup::with_root(root)
         };
         let active_pane = panes.first_pane();
 
@@ -1295,8 +1295,8 @@ impl RunningState {
             .filter(|title| !title.is_empty())
             .or_else(|| command.clone())
             .unwrap_or_else(|| "Debug terminal".to_string());
-        let kind = task::SpawnInTerminal {
-            id: task::TaskId("debug".to_string()),
+        let kind = raijin_task::SpawnInTerminal {
+            id: raijin_task::TaskId("debug".to_string()),
             full_label: title.clone(),
             label: title.clone(),
             command,
@@ -1306,14 +1306,14 @@ impl RunningState {
             env: envs,
             use_new_terminal: true,
             allow_concurrent_runs: true,
-            reveal: task::RevealStrategy::NoFocus,
-            reveal_target: task::RevealTarget::Dock,
-            hide: task::HideStrategy::Never,
+            reveal: raijin_task::RevealStrategy::NoFocus,
+            reveal_target: raijin_task::RevealTarget::Dock,
+            hide: raijin_task::HideStrategy::Never,
             shell,
             show_summary: false,
             show_command: false,
             show_rerun: false,
-            save: task::SaveStrategy::default(),
+            save: raijin_task::SaveStrategy::default(),
         };
 
         let workspace = self.workspace.clone();
@@ -1503,7 +1503,7 @@ impl RunningState {
                 };
 
                 let kvp = this
-                    .read_with(cx, |_, cx| db::kvp::KeyValueStore::global(cx))
+                    .read_with(cx, |_, cx| raijin_db::kvp::KeyValueStore::global(cx))
                     .ok();
                 if let Some(kvp) = kvp {
                     persistence::serialize_pane_layout(adapter_name, pane_layout, kvp)
@@ -1955,11 +1955,11 @@ impl RunningState {
                 }),
         );
 
-        let group_root = workspace::PaneAxis::new(
+        let group_root = raijin_workspace::PaneAxis::new(
             dock_axis.invert(),
             [leftmost_pane, center_pane, rightmost_pane]
                 .into_iter()
-                .map(workspace::Member::Pane)
+                .map(raijin_workspace::Member::Pane)
                 .collect(),
         );
 

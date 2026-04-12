@@ -54,7 +54,7 @@ impl SessionListEntry {
                     .thread_status(cx)
                     .unwrap_or_default()
                 {
-                    project::debugger::session::ThreadStatus::Stopped => {
+                    raijin_project::debugger::session::ThreadStatus::Stopped => {
                         Some(Indicator::dot().color(Color::Conflict))
                     }
                     _ => Some(Indicator::dot().color(Color::Success)),

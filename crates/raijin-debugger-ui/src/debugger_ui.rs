@@ -290,7 +290,7 @@ pub fn init(cx: &mut App) {
 
                     window.on_action_when(
                         session.any_stopped_thread(),
-                        TypeId::of::<editor::actions::RunToCursor>(),
+                        TypeId::of::<raijin_editor::actions::RunToCursor>(),
                         {
                             let editor = editor.clone();
                             let active_session = active_session.clone();
@@ -301,7 +301,7 @@ pub fn init(cx: &mut App) {
                                 maybe!({
                                     let (buffer, position, _) = editor
                                         .update(cx, |editor, cx| {
-                                            let cursor_point: language::Point = editor
+                                            let cursor_point: raijin_language::Point = editor
                                                 .selections
                                                 .newest(&editor.display_snapshot(cx))
                                                 .head();
@@ -348,7 +348,7 @@ pub fn init(cx: &mut App) {
                     );
 
                     window.on_action(
-                        TypeId::of::<editor::actions::EvaluateSelectedText>(),
+                        TypeId::of::<raijin_editor::actions::EvaluateSelectedText>(),
                         move |_, _, window, cx| {
                             let status = maybe!({
                                 let text = editor
@@ -376,7 +376,7 @@ pub fn init(cx: &mut App) {
                                             session
                                                 .evaluate(
                                                     text,
-                                                    Some(dap::EvaluateArgumentsContext::Repl),
+                                                    Some(raijin_dap::EvaluateArgumentsContext::Repl),
                                                     stack_id,
                                                     None,
                                                     cx,
@@ -403,8 +403,8 @@ pub fn init(cx: &mut App) {
 fn spawn_task_or_modal(
     workspace: &mut Workspace,
     action: &Spawn,
-    window: &mut ui::Window,
-    cx: &mut ui::Context<Workspace>,
+    window: &mut raijin_ui::Window,
+    cx: &mut raijin_ui::Context<Workspace>,
 ) {
     match action {
         Spawn::ByName {
@@ -415,7 +415,7 @@ fn spawn_task_or_modal(
                 reveal_target: Some(reveal_target),
             });
             let name = task_name.clone();
-            tasks_ui::spawn_tasks_filtered(
+            raijin_tasks_ui::spawn_tasks_filtered(
                 move |(_, task)| task.label.eq(&name),
                 overrides,
                 window,
@@ -431,7 +431,7 @@ fn spawn_task_or_modal(
                 reveal_target: Some(reveal_target),
             });
             let tag = task_tag.clone();
-            tasks_ui::spawn_tasks_filtered(
+            raijin_tasks_ui::spawn_tasks_filtered(
                 move |(_, task)| task.tags.contains(&tag),
                 overrides,
                 window,

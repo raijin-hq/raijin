@@ -115,7 +115,7 @@ impl AttachModal {
 }
 
 impl Render for AttachModal {
-    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl ui::IntoElement {
+    fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl raijin_ui::IntoElement {
         v_flex()
             .key_context("AttachModal")
             .track_focus(&self.focus_handle(cx))
@@ -172,7 +172,7 @@ impl PickerDelegate for AttachModalDelegate {
                 return;
             };
 
-            let matches = fuzzy::match_strings(
+            let matches = inazuma_fuzzy::match_strings(
                 &processes
                     .iter()
                     .enumerate()

@@ -136,7 +136,7 @@ impl CsvPreviewView {
         this: &CsvPreviewView,
         cols: usize,
         display_row: DisplayRow,
-        row_identifier_text_color: inazuma::Hsla,
+        row_identifier_text_color: inazuma::Oklch,
         cx: &Context<CsvPreviewView>,
     ) -> Option<UncheckedTableRow<AnyElement>> {
         // Get the actual row index from our sorted indices

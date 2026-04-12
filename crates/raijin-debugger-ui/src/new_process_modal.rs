@@ -7,7 +7,7 @@ use std::{
     sync::Arc,
     usize,
 };
-use tasks_ui::{TaskOverrides, TasksModal};
+use raijin_tasks_ui::{TaskOverrides, TasksModal};
 
 use raijin_dap::{
     DapRegistry, DebugRequest, TelemetrySpawnLocation, adapters::DebugAdapterName, send_telemetry,
@@ -93,7 +93,7 @@ impl NewProcessModal {
         cx.spawn_in(window, async move |workspace, cx| {
             let task_contexts = workspace.update_in(cx, |workspace, window, cx| {
                 // todo(debugger): get the buffer here (if the active item is an editor) and store it so we can pass it to start_session later
-                tasks_ui::task_contexts(workspace, window, cx)
+                raijin_tasks_ui::task_contexts(workspace, window, cx)
             })?;
             workspace.update_in(cx, |workspace, window, cx| {
                 let workspace_handle = workspace.weak_handle();
@@ -157,7 +157,7 @@ impl NewProcessModal {
                             // Get LSP tasks and filter out based on language vs lsp preference
                             let (lsp_tasks, prefer_lsp) =
                                 workspace.update(cx, |workspace, cx| {
-                                    let lsp_tasks = editor::lsp_tasks(
+                                    let lsp_tasks = raijin_editor::lsp_tasks(
                                         workspace.project().clone(),
                                         &lsp_task_sources,
                                         task_position,
@@ -280,7 +280,7 @@ impl NewProcessModal {
         .detach();
     }
 
-    fn render_mode(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl ui::IntoElement {
+    fn render_mode(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl raijin_ui::IntoElement {
         let dap_menu = self.adapter_drop_down_menu(window, cx);
         match self.mode {
             NewProcessMode::Task => self
@@ -521,7 +521,7 @@ impl NewProcessModal {
                 menu
             }),
         )
-        .style(ui::DropdownStyle::Outlined)
+        .style(raijin_ui::DropdownStyle::Outlined)
         .tab_index(0)
         .attach(inazuma::Corner::BottomLeft)
         .offset(inazuma::Point {
@@ -579,7 +579,7 @@ impl Render for NewProcessModal {
             .w(rems(34.))
             .elevation_3(cx)
             .overflow_hidden()
-            .on_action(cx.listener(|_, _: &menu::Cancel, _, cx| {
+            .on_action(cx.listener(|_, _: &inazuma_menu::Cancel, _, cx| {
                 cx.emit(DismissEvent);
             }))
             .on_action(cx.listener(|this, _: &pane::ActivateNextItem, window, cx| {
@@ -707,7 +707,7 @@ impl Render for NewProcessModal {
                             }),
                         ],
                     )
-                    .style(ui::ToggleButtonGroupStyle::Outlined)
+                    .style(raijin_ui::ToggleButtonGroupStyle::Outlined)
                     .label_size(LabelSize::Default)
                     .auto_width()
                     .selected_index(match self.mode {
@@ -727,7 +727,7 @@ impl Render for NewProcessModal {
                     .justify_between()
                     .border_t_1()
                     .border_color(cx.theme().colors().border_variant);
-                let secondary_action = menu::SecondaryConfirm.boxed_clone();
+                let secondary_action = inazuma_menu::SecondaryConfirm.boxed_clone();
                 match self.mode {
                     NewProcessMode::Launch => el.child(
                         container
@@ -777,7 +777,7 @@ impl Render for NewProcessModal {
                                 .delegate
                                 .match_count()
                                 == 0;
-                        let secondary_action = menu::SecondaryConfirm.boxed_clone();
+                        let secondary_action = inazuma_menu::SecondaryConfirm.boxed_clone();
                         container
                             .child(div().child({
                                 Button::new("edit-attach-task", "Edit in debug.json")
@@ -801,7 +801,7 @@ impl Render for NewProcessModal {
 
 impl EventEmitter<DismissEvent> for NewProcessModal {}
 impl Focusable for NewProcessModal {
-    fn focus_handle(&self, cx: &ui::App) -> inazuma::FocusHandle {
+    fn focus_handle(&self, cx: &raijin_ui::App) -> inazuma::FocusHandle {
         self.mode_focus_handle(cx)
     }
 }
@@ -857,7 +857,7 @@ impl ConfigureMode {
         });
     }
 
-    pub(super) fn debug_request(&self, cx: &App) -> task::LaunchRequest {
+    pub(super) fn debug_request(&self, cx: &App) -> raijin_task::LaunchRequest {
         let cwd_text = self.cwd.read(cx).text(cx);
         let cwd = if cwd_text.is_empty() {
             None
@@ -866,7 +866,7 @@ impl ConfigureMode {
         };
 
         if cfg!(windows) {
-            return task::LaunchRequest {
+            return raijin_task::LaunchRequest {
                 program: self.program.read(cx).text(cx),
                 cwd,
                 args: Default::default(),
@@ -895,7 +895,7 @@ impl ConfigureMode {
 
         let args = args.collect::<Vec<_>>();
 
-        task::LaunchRequest {
+        raijin_task::LaunchRequest {
             program,
             cwd,
             args,
@@ -903,13 +903,13 @@ impl ConfigureMode {
         }
     }
 
-    fn on_tab(&mut self, _: &menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
+    fn on_tab(&mut self, _: &inazuma_menu::SelectNext, window: &mut Window, cx: &mut Context<Self>) {
         window.focus_next(cx);
     }
 
     fn on_tab_prev(
         &mut self,
-        _: &menu::SelectPrevious,
+        _: &inazuma_menu::SelectPrevious,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
@@ -920,7 +920,7 @@ impl ConfigureMode {
         &mut self,
         adapter_menu: DropdownMenu,
         _: &mut Window,
-        cx: &mut ui::Context<Self>,
+        cx: &mut raijin_ui::Context<Self>,
     ) -> impl IntoElement {
         v_flex()
             .tab_group()
@@ -939,7 +939,7 @@ impl ConfigureMode {
             .child(self.program.clone())
             .child(self.cwd.clone())
             .child(
-                Switch::new("debugger-stop-on-entry", self.stop_on_entry)
+                Switch::new("debugger-stop-on-entry").toggle_state(self.stop_on_entry)
                     .tab_index(3_isize)
                     .label("Stop on Entry")
                     .label_position(SwitchLabelPosition::Start)
@@ -974,7 +974,7 @@ impl AttachMode {
         let definition = ZedDebugConfig {
             adapter: debugger.unwrap_or(DebugAdapterName("".into())).0,
             label: "Attach New Session Setup".into(),
-            request: dap::DebugRequest::Attach(task::AttachRequest { process_id: None }),
+            request: raijin_dap::DebugRequest::Attach(raijin_raijin_task::AttachRequest { process_id: None }),
             stop_on_entry: Some(false),
         };
         let attach_picker = cx.new(|cx| {
@@ -997,7 +997,7 @@ impl AttachMode {
         })
     }
     pub(super) fn debug_request(&self) -> task::AttachRequest {
-        task::AttachRequest { process_id: None }
+        raijin_task::AttachRequest { process_id: None }
     }
 }
 
@@ -1125,8 +1125,8 @@ impl DebugDelegate {
         &mut self,
         task_contexts: Arc<TaskContexts>,
         languages: Arc<LanguageRegistry>,
-        lsp_tasks: Vec<(TaskSourceKind, task::ResolvedTask)>,
-        current_resolved_tasks: Vec<(TaskSourceKind, task::ResolvedTask)>,
+        lsp_tasks: Vec<(TaskSourceKind, raijin_task::ResolvedTask)>,
+        current_resolved_tasks: Vec<(TaskSourceKind, raijin_task::ResolvedTask)>,
         add_current_language_tasks: bool,
         cx: &mut Context<Picker<Self>>,
     ) -> Task<()> {
@@ -1205,7 +1205,7 @@ impl DebugDelegate {
 }
 
 impl PickerDelegate for DebugDelegate {
-    type ListItem = ui::ListItem;
+    type ListItem = raijin_ui::ListItem;
 
     fn match_count(&self) -> usize {
         self.matches.len()
@@ -1322,7 +1322,7 @@ impl PickerDelegate for DebugDelegate {
         };
 
         let args = args.collect::<Vec<_>>();
-        let task = task::TaskTemplate {
+        let task = raijin_task::TaskTemplate {
             label: "one-off".to_owned(), // TODO: rename using command as label
             env,
             command: program,
@@ -1340,7 +1340,7 @@ impl PickerDelegate for DebugDelegate {
         let buffer = location.buffer.read(cx);
         let language = buffer.language();
         let Some(adapter): Option<DebugAdapterName> =
-            language::language_settings::LanguageSettings::for_buffer(buffer, cx)
+            raijin_language::language_settings::LanguageSettings::for_buffer(buffer, cx)
                 .debuggers
                 .first()
                 .map(SharedString::from)
@@ -1474,7 +1474,7 @@ impl PickerDelegate for DebugDelegate {
         &self,
         window: &mut Window,
         cx: &mut Context<Picker<Self>>,
-    ) -> Option<ui::AnyElement> {
+    ) -> Option<raijin_ui::AnyElement> {
         let current_modifiers = window.modifiers();
         let footer = h_flex()
             .w_full()
@@ -1483,12 +1483,12 @@ impl PickerDelegate for DebugDelegate {
             .border_t_1()
             .border_color(cx.theme().colors().border_variant)
             .child({
-                let action = menu::SecondaryConfirm.boxed_clone();
+                let action = inazuma_menu::SecondaryConfirm.boxed_clone();
                 if self.matches.is_empty() {
                     Button::new("edit-debug-json", "Edit debug.json").on_click(cx.listener(
                         |_picker, _, window, cx| {
                             window.dispatch_action(
-                                zed_actions::OpenProjectDebugTasks.boxed_clone(),
+                                raijin_actions::OpenProjectDebugTasks.boxed_clone(),
                                 cx,
                             );
                             cx.emit(DismissEvent);
@@ -1518,9 +1518,9 @@ impl PickerDelegate for DebugDelegate {
                         let run_entry_label = if is_recent_selected { "Rerun" } else { "Spawn" };
 
                         Button::new("spawn", run_entry_label)
-                            .key_binding(KeyBinding::for_action(&menu::Confirm, cx))
+                            .key_binding(KeyBinding::for_action(&inazuma_menu::Confirm, cx))
                             .on_click(|_, window, cx| {
-                                window.dispatch_action(menu::Confirm.boxed_clone(), cx);
+                                window.dispatch_action(inazuma_menu::Confirm.boxed_clone(), cx);
                             })
                     })
                 }
@@ -1547,7 +1547,7 @@ impl PickerDelegate for DebugDelegate {
         let subtitle = self.get_task_subtitle(task_kind, context, cx);
 
         let language_icon = language_name.as_ref().and_then(|lang| {
-            file_icons::FileIcons::get(cx)
+            raijin_file_icons::FileIcons::get(cx)
                 .get_icon_for_type(&lang.0.to_lowercase(), cx)
                 .map(Icon::from_path)
         });
@@ -1557,7 +1557,7 @@ impl PickerDelegate for DebugDelegate {
             Some(TaskSourceKind::AbsPath { .. }) => (Some(Icon::new(IconName::Settings)), None),
             Some(TaskSourceKind::Worktree { .. }) => (Some(Icon::new(IconName::FileTree)), None),
             Some(TaskSourceKind::Lsp { language_name, .. }) => (
-                file_icons::FileIcons::get(cx)
+                raijin_file_icons::FileIcons::get(cx)
                     .get_icon_for_type(&language_name.to_lowercase(), cx)
                     .map(Icon::from_path),
                 Some(Indicator::icon(
@@ -1567,7 +1567,7 @@ impl PickerDelegate for DebugDelegate {
                 )),
             ),
             Some(TaskSourceKind::Language { name }) => (
-                file_icons::FileIcons::get(cx)
+                raijin_file_icons::FileIcons::get(cx)
                     .get_icon_for_type(&name.to_lowercase(), cx)
                     .map(Icon::from_path),
                 None,
@@ -1604,7 +1604,7 @@ impl PickerDelegate for DebugDelegate {
 
 pub(crate) fn resolve_path(path: &mut String) {
     if path.starts_with('~') {
-        let home = paths::home_dir().to_string_lossy().into_owned();
+        let home = raijin_paths::home_dir().to_string_lossy().into_owned();
         let trimmed_path = path.trim().to_owned();
         *path = trimmed_path.replacen('~', &home, 1);
     } else if let Some(strip_path) = path.strip_prefix(&format!(".{}", std::path::MAIN_SEPARATOR)) {
@@ -1627,7 +1627,7 @@ impl NewProcessModal {
         cx: &mut Context<Self>,
     ) {
         self.mode = NewProcessMode::Launch;
-        self.debugger = Some(dap::adapters::DebugAdapterName("fake-adapter".into()));
+        self.debugger = Some(raijin_dap::adapters::DebugAdapterName("fake-adapter".into()));
 
         self.configure_mode.update(cx, |configure, cx| {
             configure.program.update(cx, |editor, cx| {
