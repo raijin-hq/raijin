@@ -130,7 +130,7 @@ fn main() -> Result<(), anyhow::Error> {
         inazuma_settings_framework::init(cx);
         let client = Client::production(cx);
         let http_client = FakeHttpClient::with_200_response();
-        let (_, rx) = watch::channel(None);
+        let (_, rx) = raijin_watch::channel(None);
         let node = NodeRuntime::new(http_client, None, rx);
         let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
         let registry = Arc::new(LanguageRegistry::new(cx.background_executor().clone()));

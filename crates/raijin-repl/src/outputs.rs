@@ -59,7 +59,7 @@ use plain::TerminalOutput;
 
 pub(crate) mod user_error;
 use user_error::ErrorView;
-use raijin_raijin_workspace::Workspace;
+use raijin_workspace::Workspace;
 
 use crate::repl_settings::ReplSettings;
 use inazuma_settings_framework::Settings;

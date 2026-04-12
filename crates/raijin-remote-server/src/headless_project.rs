@@ -84,7 +84,7 @@ pub struct HeadlessAppState {
 
 impl HeadlessProject {
     pub fn init(cx: &mut App) {
-        settings::init(cx);
+        inazuma_settings_framework::init(cx);
         log_store::init(true, cx);
     }
 
@@ -101,8 +101,8 @@ impl HeadlessProject {
         init_worktree_trust: bool,
         cx: &mut Context<Self>,
     ) -> Self {
-        debug_adapter_extension::init(proxy.clone(), cx);
-        languages::init(languages.clone(), fs.clone(), node_runtime.clone(), cx);
+        raijin_debug_adapter_extension::init(proxy.clone(), cx);
+        raijin_languages::init(languages.clone(), fs.clone(), node_runtime.clone(), cx);
 
         let worktree_store = cx.new(|cx| {
             let mut store = WorktreeStore::local(true, fs.clone(), WorktreeIdCounter::get(cx));
@@ -111,7 +111,7 @@ impl HeadlessProject {
         });
 
         if init_worktree_trust {
-            project::trusted_worktrees::track_worktree_trust(
+            raijin_project::trusted_worktrees::track_worktree_trust(
                 worktree_store.clone(),
                 None::<RemoteHostLocation>,
                 Some((session.clone(), ProjectId(REMOTE_SERVER_PROJECT_ID))),
@@ -251,8 +251,8 @@ impl HeadlessProject {
         });
 
         cx.subscribe(&lsp_store, Self::on_lsp_store_event).detach();
-        language_extension::init(
-            language_extension::LspAccess::ViaLspStore(lsp_store.clone()),
+        raijin_language_extension::init(
+            raijin_language_extension::LspAccess::ViaLspStore(lsp_store.clone()),
             proxy.clone(),
             languages.clone(),
         );
@@ -267,7 +267,7 @@ impl HeadlessProject {
         let extensions = HeadlessExtensionStore::new(
             fs.clone(),
             http_client.clone(),
-            paths::remote_extensions_dir().to_path_buf(),
+            raijin_paths::remote_extensions_dir().to_path_buf(),
             proxy,
             node_runtime,
             cx,
@@ -482,7 +482,7 @@ impl HeadlessProject {
                     .ok_or(e)
                     .with_context(|| format!("{path:?} does not exist"))?;
                 if parent == Path::new("") {
-                    parent = util::paths::home_dir();
+                    parent = inazuma_util::paths::home_dir();
                 }
                 let parent = fs.canonicalize(parent).await.map_err(|_| {
                     anyhow!(
@@ -853,7 +853,7 @@ impl HeadlessProject {
         _: TypedEnvelope<proto::OpenServerSettings>,
         mut cx: AsyncApp,
     ) -> Result<proto::OpenBufferResponse> {
-        let settings_path = paths::settings_file();
+        let settings_path = raijin_paths::settings_file();
         let (worktree, path) = this
             .update(&mut cx, |this, cx| {
                 this.worktree_store.update(cx, |worktree_store, cx| {
@@ -935,7 +935,7 @@ impl HeadlessProject {
         fs.save(
             &connection_file_path,
             &connection_file_content.as_str().into(),
-            language::LineEnding::Unix,
+            raijin_language::LineEnding::Unix,
         )
         .await?;
 
@@ -1047,7 +1047,7 @@ impl HeadlessProject {
         let client = this.read_with(&cx, |this, _| this.session.clone());
         let task = cx.spawn(async move |cx| {
             let results = this.update(cx, |this, cx| {
-                project::Search::local(
+                raijin_project::Search::local(
                     this.fs.clone(),
                     this.buffer_store.clone(),
                     this.worktree_store.clone(),
@@ -1058,7 +1058,7 @@ impl HeadlessProject {
                 .matching_buffers(cx)
             });
             let (batcher, batches) =
-                project::project_search::AdaptiveBatcher::new(cx.background_executor());
+                raijin_project::project_search::AdaptiveBatcher::new(cx.background_executor());
             let mut new_matches = Box::pin(results.rx);
 
             let sender_task = cx.background_executor().spawn({
@@ -1290,7 +1290,7 @@ impl HeadlessProject {
         envelope: TypedEnvelope<proto::GetDirectoryEnvironment>,
         mut cx: AsyncApp,
     ) -> Result<proto::DirectoryEnvironment> {
-        let shell = task::shell_from_proto(envelope.payload.shell.context("missing shell")?)?;
+        let shell = raijin_task::shell_from_proto(envelope.payload.shell.context("missing shell")?)?;
         let directory = PathBuf::from(envelope.payload.directory);
         let environment = this
             .update(&mut cx, |this, cx| {
@@ -1307,7 +1307,7 @@ impl HeadlessProject {
 }
 
 fn prompt_to_proto(
-    prompt: &project::LanguageServerPromptRequest,
+    prompt: &raijin_project::LanguageServerPromptRequest,
 ) -> proto::language_server_prompt_request::Level {
     match prompt.level {
         PromptLevel::Info => proto::language_server_prompt_request::Level::Info(

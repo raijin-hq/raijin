@@ -385,7 +385,7 @@ impl MarkdownCell {
 
         let editor_subscription =
             cx.subscribe(&editor, move |this, _editor, event, cx| match event {
-                raijin_raijin_editor::EditorEvent::Blurred => {
+                raijin_editor::EditorEvent::Blurred => {
                     if this.editing {
                         this.editing = false;
                         cx.emit(MarkdownCellEvent::FinishedEditing);

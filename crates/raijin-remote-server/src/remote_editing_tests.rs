@@ -377,7 +377,7 @@ async fn test_remote_project_search_inclusion(
     // Case 1: Test search with path matcher limiting to only one worktree
     let path_matcher = PathMatcher::new(
         &["project1/*.md".to_owned()],
-        util::paths::PathStyle::local(),
+        inazuma_util::paths::PathStyle::local(),
     )
     .unwrap();
     do_search_and_assert(
@@ -1661,9 +1661,9 @@ async fn test_remote_git_diffs_when_recv_update_repository_delay(
     cx.update(|cx| {
         let settings_store = SettingsStore::test(cx);
         cx.set_global(settings_store);
-        theme_settings::init(theme::LoadThemes::JustBase, cx);
-        release_channel::init(semver::Version::new(0, 0, 0), cx);
-        editor::init(cx);
+        raijin_theme_settings::init(raijin_theme::LoadThemes::JustBase, cx);
+        raijin_release_channel::init(semver::Version::new(0, 0, 0), cx);
+        raijin_editor::init(cx);
     });
 
     use raijin_editor::Editor;

@@ -228,7 +228,7 @@ fn handle_crash_files_requests(project: &Entity<HeadlessProject>, client: &AnyPr
         |_, _: TypedEnvelope<proto::GetCrashFiles>, _cx| async move {
             let mut legacy_panics = Vec::new();
             let mut crashes = Vec::new();
-            let mut children = smol::fs::read_dir(paths::logs_dir()).await?;
+            let mut children = smol::fs::read_dir(raijin_paths::logs_dir()).await?;
             while let Some(child) = children.next().await {
                 let child = child?;
                 let child_path = child.path();
@@ -432,14 +432,14 @@ fn start_server(
 
 fn init_paths() -> anyhow::Result<()> {
     for path in [
-        paths::config_dir(),
-        paths::extensions_dir(),
-        paths::languages_dir(),
-        paths::logs_dir(),
-        paths::temp_dir(),
-        paths::hang_traces_dir(),
-        paths::remote_extensions_dir(),
-        paths::remote_extensions_uploads_dir(),
+        raijin_paths::config_dir(),
+        raijin_paths::extensions_dir(),
+        raijin_paths::languages_dir(),
+        raijin_paths::logs_dir(),
+        raijin_paths::temp_dir(),
+        raijin_paths::hang_traces_dir(),
+        raijin_paths::remote_extensions_dir(),
+        raijin_paths::remote_extensions_uploads_dir(),
     ]
     .iter()
     {
@@ -501,7 +501,7 @@ pub fn execute_run(
         let (shell_env_loaded_tx, shell_env_loaded_rx) = oneshot::channel();
         app.background_executor()
             .spawn(async {
-                util::load_login_shell_environment().await.log_err();
+                inazuma_util::load_login_shell_environment().await.log_err();
                 shell_env_loaded_tx.send(()).ok();
             })
             .detach();
@@ -512,7 +512,7 @@ pub fn execute_run(
 
     let git_hosting_provider_registry = Arc::new(GitHostingProviderRegistry::new());
     let run = move |cx: &mut _| {
-        settings::init(cx);
+        inazuma_settings_framework::init(cx);
         let app_commit_sha = option_env!("RAIJIN_COMMIT_SHA").map(|s| AppCommitSha::new(s.to_owned()));
         let app_version = AppVersion::load(
             env!("RAIJIN_PKG_VERSION"),
@@ -539,7 +539,7 @@ pub fn execute_run(
         git_hosting_providers::init(cx);
         dap_adapters::init(cx);
 
-        extension::init(cx);
+        raijin_extension::init(cx);
         let extension_host_proxy = ExtensionHostProxy::global(cx);
 
         json_schema_store::init(cx);
@@ -570,7 +570,7 @@ pub fn execute_run(
                 NodeRuntime::new(http_client.clone(), shell_env_loaded_rx, node_settings_rx);
 
             let mut languages = LanguageRegistry::new(cx.background_executor().clone());
-            languages.set_language_server_download_dir(paths::languages_dir().clone());
+            languages.set_language_server_download_dir(raijin_paths::languages_dir().clone());
             let languages = Arc::new(languages);
 
             HeadlessProject::new(
@@ -638,7 +638,7 @@ struct ServerPaths {
 
 impl ServerPaths {
     fn new(identifier: &str) -> Result<Self, ServerPathError> {
-        let server_dir = paths::remote_server_state_dir().join(identifier);
+        let server_dir = raijin_paths::remote_server_state_dir().join(identifier);
         std::fs::create_dir_all(&server_dir).map_err(|source| {
             ServerPathError::CreateServerDir {
                 source,
@@ -966,9 +966,9 @@ fn spawn_server_windows(binary_name: &Path, paths: &ServerPaths) -> Result<(), S
 fn spawn_server_normal(binary_name: &Path, paths: &ServerPaths) -> Result<(), SpawnServerError> {
     let mut server_process = new_command(binary_name);
     server_process
-        .stdin(util::command::Stdio::null())
-        .stdout(util::command::Stdio::null())
-        .stderr(util::command::Stdio::null())
+        .stdin(inazuma_util::command::Stdio::null())
+        .stdout(inazuma_util::command::Stdio::null())
+        .stderr(inazuma_util::command::Stdio::null())
         .arg("run")
         .arg("--log-file")
         .arg(&paths.log_file)
