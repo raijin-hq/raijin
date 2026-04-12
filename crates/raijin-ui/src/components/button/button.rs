@@ -1,16 +1,19 @@
 use crate::component_prelude::*;
 use inazuma::{
-    AnyElement, AnyView, ClickEvent, Context, Corner, Corners, CursorStyle, DefiniteLength, Edges,
-    IntoElement, ParentElement, RenderOnce, Styled, Window,
+    AnyElement, AnyView, ClickEvent, Context, Corner, Corners, CursorStyle, DefiniteLength,
+    DismissEvent, Edges, Entity, Focusable, IntoElement, ParentElement, RenderOnce, SharedString,
+    Window,
 };
 use raijin_ui_macros::RegisterComponent;
+use std::rc::Rc;
 
 use crate::{
-    ButtonCommon, ButtonLike, ButtonSize, ButtonStyle, Icon, Label,
-    PopupMenu, Selectable, Tooltip,
+    ButtonCommon, ButtonLike, ButtonSize, ButtonStyle, Icon, InteractivePopover, Label, PopupMenu,
+    Selectable, Tooltip,
 };
 use crate::{
-    Color, DynamicSpacing, ElevationIndex, IconName, IconSize, KeyBinding, KeybindingPosition, prelude::*,
+    Color, DynamicSpacing, ElevationIndex, IconName, IconSize, KeyBinding, KeybindingPosition,
+    prelude::*,
 };
 
 use super::button_icon::ButtonIcon;
@@ -397,7 +400,7 @@ impl Disableable for Button {
     }
 }
 
-impl Styled for Button {
+impl inazuma::Styled for Button {
     fn style(&mut self) -> &mut inazuma::StyleRefinement {
         self.base.base.style()
     }
@@ -462,11 +465,6 @@ impl ButtonCommon for Button {
         self
     }
 
-    fn tab_index(mut self, tab_index: impl Into<isize>) -> Self {
-        self.base = self.base.tab_index(tab_index);
-        self
-    }
-
     fn layer(mut self, elevation: ElevationIndex) -> Self {
         self.base = self.base.layer(elevation);
         self
@@ -492,9 +490,8 @@ impl ButtonVariants for Button {
     }
 }
 
-impl RenderOnce for Button {
-    #[allow(refining_impl_trait)]
-    fn render(self, _window: &mut Window, cx: &mut App) -> ButtonLike {
+impl Button {
+    fn render_button_like(self, cx: &mut App) -> ButtonLike {
         let is_disabled = self.base.disabled;
         let is_selected = self.selected;
 
@@ -578,6 +575,77 @@ impl RenderOnce for Button {
                     })
                 }),
         )
+    }
+}
+
+#[derive(Default)]
+struct ButtonMenuState {
+    menu: Option<Entity<PopupMenu>>,
+}
+
+impl RenderOnce for Button {
+    fn render(mut self, window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let dropdown_menu = self.dropdown_menu.take();
+        let dropdown_anchor = self.dropdown_anchor;
+        let button_id = self.base.id().clone();
+
+        let button_like = self.render_button_like(cx);
+
+        match dropdown_menu {
+            Some(builder) => {
+                let builder = Rc::new(builder);
+                let popover_id =
+                    SharedString::from(format!("button-dropdown:{:?}", button_id));
+                let menu_state = window.use_keyed_state(
+                    popover_id.clone(),
+                    cx,
+                    |_, _| ButtonMenuState::default(),
+                );
+
+                InteractivePopover::new(popover_id)
+                    .appearance(false)
+                    .overlay_closable(false)
+                    .trigger(button_like)
+                    .anchor(dropdown_anchor)
+                    .content(move |_, window, cx| {
+                        let menu = match menu_state.read(cx).menu.clone() {
+                            Some(menu) => menu,
+                            None => {
+                                let builder = builder.clone();
+                                let menu = PopupMenu::build(
+                                    window,
+                                    cx,
+                                    move |menu, window, cx| builder(menu, window, cx),
+                                );
+                                menu_state.update(cx, |state, _| {
+                                    state.menu = Some(menu.clone());
+                                });
+                                menu.focus_handle(cx).focus(window, cx);
+
+                                let popover_state = cx.entity();
+                                window
+                                    .subscribe(&menu, cx, {
+                                        let menu_state = menu_state.clone();
+                                        move |_, _: &DismissEvent, window, cx| {
+                                            popover_state.update(cx, |state, cx| {
+                                                state.dismiss(window, cx);
+                                            });
+                                            menu_state.update(cx, |state, _| {
+                                                state.menu = None;
+                                            });
+                                        }
+                                    })
+                                    .detach();
+
+                                menu.clone()
+                            }
+                        };
+                        menu.clone()
+                    })
+                    .into_any_element()
+            }
+            None => button_like.into_any_element(),
+        }
     }
 }
 

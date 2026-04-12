@@ -459,7 +459,7 @@ impl Render for WelcomePage {
                             .when(!self.fallback_to_recent_projects, |this| {
                                 this.child(
                                     v_flex().gap_1().child(Divider::horizontal()).child(
-                                        ButtonCommon::tab_index(Button::new("welcome-exit", "Return to Onboarding"), last_index as isize)
+                                        Button::new("welcome-exit", "Return to Onboarding").tab_index(last_index as isize)
                                             .full_width()
                                             .label_size(LabelSize::XSmall)
                                             .on_click(|_, window: &mut Window, cx: &mut App| {

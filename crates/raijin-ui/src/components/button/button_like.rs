@@ -119,6 +119,12 @@ impl ButtonLike {
         self.hoverable_tooltip = Some(Box::new(tooltip));
         self
     }
+
+    /// Set the tab index for keyboard navigation.
+    pub fn tab_index(mut self, tab_index: impl Into<isize>) -> Self {
+        self.tab_index = Some(tab_index.into());
+        self
+    }
 }
 
 impl Disableable for ButtonLike {
@@ -183,11 +189,6 @@ impl ButtonCommon for ButtonLike {
 
     fn button_tooltip(mut self, tooltip: impl Fn(&mut Window, &mut App) -> AnyView + 'static) -> Self {
         self.tooltip = Some(Box::new(tooltip));
-        self
-    }
-
-    fn tab_index(mut self, tab_index: impl Into<isize>) -> Self {
-        self.tab_index = Some(tab_index.into());
         self
     }
 

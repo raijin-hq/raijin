@@ -73,7 +73,7 @@ impl TabPanel {
                     .xsmall()
                     .ghost()
                     .tab_stop(false)
-                    .popup_menu({
+                    .dropdown_menu({
                         let zoomable = state.zoomable.map_or(false, |v| v.menu_visible());
                         let closable = state.closable;
 

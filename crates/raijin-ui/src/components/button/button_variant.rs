@@ -491,9 +491,6 @@ pub trait ButtonCommon: Disableable {
         tooltip: impl Fn(&mut Window, &mut App) -> inazuma::AnyView + 'static,
     ) -> Self;
 
-    /// Set the tab index for keyboard navigation.
-    fn tab_index(self, tab_index: impl Into<isize>) -> Self;
-
     /// Set the elevation layer the button sits on (affects background color).
     fn layer(self, elevation: ElevationIndex) -> Self;
 

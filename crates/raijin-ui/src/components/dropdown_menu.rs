@@ -171,7 +171,7 @@ impl RenderOnce for DropdownMenu {
                         .when(full_width, |this| this.full_width())
                         .map(|b| ButtonCommon::size(b, trigger_size))
                         .disabled(self.disabled)
-                        .when_some(self.tab_index, |this, tab_index| ButtonCommon::tab_index(this, tab_index)),
+                        .when_some(self.tab_index, |this, tab_index| this.tab_index(tab_index)),
                 ),
                 None,
             ),
@@ -191,7 +191,7 @@ impl RenderOnce for DropdownMenu {
                         .when(full_width, |this| this.full_width())
                         .map(|b| ButtonCommon::size(b, trigger_size))
                         .disabled(self.disabled)
-                        .when_some(self.tab_index, |this, tab_index| ButtonCommon::tab_index(this, tab_index)),
+                        .when_some(self.tab_index, |this, tab_index| this.tab_index(tab_index)),
                 ),
             ),
         };

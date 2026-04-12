@@ -5,7 +5,7 @@ use inazuma::{
     RenderOnce, SharedString, StyleRefinement, Styled, Window,
 };
 
-use crate::{Button, InteractivePopover, Selectable};
+use crate::{InteractivePopover, Selectable};
 use super::PopupMenu;
 
 /// A trait for attaching a popup menu to any interactive element.
@@ -37,7 +37,9 @@ pub trait PopupMenuExt: Styled + Selectable + InteractiveElement + IntoElement +
     }
 }
 
-impl PopupMenuExt for Button {}
+// Button handles dropdown menus via its own `dropdown_menu()` method and renders
+// them in RenderOnce. PopupMenuExt is for primitive elements (SidebarHeader, etc.)
+// that implement Styled + InteractiveElement directly.
 
 #[derive(IntoElement)]
 pub struct PopupMenuPopover<T: Selectable + IntoElement + 'static> {

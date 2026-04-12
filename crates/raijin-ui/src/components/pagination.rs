@@ -221,7 +221,7 @@ impl RenderOnce for Pagination {
                     .compact()
                     .disabled(self.disabled)
                     .icon(IconName::Ellipsis)
-                    .popup_menu({
+                    .dropdown_menu({
                         let on_click = on_click.clone();
                         move |mut menu, _, _| {
                             for page in range.clone() {

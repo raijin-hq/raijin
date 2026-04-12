@@ -8,7 +8,7 @@ use std::rc::Rc;
 
 use super::{Tab, TabVariant};
 use crate::{
-    ActiveTheme, Button, ButtonVariants as _, Component, ComponentScope, PopupMenuExt as _, IconName, PopupMenuItem,
+    ActiveTheme, Button, ButtonVariants as _, Component, ComponentScope, IconName, PopupMenuItem,
     RegisterComponent, Selectable, Sizable, Size, StyledExt, example_group_with_title, h_flex,
     single_example,
 };
@@ -327,7 +327,7 @@ impl RenderOnce for TabBar {
                         .xsmall()
                         .ghost()
                         .icon(IconName::ChevronDown)
-                        .popup_menu(move |mut this, _, _| {
+                        .dropdown_menu(move |mut this, _, _| {
                             this = this.scrollable(true);
                             for (ix, (label, disabled)) in item_labels.iter().enumerate() {
                                 this = this.item(

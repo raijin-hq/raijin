@@ -145,7 +145,7 @@ impl Render for ZedPromptRenderer {
                             .full_width()
                             .style(ButtonStyle::Outlined)
                             .when(ix == self.active_action_id, |s| {
-                                s.style(ButtonStyle::Tinted(TintColor::Accent))
+                                s.style(ButtonStyle::tinted(TintColor::Accent))
                             })
                             .tab_index(ix as isize)
                             .on_click(cx.listener(move |_, _, _window, cx| {

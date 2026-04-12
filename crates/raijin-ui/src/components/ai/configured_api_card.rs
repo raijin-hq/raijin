@@ -130,7 +130,7 @@ impl RenderOnce for ConfiguredApiCard {
             .child(
                 Button::new(button_id, button_label)
                     .when_some(self.button_tab_index, |elem, tab_index| {
-                        ButtonCommon::tab_index(elem, tab_index)
+                        elem.tab_index(tab_index)
                     })
                     .label_size(LabelSize::Small)
                     .start_icon(
