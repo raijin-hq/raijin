@@ -128,7 +128,7 @@ impl CsvPreviewView {
                     ElementId::Name("row-identifier-toggle".into()),
                     row_identifier_text,
                 )
-                .style(ButtonStyle::Subtle)
+                .style(ButtonStyle::SUBTLE)
                 .size(ButtonSize::Compact)
                 .tooltip(Tooltip::text(
                     "Toggle between: file line numbers or sequential row numbers",

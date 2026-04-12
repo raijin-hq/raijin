@@ -788,7 +788,7 @@ impl Item for ProjectDiagnosticsEditor {
     fn for_each_project_item(
         &self,
         cx: &App,
-        f: &mut dyn FnMut(inazuma::EntityId, &dyn project::ProjectItem),
+        f: &mut dyn FnMut(inazuma::EntityId, &dyn raijin_project::ProjectItem),
     ) {
         self.editor.for_each_project_item(cx, f)
     }
@@ -810,7 +810,7 @@ impl Item for ProjectDiagnosticsEditor {
 
     fn clone_on_split(
         &self,
-        _workspace_id: Option<workspace::WorkspaceId>,
+        _workspace_id: Option<raijin_workspace::WorkspaceId>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Task<Option<Entity<Self>>>
@@ -946,9 +946,9 @@ impl DiagnosticsToolbarEditor for WeakEntity<ProjectDiagnosticsEditor> {
 
     fn get_diagnostics_for_buffer(
         &self,
-        buffer_id: text::BufferId,
+        buffer_id: inazuma_text::BufferId,
         cx: &App,
-    ) -> Vec<language::DiagnosticEntry<inazuma_text::Anchor>> {
+    ) -> Vec<raijin_language::DiagnosticEntry<inazuma_text::Anchor>> {
         self.read_with(cx, |project_diagnostics_editor, _cx| {
             project_diagnostics_editor
                 .diagnostics

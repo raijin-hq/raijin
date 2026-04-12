@@ -29,7 +29,7 @@ mod language_configs_embedded {
     use rust_embed::RustEmbed;
 
     #[derive(RustEmbed)]
-    #[folder = "../grammars/src/"]
+    #[folder = "../raijin-grammars/src/"]
     #[include = "*/config.toml"]
     pub struct LanguageConfigs;
 }

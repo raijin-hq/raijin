@@ -52,9 +52,9 @@ impl CsvPreviewView {
                 .applied_sorting
                 .is_some_and(|o| o.col_idx == col_idx)
             {
-                ButtonStyle::Filled
+                ButtonStyle::FILLED
             } else {
-                ButtonStyle::Subtle
+                ButtonStyle::SUBTLE
             },
         )
         .tooltip(Tooltip::text(match self.engine.applied_sorting {

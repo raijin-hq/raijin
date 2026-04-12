@@ -7,9 +7,9 @@ use new_process_modal::{NewProcessModal, NewProcessMode};
 use raijin_project::debugger::{self, breakpoint_store::SourceBreakpoint, session::ThreadStatus};
 use schemars::JsonSchema;
 use serde::Deserialize;
-use raijin_session::DebugSession;
+use crate::session::DebugSession;
 
-use tasks_ui::{Spawn, TaskOverrides};
+use raijin_tasks_ui::{Spawn, TaskOverrides};
 use raijin_ui::{FluentBuilder, InteractiveElement};
 use inazuma_util::maybe;
 use raijin_workspace::{ShutdownDebugAdapters, Workspace};
@@ -95,7 +95,7 @@ pub struct ToggleDataBreakpoint {
     /// Read
     /// Write
     #[serde(default)]
-    pub access_type: Option<dap::DataBreakpointAccessType>,
+    pub access_type: Option<raijin_dap::DataBreakpointAccessType>,
 }
 
 actions!(
@@ -107,7 +107,7 @@ actions!(
 );
 
 pub fn init(cx: &mut App) {
-    workspace::FollowableViewRegistry::register::<DebugSession>(cx);
+    raijin_workspace::FollowableViewRegistry::register::<DebugSession>(cx);
 
     cx.observe_new(|workspace: &mut Workspace, _, _| {
         workspace

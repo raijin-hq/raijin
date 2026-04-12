@@ -102,24 +102,24 @@ impl Render for ModeIndicator {
         let colors = theme.colors();
         let system_transparent = inazuma::hsla(0.0, 0.0, 0.0, 0.0);
         let vim_mode_text = match mode {
-            crate::state::Mode::Normal => colors.vim_normal_foreground,
-            crate::state::Mode::Insert => colors.vim_insert_foreground,
-            crate::state::Mode::Replace => colors.vim_replace_foreground,
-            crate::state::Mode::Visual => colors.vim_visual_foreground,
-            crate::state::Mode::VisualLine => colors.vim_visual_line_foreground,
-            crate::state::Mode::VisualBlock => colors.vim_visual_block_foreground,
-            crate::state::Mode::HelixNormal => colors.vim_helix_normal_foreground,
-            crate::state::Mode::HelixSelect => colors.vim_helix_select_foreground,
+            crate::state::Mode::Normal => colors.vim.normal_foreground,
+            crate::state::Mode::Insert => colors.vim.insert_foreground,
+            crate::state::Mode::Replace => colors.vim.replace_foreground,
+            crate::state::Mode::Visual => colors.vim.visual_foreground,
+            crate::state::Mode::VisualLine => colors.vim.visual_line_foreground,
+            crate::state::Mode::VisualBlock => colors.vim.visual_block_foreground,
+            crate::state::Mode::HelixNormal => colors.vim.helix_normal_foreground,
+            crate::state::Mode::HelixSelect => colors.vim.helix_select_foreground,
         };
         let bg_color = match mode {
-            crate::state::Mode::Normal => colors.vim_normal_background,
-            crate::state::Mode::Insert => colors.vim_insert_background,
-            crate::state::Mode::Replace => colors.vim_replace_background,
-            crate::state::Mode::Visual => colors.vim_visual_background,
-            crate::state::Mode::VisualLine => colors.vim_visual_line_background,
-            crate::state::Mode::VisualBlock => colors.vim_visual_block_background,
-            crate::state::Mode::HelixNormal => colors.vim_helix_normal_background,
-            crate::state::Mode::HelixSelect => colors.vim_helix_select_background,
+            crate::state::Mode::Normal => colors.vim.normal_background,
+            crate::state::Mode::Insert => colors.vim.insert_background,
+            crate::state::Mode::Replace => colors.vim.replace_background,
+            crate::state::Mode::Visual => colors.vim.visual_background,
+            crate::state::Mode::VisualLine => colors.vim.visual_line_background,
+            crate::state::Mode::VisualBlock => colors.vim.visual_block_background,
+            crate::state::Mode::HelixNormal => colors.vim.helix_normal_background,
+            crate::state::Mode::HelixSelect => colors.vim.helix_select_background,
         };
 
         let (label, mode): (SharedString, Option<SharedString>) = if let Some(label) = status_label
