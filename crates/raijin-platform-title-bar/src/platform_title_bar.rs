@@ -111,7 +111,7 @@ impl PlatformTitleBar {
         if self.platform_style == PlatformStyle::Linux
             && matches!(decorations, Decorations::Client { .. })
         {
-            self.button_layout
+            self.button_layout.or_else(|| cx.button_layout())
         } else {
             None
         }

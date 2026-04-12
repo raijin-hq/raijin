@@ -33,7 +33,7 @@ use std::{
     ops::{Range, RangeInclusive},
     pin::Pin,
     sync::Arc,
-    raijin_task::{self, Poll},
+    task::{self, Poll},
     time::Instant,
 };
 use raijin_streaming_diff::{CharOperation, LineDiff, LineOperation, StreamingDiff};
@@ -1372,7 +1372,7 @@ where
 {
     type Item = Result<String>;
 
-    fn poll_next(self: Pin<&mut Self>, cx: &mut raijin_task::Context) -> Poll<Option<Self::Item>> {
+    fn poll_next(self: Pin<&mut Self>, cx: &mut task::Context) -> Poll<Option<Self::Item>> {
         const CODE_BLOCK_DELIMITER: &str = "```";
         const CURSOR_SPAN: &str = "<|CURSOR|>";
 

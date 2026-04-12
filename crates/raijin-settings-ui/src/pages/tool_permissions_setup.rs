@@ -221,7 +221,7 @@ pub(crate) fn render_tool_permissions_setup_page(
 fn render_tool_list_item(
     _settings_window: &SettingsWindow,
     tool: &'static ToolInfo,
-    tool_index: usize,
+    _tool_index: usize,
     _window: &mut Window,
     cx: &mut Context<SettingsWindow>,
 ) -> AnyElement {

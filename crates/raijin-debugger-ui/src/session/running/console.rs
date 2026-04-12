@@ -3,6 +3,7 @@ use super::{
     variable_list::VariableList,
 };
 use raijin_term::vte::ansi;
+use raijin_theme::ActiveTheme as _;
 use anyhow::Result;
 use inazuma_collections::HashMap;
 use raijin_dap::{CompletionItem, CompletionItemType, OutputEvent};
@@ -231,8 +232,10 @@ impl Console {
                         let range = buffer.anchor_after(MultiBufferOffset(range.start))
                             ..buffer.anchor_before(MultiBufferOffset(range.end));
                         let style = HighlightStyle {
-                            // TODO(phase20): terminal_view color conversion
-                            color: None,
+                            color: Some(raijin_terminal_view::colors::convert_color(
+                                &color,
+                                cx.theme(),
+                            )),
                             ..Default::default()
                         };
                         console.highlight_text_key(

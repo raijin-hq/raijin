@@ -30,6 +30,22 @@ use raijin_project::Project;
 use raijin_terminal::Terminal;
 use raijin_workspace::{Workspace, item::ItemEvent};
 
+/// The content mode of a terminal view, describing how content is displayed.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TerminalContentMode {
+    /// Normal terminal output.
+    Normal,
+    /// Terminal has scrollable content (e.g. alternate screen buffer).
+    Scrollable,
+}
+
+impl TerminalContentMode {
+    /// Returns whether this content mode allows scrolling.
+    pub fn is_scrollable(&self) -> bool {
+        matches!(self, Self::Scrollable)
+    }
+}
+
 /// Properties for a block rendered below the terminal cursor.
 /// Used by raijin-agent-ui, raijin-debugger-ui, raijin-repl.
 pub struct BlockProperties {
@@ -57,7 +73,7 @@ impl TerminalView {
         _workspace: Entity<Workspace>,
         _custom_title: Option<String>,
         _project: inazuma::WeakEntity<Project>,
-        window: &mut Window,
+        _window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
         Self {
@@ -76,6 +92,20 @@ impl TerminalView {
         _window: &mut Window,
         _cx: &mut Context<Self>,
     ) {
+    }
+
+    /// Set embedded mode with an optional max line height.
+    /// In embedded mode, the terminal restricts its output display.
+    pub fn set_embedded_mode(
+        &mut self,
+        _max_lines: Option<u32>,
+        _cx: &mut Context<Self>,
+    ) {
+    }
+
+    /// Returns the content mode of this terminal view.
+    pub fn content_mode(&self, _window: &Window, _cx: &App) -> TerminalContentMode {
+        TerminalContentMode::Normal
     }
 }
 

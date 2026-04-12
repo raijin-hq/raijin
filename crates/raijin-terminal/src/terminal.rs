@@ -17,6 +17,9 @@ use crate::pty;
 /// Default scrollback history, can be overridden via config.
 const DEFAULT_SCROLLBACK_HISTORY: usize = 10_000;
 
+/// Maximum scroll history lines allowed.
+pub const MAX_SCROLL_HISTORY_LINES: usize = 100_000;
+
 /// Terminal dimensions for raijin-term.
 struct TermDimensions {
     cols: usize,
@@ -264,6 +267,12 @@ impl Terminal {
     /// Write bytes to the PTY (user keyboard input).
     pub fn write(&self, bytes: &[u8]) {
         self.handle.write(bytes);
+    }
+
+    /// Write input bytes to the PTY.
+    /// Accepts any type that can be borrowed as `&[u8]` (`Vec<u8>`, `&[u8]`, etc.).
+    pub fn input(&self, bytes: impl AsRef<[u8]>) {
+        self.handle.write(bytes.as_ref());
     }
 
     /// Get the event receiver for async polling.

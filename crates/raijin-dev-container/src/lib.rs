@@ -15,7 +15,7 @@ use std::fmt::Display;
 use std::sync::Arc;
 use raijin_ui::ActiveTheme;
 use raijin_ui::Button;
-use raijin_ui::Clickable;
+
 use raijin_ui::FluentBuilder;
 use raijin_ui::KeyBinding;
 use raijin_ui::StatefulInteractiveElement;

@@ -11,7 +11,7 @@ use raijin_ui::{
     PopoverMenuHandle, Tooltip, prelude::*,
 };
 
-use crate::{CycleModeSelector, ToggleProfileSelector, raijin_ui::HoldForDefault};
+use crate::{CycleModeSelector, ToggleProfileSelector, ui::HoldForDefault};
 
 pub struct ModeSelector {
     connection: Rc<dyn AgentSessionModes>,

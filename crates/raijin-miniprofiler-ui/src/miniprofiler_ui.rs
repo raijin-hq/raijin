@@ -16,7 +16,7 @@ use raijin_rpc::{AnyProtoClient, proto};
 use inazuma_util::ResultExt;
 use raijin_theme::ActiveTheme;
 use raijin_ui::{
-    Button, ButtonCommon, ButtonStyle, Checkbox, Clickable, ContextMenu, Divider,
+    Button, ButtonCommon as _, ButtonStyle, Checkbox, ContextMenu, Divider,
     DropdownMenu, ScrollAxes, ScrollableHandle as _, Scrollbars, ToggleState, Tooltip,
     WithScrollbar, h_flex, v_flex,
 };

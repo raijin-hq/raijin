@@ -1024,7 +1024,7 @@ impl ExtensionsPage {
         extension: &ExtensionMetadata,
         status: &ExtensionStatus,
         has_dev_extension: bool,
-        cx: &mut Context<Self>,
+        _cx: &mut Context<Self>,
     ) -> ExtensionCardButtons {
         let is_compatible =
             raijin_extension_host::is_version_compatible(extension);

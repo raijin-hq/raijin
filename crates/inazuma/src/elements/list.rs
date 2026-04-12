@@ -70,6 +70,7 @@ struct StateInner {
     last_resolved_scroll_top: Option<ListOffset>,
     alignment: ListAlignment,
     overdraw: Pixels,
+    follow_tail: bool,
     reset: bool,
     #[allow(clippy::type_complexity)]
     scroll_handler: Option<Box<dyn FnMut(&ListScrollEvent, &mut Window, &mut App)>>,
@@ -102,6 +103,9 @@ pub struct ListScrollEvent {
 
     /// Whether the list has been scrolled.
     pub is_scrolled: bool,
+
+    /// Whether the list is currently in follow-tail mode (auto-scrolling to end).
+    pub is_following_tail: bool,
 }
 
 /// The sizing behavior to apply during layout.

@@ -1,7 +1,7 @@
 use crate::{
     language_model_selector::{LanguageModelSelector, language_model_selector},
     mention_set::load_external_image_from_path,
-    raijin_ui::ModelSelectorTooltip,
+    ui::ModelSelectorTooltip,
 };
 use anyhow::Result;
 use raijin_assistant_slash_command::{SlashCommand, SlashCommandOutputSection, SlashCommandWorkingSet};
@@ -68,7 +68,7 @@ use raijin_workspace::{
 use raijin_workspace::{
     Save, Toast, Workspace,
     item::{self, FollowableItem, Item},
-    raijin_notifications::NotificationId,
+    notifications::NotificationId,
     pane,
     searchable::{SearchEvent, SearchableItem},
 };

@@ -18,7 +18,7 @@ cargo test --workspace                # All tests
 cargo clippy --workspace              # Lint (dbg! and todo! are denied)
 ```
 
-Requires **Rust stable 1.94+** (edition 2024, resolver 3). Pinned via `rust-toolchain.toml`. macOS is the primary platform (Metal rendering).
+Requires **Rust stable 1.94+** (edition 2024, resolver 3). Pinned via `rust-toolchain.toml`. Cross-platform: macOS (Metal), Linux (Vulkan), Windows (DX12/Vulkan) — all via Inazuma's dual rendering backends (native Metal + WGPU).
 
 `.cargo/config.toml` sets: `symbol-mangling-version=v0` rustflag, `MACOSX_DEPLOYMENT_TARGET=10.15.7`, and the `cargo raijin` alias.
 
@@ -57,7 +57,7 @@ raijin-app (binary — entry point, workspace layout, terminal rendering)
 
 ### Key Subsystems
 
-**Inazuma (稲妻)** — The GPU UI framework. ~90 modules covering app lifecycle, element system, Metal/wgpu rendering, text shaping, layout (taffy), and platform abstraction. Modify inazuma directly when it's cleaner than working around it in raijin-app.
+**Inazuma (稲妻)** — The GPU UI framework. ~90 modules covering app lifecycle, element system, GPU rendering (Metal on macOS, WGPU for cross-platform — Vulkan/DX12/Metal), text shaping, layout (taffy), and platform abstraction. Modify inazuma directly when it's cleaner than working around it in raijin-app.
 
 **Terminal Backend** (`raijin-terminal`) — Wraps `alacritty_terminal::Term` for grid state. PTY spawning in `pty.rs` injects shell hooks via `ZDOTDIR` manipulation. The `osc_parser.rs` scans PTY byte streams for OSC 133 (FTCS) shell integration markers. `block.rs` provides `BlockManager` which tracks command blocks (prompt→input→output→exit code).
 
@@ -83,7 +83,7 @@ Raijin Dark: `#121212` background, `#00BFFF` accent (Cyan), `#f1f1f1` foreground
 
 Strikte Trennung zwischen Terminal-Code und Editor/UI-Code:
 
-- **Terminal Output** (grid rendering, PTY, cells): Immer wie echte Terminals bauen — **Rio, Alacritty, Kitty, Ghostty** als Referenz. Per-cell Rendering, Grid-Positionierung auf `col * cell_width`, kein per-line Text-Shaping, kein `force_width`. Box-Drawing via `builtin_font.rs` (GPU-Primitive), Emoji via `paint_emoji` mit CoreText Font-Fallback. Bei Unsicherheit: Rio-Code in `.reference/rio` prüfen.
+- **Terminal Output** (grid rendering, PTY, cells): Immer wie echte Terminals bauen — **Rio, Alacritty, Kitty, Ghostty** als Referenz. Per-cell Rendering, Grid-Positionierung auf `col * cell_width`, kein per-line Text-Shaping, kein `force_width`. Box-Drawing via `builtin_font.rs` (GPU-Primitive), Emoji via `paint_emoji` mit plattform-spezifischem Font-Fallback. Bei Unsicherheit: Rio-Code in `.reference/rio` prüfen.
 - **Editor/UI Features** (Code-Editor, Text-Input, Completions, Panels, Settings): Inazuma's Text-System (`ShapedLine`, `shape_line`, `TextRun`). Das ist wofür das Framework gebaut wurde.
 
 Inazuma ist ein **Editor-Framework**. Terminal-Rendering hat fundamental andere Anforderungen (festes Grid, per-cell Positionierung, Unicode-Width, Emoji, Box-Drawing). Editor-Patterns nicht auf Terminal-Rendering anwenden.
@@ -95,6 +95,7 @@ Inazuma ist ein **Editor-Framework**. Terminal-Rendering hat fundamental andere 
 - **No stubs or placeholders** — every feature must be production-complete, no `todo!()`, no `unimplemented!()`, no silent error swallowing
 - **Clippy lints**: `dbg_macro` and `todo` are denied; `style`, `type_complexity`, `too_many_arguments`, `large_enum_variant` are allowed
 - **macOS platform code** uses `objc2` + `objc2-app-kit` + `objc2-foundation` — NOT the old `cocoa`/`objc` crates. Never add `cocoa` or `objc` as dependency.
+- **GPU rendering** is cross-platform — never say "Metal rendering" when referring to Raijin's general rendering. Use "GPU rendering" or "Inazuma rendering". Metal is one backend (macOS), WGPU covers all platforms (Vulkan, DX12, Metal).
 - Naming: the framework is called **Inazuma**, not GPUI — all imports use `inazuma::`
 
 ## Crate Architecture Rules

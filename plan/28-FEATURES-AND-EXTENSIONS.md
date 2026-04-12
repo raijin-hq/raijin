@@ -10,150 +10,151 @@ Vollständige Feature-Roadmap basierend auf `plan/features.md` (konsolidiert aus
 
 Alles Core — KI ist das Herz von Raijin's ADE.
 
-| Feature | Status | Phase |
-|---|---|---|
-| KI-gestützte Befehlsgenerierung aus natürlicher Sprache | Infrastruktur da (raijin-agent) | 26 |
-| KI-Fehleranalyse bei fehlgeschlagenen Befehlen | Smart Block Diagnostics | 25E |
-| KI-Agent-Modus (mehrstufige Ziele, planen + ausführen) | Phase 26 ADE | 26 |
-| KI-Kontextfenster (CWD, History, Errors, Env) | Block Context System | 26B |
-| Lokale Modelle (Ollama, LM Studio, vLLM) | Crates vorhanden | - |
-| OpenAI-kompatible Endpoints | raijin-open-ai | - |
-| Gemini, Claude, Azure, OpenRouter | Provider-Crates vorhanden | - |
-| Mehrere KI-Profile / Modi | Agent Profiles | 26A |
-| BYOK (Bring Your Own Key) | Settings | 19 |
-| KI-Vision / Multimodal (Bilder, PDFs) | Agent Feature | 26 |
-| KI kann Dateien erstellen/bearbeiten (Diff + Rollback) | Interactive Code Review | 26E |
-| Drag & Drop Dateien in KI-Chat | Agent UI | 26 |
-| KI-Zugriff auf Scrollback, Dateisystem | Full Terminal Use | 26C |
-| KI-Tools: Websuche, Dateioperationen | raijin-web-search, raijin-acp-tools | - |
-| CLI-Output an KI senden | Block Context Attachment | 26B |
-| KI Thinking Mode (Quick / Balanced / Deep) | Model Selection | 26 |
-| Stop-Generierung | Agent UI Control | 26 |
-| Feedback-Buttons (Daumen hoch/runter) | Agent UI | 26 |
+| Feature | Status | Audit (2026-04-12) | Phase |
+|---|---|---|---|
+| KI-gestützte Befehlsgenerierung aus natürlicher Sprache | Code da, nicht verdrahtet | raijin-agent (60+ Dateien, inazuma imports) existiert, NICHT in raijin-app/Cargo.toml | 26 |
+| KI-Fehleranalyse bei fehlgeschlagenen Befehlen | neu bauen | Kein Code | 25E |
+| KI-Agent-Modus (mehrstufige Ziele, planen + ausführen) | Code da, nicht verdrahtet | raijin-agent hat thread.rs, tools.rs, edit_agent.rs — nicht in App geladen | 26 |
+| KI-Kontextfenster (CWD, History, Errors, Env) | neu bauen | Kein Code | 26B |
+| Lokale Modelle (Ollama, LM Studio, vLLM) | Code da, nicht verdrahtet | Provider-Crates existieren, nicht in App geladen | - |
+| OpenAI-kompatible Endpoints | Code da, nicht verdrahtet | raijin-open-ai (3 Dateien), nicht in raijin-app | - |
+| Gemini, Claude, Azure, OpenRouter | Code da, nicht verdrahtet | Provider-Crates existieren, nicht in App geladen | - |
+| Mehrere KI-Profile / Modi | neu bauen | Kein Code | 26A |
+| BYOK (Bring Your Own Key) | neu bauen | Kein Setting vorhanden | 19 |
+| KI-Vision / Multimodal (Bilder, PDFs) | neu bauen | Kein Code | 26 |
+| KI kann Dateien erstellen/bearbeiten (Diff + Rollback) | Code da, nicht verdrahtet | raijin-agent hat edit_file_tool.rs, streaming_edit_file_tool.rs — nicht verdrahtet | 26E |
+| Drag & Drop Dateien in KI-Chat | neu bauen | Kein Code | 26 |
+| KI-Zugriff auf Scrollback, Dateisystem | Code da, nicht verdrahtet | raijin-agent hat read_file_tool.rs, terminal_tool.rs — nicht verdrahtet | 26C |
+| KI-Tools: Websuche, Dateioperationen | Code da, nicht verdrahtet | raijin-agent hat web_search_tool.rs, fetch_tool.rs — nicht verdrahtet | - |
+| CLI-Output an KI senden | neu bauen | Kein Code | 26B |
+| KI Thinking Mode (Quick / Balanced / Deep) | neu bauen | Kein Code | 26 |
+| Stop-Generierung | neu bauen | Kein Code | 26 |
+| Feedback-Buttons (Daumen hoch/runter) | neu bauen | Kein Code | 26 |
 
 ### Terminal-Kernfunktionen (→ Phase 20, raijin-term)
 
 Alles Core — das ist was Raijin als Terminal SEIN muss.
 
-| Feature | Status | Phase |
-|---|---|---|
-| GPU-beschleunigtes Rendering | Inazuma Metal/WGPU | vorhanden |
-| Vollständige xterm-Kompatibilität | raijin-term | vorhanden |
-| Tabs mit Drag & Drop, Umbenennung, Kontextmenü | Workspace Pane System | 20 |
-| Vertikale und horizontale Tab-Leiste | Tab Variants (IC merge) | 24 |
-| Splits / Panes (horizontal & vertikal) | Workspace Pane Splits | 20 |
-| Vim-artige Pane-Navigation (Ctrl+Shift+H/J/K/L) | Workspace Keybindings | 20 |
-| Mehrere Fenster | Multi-Window Support | 20 |
-| Scrollback mit konfigurierbarer Zeilenzahl | raijin-settings | vorhanden |
-| Suchbare Scrollback-Funktion (Cmd+F) | Terminal Search | 25B |
-| Semantische Prompt-Navigation (OSC 133) | Block System | vorhanden |
-| Command Blocks als navigierbare Einheiten | Block System | vorhanden |
-| Block-Badges (Icon, Farbe, Priorität) | Block Headers | vorhanden |
-| Multiline-Eingabe (Shift+Enter) | Input Bar | vorhanden |
-| Multi-Input-Modus (gleichzeitig in alle Terminals) | Broadcast Input | 28 |
-| Cursor-Style und Blink einstellbar | raijin-settings | vorhanden |
-| Copy-on-Select | Settings | 28 |
-| OSC 52 Clipboard-Support | raijin-term | 28 |
-| Bracketed Paste Mode | raijin-term | vorhanden |
-| Hyperlinks im Terminal (klickbar) | Link Detection | 28 |
-| Text-Attribute (Underline, Italic, Bold, Strikethrough) | raijin-term | vorhanden |
-| SGR-Maus-Reporting | raijin-term | vorhanden |
-| Inline-Bilder (iTerm2 Image Protocol) | raijin-term | 28 |
-| Inline-Bilder (Kitty Graphics Protocol) | raijin-term | 28 |
-| Sixel-Grafiken | raijin-term | 28 |
-| Ligatures, Color Emoji, Font-Fallback | Inazuma Text System | vorhanden |
-| True Color / 24-Bit | raijin-term | vorhanden |
-| Themes (Dark/Light, Custom) | Theme System OKLCH | vorhanden |
-| Hintergrundbilder und Transparenz | Theme Background Image | vorhanden |
-| Anpassbares Padding | Settings | 28 |
-| Font-Size pro Block einstellbar | Block Rendering | 28 |
-| Konfigurierbare FPS (120 FPS) | Inazuma Render Loop | 28 |
-| Audible Bell deaktivierbar | Settings | 28 |
-| IME-Unterstützung (CJK) | Inazuma IME | vorhanden |
-| Vollbild-Modus | Window Management | 28 |
-| Bell-Indikator als Badge | Tab Badge | 28 |
-| Fokus-folgt-Cursor | Settings | 28 |
+| Feature | Status | Audit (2026-04-12) | Phase |
+|---|---|---|---|
+| GPU-beschleunigtes Rendering | funktioniert | Metal: metal_renderer.rs, WGPU: wgpu_renderer.rs, Shader vorhanden | vorhanden |
+| Vollständige xterm-Kompatibilität | funktioniert | raijin-term mit VTE Parser, Term struct, Handler — vollständig | vorhanden |
+| Tabs mit Drag & Drop, Umbenennung, Kontextmenü | neu bauen | Workspace Pane System existiert nicht | 20 |
+| Vertikale und horizontale Tab-Leiste | neu bauen | Kein Code | 24 |
+| Splits / Panes (horizontal & vertikal) | neu bauen | Kein Code | 20 |
+| Vim-artige Pane-Navigation (Ctrl+Shift+H/J/K/L) | neu bauen | Kein Code | 20 |
+| Mehrere Fenster | neu bauen | Kein Code | 20 |
+| Scrollback mit konfigurierbarer Zeilenzahl | funktioniert | Setting gelesen (10k Default), terminal_pane.rs:134→Terminal::new() | vorhanden |
+| Suchbare Scrollback-Funktion (Cmd+F) | neu bauen | Kein Code | 25B |
+| Semantische Prompt-Navigation (OSC 133) | funktioniert | osc_parser.rs: A/B/C/D/P Marker, State-Machine Scanner | vorhanden |
+| Command Blocks als navigierbare Einheiten | funktioniert | block.rs: BlockManager, TerminalBlock mit ID/Command/Exit/Duration | vorhanden |
+| Block-Badges (Icon, Farbe, Priorität) | funktioniert | block_element.rs: Running●/Error✗/Success✓ Badges + Metadata-Line | vorhanden |
+| Multiline-Eingabe (Shift+Enter) | funktioniert | state_editing.rs:155 "Enter=submit, Shift+Enter=newline", shell_editor(1,10) | vorhanden |
+| Multi-Input-Modus (gleichzeitig in alle Terminals) | neu bauen | Kein Code | 28 |
+| Cursor-Style und Blink einstellbar | teilweise | Setting gelesen (cursor_style, cursor_blink), aber _cursor_shape IGNORIERT im TerminalBuilder:56 | vorhanden |
+| Copy-on-Select | neu bauen | Kein Code | 28 |
+| OSC 52 Clipboard-Support | neu bauen | Kein Code | 28 |
+| Bracketed Paste Mode | funktioniert | mode.rs: BRACKETED_PASTE Flag, handler.rs: CSI ?2004h/l | vorhanden |
+| Hyperlinks im Terminal (klickbar) | teilweise | cell.rs: Hyperlink struct in CellExtra, aber kein Click-Handler in UI | 28 |
+| Text-Attribute (Underline, Italic, Bold, Strikethrough) | funktioniert | cell.rs: BOLD/ITALIC/UNDERLINE/STRIKEOUT/UNDERCURL/DOTTED/DASHED Flags | vorhanden |
+| SGR-Maus-Reporting | funktioniert | mode.rs: SGR_MOUSE Flag, handler.rs: CSI ?1006h/l | vorhanden |
+| Inline-Bilder (iTerm2 Image Protocol) | neu bauen | Kein Code | 28 |
+| Inline-Bilder (Kitty Graphics Protocol) | neu bauen | Kein Code | 28 |
+| Sixel-Grafiken | neu bauen | Kein Code | 28 |
+| Ligatures, Color Emoji, Font-Fallback | funktioniert | font_features.rs: CALT Control, grid_element.rs: paint_emoji, font_fallbacks.rs | vorhanden |
+| True Color / 24-Bit | funktioniert | color.rs: 269 Colors mit Rgb, SGR 38;2/48;2 via VTE | vorhanden |
+| Themes (Dark/Light, Custom) | funktioniert | ThemeRegistry, TOML Loader, OKLCH Pipeline, GlobalTheme Sync | vorhanden |
+| Hintergrundbilder und Transparenz | funktioniert | ThemeBackgroundImage, TOML Config, terminal_pane.rs:991 Rendering mit Opacity | vorhanden |
+| Anpassbares Padding | neu bauen | Kein Code | 28 |
+| Font-Size pro Block einstellbar | neu bauen | Kein Code | 28 |
+| Konfigurierbare FPS (120 FPS) | neu bauen | Kein Code | 28 |
+| Audible Bell deaktivierbar | neu bauen | Kein Code | 28 |
+| IME-Unterstützung (CJK) | funktioniert | NSTextInputClient Protocol, markedText, Composition — nur macOS | vorhanden |
+| Vollbild-Modus | neu bauen | Kein Code | 28 |
+| Bell-Indikator als Badge | neu bauen | Kein Code | 28 |
+| Fokus-folgt-Cursor | neu bauen | Kein Code | 28 |
 
 ### Editor & Dateimanagement (→ Phase 25, raijin-editor)
 
-| Feature | Status | Phase |
-|---|---|---|
-| Eingebauter Code-Editor | raijin-editor (von Zed) | vorhanden |
-| Syntax-Highlighting, Fehleranzeige | raijin-editor + LSP | vorhanden |
-| Visueller Diff-Viewer | raijin-streaming-diff | vorhanden |
-| Datei-Rollback nach KI-Edits | Agent Code Review | 26E |
-| Datei-Vorschau: Bilder, Markdown | raijin-image-viewer, raijin-markdown-preview | vorhanden |
-| Datei-Vorschau: Audio/Video, PDFs | Media Preview | 28 |
-| Verzeichnis-Browser | raijin-project-panel | vorhanden |
-| Drag & Drop Dateien | Workspace DnD | 20 |
-| Scrollback in Datei speichern | Block Export | 28 |
-| Bildeinfügen per Paste | Image Handling | 28 |
-| Quick Look (macOS) | Platform Integration | 28 |
-| Dateien im externen Explorer öffnen | Platform Integration | 28 |
+| Feature | Status | Audit (2026-04-12) | Phase |
+|---|---|---|---|
+| Eingebauter Code-Editor | Code da, nicht verdrahtet | raijin-editor (116k Zeilen, inazuma imports), nur transitiv via settings-ui geladen — nicht als eigenständiger Editor nutzbar | 25 |
+| Syntax-Highlighting, Fehleranzeige | Code da, nicht verdrahtet | raijin-editor + raijin-lsp + raijin-language (Tree-sitter, 6 Grammars) — nur intern in Settings-UI aktiv | 25 |
+| Visueller Diff-Viewer | Code da, nicht verdrahtet | raijin-streaming-diff: Myers-Diff Algo, 36k — NICHT in raijin-app/Cargo.toml | 25 |
+| Datei-Rollback nach KI-Edits | neu bauen | Kein Code | 26E |
+| Datei-Vorschau: Bilder, Markdown | Code da, nicht verdrahtet | raijin-image-viewer (Zoom/Pan/Actions), raijin-markdown-preview — NICHT in raijin-app | 25 |
+| Datei-Vorschau: Audio/Video, PDFs | neu bauen | Kein Code | 28 |
+| Verzeichnis-Browser | Code da, nicht verdrahtet | raijin-project-panel (18k Zeilen, Git-Integration, Undo/Redo) — NICHT in raijin-app | 25 |
+| Drag & Drop Dateien | neu bauen | Kein Code | 20 |
+| Scrollback in Datei speichern | neu bauen | Kein Code | 28 |
+| Bildeinfügen per Paste | neu bauen | Kein Code | 28 |
+| Quick Look (macOS) | neu bauen | Kein Code | 28 |
+| Dateien im externen Explorer öffnen | neu bauen | Kein Code | 28 |
 
 ### SSH & Remote-Verbindungen (→ raijin-remote)
 
-| Feature | Status | Phase |
-|---|---|---|
-| SSH-Verbindungsmanagement mit Profilen | raijin-remote | vorhanden |
-| Durable SSH Sessions | raijin-remote Transport | 28 |
-| Auto-Reconnect | raijin-remote | 28 |
-| Shell-State bei Disconnect erhalten | raijin-remote | 28 |
-| Status-Anzeigen (Attached/Detached) | Remote UI | 28 |
-| SSH Key Management / Agent Forwarding | raijin-askpass | vorhanden |
-| SSH-Passwörter im Secret Store | raijin-credentials-provider | vorhanden |
-| WSL2 Support | raijin-remote Transport | 28 |
-| Remote-Dateien im Editor | raijin-remote + raijin-editor | 28 |
-| Drag & Drop lokal ↔ remote | Remote DnD | 28 |
-| Per-Connection Themes | Settings Override | 28 |
+| Feature | Status | Audit (2026-04-12) | Phase |
+|---|---|---|---|
+| SSH-Verbindungsmanagement mit Profilen | Code da, nicht verdrahtet | raijin-remote: SSH/WSL/Docker Transport, ConnectionState — NICHT in raijin-app/Cargo.toml | 20 |
+| Durable SSH Sessions | neu bauen | Kein Code | 28 |
+| Auto-Reconnect | neu bauen | Kein Code | 28 |
+| Shell-State bei Disconnect erhalten | neu bauen | Kein Code | 28 |
+| Status-Anzeigen (Attached/Detached) | neu bauen | Kein Code | 28 |
+| SSH Key Management / Agent Forwarding | Code da, nicht verdrahtet | raijin-askpass: AskPassDelegate/Session/PasswordProxy (393 Zeilen) — nur Dep von raijin-remote | 20 |
+| SSH-Passwörter im Secret Store | Code da, nicht verdrahtet | raijin-credentials-provider: Keychain+Dev Provider — in Cargo.toml aber init() nie aufgerufen | 20 |
+| WSL2 Support | Code da, nicht verdrahtet | raijin-remote/transport/wsl.rs existiert — nicht geladen | 28 |
+| Remote-Dateien im Editor | neu bauen | Kein Code | 28 |
+| Drag & Drop lokal ↔ remote | neu bauen | Kein Code | 28 |
+| Per-Connection Themes | neu bauen | Kein Code | 28 |
 
 ### Multiplexer & Workspace (→ Phase 20)
 
-| Feature | Status | Phase |
-|---|---|---|
-| Eingebauter Multiplexer (Tabs, Splits, Sessions) | raijin-workspace | 20 |
-| Workspaces mit eigenen Layouts/Settings | Workspace Persistence | 20 |
-| Tab-Close-Bestätigung | Workspace Settings | 20 |
-| Bestätigung beim Beenden mit aktiven Sessions | Workspace | 20 |
-| Session-Wiederherstellung nach Neustart | Workspace Persistence | 20 |
-| Zoom einzelner Blöcke | Block Zoom | 28 |
+| Feature | Status | Audit (2026-04-12) | Phase |
+|---|---|---|---|
+| Eingebauter Multiplexer (Tabs, Splits, Sessions) | neu bauen | raijin-workspace existiert als Framework, aber Tabs/Splits/Sessions nicht implementiert | 20 |
+| Workspaces mit eigenen Layouts/Settings | neu bauen | Kein Code | 20 |
+| Tab-Close-Bestätigung | neu bauen | Kein Code | 20 |
+| Bestätigung beim Beenden mit aktiven Sessions | neu bauen | Kein Code | 20 |
+| Session-Wiederherstellung nach Neustart | neu bauen | Kein Code | 20 |
+| Zoom einzelner Blöcke | neu bauen | Kein Code | 28 |
 
 ### Shell-Integration & Produktivität (→ raijin-shell, raijin-completions)
 
-| Feature | Status | Phase |
-|---|---|---|
-| Shell-Integration bash, zsh, fish, pwsh | Shell Hooks | vorhanden |
-| OSC 7 CWD Tracking | raijin-terminal | vorhanden |
-| Shell Context Tracking (Status, Exit-Code) | OSC 133 Block System | vorhanden |
-| Env-Variablen und Init-Scripts konfigurierbar | Settings | 28 |
-| History-basierte Autovervollständigung | raijin-completions | vorhanden |
-| Subcommand-Completions für Standard-CLIs (git, docker, cargo) | raijin-completions Specs | vorhanden |
-| Fuzzy-Matching für Dateipfade | inazuma-fuzzy | vorhanden |
-| Tab-Navigator | raijin-tab-switcher | vorhanden |
-| CLI-Steuerung von außen (wie wsh) | raijin-cli | 28 |
-| Desktop-Benachrichtigungen | raijin-notifications | 28 |
-| Secret Store | raijin-credentials-provider | vorhanden |
-| Variablen über Sessions hinweg | raijin-session | 28 |
-| Globale Hotkey-Unterstützung | Platform Integration | 28 |
+| Feature | Status | Audit (2026-04-12) | Phase |
+|---|---|---|---|
+| Shell-Integration bash, zsh, fish, pwsh | teilweise | Zsh ✓ (ZDOTDIR), Bash ✓ (--rcfile), Fish ✓ (--init-command), Nushell ✓ (autoload) — **pwsh fehlt** | vorhanden |
+| OSC 7 CWD Tracking | teilweise | Kein OSC 7 Parser — CWD wird über OSC 7777 JSON Metadata statt Standard OSC 7 aktualisiert | vorhanden |
+| Shell Context Tracking (Status, Exit-Code) | funktioniert | osc_parser.rs: OSC 133;D;N → exit_code, block.rs: Duration + Metadata | vorhanden |
+| Env-Variablen und Init-Scripts konfigurierbar | neu bauen | Kein Code | 28 |
+| History-basierte Autovervollständigung | teilweise | command_history.rs: frecency_search() → nur Ghost-Text (Top 1), keine Menu-Items | vorhanden |
+| Subcommand-Completions für Standard-CLIs (git, docker, cargo) | funktioniert | 72 JSON Specs embedded (git, cargo, docker, npm, kubectl...), Lazy-Loading | vorhanden |
+| Fuzzy-Matching für Dateipfade | teilweise | inazuma-fuzzy existiert (CharBag, Distance-Penalty) aber Completions nutzt nur prefix-match (starts_with) | vorhanden |
+| Tab-Navigator | funktioniert | raijin-tab-switcher: init(cx) aufgerufen in main.rs:130, Fuzzy-Picker | vorhanden |
+| CLI-Steuerung von außen (wie wsh) | neu bauen | Kein Code | 28 |
+| Desktop-Benachrichtigungen | neu bauen | Kein Code | 28 |
+| Secret Store | Code da, nicht verdrahtet | raijin-credentials-provider in Cargo.toml, aber init() nie aufgerufen, keine Nutzung | vorhanden |
+| Variablen über Sessions hinweg | neu bauen | Kein Code | 28 |
+| Globale Hotkey-Unterstützung | neu bauen | Kein Code | 28 |
 
 ### Konfiguration & Anpassung (→ Phase 19, Settings)
 
-| Feature | Status | Phase |
-|---|---|---|
-| Hot-Reload der Konfiguration | Settings Watcher | vorhanden |
-| Settings-GUI | raijin-settings-ui | vorhanden |
-| Themes inkl. Presets | Theme System + Assets | vorhanden |
-| Kitty Keyboard Protocol | raijin-term | 28 |
-| Anpassbare Keybindings | Keymap TOML | vorhanden |
-| Option Key als Meta Key (macOS) | Settings | 28 |
-| Anpassbare Tab-Farben/Icons/Titel | Tab API | 20 |
+| Feature | Status | Audit (2026-04-12) | Phase |
+|---|---|---|---|
+| Hot-Reload der Konfiguration | funktioniert | main.rs: Fs::watch auf settings.toml + keymap.toml, cx.refresh_windows() | vorhanden |
+| Settings-GUI | funktioniert | raijin-settings-ui (5.4k Zeilen): SettingFieldRenderer, Switch, Dropdown, NumberField — init(cx) aufgerufen | vorhanden |
+| Themes inkl. Presets | funktioniert | 7 bundled Themes (Raijin Dark/Light, Dracula, Nord, Gruvbox, One Dark, Catppuccin) + Fallbacks | vorhanden |
+| Kitty Keyboard Protocol | neu bauen | Kein Code | 28 |
+| Anpassbare Keybindings | funktioniert | KeymapFile TOML Parser, default-macos.toml, Hot-Reload via watch_config_file | vorhanden |
+| Option Key als Meta Key (macOS) | neu bauen | Kein Code | 28 |
+| Anpassbare Tab-Farben/Icons/Titel | neu bauen | Kein Code | 20 |
 
 ### Plattform & Integration
 
-| Feature | Status | Phase |
-|---|---|---|
-| macOS, Linux, Windows | Inazuma Platform | vorhanden (macOS), 28 (Linux/Windows) |
-| Auto-Updates | raijin-auto-update | 28 |
+| Feature | Status | Audit (2026-04-12) | Phase |
+|---|---|---|---|
+| macOS | funktioniert | Vollständiger Platform Layer: NSApplication, NSWindow, Metal, CoreText, objc2 | vorhanden |
+| Linux, Windows | neu bauen | Kein Platform Code | 28 |
+| Auto-Updates | neu bauen | Kein Code | 28 |
 
 ---
 

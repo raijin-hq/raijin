@@ -45,6 +45,7 @@ chrono.workspace = true
 raijin-client.workspace = true
 raijin-cloud-api-types.workspace = true
 inazuma-collections.workspace = true
+inazuma-component-registry.workspace = true
 raijin-command-palette-hooks.workspace = true
 raijin-context-server.workspace = true
 raijin-db.workspace = true

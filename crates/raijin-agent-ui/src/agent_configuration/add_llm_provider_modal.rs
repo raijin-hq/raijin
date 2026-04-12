@@ -388,63 +388,59 @@ impl AddLlmProviderModal {
                 v_flex()
                     .gap_1()
                     .child(
-                        Checkbox::new(("supports-tools", ix), model.capabilities.supports_tools)
+                        Checkbox::new(("supports-tools", ix))
+                            .toggle_state(model.capabilities.supports_tools)
                             .label("Supports tools")
-                            .on_click(cx.listener(move |this, checked, _window, cx| {
-                                this.input.models[ix].capabilities.supports_tools = *checked;
+                            .on_click(cx.listener(move |this, state: &ToggleState, _window, cx| {
+                                this.input.models[ix].capabilities.supports_tools = *state;
                                 cx.notify();
                             })),
                     )
                     .child(
-                        Checkbox::new(("supports-images", ix), model.capabilities.supports_images)
+                        Checkbox::new(("supports-images", ix))
+                            .toggle_state(model.capabilities.supports_images)
                             .label("Supports images")
-                            .on_click(cx.listener(move |this, checked, _window, cx| {
-                                this.input.models[ix].capabilities.supports_images = *checked;
+                            .on_click(cx.listener(move |this, state: &ToggleState, _window, cx| {
+                                this.input.models[ix].capabilities.supports_images = *state;
                                 cx.notify();
                             })),
                     )
                     .child(
-                        Checkbox::new(
-                            ("supports-parallel-tool-calls", ix),
-                            model.capabilities.supports_parallel_tool_calls,
-                        )
-                        .label("Supports parallel_tool_calls")
-                        .on_click(cx.listener(
-                            move |this, checked, _window, cx| {
-                                this.input.models[ix]
-                                    .capabilities
-                                    .supports_parallel_tool_calls = *checked;
-                                cx.notify();
-                            },
-                        )),
+                        Checkbox::new(("supports-parallel-tool-calls", ix))
+                            .toggle_state(model.capabilities.supports_parallel_tool_calls)
+                            .label("Supports parallel_tool_calls")
+                            .on_click(cx.listener(
+                                move |this, state: &ToggleState, _window, cx| {
+                                    this.input.models[ix]
+                                        .capabilities
+                                        .supports_parallel_tool_calls = *state;
+                                    cx.notify();
+                                },
+                            )),
                     )
                     .child(
-                        Checkbox::new(
-                            ("supports-prompt-cache-key", ix),
-                            model.capabilities.supports_prompt_cache_key,
-                        )
-                        .label("Supports prompt_cache_key")
-                        .on_click(cx.listener(
-                            move |this, checked, _window, cx| {
-                                this.input.models[ix].capabilities.supports_prompt_cache_key =
-                                    *checked;
-                                cx.notify();
-                            },
-                        )),
+                        Checkbox::new(("supports-prompt-cache-key", ix))
+                            .toggle_state(model.capabilities.supports_prompt_cache_key)
+                            .label("Supports prompt_cache_key")
+                            .on_click(cx.listener(
+                                move |this, state: &ToggleState, _window, cx| {
+                                    this.input.models[ix].capabilities.supports_prompt_cache_key =
+                                        *state;
+                                    cx.notify();
+                                },
+                            )),
                     )
                     .child(
-                        Checkbox::new(
-                            ("supports-chat-completions", ix),
-                            model.capabilities.supports_chat_completions,
-                        )
-                        .label("Supports /chat/completions")
-                        .on_click(cx.listener(
-                            move |this, checked, _window, cx| {
-                                this.input.models[ix].capabilities.supports_chat_completions =
-                                    *checked;
-                                cx.notify();
-                            },
-                        )),
+                        Checkbox::new(("supports-chat-completions", ix))
+                            .toggle_state(model.capabilities.supports_chat_completions)
+                            .label("Supports /chat/completions")
+                            .on_click(cx.listener(
+                                move |this, state: &ToggleState, _window, cx| {
+                                    this.input.models[ix].capabilities.supports_chat_completions =
+                                        *state;
+                                    cx.notify();
+                                },
+                            )),
                     ),
             )
             .when(has_more_than_one_model, |this| {

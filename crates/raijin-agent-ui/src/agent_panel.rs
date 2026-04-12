@@ -35,7 +35,7 @@ use crate::{
     conversation_view::{AcpThreadViewEvent, ThreadView},
     slash_command::SlashCommandCompletionProvider,
     text_thread_editor::{AgentPanelDelegate, TextThreadEditor, make_lsp_adapter_delegate},
-    raijin_ui::EndTrialUpsell,
+    ui::EndTrialUpsell,
 };
 use crate::{
     Agent, AgentInitialContent, ExternalSourcePrompt, NewExternalAgentThread,
@@ -43,7 +43,7 @@ use crate::{
 };
 use crate::{
     DEFAULT_THREAD_TITLE,
-    raijin_ui::{AcpOnboardingModal, ClaudeCodeOnboardingModal, HoldForDefault},
+    ui::{AcpOnboardingModal, ClaudeCodeOnboardingModal, HoldForDefault},
 };
 use crate::{
     ExpandMessageEditor, ThreadHistoryView,
@@ -89,7 +89,7 @@ use raijin_workspace::{
 };
 use raijin_actions::{
     DecreaseBufferFontSize, IncreaseBufferFontSize, ResetBufferFontSize,
-    raijin_agent::{OpenAcpOnboardingModal, OpenSettings, ResetAgentZoom, ResetOnboarding},
+    agent::{OpenAcpOnboardingModal, OpenSettings, ResetAgentZoom, ResetOnboarding},
     assistant::{OpenRulesLibrary, Toggle, ToggleFocus},
 };
 

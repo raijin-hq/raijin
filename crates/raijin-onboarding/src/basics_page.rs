@@ -2,13 +2,13 @@ use std::sync::Arc;
 
 use raijin_client::TelemetrySettings;
 use raijin_fs::Fs;
-use inazuma::{Action, App, Edges, IntoElement};
+use inazuma::{App, Edges, IntoElement};
 use raijin_project::project_settings::ProjectSettings;
 use inazuma_settings_framework::{BaseKeymap, Settings, update_settings_file};
 use raijin_theme::{Appearance, SystemAppearance, ThemeRegistry};
 use raijin_theme_settings::{ThemeAppearanceMode, ThemeName, ThemeSelection, ThemeSettings};
 use raijin_ui::{
-    Divider, StatefulInteractiveElement, SwitchField, TintColor, ToggleButtonGroup,
+    Divider, StatefulInteractiveElement, SwitchField, ToggleButtonGroup,
     ToggleButtonGroupSize, ToggleButtonSimple, ToggleButtonWithIcon, Tooltip, prelude::*,
 };
 use raijin_vim_mode_setting::VimModeSetting;

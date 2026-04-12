@@ -1,11 +1,7 @@
 use std::{path::Path, sync::Arc};
 
 use inazuma::{EventEmitter, FocusHandle, Focusable};
-use raijin_ui::{
-    App, Button, ButtonCommon, ButtonStyle, Clickable, Context, FluentBuilder, InteractiveElement,
-    KeyBinding, Label, LabelCommon, LabelSize, ParentElement, Render, SharedString, Styled as _,
-    Window, h_flex, v_flex,
-};
+use raijin_ui::{KeyBinding, prelude::*};
 use raijin_actions::workspace::OpenWithSystem;
 
 use crate::Item;

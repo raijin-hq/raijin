@@ -556,15 +556,17 @@ impl Render for AgentRegistryPage {
                             .justify_between()
                             .child(Headline::new("ACP Registry").size(HeadlineSize::Large))
                             .child(
-                                Button::new("learn-more", "Learn More")
-                                    .style(ButtonStyle::Outlined)
-                                    .size(ButtonSize::Medium)
+                                ButtonCommon::size(
+                                    Button::new("learn-more", "Learn More")
+                                        .style(ButtonStyle::Outlined),
+                                    ButtonSize::Medium,
+                                )
                                     .end_icon(
                                         Icon::new(IconName::ArrowUpRight)
                                             .size(IconSize::Small)
                                             .color(Color::Muted),
                                     )
-                                    .on_click(move |_, _, cx| {
+                                    .on_click(move |_, _: &mut Window, cx: &mut App| {
                                         cx.open_url(&raijin_urls::acp_registry_blog(cx))
                                     }),
                             ),

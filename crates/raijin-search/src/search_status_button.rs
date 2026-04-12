@@ -1,7 +1,7 @@
 use raijin_editor::EditorSettings;
 use inazuma::FocusHandle;
 use inazuma_settings_framework::Settings as _;
-use raijin_ui::{ButtonCommon, Clickable, Context, Render, Tooltip, Window, prelude::*};
+use raijin_ui::{Clickable as _, Context, Render, Tooltip, Window, prelude::*};
 use raijin_workspace::{ItemHandle, StatusItemView};
 
 pub const SEARCH_ICON: IconName = IconName::MagnifyingGlass;

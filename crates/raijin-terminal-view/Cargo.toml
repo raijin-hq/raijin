@@ -29,6 +29,7 @@ raijin-session.workspace = true
 raijin-settings.workspace = true
 raijin-shell.workspace = true
 raijin-term = { path = "../raijin-term" }
+raijin-task.workspace = true
 raijin-terminal.workspace = true
 raijin-theme.workspace = true
 raijin-ui.workspace = true

@@ -397,9 +397,10 @@ fn create_terminal(
     cx: &mut App,
 ) -> Entity<TerminalView> {
     cx.new(|cx| {
+        let workspace_entity = workspace.upgrade().expect("workspace dropped");
         let mut view = TerminalView::new(
             terminal.read(cx).inner().clone(),
-            workspace,
+            workspace_entity,
             None,
             project,
             window,

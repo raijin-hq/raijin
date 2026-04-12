@@ -41,6 +41,27 @@ impl TerminalPanel {
         Vec::new()
     }
 
+    /// Whether the assistant integration is enabled for this terminal panel.
+    pub fn assistant_enabled(&self) -> bool {
+        false
+    }
+
+    /// Enable or disable assistant integration for this terminal panel.
+    pub fn set_assistant_enabled(&mut self, _enabled: bool, _cx: &mut Context<Self>) {
+    }
+
+    /// Spawn a task in a new terminal tab, returning a handle to the terminal.
+    pub fn spawn_task(
+        &mut self,
+        _task: &raijin_task::ResolvedTask,
+        _window: &mut Window,
+        cx: &mut Context<Self>,
+    ) -> inazuma::Task<anyhow::Result<Entity<raijin_terminal::Terminal>>> {
+        cx.spawn(async move |_this, _cx| {
+            anyhow::bail!("TerminalPanel task spawning — not yet implemented")
+        })
+    }
+
     pub async fn load(
         _workspace: inazuma::WeakEntity<Workspace>,
         _cx: inazuma::AsyncWindowContext,

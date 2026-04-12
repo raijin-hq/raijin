@@ -778,7 +778,7 @@ impl<T: Item> ItemHandle for Entity<T> {
                     let pending_update = pending_update.clone();
                     async move |workspace, cx| {
                         while let Some(mut leader_id) = pending_update_rx.next().await {
-                            while let Ok(Some(id)) = pending_update_rx.try_next() {
+                            while let Ok(id) = pending_update_rx.try_recv() {
                                 leader_id = id;
                             }
 

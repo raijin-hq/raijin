@@ -31,8 +31,8 @@ use uuid::Uuid;
 use raijin_workspace::notifications::NotificationId;
 use raijin_workspace::{Toast, Workspace};
 use raijin_actions::{
-    raijin_agent::ToggleModelSelector,
-    raijin_editor::{MoveDown, MoveUp},
+    agent::ToggleModelSelector,
+    editor::{MoveDown, MoveUp},
 };
 
 use crate::agent_model_selector::AgentModelSelector;
@@ -266,7 +266,7 @@ fn markdown_style(window: &Window, cx: &App) -> MarkdownStyle {
     MarkdownStyle {
         base_text_style: text_style.clone(),
         syntax: cx.theme().syntax().clone(),
-        selection_background_color: colors.element_selection_background,
+        selection_background_color: colors.element_selection,
         heading_level_styles: Some(HeadingLevelStyles {
             h1: Some(TextStyleRefinement {
                 font_size: Some(rems(1.15).into()),
@@ -297,7 +297,7 @@ fn markdown_style(window: &Window, cx: &App) -> MarkdownStyle {
             font_family: Some(theme_settings.buffer_font.family.clone()),
             font_fallbacks: theme_settings.buffer_font.fallbacks.clone(),
             font_features: Some(theme_settings.buffer_font.features.clone()),
-            background_color: Some(colors.editor_foreground.opacity(0.08)),
+            background_color: Some(colors.editor.foreground.opacity(0.08)),
             ..Default::default()
         },
         ..Default::default()
@@ -1121,13 +1121,13 @@ impl<T: 'static> PromptEditor<T> {
             .size_full()
             .p_2()
             .pl_1()
-            .bg(colors.editor_background)
+            .bg(colors.editor.background)
             .child({
                 let settings = ThemeSettings::get_global(cx);
                 let font_size = settings.buffer_font_size(cx);
 
                 let text_style = TextStyle {
-                    color: colors.editor_foreground,
+                    color: colors.editor.foreground,
                     font_family: settings.buffer_font.family.clone(),
                     font_features: settings.buffer_font.features.clone(),
                     font_size: font_size.into(),
@@ -1138,7 +1138,7 @@ impl<T: 'static> PromptEditor<T> {
                 EditorElement::new(
                     &self.editor,
                     EditorStyle {
-                        background: colors.editor_background,
+                        background: colors.editor.background,
                         local_player: cx.theme().players().local(),
                         syntax: cx.theme().syntax().clone(),
                         text: text_style,

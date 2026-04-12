@@ -4,12 +4,11 @@
 /// Uses raijin-ui Modal components and theme tokens — no hardcoded colors.
 use inazuma::{
     App, DismissEvent, EventEmitter, Focusable, FocusHandle, InteractiveElement,
-    Window, prelude::FluentBuilder,
+    Window,
 };
 use raijin_shell::shell_install::{ShellInstallInfo, detect_available_installer};
-use raijin_theme::ActiveTheme;
 use raijin_ui::{
-    Button, ButtonVariants, Clickable, Color, Context, IntoElement, Label, LabelCommon,
+    Button, ButtonVariants, Context, IntoElement,
     Modal, ModalFooter, ModalHeader, ParentElement, Render, Styled, StyledExt,
     v_flex,
 };

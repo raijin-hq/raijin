@@ -1,12 +1,9 @@
 use raijin_editor::{Editor, EditorEvent, MBTextSummary, MultiBufferSnapshot};
-use inazuma::{App, Entity, FocusHandle, Focusable, Styled, Subscription, Task, WeakEntity};
+use inazuma::{App, Entity, FocusHandle, Focusable, Subscription, Task, WeakEntity};
 use inazuma_settings_framework::{RegisterSetting, Settings};
 use std::{fmt::Write, num::NonZeroU32, time::Duration};
 use inazuma_text::{Point, Selection};
-use raijin_ui::{
-    Button, ButtonCommon, Clickable, Context, FluentBuilder, IntoElement, LabelSize, ParentElement,
-    Render, Tooltip, Window, div,
-};
+use raijin_ui::{Tooltip, prelude::*};
 use inazuma_util::paths::FILE_ROW_COLUMN_DELIMITER;
 use raijin_workspace::{StatusBarSettings, StatusItemView, Workspace, item::ItemHandle};
 

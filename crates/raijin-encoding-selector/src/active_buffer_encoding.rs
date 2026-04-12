@@ -2,12 +2,9 @@ use crate::{EncodingSelector, Toggle};
 
 use raijin_editor::Editor;
 use encoding_rs::{Encoding, UTF_8};
-use inazuma::{
-    Context, Entity, IntoElement, ParentElement, Render, Styled, Subscription, WeakEntity, Window,
-    div,
-};
+use inazuma::{Entity, Subscription, WeakEntity};
 use raijin_project::Project;
-use raijin_ui::{Button, ButtonCommon, Clickable, LabelSize, Tooltip};
+use raijin_ui::{Tooltip, prelude::*};
 use raijin_workspace::{
     StatusBarSettings, StatusItemView, Workspace,
     item::{ItemHandle, Settings},

@@ -36,7 +36,7 @@ use std::{
 use inazuma_text::OffsetRangeExt;
 use raijin_ui::{Disclosure, Toggleable, prelude::*};
 use inazuma_util::{ResultExt, debug_panic, rel_path::RelPath};
-use raijin_workspace::{Workspace, raijin_notifications::NotifyResultExt as _};
+use raijin_workspace::{Workspace, notifications::NotifyResultExt as _};
 
 use crate::ui::MentionCrease;
 
@@ -1297,12 +1297,12 @@ async fn fetch_url_content(http_client: Arc<HttpClientWithUrl>, url: String) -> 
     match content_type {
         ContentType::Html => {
             let mut handlers: Vec<TagHandler> = vec![
-                Rc::new(RefCell::new(raijin_markdown::WebpageChromeRemover)),
-                Rc::new(RefCell::new(raijin_markdown::ParagraphHandler)),
-                Rc::new(RefCell::new(raijin_markdown::HeadingHandler)),
-                Rc::new(RefCell::new(raijin_markdown::ListHandler)),
-                Rc::new(RefCell::new(raijin_markdown::TableHandler::new())),
-                Rc::new(RefCell::new(raijin_markdown::StyledTextHandler)),
+                Rc::new(RefCell::new(raijin_html_to_markdown::markdown::WebpageChromeRemover)),
+                Rc::new(RefCell::new(raijin_html_to_markdown::markdown::ParagraphHandler)),
+                Rc::new(RefCell::new(raijin_html_to_markdown::markdown::HeadingHandler)),
+                Rc::new(RefCell::new(raijin_html_to_markdown::markdown::ListHandler)),
+                Rc::new(RefCell::new(raijin_html_to_markdown::markdown::TableHandler::new())),
+                Rc::new(RefCell::new(raijin_html_to_markdown::markdown::StyledTextHandler)),
             ];
             if url.contains("wikipedia.org") {
                 use raijin_html_to_markdown::structure::wikipedia;
@@ -1313,7 +1313,7 @@ async fn fetch_url_content(http_client: Arc<HttpClientWithUrl>, url: String) -> 
                     RefCell::new(wikipedia::WikipediaCodeHandler::new()),
                 ));
             } else {
-                handlers.push(Rc::new(RefCell::new(raijin_markdown::CodeHandler)));
+                handlers.push(Rc::new(RefCell::new(raijin_html_to_markdown::markdown::CodeHandler)));
             }
             convert_html_to_markdown(&body[..], &mut handlers)
         }

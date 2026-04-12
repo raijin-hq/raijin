@@ -11,6 +11,7 @@ use crate::{
     App, ClipboardItem, DisplayId, EntityId, PathPromptOptions,
     PlatformDisplay, PlatformKeyboardLayout, PlatformKeyboardMapper, RenderImage,
     ScreenCaptureSource, Subscription, Task, ThermalState, Window, WindowAppearance,
+    WindowButtonLayout,
 };
 
 impl App {
@@ -119,6 +120,11 @@ impl App {
     /// Returns the appearance of the application's windows.
     pub fn window_appearance(&self) -> WindowAppearance {
         self.platform.window_appearance()
+    }
+
+    /// Returns the window button layout configuration when supported.
+    pub fn button_layout(&self) -> Option<WindowButtonLayout> {
+        self.platform.button_layout()
     }
 
     /// Reads data from the platform clipboard.

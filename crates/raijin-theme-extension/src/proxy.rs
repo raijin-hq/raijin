@@ -69,7 +69,7 @@ impl ExtensionThemeProxy for ThemeRegistryProxy {
     }
 
     fn remove_user_themes(&self, themes: Vec<SharedString>) {
-        let mut registry = self.registry.write();
+        let registry = self.registry.write();
         registry.remove_user_themes(&themes);
         log::info!("removed {} user themes from registry", themes.len());
     }

@@ -52,7 +52,7 @@ use raijin_terminal_view::{TerminalView, terminal_panel::TerminalPanel};
 use inazuma_text::{OffsetRangeExt, ToPoint as _};
 use raijin_ui::prelude::*;
 use inazuma_util::{RangeExt, ResultExt, maybe};
-use raijin_workspace::{ItemHandle, Toast, Workspace, dock::Panel, raijin_notifications::NotificationId};
+use raijin_workspace::{ItemHandle, Toast, Workspace, dock::Panel, notifications::NotificationId};
 use raijin_actions::agent::OpenSettings;
 
 pub fn init(fs: Arc<dyn Fs>, prompt_builder: Arc<PromptBuilder>, cx: &mut App) {
@@ -737,7 +737,7 @@ impl InlineAssistant {
                         .h_full()
                         .w_full()
                         .border_t_1()
-                        .border_color(cx.theme().status().info_border)
+                        .border_color(cx.theme().status().info.border)
                         .into_any_element()
                 }),
                 priority: 0,
@@ -1420,7 +1420,7 @@ impl InlineAssistant {
             } else {
                 editor.highlight_gutter::<GutterPendingRange>(
                     gutter_pending_ranges,
-                    |cx| cx.theme().status().info_background,
+                    |cx| cx.theme().status().info.background,
                     cx,
                 )
             }
@@ -1454,7 +1454,7 @@ impl InlineAssistant {
             for row_range in inserted_row_ranges {
                 editor.highlight_rows::<InlineAssist>(
                     row_range,
-                    cx.theme().status().info_background,
+                    cx.theme().status().info.background,
                     Default::default(),
                     cx,
                 );
@@ -1522,7 +1522,7 @@ impl InlineAssistant {
                     editor.set_show_edit_predictions(Some(false), window, cx);
                     editor.highlight_rows::<DeletedLines>(
                         Anchor::min()..Anchor::max(),
-                        cx.theme().status().deleted_background,
+                        cx.theme().status().deleted.background,
                         Default::default(),
                         cx,
                     );
@@ -1538,7 +1538,7 @@ impl InlineAssistant {
                     render: Arc::new(move |cx| {
                         div()
                             .block_mouse_except_scroll()
-                            .bg(cx.theme().status().deleted_background)
+                            .bg(cx.theme().status().deleted.background)
                             .size_full()
                             .h(height as f32 * cx.window.line_height())
                             .pl(cx.margins.gutter.full_width())

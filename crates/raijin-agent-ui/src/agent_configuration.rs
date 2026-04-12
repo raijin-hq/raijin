@@ -495,14 +495,14 @@ impl AgentConfiguration {
             let free_chip_bg = cx
                 .theme()
                 .colors()
-                .editor_background
+                .editor.background
                 .opacity(0.5)
                 .blend(cx.theme().colors().text_accent.opacity(0.05));
 
             let pro_chip_bg = cx
                 .theme()
                 .colors()
-                .editor_background
+                .editor.background
                 .opacity(0.5)
                 .blend(cx.theme().colors().text_accent.opacity(0.2));
 
@@ -933,26 +933,22 @@ impl AgentConfiguration {
         AiSettingItem::new(item_id, display_name, status, source)
             .action(context_server_configuration_menu)
             .action(
-                Switch::new("context-server-switch", is_running.into()).on_click({
+                Switch::new("context-server-switch").checked(is_running).on_click({
                     let context_server_manager = self.context_server_store.clone();
                     let fs = self.fs.clone();
 
-                    move |state, _window, cx| {
-                        let is_enabled = match state {
-                            ToggleState::Unselected | ToggleState::Indeterminate => {
-                                context_server_manager.update(cx, |this, cx| {
-                                    this.stop_server(&context_server_id, cx).log_err();
-                                });
-                                false
-                            }
-                            ToggleState::Selected => {
-                                context_server_manager.update(cx, |this, cx| {
-                                    if let Some(server) = this.get_server(&context_server_id) {
-                                        this.start_server(server, cx);
-                                    }
-                                });
-                                true
-                            }
+                    move |is_enabled, _window, cx| {
+                        let is_enabled = *is_enabled;
+                        if is_enabled {
+                            context_server_manager.update(cx, |this, cx| {
+                                if let Some(server) = this.get_server(&context_server_id) {
+                                    this.start_server(server, cx);
+                                }
+                            });
+                        } else {
+                            context_server_manager.update(cx, |this, cx| {
+                                this.stop_server(&context_server_id, cx).log_err();
+                            });
                         };
                         update_settings_file(fs.clone(), cx, {
                             let context_server_id = context_server_id.clone();

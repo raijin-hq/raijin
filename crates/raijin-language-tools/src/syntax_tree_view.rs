@@ -14,9 +14,8 @@ use std::{any::TypeId, mem, ops::Range};
 use raijin_theme::ActiveTheme;
 use tree_sitter::{Node, TreeCursor};
 use raijin_ui::{
-    ButtonCommon, ButtonLike, Clickable, Color, ContextMenu, FluentBuilder as _, IconButton,
-    IconName, Label, LabelCommon, LabelSize, PopoverMenu, StyledExt, Tooltip, WithScrollbar,
-    h_flex, v_flex,
+    ButtonLike, ContextMenu, FluentBuilder as _, PopoverMenu, StyledExt, Tooltip, WithScrollbar,
+    prelude::*,
 };
 use raijin_workspace::{
     Event as WorkspaceEvent, SplitDirection, ToolbarItemEvent, ToolbarItemLocation,

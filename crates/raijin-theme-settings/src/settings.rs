@@ -34,6 +34,10 @@ pub struct ThemeSettings {
     pub ui_font: Font,
     buffer_font_size: Pixels,
     pub buffer_font: Font,
+    /// The agent font size. Falls back to the UI font size if unset.
+    agent_ui_font_size: Option<Pixels>,
+    /// The agent buffer font size. Falls back to the buffer font size if unset.
+    agent_buffer_font_size: Option<Pixels>,
     pub buffer_line_height: BufferLineHeight,
     pub theme: ThemeSelection,
     pub experimental_theme_overrides: Option<inazuma_settings_content::ThemeStyleContent>,
@@ -60,6 +64,12 @@ impl Global for BufferFontSize {}
 pub(crate) struct UiFontSize(Pixels);
 
 impl Global for UiFontSize {}
+
+/// In-memory override for the font size in the agent panel.
+#[derive(Default)]
+pub struct AgentFontSize(Pixels);
+
+impl Global for AgentFontSize {}
 
 /// The theme selection — static or dynamic based on system appearance.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -205,12 +215,38 @@ impl ThemeSettings {
         clamp_font_size(font_size)
     }
 
+    /// Returns the agent panel font size. Falls back to the UI font size if unset.
+    pub fn agent_ui_font_size(&self, cx: &App) -> Pixels {
+        cx.try_global::<AgentFontSize>()
+            .map(|size| size.0)
+            .or(self.agent_ui_font_size)
+            .map(clamp_font_size)
+            .unwrap_or_else(|| self.ui_font_size(cx))
+    }
+
+    /// Returns the agent panel buffer font size. Falls back to the buffer font size if unset.
+    pub fn agent_buffer_font_size(&self, cx: &App) -> Pixels {
+        cx.try_global::<AgentFontSize>()
+            .map(|size| size.0)
+            .or(self.agent_buffer_font_size)
+            .map(clamp_font_size)
+            .unwrap_or_else(|| self.buffer_font_size(cx))
+    }
+
     pub fn buffer_font_size_settings(&self) -> Pixels {
         self.buffer_font_size
     }
 
     pub fn ui_font_size_settings(&self) -> Pixels {
         self.ui_font_size
+    }
+
+    pub fn agent_ui_font_size_settings(&self) -> Option<Pixels> {
+        self.agent_ui_font_size
+    }
+
+    pub fn agent_buffer_font_size_settings(&self) -> Option<Pixels> {
+        self.agent_buffer_font_size
     }
 
     pub fn line_height(&self) -> f32 {
@@ -297,6 +333,42 @@ pub fn adjust_ui_font_size(cx: &mut App, f: impl FnOnce(Pixels) -> Pixels) {
 pub fn reset_ui_font_size(cx: &mut App) {
     if cx.has_global::<UiFontSize>() {
         cx.remove_global::<UiFontSize>();
+        cx.refresh_windows();
+    }
+}
+
+/// Sets the adjusted font size of agent responses in the agent panel.
+pub fn adjust_agent_ui_font_size(cx: &mut App, f: impl FnOnce(Pixels) -> Pixels) {
+    let agent_ui_font_size = ThemeSettings::get_global(cx).agent_ui_font_size(cx);
+    let adjusted_size = cx
+        .try_global::<AgentFontSize>()
+        .map_or(agent_ui_font_size, |adjusted_size| adjusted_size.0);
+    cx.set_global(AgentFontSize(clamp_font_size(f(adjusted_size))));
+    cx.refresh_windows();
+}
+
+/// Resets the agent response font size in the agent panel to the default value.
+pub fn reset_agent_ui_font_size(cx: &mut App) {
+    if cx.has_global::<AgentFontSize>() {
+        cx.remove_global::<AgentFontSize>();
+        cx.refresh_windows();
+    }
+}
+
+/// Sets the adjusted font size of user messages in the agent panel.
+pub fn adjust_agent_buffer_font_size(cx: &mut App, f: impl FnOnce(Pixels) -> Pixels) {
+    let agent_buffer_font_size = ThemeSettings::get_global(cx).agent_buffer_font_size(cx);
+    let adjusted_size = cx
+        .try_global::<AgentFontSize>()
+        .map_or(agent_buffer_font_size, |adjusted_size| adjusted_size.0);
+    cx.set_global(AgentFontSize(clamp_font_size(f(adjusted_size))));
+    cx.refresh_windows();
+}
+
+/// Resets the user message font size in the agent panel to the default value.
+pub fn reset_agent_buffer_font_size(cx: &mut App) {
+    if cx.has_global::<AgentFontSize>() {
+        cx.remove_global::<AgentFontSize>();
         cx.refresh_windows();
     }
 }
@@ -445,6 +517,8 @@ impl Settings for ThemeSettings {
                     .unwrap_or(inazuma_settings_content::FontSize(15.0))
                     .into_inazuma(),
             ),
+            agent_ui_font_size: content.agent_ui_font_size.map(|s| s.into_inazuma()),
+            agent_buffer_font_size: content.agent_buffer_font_size.map(|s| s.into_inazuma()),
             buffer_line_height: content
                 .buffer_line_height
                 .unwrap_or_default()

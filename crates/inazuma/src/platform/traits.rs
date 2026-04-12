@@ -4,7 +4,8 @@ use crate::{
     Action, AnyWindowHandle, BackgroundExecutor, Bounds, DevicePixels, DispatchEventResult, Font,
     FontId, FontMetrics, FontRun, ForegroundExecutor, GlyphId, GpuSpecs, Keymap, LineLayout,
     Pixels, PlatformInput, Point, Priority, RenderGlyphParams, Scene, ShapedGlyph, ShapedRun,
-    Size, SystemWindowTab, Task, ThreadTaskTimings, WindowControlArea, point, px, size,
+    Size, SystemWindowTab, Task, ThreadTaskTimings, WindowButtonLayout, WindowControlArea, point,
+    px, size,
 };
 use anyhow::Result;
 use async_task::Runnable;
@@ -80,6 +81,11 @@ pub trait Platform: 'static {
 
     /// Returns the appearance of the application's windows.
     fn window_appearance(&self) -> WindowAppearance;
+
+    /// Returns the window button layout configuration when supported.
+    fn button_layout(&self) -> Option<WindowButtonLayout> {
+        None
+    }
 
     fn open_url(&self, url: &str);
     fn on_open_urls(&self, callback: Box<dyn FnMut(Vec<String>)>);

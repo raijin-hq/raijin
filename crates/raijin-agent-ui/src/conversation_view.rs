@@ -27,7 +27,7 @@ use raijin_fs::Fs;
 use futures::FutureExt as _;
 use inazuma::{
     Action, Animation, AnimationExt, AnyView, App, ClickEvent, ClipboardItem, CursorStyle,
-    ElementId, Empty, Entity, EventEmitter, FocusHandle, Focusable, Hsla, ListOffset, ListState,
+    ElementId, Empty, Entity, EventEmitter, FocusHandle, Focusable, Oklch, ListOffset, ListState,
     ObjectFit, PlatformDisplay, ScrollHandle, SharedString, Subscription, Task, TextStyle,
     WeakEntity, Window, WindowHandle, div, ease_in_out, img, linear_color_stop, linear_gradient,
     list, point, pulsating_between,
@@ -46,7 +46,7 @@ use inazuma_settings_framework::{NotifyWhenAgentWaiting, Settings as _, Settings
 use std::path::Path;
 use std::sync::Arc;
 use std::time::Instant;
-use std::{inazuma_collections::BTreeMap, rc::Rc, time::Duration};
+use std::{collections::BTreeMap, rc::Rc, time::Duration};
 use raijin_terminal_view::terminal_panel::TerminalPanel;
 use inazuma_text::Anchor;
 use raijin_theme_settings::AgentFontSize;
@@ -60,7 +60,7 @@ use inazuma_util::{ResultExt, size::format_file_size, time::duration_alt_display
 use inazuma_util::{debug_panic, defer};
 use raijin_workspace::PathList;
 use raijin_workspace::{
-    CollaboratorId, MultiWorkspace, NewTerminal, Toast, Workspace, raijin_notifications::NotificationId,
+    CollaboratorId, MultiWorkspace, NewTerminal, Toast, Workspace, notifications::NotificationId,
 };
 use raijin_actions::agent::{Chat, ToggleModelSelector};
 use raijin_actions::assistant::OpenRulesLibrary;
@@ -2058,7 +2058,7 @@ impl ConversationView {
             .bg(linear_gradient(
                 180.,
                 linear_color_stop(cx.theme().colors().editor.background.opacity(0.4), 4.),
-                linear_color_stop(cx.theme().status().info_background.opacity(0.), 0.),
+                linear_color_stop(cx.theme().status().info.background.opacity(0.), 0.),
             ))
             .child(
                 v_flex().gap_0p5().child(Label::new(heading_label)).child(

@@ -1267,7 +1267,7 @@ impl Item for TerminalPane {
         &mut self,
         workspace: &mut Workspace,
         _window: &mut Window,
-        cx: &mut Context<Self>,
+        _cx: &mut Context<Self>,
     ) {
         self.workspace = Some(workspace.weak_handle());
     }

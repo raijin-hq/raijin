@@ -24,7 +24,7 @@ use raijin_project::{Project, ProjectItem, ProjectPath};
 use inazuma_settings_framework::{Settings, SettingsStore};
 use std::{
     any::{Any, TypeId},
-    inazuma_collections::hash_map::Entry,
+    collections::hash_map::Entry,
     ops::Range,
     sync::Arc,
 };

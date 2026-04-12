@@ -1,13 +1,10 @@
 use std::sync::Arc;
 
 use raijin_editor::Editor;
-use inazuma::{
-    AsyncWindowContext, Context, Entity, IntoElement, ParentElement, Render, Styled, Subscription,
-    Task, WeakEntity, Window, div,
-};
+use inazuma::{AsyncWindowContext, Entity, Subscription, Task, WeakEntity};
 use raijin_language::{Buffer, BufferEvent, LanguageName, Toolchain, ToolchainScope};
 use raijin_project::{Project, ProjectPath, Toolchains, WorktreeId, toolchain_store::ToolchainStoreEvent};
-use raijin_ui::{Button, ButtonCommon, Clickable, LabelSize, SharedString, Tooltip};
+use raijin_ui::{Tooltip, prelude::*};
 use inazuma_util::{maybe, rel_path::RelPath};
 use raijin_workspace::{StatusItemView, Workspace, item::ItemHandle};
 

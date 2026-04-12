@@ -8,6 +8,15 @@ use raijin_theme::Theme;
 use raijin_term::term::cell::Flags as CellFlags;
 use raijin_term::vte::ansi::{Color as AnsiColor, NamedColor};
 
+/// Convert an ANSI color to a theme-aware Oklch color.
+///
+/// Maps Named, Spec (true color), and Indexed (256) ANSI colors to Oklch
+/// using the active theme's terminal palette. Used by debugger console and
+/// other non-terminal UI that needs ANSI→theme color mapping.
+pub fn convert_color(color: &AnsiColor, theme: &Theme) -> Oklch {
+    ansi_color_to_oklch(color, &Default::default(), false, theme)
+}
+
 /// Resolve foreground and background colors for a terminal cell.
 pub fn resolve_colors(
     cell: &raijin_term::term::cell::Cell,

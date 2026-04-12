@@ -47,7 +47,7 @@ use inazuma::{
     MouseMoveEvent, MousePressureEvent, MouseUpEvent, PaintQuad, ParentElement, Pixels,
     PressureStage, ScrollDelta, ScrollHandle, ScrollWheelEvent, ShapedLine, SharedString, Size,
     StatefulInteractiveElement, Style, Styled, StyledText, TextAlign, TextRun, TextStyleRefinement,
-    WeakEntity, Window, anchored, deferred, div, fill, hsla, linear_color_stop, linear_gradient,
+    WeakEntity, Window, anchored, deferred, div, fill, linear_color_stop, linear_gradient,
     outline, pattern_slash, point, px, quad, relative, size, solid_background, transparent_black,
 };
 use itertools::Itertools;
@@ -13222,8 +13222,8 @@ mod tests {
     #[inazuma::test]
     fn test_merge_overlapping_ranges() {
         let base_bg = Oklch::white();
-        let color1 = hsla(0.0, 0.5, 0.5, 0.5);
-        let color2 = hsla(120.0, 0.5, 0.5, 0.5);
+        let color1 = oklcha(0.5523, 0.1637, 24.2125, 0.5);
+        let color2 = oklcha(0.7099, 0.2008, 143.0946, 0.5);
 
         let display_point = |col| DisplayPoint::new(DisplayRow(0), col);
         let cols = |v: &Vec<(Range<DisplayPoint>, Oklch)>| -> Vec<(u32, u32)> {
@@ -13261,7 +13261,7 @@ mod tests {
         assert_eq!(cols(&result), vec![(5, 10), (10, 15), (15, 20)]);
 
         // Test multiple overlaps split at every boundary
-        let color3 = hsla(240.0, 0.5, 0.5, 0.5);
+        let color3 = oklcha(0.4562, 0.1936, 275.5265, 0.5);
         let complex = vec![
             (display_point(5)..display_point(12), color1),
             (display_point(8)..display_point(16), color2),
@@ -13280,7 +13280,7 @@ mod tests {
 
         // Case A: selection spans three display rows: row 1 [5, end), full row 2, row 3 [0, 7)
         {
-            let selection_color = hsla(200.0, 0.5, 0.5, 0.5);
+            let selection_color = oklcha(0.6351, 0.1031, 233.5013, 0.5);
             let player_color = PlayerColor {
                 cursor: selection_color,
                 background: selection_color,
@@ -13324,7 +13324,7 @@ mod tests {
 
         // Case B: selection ends exactly at the start of row 3, excluding row 3
         {
-            let selection_color = hsla(120.0, 0.5, 0.5, 0.5);
+            let selection_color = oklcha(0.7099, 0.2008, 143.0946, 0.5);
             let player_color = PlayerColor {
                 cursor: selection_color,
                 background: selection_color,
@@ -13381,9 +13381,9 @@ mod tests {
             DisplayPoint::new(DisplayRow(0), start)..DisplayPoint::new(DisplayRow(0), end)
         };
 
-        let text_color = hsla(210.0, 0.1, 0.4, 1.0);
-        let bg_1 = hsla(30.0, 0.6, 0.8, 1.0);
-        let bg_2 = hsla(200.0, 0.6, 0.2, 1.0);
+        let text_color = oklch(0.5052, 0.0205, 248.2336);
+        let bg_1 = oklch(0.8633, 0.0535, 67.017);
+        let bg_2 = oklch(0.3424, 0.0573, 233.827);
         let min_contrast = 45.0;
         let adjusted_bg1 = ensure_minimum_contrast(text_color, bg_1, min_contrast);
         let adjusted_bg2 = ensure_minimum_contrast(text_color, bg_2, min_contrast);

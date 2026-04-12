@@ -22,7 +22,7 @@ use raijin_multi_buffer::{Anchor, MultiBuffer};
 use raijin_project::Project;
 use inazuma_text::Point;
 use raijin_ui::{
-    ButtonCommon, Clickable, Disableable, FluentBuilder as _, IconButton, IconName,
+    Clickable as _, Disableable, FluentBuilder as _, IconButton, IconName,
     StyledTypography as _, h_flex, v_flex,
 };
 
@@ -287,7 +287,7 @@ impl EditPredictionContextView {
                 for (key, value) in &run.metadata {
                     rows.push(
                         raijin_ui::TableRow::new()
-                            .child(raijin_ui::TableCell::new().child(key.clone()))
+                            .child(raijin_ui::TableCell::new().child((*key).to_string()))
                             .child(raijin_ui::TableCell::new().child(value.clone())),
                     );
                 }

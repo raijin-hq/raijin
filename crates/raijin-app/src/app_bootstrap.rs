@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use inazuma::{App, AppContext};
-use raijin_client::{Client, UserStore};
+use raijin_client::Client;
 use raijin_db::kvp::KeyValueStore;
 use raijin_fs::RealFs;
 use raijin_language::LanguageRegistry;

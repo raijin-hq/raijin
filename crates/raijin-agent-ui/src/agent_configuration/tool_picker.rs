@@ -1,4 +1,4 @@
-use std::{inazuma_collections::BTreeMap, sync::Arc};
+use std::{collections::BTreeMap, sync::Arc};
 
 use raijin_agent::ContextServerRegistry;
 use raijin_agent_settings::{AgentProfileId, AgentProfileSettings};

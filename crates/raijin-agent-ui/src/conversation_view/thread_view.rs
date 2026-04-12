@@ -2141,7 +2141,7 @@ impl ThreadView {
             .ok();
     }
 
-    fn activity_bar_bg(&self, cx: &Context<Self>) -> Hsla {
+    fn activity_bar_bg(&self, cx: &Context<Self>) -> Oklch {
         let editor_bg_color = cx.theme().colors().editor.background;
         let active_color = cx.theme().colors().element_selected;
         editor_bg_color.blend(active_color.opacity(0.3))
@@ -2385,7 +2385,7 @@ impl ThreadView {
         action_log: &Entity<ActionLog>,
         telemetry: &ActionLogTelemetry,
         pending_edits: bool,
-        editor_bg_color: Hsla,
+        editor_bg_color: Oklch,
         cx: &Context<Self>,
     ) -> impl IntoElement {
         h_flex()
@@ -3567,7 +3567,7 @@ impl ThreadView {
             )
         } else {
             let progress_color = if progress_ratio >= 0.85 {
-                cx.theme().status().warning
+                cx.theme().status().warning.color
             } else {
                 cx.theme().colors().text_muted
             };
@@ -3579,13 +3579,15 @@ impl ThreadView {
                     .mr_1()
                     .child(
                         CircularProgress::new(
-                            usage.used_tokens as f32,
-                            usage.max_tokens as f32,
-                            px(16.0),
-                            cx,
+                            "token-usage",
+                            if usage.max_tokens > 0 {
+                                (usage.used_tokens as f32 / usage.max_tokens as f32) * 100.0
+                            } else {
+                                0.0
+                            },
                         )
-                        .stroke_width(px(2.))
-                        .progress_color(progress_color),
+                        .color(progress_color)
+                        .size_4(),
                     )
                     .hoverable_tooltip(build_tooltip)
                     .into_any_element(),
@@ -3704,7 +3706,7 @@ impl ThreadView {
 
         Some(
             SplitButton::new(left_btn, right_btn.into_any_element())
-                .style(SplitButtonStyle::TRANSPARENT)
+                .style(SplitButtonStyle::Transparent)
                 .into_any_element(),
         )
     }
@@ -6903,7 +6905,7 @@ impl ThreadView {
                             self.tool_card_header_bg(cx),
                             cx,
                         )
-                        .color(cx.theme().status().warning)
+                        .color(cx.theme().status().warning.color)
                         .position(inazuma::Point {
                             x: px(-2.),
                             y: px(-2.),
@@ -7836,14 +7838,14 @@ impl ThreadView {
         }
     }
 
-    fn tool_card_header_bg(&self, cx: &Context<Self>) -> Hsla {
+    fn tool_card_header_bg(&self, cx: &Context<Self>) -> Oklch {
         cx.theme()
             .colors()
             .element_background
             .blend(cx.theme().colors().editor.foreground.opacity(0.025))
     }
 
-    fn tool_card_border_color(&self, cx: &Context<Self>) -> Hsla {
+    fn tool_card_border_color(&self, cx: &Context<Self>) -> Oklch {
         cx.theme().colors().border.opacity(0.8)
     }
 

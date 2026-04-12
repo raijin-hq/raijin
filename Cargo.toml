@@ -124,7 +124,8 @@ members = [
 
     # Batch 2 — Framework-Dependencies
     "crates/raijin-panel",
-    "crates/raijin-sidebar",
+    # TODO: Requires raijin-agent-ui rebuild — see plan/26-AGENTIC-DEVELOPMENT-ENVIRONMENT.md
+    # "crates/raijin-sidebar",
     "crates/raijin-command-palette",
     "crates/raijin-command-palette-hooks",
     "crates/raijin-ui-prompt",
@@ -194,7 +195,8 @@ members = [
     "crates/raijin-assistant-text-thread",
     "crates/raijin-agent-servers",
     "crates/raijin-agent",
-    "crates/raijin-agent-ui",
+    # TODO: Needs terminal-first rebuild — see plan/26-AGENTIC-DEVELOPMENT-ENVIRONMENT.md
+    # "crates/raijin-agent-ui",
     "crates/raijin-ai-onboarding",
     "crates/raijin-action-log",
 
@@ -246,8 +248,9 @@ members = [
     "crates/raijin-open-path-prompt",
     "crates/raijin-docs-preprocessor",
     "crates/raijin-schema-generator",
-    "crates/raijin-eval",
-    "crates/raijin-eval-cli",
+    # TODO: Requires raijin-agent-ui rebuild — see plan/26-AGENTIC-DEVELOPMENT-ENVIRONMENT.md
+    # "crates/raijin-eval",
+    # "crates/raijin-eval-cli",
     "crates/raijin-eval-utils",
     "crates/raijin-fs-benchmarks",
     "crates/raijin-project-benchmarks",
@@ -394,7 +397,8 @@ raijin-scheduler = { path = "crates/raijin-scheduler" }
 
 # Batch 2
 raijin-panel = { path = "crates/raijin-panel" }
-raijin-sidebar = { path = "crates/raijin-sidebar" }
+# TODO: Requires raijin-agent-ui rebuild — see plan/26-AGENTIC-DEVELOPMENT-ENVIRONMENT.md
+# raijin-sidebar = { path = "crates/raijin-sidebar" }
 raijin-command-palette = { path = "crates/raijin-command-palette" }
 raijin-command-palette-hooks = { path = "crates/raijin-command-palette-hooks" }
 raijin-ui-prompt = { path = "crates/raijin-ui-prompt" }
@@ -464,7 +468,8 @@ raijin-assistant-slash-commands = { path = "crates/raijin-assistant-slash-comman
 raijin-assistant-text-thread = { path = "crates/raijin-assistant-text-thread" }
 raijin-agent-servers = { path = "crates/raijin-agent-servers" }
 raijin-agent = { path = "crates/raijin-agent" }
-raijin-agent-ui = { path = "crates/raijin-agent-ui" }
+# TODO: Needs terminal-first rebuild — see plan/26-AGENTIC-DEVELOPMENT-ENVIRONMENT.md
+# raijin-agent-ui = { path = "crates/raijin-agent-ui" }
 raijin-ai-onboarding = { path = "crates/raijin-ai-onboarding" }
 raijin-action-log = { path = "crates/raijin-action-log" }
 
@@ -513,8 +518,9 @@ raijin-etw-tracing = { path = "crates/raijin-etw-tracing" }
 raijin-open-path-prompt = { path = "crates/raijin-open-path-prompt" }
 raijin-docs-preprocessor = { path = "crates/raijin-docs-preprocessor" }
 raijin-schema-generator = { path = "crates/raijin-schema-generator" }
-raijin-eval = { path = "crates/raijin-eval" }
-raijin-eval-cli = { path = "crates/raijin-eval-cli" }
+# TODO: Requires raijin-agent-ui rebuild — see plan/26-AGENTIC-DEVELOPMENT-ENVIRONMENT.md
+# raijin-eval = { path = "crates/raijin-eval" }
+# raijin-eval-cli = { path = "crates/raijin-eval-cli" }
 raijin-eval-utils = { path = "crates/raijin-eval-utils" }
 raijin-fs-benchmarks = { path = "crates/raijin-fs-benchmarks" }
 raijin-project-benchmarks = { path = "crates/raijin-project-benchmarks" }

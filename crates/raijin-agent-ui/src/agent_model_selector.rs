@@ -1,7 +1,7 @@
 use crate::{
     ModelUsageContext,
     language_model_selector::{LanguageModelSelector, language_model_selector},
-    raijin_ui::ModelSelectorTooltip,
+    ui::ModelSelectorTooltip,
 };
 use raijin_fs::Fs;
 use inazuma::{Entity, FocusHandle, SharedString};
