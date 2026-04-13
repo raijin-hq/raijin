@@ -814,6 +814,11 @@ impl TerminalPane {
             battery_info_provider: std::sync::Arc::new(
                 raijin_chips::providers::battery::BatteryInfoProviderImpl,
             ),
+            kubernetes_config: chip_settings.kubernetes.clone(),
+            aws_config: chip_settings.aws.clone(),
+            directory_config: chip_settings.directory.clone(),
+            git_status_config: chip_settings.git_status.clone(),
+            python_config: chip_settings.python.clone(),
         }
     }
 

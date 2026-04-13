@@ -8,6 +8,7 @@ publish = false
 [dependencies]
 inazuma.workspace = true
 inazuma-util.workspace = true
+raijin-settings.workspace = true
 raijin-shell.workspace = true
 raijin-ui.workspace = true
 raijin-theme.workspace = true

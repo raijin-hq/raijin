@@ -144,6 +144,10 @@ impl Settings for AppearanceSettings {
 /// Resolved chip settings — layout, timeouts, per-chip overrides.
 ///
 /// Access via `ChipSettings::get_global(cx)`.
+// ---------------------------------------------------------------------------
+// Chip Settings (resolved)
+// ---------------------------------------------------------------------------
+
 #[derive(Debug, Clone, RegisterSetting)]
 pub struct ChipSettings {
     pub layout: Vec<String>,
@@ -152,22 +156,28 @@ pub struct ChipSettings {
     pub command_timeout: Duration,
     pub scan_timeout: Duration,
     pub overrides: HashMap<String, ChipOverrideContent>,
+    pub kubernetes: KubernetesChipConfig,
+    pub aws: AwsChipConfig,
+    pub directory: DirectoryChipConfig,
+    pub git_status: GitStatusChipConfig,
+    pub python: PythonChipConfig,
 }
 
 impl Settings for ChipSettings {
     fn from_settings(content: &inazuma_settings_content::SettingsContent) -> Self {
         let chip = content.chip.clone().unwrap_or_default();
+        let k8s = chip.kubernetes.unwrap_or_default();
+        let aws = chip.aws.unwrap_or_default();
+        let dir = chip.directory.unwrap_or_default();
+        let git = chip.git_status.unwrap_or_default();
+        let py = chip.python.unwrap_or_default();
+
         ChipSettings {
             layout: chip.layout.unwrap_or_else(|| {
                 vec![
-                    "username".into(),
-                    "hostname".into(),
-                    "directory".into(),
-                    "time".into(),
-                    "shell".into(),
-                    "git_branch".into(),
-                    "git_status".into(),
-                    "*".into(),
+                    "username".into(), "hostname".into(), "directory".into(),
+                    "time".into(), "shell".into(), "git_branch".into(),
+                    "git_status".into(), "*".into(),
                 ]
             }),
             show_icons: chip.show_icons.unwrap_or(true),
@@ -175,6 +185,87 @@ impl Settings for ChipSettings {
             command_timeout: Duration::from_millis(chip.command_timeout.unwrap_or(500)),
             scan_timeout: Duration::from_millis(chip.scan_timeout.unwrap_or(30)),
             overrides: chip.overrides.unwrap_or_default(),
+            kubernetes: KubernetesChipConfig {
+                context_aliases: k8s.context_aliases.unwrap_or_default(),
+                user_aliases: k8s.user_aliases.unwrap_or_default(),
+                contexts: k8s.contexts.unwrap_or_default().into_iter().map(|c| {
+                    KubernetesContextConfig {
+                        context_pattern: c.context_pattern.unwrap_or_default(),
+                        user_pattern: c.user_pattern,
+                        context_alias: c.context_alias,
+                        user_alias: c.user_alias,
+                    }
+                }).collect(),
+                show_namespace: k8s.show_namespace.unwrap_or(true),
+                show_user: k8s.show_user.unwrap_or(false),
+                show_cluster: k8s.show_cluster.unwrap_or(false),
+            },
+            aws: AwsChipConfig {
+                region_aliases: aws.region_aliases.unwrap_or_default(),
+                profile_aliases: aws.profile_aliases.unwrap_or_default(),
+                force_display: aws.force_display.unwrap_or(false),
+                expiration_symbol: aws.expiration_symbol.unwrap_or_else(|| "expired".into()),
+            },
+            directory: DirectoryChipConfig {
+                truncation_length: dir.truncation_length.unwrap_or(usize::MAX),
+                truncate_to_repo: dir.truncate_to_repo.unwrap_or(false),
+            },
+            git_status: GitStatusChipConfig {
+                show_stash: git.show_stash.unwrap_or(false),
+                show_ahead_behind: git.show_ahead_behind.unwrap_or(false),
+            },
+            python: PythonChipConfig {
+                show_virtualenv: py.show_virtualenv.unwrap_or(true),
+                pyenv_version_name: py.pyenv_version_name.unwrap_or(false),
+            },
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+// Resolved per-provider config structs (non-Option, with defaults)
+// ---------------------------------------------------------------------------
+
+#[derive(Debug, Clone)]
+pub struct KubernetesChipConfig {
+    pub context_aliases: HashMap<String, String>,
+    pub user_aliases: HashMap<String, String>,
+    pub contexts: Vec<KubernetesContextConfig>,
+    pub show_namespace: bool,
+    pub show_user: bool,
+    pub show_cluster: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct KubernetesContextConfig {
+    pub context_pattern: String,
+    pub user_pattern: Option<String>,
+    pub context_alias: Option<String>,
+    pub user_alias: Option<String>,
+}
+
+#[derive(Debug, Clone)]
+pub struct AwsChipConfig {
+    pub region_aliases: HashMap<String, String>,
+    pub profile_aliases: HashMap<String, String>,
+    pub force_display: bool,
+    pub expiration_symbol: String,
+}
+
+#[derive(Debug, Clone)]
+pub struct DirectoryChipConfig {
+    pub truncation_length: usize,
+    pub truncate_to_repo: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct GitStatusChipConfig {
+    pub show_stash: bool,
+    pub show_ahead_behind: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct PythonChipConfig {
+    pub show_virtualenv: bool,
+    pub pyenv_version_name: bool,
 }

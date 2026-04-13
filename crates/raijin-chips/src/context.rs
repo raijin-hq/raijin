@@ -223,6 +223,13 @@ pub struct ChipContext {
     pub command_timeout: Duration,
     /// Battery info provider (cross-platform battery status).
     pub battery_info_provider: std::sync::Arc<dyn crate::providers::battery::BatteryInfoProvider + Send + Sync>,
+
+    // Per-provider configs (resolved, non-Option)
+    pub kubernetes_config: raijin_settings::KubernetesChipConfig,
+    pub aws_config: raijin_settings::AwsChipConfig,
+    pub directory_config: raijin_settings::DirectoryChipConfig,
+    pub git_status_config: raijin_settings::GitStatusChipConfig,
+    pub python_config: raijin_settings::PythonChipConfig,
 }
 
 impl ChipContext {
