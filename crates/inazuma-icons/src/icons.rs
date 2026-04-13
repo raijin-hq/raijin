@@ -333,6 +333,27 @@ pub enum IconName {
     // Simple Icons — Env Managers
     SiAnaconda,
     SiNixos,
+
+    // Simple Icons — new languages
+    SiC,
+    SiCpp,
+    SiCobol,
+    SiDaml,
+    SiElm,
+    SiFennel,
+    SiFortran,
+    SiGleam,
+    SiHaxe,
+    SiMojo,
+    SiOdin,
+    SiOpa,
+    SiPurescript,
+    SiQuarto,
+    SiRaku,
+    SiRed,
+    SiRlang,
+    SiSolidity,
+    SiTypst,
 }
 
 impl IconName {

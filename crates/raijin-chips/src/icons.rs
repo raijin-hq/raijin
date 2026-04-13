@@ -41,6 +41,27 @@ pub fn icon_name_from_str(name: &str) -> Option<IconName> {
         "Perl" => Some(IconName::SiPerl),
         "V" | "Vlang" => Some(IconName::SiV),
 
+        // New languages
+        "C" => Some(IconName::SiC),
+        "Cpp" | "C++" => Some(IconName::SiCpp),
+        "Cobol" => Some(IconName::SiCobol),
+        "Daml" => Some(IconName::SiDaml),
+        "Elm" => Some(IconName::SiElm),
+        "Fennel" => Some(IconName::SiFennel),
+        "Fortran" => Some(IconName::SiFortran),
+        "Gleam" => Some(IconName::SiGleam),
+        "Haxe" => Some(IconName::SiHaxe),
+        "Mojo" => Some(IconName::SiMojo),
+        "Odin" => Some(IconName::SiOdin),
+        "Opa" => Some(IconName::SiOpa),
+        "Purescript" => Some(IconName::SiPurescript),
+        "Quarto" => Some(IconName::SiQuarto),
+        "Raku" => Some(IconName::SiRaku),
+        "Red" => Some(IconName::SiRed),
+        "Rlang" | "R" => Some(IconName::SiRlang),
+        "Solidity" => Some(IconName::SiSolidity),
+        "Typst" => Some(IconName::SiTypst),
+
         // Tier 3: DevOps & Cloud — Simple Icons
         "Ship" | "Kubernetes" => Some(IconName::SiKubernetes),
         "Container" | "Docker" => Some(IconName::SiDocker),
