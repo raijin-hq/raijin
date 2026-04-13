@@ -42,7 +42,8 @@ impl ChipProvider for DirenvProvider {
                 AllowStatus::NotAllowed => "not allowed",
                 AllowStatus::Denied => "denied",
             };
-            format!("direnv {loaded}/{allowed}")
+            let rc = s.rc_path.display();
+            format!("direnv {loaded}/{allowed} ({rc})")
         });
 
         ChipOutput {
