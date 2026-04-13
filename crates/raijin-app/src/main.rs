@@ -9,13 +9,12 @@ use inazuma_settings_framework::{SettingsStore, watch_config_file};
 use raijin_settings::AppearanceSettings;
 use raijin_ui::AppShell;
 use raijin_ui::TitleBar;
+use raijin_actions::Quit;
 
-// Global actions — available everywhere
+// Global actions — available everywhere (OpenSettings and Quit come from raijin-actions)
 actions!(
     raijin,
     [
-        Quit,
-        OpenSettings,
         ToggleCommandPalette,
         ToggleThemeSelector,
         NewWindow,
