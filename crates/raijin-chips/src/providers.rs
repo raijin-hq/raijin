@@ -77,7 +77,7 @@ mod hg_branch;
 mod pijul_channel;
 
 // Tier 7: Environment Managers
-// mod conda; // TODO: cp from starship
+mod conda;
 // mod nix_shell; // TODO: cp from starship
 // mod guix_shell; // TODO: cp from starship
 // mod direnv; // TODO: cp from starship
@@ -167,7 +167,7 @@ pub fn register_all(registry: &mut ChipRegistry) {
     registry.register(pijul_channel::PijulChannelProvider);
 
     // Tier 7: Environment Managers
-    // registry.register(conda::CondaProvider);
+    registry.register(conda::CondaProvider);
     // registry.register(nix_shell::NixShellProvider);
     // registry.register(guix_shell::GuixShellProvider);
     // registry.register(direnv::DirenvProvider);
