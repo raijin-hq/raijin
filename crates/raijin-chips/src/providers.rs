@@ -10,6 +10,7 @@ mod git_status;
 // Tier 2: Languages & Runtimes
 pub(crate) mod cc;
 mod c;
+mod cobol;
 mod cpp;
 mod nodejs;
 // mod python; // TODO: cp from starship
@@ -99,6 +100,7 @@ pub fn register_all(registry: &mut ChipRegistry) {
 
     // Tier 2: Languages & Runtimes
     registry.register(c::CProvider);
+    registry.register(cobol::CobolProvider);
     registry.register(cpp::CppProvider);
     registry.register(nodejs::NodejsProvider);
     // registry.register(python::PythonProvider);
