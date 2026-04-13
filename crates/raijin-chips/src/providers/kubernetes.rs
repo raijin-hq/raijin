@@ -4,7 +4,6 @@ use yaml_rust2::{Yaml, YamlLoader};
 
 use std::borrow::Cow;
 use std::env;
-use std::path::PathBuf;
 
 use crate::context::ChipContext;
 use crate::provider::{ChipId, ChipOutput, ChipProvider};
@@ -200,12 +199,75 @@ fn gather_kube_info(ctx: &ChipContext) -> Option<String> {
             KubeCtxComponents::default()
         });
 
-    // Build label: "context (namespace)"
-    let display_context = current_kube_ctx_name.to_string();
-    match &ctx_components.namespace {
-        Some(ns) if !ns.is_empty() => Some(format!("{display_context} ({ns})")),
-        _ => Some(display_context),
+    let config = &ctx.kubernetes_config;
+    let ctx_name_owned = current_kube_ctx_name.to_string();
+
+    // Context Aliasing: contexts Vec first (canonical), then context_aliases HashMap (deprecated fallback)
+    let (display_context, display_user) = config
+        .contexts
+        .iter()
+        .find_map(|ctx_config| {
+            let context_alias = get_aliased_name(
+                Some(ctx_config.context_pattern.as_str()),
+                Some(current_kube_ctx_name),
+                ctx_config.context_alias.as_deref(),
+            )?;
+
+            let user_alias = get_aliased_name(
+                ctx_config.user_pattern.as_deref(),
+                ctx_components.user.as_deref(),
+                ctx_config.user_alias.as_deref(),
+            );
+            if matches!((&ctx_config.user_pattern, &user_alias), (Some(_), None)) {
+                return None;
+            }
+
+            Some((context_alias, user_alias))
+        })
+        .unwrap_or_else(|| {
+            // Deprecated fallback: context_aliases and user_aliases HashMaps
+            let display_ctx = deprecated::get_alias(
+                ctx_name_owned.clone(),
+                &config.context_aliases,
+                "context",
+            )
+            .unwrap_or_else(|| ctx_name_owned.clone());
+
+            let display_user = ctx_components.user.clone().and_then(|user| {
+                deprecated::get_alias(user, &config.user_aliases, "user")
+            });
+
+            (display_ctx, display_user)
+        });
+
+    // Build label based on show_* toggles from config
+    let mut parts = vec![display_context];
+
+    if config.show_namespace {
+        if let Some(ref ns) = ctx_components.namespace {
+            if !ns.is_empty() {
+                parts.push(format!("({ns})"));
+            }
+        }
     }
+
+    if config.show_user {
+        if let Some(ref user) = display_user {
+            if !user.is_empty() {
+                parts.push(format!("[{user}]"));
+            }
+        }
+    }
+
+    if config.show_cluster {
+        if let Some(ref cluster) = ctx_components.cluster {
+            if !cluster.is_empty() {
+                parts.push(format!("@{cluster}"));
+            }
+        }
+    }
+
+    Some(parts.join(" "))
 }
 
 fn parse_kubeconfigs<I>(raw_kubeconfigs: I) -> Vec<Document>
@@ -236,21 +298,18 @@ fn parse_yaml(s: &str) -> Option<Document> {
 
 mod deprecated {
     use std::borrow::Cow;
-    use std::collections::HashMap;
 
-    pub fn get_alias<'a>(
+    pub fn get_alias<S: std::hash::BuildHasher>(
         current_value: String,
-        aliases: &'a HashMap<String, &'a str>,
-        name: &'a str,
+        aliases: &std::collections::HashMap<String, String, S>,
+        name: &str,
     ) -> Option<String> {
         let alias = if let Some(val) = aliases.get(current_value.as_str()) {
-            // simple match without regex
-            Some((*val).to_string())
+            Some(val.to_string())
         } else {
-            // regex match
             aliases.iter().find_map(|(k, v)| {
                 let re = regex::Regex::new(&format!("^{k}$")).ok()?;
-                let replaced = re.replace(current_value.as_str(), *v);
+                let replaced = re.replace(current_value.as_str(), v.as_str());
                 match replaced {
                     // We have a match if the replaced string is different from the original
                     Cow::Owned(replaced) => Some(replaced),
