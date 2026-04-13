@@ -1,6 +1,4 @@
-
 use std::cell::OnceCell;
-use std::collections::HashMap;
 use std::path::PathBuf;
 use std::str::FromStr;
 
@@ -180,10 +178,10 @@ fn get_credentials_duration(
     Some(expiration_date.timestamp() - chrono::Local::now().timestamp())
 }
 
-fn alias_name(name: Option<String>, aliases: &HashMap<String, &str>) -> Option<String> {
+fn alias_name<V: AsRef<str>, S: std::hash::BuildHasher>(name: Option<String>, aliases: &std::collections::HashMap<String, V, S>) -> Option<String> {
     name.as_ref()
         .and_then(|n| aliases.get(n))
-        .map(|&a| a.to_string())
+        .map(|a| a.as_ref().to_string())
         .or(name)
 }
 
@@ -299,20 +297,62 @@ impl ChipProvider for AwsProvider {
 }
 
 fn gather_aws_info(ctx: &ChipContext) -> Option<String> {
-    let aws_config: AwsConfigFile = OnceCell::new();
-    let aws_creds: AwsCredsFile = OnceCell::new();
+    let config = &ctx.aws_config;
+    let aws_config_file: AwsConfigFile = OnceCell::new();
+    let aws_creds_file: AwsCredsFile = OnceCell::new();
 
-    let (aws_profile, aws_region) = get_aws_profile_and_region(ctx, &aws_config);
+    let (aws_profile, aws_region) = get_aws_profile_and_region(ctx, &aws_config_file);
     if aws_profile.is_none() && aws_region.is_none() {
         return None;
     }
 
-    // Build label: "profile (region)" or just "profile" or "(region)"
-    match (aws_profile, aws_region) {
-        (Some(profile), Some(region)) => Some(format!("{profile} ({region})")),
-        (Some(profile), None) => Some(profile),
-        (None, Some(region)) => Some(format!("({region})")),
-        (None, None) => None,
+    // Only display in the presence of credential_process, source_profile or valid credentials
+    if !config.force_display
+        && !has_credential_process_or_sso(ctx, aws_profile.as_ref(), &aws_config_file, &aws_creds_file)
+            .unwrap_or(false)
+        && !has_source_profile(ctx, aws_profile.as_ref(), &aws_config_file, &aws_creds_file)
+            .unwrap_or(false)
+        && !has_defined_credentials(ctx, aws_profile.as_ref(), &aws_creds_file)
+            .unwrap_or(false)
+    {
+        return None;
+    }
+
+    // Duration (credential expiration) — port 1:1 from Starship
+    let duration = get_credentials_duration(
+        ctx,
+        aws_profile.as_ref(),
+        &aws_config_file,
+        &aws_creds_file,
+    )
+    .map(|d| {
+        if d > 0 {
+            inazuma_util::time::render_time((d * 1000) as u128, false)
+        } else {
+            config.expiration_symbol.clone()
+        }
+    });
+
+    // Apply aliasing from config
+    let mapped_profile = alias_name(aws_profile, &config.profile_aliases);
+    let mapped_region = alias_name(aws_region, &config.region_aliases);
+
+    // Build label: "profile (region) duration"
+    let mut parts = Vec::new();
+    if let Some(ref p) = mapped_profile {
+        parts.push(p.clone());
+    }
+    if let Some(ref r) = mapped_region {
+        parts.push(format!("({r})"));
+    }
+    if let Some(ref d) = duration {
+        parts.push(d.clone());
+    }
+
+    if parts.is_empty() {
+        None
+    } else {
+        Some(parts.join(" "))
     }
 }
 
@@ -323,7 +363,7 @@ mod tests {
 
     #[test]
     fn test_alias_name() {
-        let mut aliases = HashMap::new();
+        let mut aliases = std::collections::HashMap::new();
         aliases.insert("us-east-1".to_string(), "use1");
         assert_eq!(alias_name(Some("us-east-1".into()), &aliases), Some("use1".to_string()));
         assert_eq!(alias_name(Some("eu-west-1".into()), &aliases), Some("eu-west-1".to_string()));
