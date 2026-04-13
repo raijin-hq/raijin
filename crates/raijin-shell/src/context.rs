@@ -3,6 +3,7 @@ use std::process::Command;
 use crate::metadata::ShellMetadataPayload;
 
 /// Git diff statistics (insertions, deletions, changed files).
+#[derive(Clone)]
 pub struct GitStats {
     pub files_changed: u32,
     pub insertions: u32,
@@ -13,6 +14,7 @@ pub struct GitStats {
 ///
 /// Provides CWD, git branch, hostname, username, and other metadata for display
 /// in the terminal's context chips area. Updated dynamically via OSC 7777 metadata.
+#[derive(Clone)]
 pub struct ShellContext {
     pub cwd: String,
     pub cwd_short: String,

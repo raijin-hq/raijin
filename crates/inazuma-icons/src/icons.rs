@@ -284,6 +284,55 @@ pub enum IconName {
     RaijinPredictUp,
     RaijinSrcCustom,
     RaijinSrcExtension,
+
+    // Simple Icons — programming languages
+    SiNodejs,
+    SiPython,
+    SiRust,
+    SiGo,
+    SiJava,
+    SiRuby,
+    SiPhp,
+    SiSwift,
+    SiDeno,
+    SiBun,
+    SiDotnet,
+    SiElixir,
+    SiDart,
+    SiKotlin,
+    SiScala,
+    SiZig,
+    SiLua,
+    SiJulia,
+    SiNim,
+    SiHaskell,
+    SiErlang,
+    SiCrystal,
+    SiOcaml,
+    SiPerl,
+    SiV,
+
+    // Simple Icons — DevOps & Cloud
+    SiKubernetes,
+    SiDocker,
+    SiAmazonaws,
+    SiGooglecloud,
+    SiMicrosoftazure,
+    SiTerraform,
+    SiHelm,
+    SiPulumi,
+    SiVagrant,
+    SiOpenstack,
+
+    // Simple Icons — Build Tools
+    SiCmake,
+    SiGradle,
+    SiApachemaven,
+    SiMeson,
+
+    // Simple Icons — Env Managers
+    SiAnaconda,
+    SiNixos,
 }
 
 impl IconName {

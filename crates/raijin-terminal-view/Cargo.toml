@@ -23,6 +23,7 @@ log.workspace = true
 lsp-types = { version = "0.97", features = ["proposed"] }
 parking_lot.workspace = true
 inazuma-settings-framework.workspace = true
+raijin-chips.workspace = true
 raijin-completions = { path = "../raijin-completions" }
 raijin-project.workspace = true
 raijin-project-registry.workspace = true

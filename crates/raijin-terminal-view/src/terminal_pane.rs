@@ -4,9 +4,12 @@ use inazuma::{
     ParentElement, Render, SharedString, Styled, Window, prelude::*,
 };
 use raijin_ui::{
-    Anchor, Chip, GitBranchChip, GitStatsChip, IconName, Popover,
+    Anchor, Chip, Popover,
     h_flex, v_flex,
     input::{AutoPairConfig, Input, InputEvent, InputState},
+};
+use raijin_chips::{
+    ChipRegistry, ChipContext, DetectionCache, collect_chip_env_vars,
 };
 use raijin_shell::ShellContext;
 use raijin_terminal::{Terminal, TerminalEvent};
@@ -117,6 +120,12 @@ pub struct TerminalPane {
     show_terminal: bool,
     last_terminal_rows: u16,
     last_terminal_cols: u16,
+
+    // Chip system
+    chip_registry: ChipRegistry,
+    detection_cache: DetectionCache,
+    last_exit_code: Option<i32>,
+    last_duration_ms: Option<u64>,
 
     // Project detection (reactive git root from shell CWD)
     current_git_root: Option<std::path::PathBuf>,
@@ -231,6 +240,23 @@ impl TerminalPane {
             show_terminal: false,
             last_terminal_rows: 0,
             last_terminal_cols: 0,
+            chip_registry: {
+                use inazuma_settings_framework::Settings;
+                let chip_settings = raijin_settings::ChipSettings::get_global(cx);
+                let mut r = ChipRegistry::with_all_providers();
+                r.set_renderer("shell", render_shell_chip);
+                r.apply_layout(&chip_settings.layout);
+                r
+            },
+            detection_cache: {
+                use inazuma_settings_framework::Settings;
+                let mut cache = DetectionCache::new();
+                let scan_timeout = raijin_settings::ChipSettings::get_global(cx).scan_timeout;
+                cache.get_or_scan(&cwd, scan_timeout);
+                cache
+            },
+            last_exit_code: None,
+            last_duration_ms: None,
             current_git_root: None,
             workspace: None,
         }
@@ -307,6 +333,11 @@ impl TerminalPane {
                     let new_cwd = std::path::PathBuf::from(&payload.cwd);
                     self.shell_context.update_from_metadata(&payload);
                     self.shell_completion.update_cwd(new_cwd.clone());
+                    // Invalidate chip detection cache so providers re-scan the new CWD
+                    self.detection_cache.invalidate();
+                    // Store last command info for chip providers (cmd_duration, status)
+                    self.last_exit_code = payload.last_exit_code;
+                    self.last_duration_ms = payload.last_duration_ms;
 
                     let new_git_root = payload.git_root.as_ref().map(std::path::PathBuf::from);
                     if new_git_root != self.current_git_root {
@@ -761,144 +792,42 @@ impl TerminalPane {
     // Render helpers
     // -----------------------------------------------------------------------
 
-    fn render_shell_selector_chip(&self) -> impl IntoElement {
-        let current = self.shell_name.clone();
-        let shells = detect_available_shells();
+    fn build_chip_context(&self, cx: &App) -> ChipContext {
+        use inazuma_settings_framework::Settings;
+        let chip_settings = raijin_settings::ChipSettings::get_global(cx);
 
-        Popover::new("shell-selector")
-            .anchor(Anchor::BottomLeft)
-            .bg(oklcha(0.23, 0.0, 0.0, 1.0))
-            .border_color(oklcha(0.30, 0.0, 0.0, 1.0))
-            .rounded_lg()
-            .shadow_lg()
-            .trigger(Chip::new(&current).bg_color(rgb(0xa78bfa).into()).interactive())
-            .content(move |_state, _window, cx| {
-                let popover_entity = cx.entity();
-                let mut list = v_flex().min_w(px(180.0));
-
-                for shell in &shells {
-                    let is_current = shell.name == current;
-                    let name = shell.name.clone();
-                    let installed = shell.installed;
-                    let detail = shell
-                        .path
-                        .clone()
-                        .unwrap_or_else(|| "Not installed".to_string());
-
-                    let shell_name_for_click = shell.name.clone();
-                    let shell_path_for_click = shell.path.clone();
-                    let popover = popover_entity.clone();
-                    let row = div()
-                        .id(inazuma::ElementId::Name(format!("shell-{}", shell.name).into()))
-                        .px(px(8.0))
-                        .py(px(5.0))
-                        .text_sm()
-                        .rounded(px(4.0))
-                        .when(!is_current, |s| {
-                            s.cursor_pointer()
-                                .hover(|s| s.bg(Oklch::white().opacity(0.06)))
-                        })
-                        .on_mouse_down(
-                            inazuma::MouseButton::Left,
-                            move |_, window, cx| {
-                                if is_current {
-                                    return;
-                                }
-                                popover.update(cx, |state, cx| {
-                                    state.dismiss(window, cx);
-                                });
-                                cx.global_mut::<PendingShellSwitch>().0 = Some(ShellOption {
-                                    name: shell_name_for_click.clone(),
-                                    path: shell_path_for_click.clone(),
-                                    installed,
-                                });
-                                window.refresh();
-                            },
-                        )
-                        .child(
-                            h_flex()
-                                .items_center()
-                                .justify_between()
-                                .gap(px(12.0))
-                                .child(
-                                    h_flex()
-                                        .items_center()
-                                        .gap(px(8.0))
-                                        .child(
-                                            div()
-                                                .w(px(14.0))
-                                                .text_center()
-                                                .when(is_current, |s| {
-                                                    s.text_color(rgb(0x14F195)).child("✓")
-                                                }),
-                                        )
-                                        .child(
-                                            div()
-                                                .when(is_current, |s| {
-                                                    s.text_color(rgb(0x14F195))
-                                                })
-                                                .when(!is_current && installed, |s| {
-                                                    s.text_color(rgb(0xf1f1f1))
-                                                })
-                                                .when(!installed, |s| {
-                                                    s.text_color(Oklch::white().opacity(0.4))
-                                                })
-                                                .child(name),
-                                        ),
-                                )
-                                .child(
-                                    div()
-                                        .text_xs()
-                                        .when(installed, |s| {
-                                            s.text_color(Oklch::white().opacity(0.3))
-                                                .child(detail)
-                                        })
-                                        .when(!installed, |s| {
-                                            s.text_color(rgb(0xa78bfa)).child("Install")
-                                        }),
-                                ),
-                        );
-
-                    list = list.child(row);
-                }
-                list
-            })
-    }
-
-    fn render_input_area(&self) -> impl IntoElement {
         let time_str = time::OffsetDateTime::now_local()
             .unwrap_or_else(|_| time::OffsetDateTime::now_utc())
             .format(time::macros::format_description!("[hour]:[minute]"))
             .unwrap_or_else(|_| "--:--".to_string());
 
-        let mut chips = h_flex()
+        ChipContext {
+            shell_context: self.shell_context.clone(),
+            shell_name: self.shell_name.clone(),
+            cwd: std::path::PathBuf::from(&self.shell_context.cwd),
+            time_str,
+            dir_contents: self.detection_cache.contents_ref().clone(),
+            env: collect_chip_env_vars(),
+            last_exit_code: self.last_exit_code,
+            last_duration_ms: self.last_duration_ms,
+            command_timeout: chip_settings.command_timeout,
+        }
+    }
+
+    fn render_input_area(&self, window: &mut Window, cx: &App) -> impl IntoElement {
+        let ctx = self.build_chip_context(cx);
+
+        // Render all chips via the registry. The shell chip is rendered
+        // separately because its Popover needs terminal-specific state
+        // (PendingShellSwitch global, detect_available_shells).
+        let elements = self.chip_registry.render_all(&ctx, window, cx);
+
+        let chips = h_flex()
             .gap(px(6.0))
             .px_4()
             .pt_2()
             .flex_wrap()
-            .child(Chip::new(&self.shell_context.username).bg_color(rgb(0x00BFFF).into()))
-            .child(Chip::new(&self.shell_context.hostname).bg_color(rgb(0xc8c8c8).into()))
-            .child(
-                Chip::new(&self.shell_context.cwd_short).bg_color(rgb(0x6ee7b7).into())
-                    .icon(IconName::Folder),
-            )
-            .child(
-                Chip::new(&time_str).bg_color(rgb(0xff5f5f).into())
-                    .icon(IconName::CountdownTimer),
-            )
-            .child(self.render_shell_selector_chip());
-
-        if let Some(branch) = &self.shell_context.git_branch {
-            chips = chips.child(GitBranchChip::new(branch));
-        }
-
-        if let Some(stats) = &self.shell_context.git_stats {
-            chips = chips.child(GitStatsChip::new(
-                stats.files_changed,
-                stats.insertions,
-                stats.deletions,
-            ));
-        }
+            .children(elements);
 
         div()
             .flex_shrink_0()
@@ -1105,7 +1034,7 @@ impl Render for TerminalPane {
                 if self.history_panel.is_visible() {
                     container = container.child(self.history_panel.render());
                 }
-                container = container.child(self.render_input_area());
+                container = container.child(self.render_input_area(window, cx));
             }
         }
 
@@ -1269,6 +1198,26 @@ impl Item for TerminalPane {
             show_terminal: false,
             last_terminal_rows: last_rows,
             last_terminal_cols: last_cols,
+            chip_registry: {
+                use inazuma_settings_framework::Settings;
+                let chip_settings = raijin_settings::ChipSettings::get_global(cx);
+                let mut r = ChipRegistry::with_all_providers();
+                r.set_renderer("shell", render_shell_chip);
+                r.apply_layout(&chip_settings.layout);
+                r
+            },
+            detection_cache: {
+                use inazuma_settings_framework::Settings;
+                let mut cache = DetectionCache::new();
+                let scan_timeout = raijin_settings::ChipSettings::get_global(cx).scan_timeout;
+                cache.get_or_scan(
+                    std::path::Path::new(&self.shell_context.cwd),
+                    scan_timeout,
+                );
+                cache
+            },
+            last_exit_code: None,
+            last_duration_ms: None,
             current_git_root: None,
             workspace: ws,
         });
@@ -1359,5 +1308,124 @@ fn keystroke_to_bytes(keystroke: &inazuma::Keystroke, terminal: &Terminal) -> Ve
     }
 
     Vec::new()
+}
+
+// ---------------------------------------------------------------------------
+// Shell chip custom renderer (terminal-specific, needs PendingShellSwitch)
+// ---------------------------------------------------------------------------
+
+/// Custom renderer for the shell chip — wraps it in a Popover with shell selector.
+///
+/// Registered as `ChipRenderFn` on the shell chip. Uses `detect_available_shells()`
+/// and `PendingShellSwitch` global which are terminal-specific.
+fn render_shell_chip(
+    output: &raijin_chips::ChipOutput,
+    colors: &raijin_theme::ChipColors,
+    _window: &mut Window,
+    _cx: &App,
+) -> inazuma::AnyElement {
+    let current = output.label.clone();
+    let shells = detect_available_shells();
+    let color = colors.shell;
+
+    Popover::new("shell-selector")
+        .anchor(Anchor::BottomLeft)
+        .bg(oklcha(0.23, 0.0, 0.0, 1.0))
+        .border_color(oklcha(0.30, 0.0, 0.0, 1.0))
+        .rounded_lg()
+        .shadow_lg()
+        .trigger(Chip::new(current.clone()).color(color).interactive())
+        .content(move |_state, _window, cx| {
+            let popover_entity = cx.entity();
+            let mut list = v_flex().min_w(px(180.0));
+
+            for shell in &shells {
+                let is_current = shell.name == current;
+                let name = shell.name.clone();
+                let installed = shell.installed;
+                let detail = shell
+                    .path
+                    .clone()
+                    .unwrap_or_else(|| "Not installed".to_string());
+
+                let shell_name_for_click = shell.name.clone();
+                let shell_path_for_click = shell.path.clone();
+                let popover = popover_entity.clone();
+                let row = div()
+                    .id(inazuma::ElementId::Name(format!("shell-{}", shell.name).into()))
+                    .px(px(8.0))
+                    .py(px(5.0))
+                    .text_sm()
+                    .rounded(px(4.0))
+                    .when(!is_current, |s| {
+                        s.cursor_pointer()
+                            .hover(|s| s.bg(Oklch::white().opacity(0.06)))
+                    })
+                    .on_mouse_down(
+                        inazuma::MouseButton::Left,
+                        move |_, window, cx| {
+                            if is_current {
+                                return;
+                            }
+                            popover.update(cx, |state, cx| {
+                                state.dismiss(window, cx);
+                            });
+                            cx.global_mut::<PendingShellSwitch>().0 = Some(ShellOption {
+                                name: shell_name_for_click.clone(),
+                                path: shell_path_for_click.clone(),
+                                installed,
+                            });
+                            window.refresh();
+                        },
+                    )
+                    .child(
+                        h_flex()
+                            .items_center()
+                            .justify_between()
+                            .gap(px(12.0))
+                            .child(
+                                h_flex()
+                                    .items_center()
+                                    .gap(px(8.0))
+                                    .child(
+                                        div()
+                                            .w(px(14.0))
+                                            .text_center()
+                                            .when(is_current, |s| {
+                                                s.text_color(rgb(0x14F195)).child("✓")
+                                            }),
+                                    )
+                                    .child(
+                                        div()
+                                            .when(is_current, |s| {
+                                                s.text_color(rgb(0x14F195))
+                                            })
+                                            .when(!is_current && installed, |s| {
+                                                s.text_color(rgb(0xf1f1f1))
+                                            })
+                                            .when(!installed, |s| {
+                                                s.text_color(Oklch::white().opacity(0.4))
+                                            })
+                                            .child(name),
+                                    ),
+                            )
+                            .child(
+                                div()
+                                    .text_xs()
+                                    .when(installed, |s| {
+                                        s.text_color(Oklch::white().opacity(0.3))
+                                            .child(detail)
+                                    })
+                                    .when(!installed, |s| {
+                                        s.text_color(rgb(0xa78bfa)).child("Install")
+                                    }),
+                            ),
+                    );
+
+                list = list.child(row);
+            }
+            list
+        })
+        .into_any_element()
 }
 

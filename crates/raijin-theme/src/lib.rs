@@ -23,7 +23,7 @@ pub use colors::ThemeColors;
 pub use colors::{
     EditorColors, TerminalColors, TerminalAnsiColors, PanelColors, PaneColors,
     TabColors, ScrollbarColors, MinimapColors, StatusBarColors, TitleBarColors,
-    ToolbarColors, SearchColors, VimColors, VersionControlColors, BlockColors, ChartColors,
+    ToolbarColors, SearchColors, VimColors, VersionControlColors, BlockColors, ChartColors, ChipColors,
 };
 pub use colors::{ThemeColorsRefinement, ThemeColorField, all_theme_colors};
 pub use colors::{
@@ -32,7 +32,7 @@ pub use colors::{
     ScrollbarColorsRefinement, MinimapColorsRefinement, StatusBarColorsRefinement,
     TitleBarColorsRefinement, ToolbarColorsRefinement, SearchColorsRefinement,
     VimColorsRefinement, VersionControlColorsRefinement, BlockColorsRefinement,
-    ChartColorsRefinement,
+    ChartColorsRefinement, ChipColorsRefinement,
 };
 pub use default_colors::*;
 pub use fallback_themes::{raijin_default_themes, apply_status_color_defaults, apply_theme_color_defaults};

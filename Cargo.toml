@@ -35,6 +35,7 @@ members = [
     "crates/raijin-assets",
     "crates/raijin-breadcrumbs",
     "crates/raijin-buffer-diff",
+    "crates/raijin-chips",
     "crates/raijin-client",
     "crates/raijin-cloud-api-types",
     "crates/raijin-cloud-api-client",
@@ -312,6 +313,7 @@ raijin-client = { path = "crates/raijin-client" }
 raijin-cloud-api-client = { path = "crates/raijin-cloud-api-client" }
 raijin-cloud-api-types = { path = "crates/raijin-cloud-api-types" }
 raijin-cloud-llm-client = { path = "crates/raijin-cloud-llm-client" }
+raijin-chips = { path = "crates/raijin-chips" }
 raijin-completions = { path = "crates/raijin-completions" }
 raijin-context-server = { path = "crates/raijin-context-server" }
 raijin-credentials-provider = { path = "crates/raijin-credentials-provider" }
@@ -591,6 +593,7 @@ indoc = "2"
 indexmap = { version = "2", features = ["serde"] }
 inventory = "0.3"
 itertools = "0.14"
+jsonc-parser = { version = "0.32.2", features = ["serde"] }
 libc = "0.2"
 libsqlite3-sys = { version = "0.30.1", features = ["bundled"] }
 linkify = "0.10"
@@ -616,9 +619,11 @@ pet-virtualenv = { git = "https://github.com/microsoft/python-environment-tools.
 proc-macro2 = "1.0.93"
 postage = "0.5"
 pretty_assertions = "1"
+process_control = "5"
 proptest = "1"
 proptest-derive = "0.8.0"
 prost = "0.9"
+quick-xml = "0.39.2"
 prost-build = "0.9"
 pulldown-cmark = { version = "0.13.0", default-features = false }
 quote = "1"
@@ -627,12 +632,15 @@ rayon = "1"
 regex = "1"
 rsa = "0.9.6"
 rust-embed = "8"
+rust-ini = "0.21.3"
 rustc-hash = "2"
 rustls = "0.23.26"
 rustls-platform-verifier = "0.5.0"
 schemars = "1"
 semver = "1"
 serde = { version = "1.0.221", features = ["derive", "rc"] }
+sha1 = "0.11.0"
+sha1_smol = "1"
 serde_json = "1"
 serde_json_lenient = "0.2"
 serde_repr = "0.1"
@@ -695,9 +703,11 @@ uuid = { version = "1", features = ["v4", "serde"] }
 walkdir = "2"
 wasm-encoder = "0.221"
 wasmparser = "0.221"
+versions = "7.0.0"
 wax = "0.7"
 which = "7"
 windows = "0.61"
+yaml-rust2 = "0.11.0"
 yawc = "0.2.5"
 zeroize = "1"
 zstd = "0.13"

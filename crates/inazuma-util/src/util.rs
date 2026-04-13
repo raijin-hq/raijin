@@ -16,6 +16,7 @@ pub mod size;
 #[cfg(any(test, feature = "test-support"))]
 pub mod test;
 pub mod time;
+pub mod version;
 
 use anyhow::Result;
 use itertools::Either;

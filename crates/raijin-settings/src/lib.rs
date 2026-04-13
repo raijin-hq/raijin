@@ -6,8 +6,10 @@ use inazuma_settings_content::{
     AlternateScroll, AppearanceColorspace, CursorShapeContent,
     GeneralInputMode, GeneralWorkingDirectory, Shell, TerminalBlink,
 };
+use inazuma_settings_content::ChipOverrideContent;
 use inazuma_settings_framework::{RegisterSetting, Settings};
 use std::path::PathBuf;
+use std::time::Duration;
 
 // Re-export content types for convenience
 pub use inazuma_settings_content::{
@@ -135,6 +137,44 @@ impl Settings for AppearanceSettings {
             minimum_contrast: appearance.minimum_contrast.unwrap_or(45.0),
             window_colorspace,
             symbol_map,
+        }
+    }
+}
+
+/// Resolved chip settings — layout, timeouts, per-chip overrides.
+///
+/// Access via `ChipSettings::get_global(cx)`.
+#[derive(Debug, Clone, RegisterSetting)]
+pub struct ChipSettings {
+    pub layout: Vec<String>,
+    pub show_icons: bool,
+    pub show_labels: bool,
+    pub command_timeout: Duration,
+    pub scan_timeout: Duration,
+    pub overrides: HashMap<String, ChipOverrideContent>,
+}
+
+impl Settings for ChipSettings {
+    fn from_settings(content: &inazuma_settings_content::SettingsContent) -> Self {
+        let chip = content.chip.clone().unwrap_or_default();
+        ChipSettings {
+            layout: chip.layout.unwrap_or_else(|| {
+                vec![
+                    "username".into(),
+                    "hostname".into(),
+                    "directory".into(),
+                    "time".into(),
+                    "shell".into(),
+                    "git_branch".into(),
+                    "git_status".into(),
+                    "*".into(),
+                ]
+            }),
+            show_icons: chip.show_icons.unwrap_or(true),
+            show_labels: chip.show_labels.unwrap_or(true),
+            command_timeout: Duration::from_millis(chip.command_timeout.unwrap_or(500)),
+            scan_timeout: Duration::from_millis(chip.scan_timeout.unwrap_or(30)),
+            overrides: chip.overrides.unwrap_or_default(),
         }
     }
 }

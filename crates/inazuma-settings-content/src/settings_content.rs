@@ -1,5 +1,6 @@
 mod agent;
 mod appearance;
+mod chip;
 mod editor;
 mod extension;
 mod fallible_options;
@@ -16,6 +17,7 @@ mod workspace;
 
 pub use agent::*;
 pub use appearance::*;
+pub use chip::*;
 pub use editor::*;
 pub use extension::*;
 pub use fallible_options::*;
@@ -109,6 +111,10 @@ pub struct SettingsContent {
     /// Appearance settings — font, cursor, contrast, colorspace, symbol maps.
     /// In Raijin, the terminal font is THE font, not a secondary override.
     pub appearance: Option<AppearanceSettingsContent>,
+
+    /// Chip settings — layout, timeouts, per-chip overrides.
+    /// Controls the context chips in the terminal input area.
+    pub chip: Option<ChipSettingsContent>,
 
     /// Settings related to the file finder.
     pub file_finder: Option<FileFinderSettingsContent>,

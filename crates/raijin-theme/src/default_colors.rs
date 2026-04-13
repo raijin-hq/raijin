@@ -2,7 +2,7 @@ use inazuma::{Oklch, Rgba, px};
 
 use crate::ColorScale;
 use crate::colors::{
-    BlockColors, ChartColors, EditorColors, MinimapColors, PaneColors, PanelColors,
+    BlockColors, ChartColors, ChipColors, EditorColors, MinimapColors, PaneColors, PanelColors,
     ScrollbarColors, SearchColors, StatusBarColors, TabColors, TerminalAnsiColors,
     TerminalColors, TitleBarColors, ToolbarColors, VersionControlColors, VimColors,
 };
@@ -243,6 +243,22 @@ impl ThemeColors {
                 chart_4: violet().light().step_11(),
                 chart_5: orange().light().step_11(),
             },
+            chip: ChipColors {
+                background: Oklch::black().opacity(0.03),
+                border: Oklch::black().opacity(0.08),
+                text: neutral().light().step_12(),
+                hover: Oklch::black().opacity(0.06),
+                username: cyan().light().step_9(),
+                hostname: neutral().light().step_10(),
+                directory: green().light().step_9(),
+                time: red().light().step_9(),
+                shell: violet().light().step_9(),
+                git_branch_icon: green().light().step_9(),
+                git_branch_text: sky().light().step_9(),
+                git_stats_neutral: neutral().light().step_10(),
+                git_stats_insert: green().light().step_9(),
+                git_stats_delete: red().light().step_9(),
+            },
         }
     }
 
@@ -465,6 +481,22 @@ impl ThemeColors {
                 chart_3: yellow().dark().step_11(),
                 chart_4: violet().dark().step_11(),
                 chart_5: orange().dark().step_11(),
+            },
+            chip: ChipColors {
+                background: Oklch::white().opacity(0.03),
+                border: Oklch::white().opacity(0.08),
+                text: neutral().dark().step_12(),
+                hover: Oklch::white().opacity(0.06),
+                username: cyan().dark().step_9(),
+                hostname: neutral().dark().step_10(),
+                directory: green().dark().step_9(),
+                time: red().dark().step_9(),
+                shell: violet().dark().step_9(),
+                git_branch_icon: green().dark().step_9(),
+                git_branch_text: sky().dark().step_9(),
+                git_stats_neutral: neutral().dark().step_10(),
+                git_stats_insert: green().dark().step_9(),
+                git_stats_delete: red().dark().step_9(),
             },
         }
     }

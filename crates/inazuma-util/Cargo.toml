@@ -38,6 +38,7 @@ take-until = { workspace = true }
 tempfile = { workspace = true }
 unicase = { workspace = true }
 url = { workspace = true }
+versions = { workspace = true }
 percent-encoding = { workspace = true }
 inazuma-util-macros = { workspace = true, optional = true }
 inazuma-gpui-util = { workspace = true }

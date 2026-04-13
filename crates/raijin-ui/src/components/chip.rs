@@ -1,25 +1,31 @@
 use crate::prelude::*;
-use inazuma::{AnyElement, AnyView, CursorStyle, Oklch, IntoElement, ParentElement, Styled, rgb};
+use inazuma::{AnyElement, AnyView, CursorStyle, Oklch, IntoElement, ParentElement, Styled};
 
-/// Chips provide a container for an informative label with optional icon.
+/// A compact context chip with optional icon, used in the terminal prompt area.
 ///
-/// Supports both general-purpose info chips and interactive context chips
-/// with icon prefixes, selection state, and hover effects.
+/// Warp-style chip design: semi-transparent background, subtle border, colored text.
+/// All base styling comes from theme tokens (`cx.theme().colors().chip.*`).
+/// Per-chip accent colors can be overridden via `.color()` or `.bg_color()`.
 ///
 /// # Usage Example
 ///
 /// ```
 /// use raijin_ui::Chip;
 ///
-/// let chip = Chip::new("This Chip");
+/// // Default styling from theme:
+/// let chip = Chip::new("nyxb");
+///
+/// // With custom text color:
+/// let chip = Chip::new("nyxb").color(some_oklch);
 /// ```
 #[derive(IntoElement, RegisterComponent)]
 pub struct Chip {
     label: SharedString,
-    label_color: Color,
-    label_size: LabelSize,
+    color: Option<Oklch>,
     bg_color: Option<Oklch>,
     border_color: Option<Oklch>,
+    label_size: LabelSize,
+    label_color: Color,
     height: Option<Pixels>,
     icon: Option<IconName>,
     icon_color: Option<Oklch>,
@@ -29,14 +35,15 @@ pub struct Chip {
 }
 
 impl Chip {
-    /// Creates a new `Chip` component with the specified label.
+    /// Creates a new `Chip` with theme-default styling.
     pub fn new(label: impl Into<SharedString>) -> Self {
         Self {
             label: label.into(),
-            label_color: Color::Default,
-            label_size: LabelSize::XSmall,
+            color: None,
             bg_color: None,
             border_color: None,
+            label_size: LabelSize::XSmall,
+            label_color: Color::Default,
             height: None,
             icon: None,
             icon_color: None,
@@ -46,7 +53,25 @@ impl Chip {
         }
     }
 
-    /// Sets the color of the label.
+    /// Sets the text color for the chip (overrides theme default).
+    pub fn color(mut self, color: impl Into<Oklch>) -> Self {
+        self.color = Some(color.into());
+        self
+    }
+
+    /// Sets a custom background color (overrides theme chip.background).
+    pub fn bg_color(mut self, color: Oklch) -> Self {
+        self.bg_color = Some(color);
+        self
+    }
+
+    /// Sets a custom border color (overrides theme chip.border).
+    pub fn border_color(mut self, color: Oklch) -> Self {
+        self.border_color = Some(color);
+        self
+    }
+
+    /// Sets the color of the label via the Color enum.
     pub fn label_color(mut self, color: Color) -> Self {
         self.label_color = color;
         self
@@ -55,18 +80,6 @@ impl Chip {
     /// Sets the size of the label.
     pub fn label_size(mut self, size: LabelSize) -> Self {
         self.label_size = size;
-        self
-    }
-
-    /// Sets a custom background color for the chip.
-    pub fn bg_color(mut self, color: Oklch) -> Self {
-        self.bg_color = Some(color);
-        self
-    }
-
-    /// Sets a custom border color for the chip.
-    pub fn border_color(mut self, color: Oklch) -> Self {
-        self.border_color = Some(color);
         self
     }
 
@@ -109,33 +122,41 @@ impl Chip {
 }
 
 impl RenderOnce for Chip {
-    fn render(self, _: &mut Window, cx: &mut App) -> impl IntoElement {
-        let bg_color = self
-            .bg_color
-            .unwrap_or(cx.theme().colors().element_background);
+    fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let chip_colors = &cx.theme().colors().chip;
 
-        let border_color = self.border_color.unwrap_or(cx.theme().colors().border);
+        let bg = self.bg_color.unwrap_or(chip_colors.background);
+        let border = self.border_color.unwrap_or(chip_colors.border);
+        let text_color = self.color;
+        let label_color = match self.color {
+            Some(c) => Color::Custom(c),
+            None => self.label_color,
+        };
+        let hover_bg = chip_colors.hover;
 
         h_flex()
             .when_some(self.height, |this, h| this.h(h))
             .flex_none()
-            .gap(px(4.))
+            .gap(px(4.0))
             .items_center()
-            .px_1()
+            .px(px(6.0))
+            .py(px(2.0))
+            .rounded(px(4.0))
             .border_1()
-            .rounded_sm()
-            .border_color(border_color)
-            .bg(bg_color)
+            .border_color(border)
+            .bg(bg)
+            .text_xs()
+            .when_some(text_color, |this, c| this.text_color(c))
             .overflow_hidden()
             .when(self.interactive, |this| {
                 this.cursor(CursorStyle::PointingHand)
-                    .hover(|this| this.bg(cx.theme().colors().element_hover))
+                    .hover(move |this| this.bg(hover_bg))
             })
             .when(self.selected, |this| {
                 this.bg(cx.theme().colors().element_active)
             })
             .when_some(self.icon, |this, icon| {
-                let icon_color = self.icon_color;
+                let icon_color = self.icon_color.or(text_color);
                 this.child(
                     Icon::new(icon)
                         .size(IconSize::XSmall)
@@ -145,7 +166,7 @@ impl RenderOnce for Chip {
             .child(
                 Label::new(self.label.clone())
                     .size(self.label_size)
-                    .color(self.label_color)
+                    .color(label_color)
                     .buffer_font(cx)
                     .truncate(),
             )
@@ -154,36 +175,24 @@ impl RenderOnce for Chip {
     }
 }
 
-/// Git branch chip: icon and branch name with distinct colors.
+/// Git branch chip: icon and branch name with distinct colors from theme.
 #[derive(IntoElement)]
 pub struct GitBranchChip {
     branch: SharedString,
-    icon_color: Oklch,
-    text_color: Oklch,
 }
 
 impl GitBranchChip {
     pub fn new(branch: impl Into<SharedString>) -> Self {
         Self {
             branch: branch.into(),
-            icon_color: rgb(0x6ee7b7).into(),
-            text_color: rgb(0x7dd3fc).into(),
         }
-    }
-
-    pub fn icon_color(mut self, color: Oklch) -> Self {
-        self.icon_color = color;
-        self
-    }
-
-    pub fn text_color(mut self, color: Oklch) -> Self {
-        self.text_color = color;
-        self
     }
 }
 
 impl RenderOnce for GitBranchChip {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let chip = &cx.theme().colors().chip;
+
         h_flex()
             .gap(px(4.0))
             .items_center()
@@ -191,27 +200,24 @@ impl RenderOnce for GitBranchChip {
             .py(px(2.0))
             .rounded(px(4.0))
             .border_1()
-            .border_color(cx.theme().colors().border)
-            .bg(cx.theme().colors().element_background)
+            .border_color(chip.border)
+            .bg(chip.background)
             .text_xs()
             .child(
                 Icon::new(IconName::GitBranch)
                     .size(IconSize::XSmall)
-                    .color(Color::Custom(self.icon_color)),
+                    .color(Color::Custom(chip.git_branch_icon)),
             )
-            .child(div().text_color(self.text_color).child(self.branch.to_string()))
+            .child(div().text_color(chip.git_branch_text).child(self.branch.to_string()))
     }
 }
 
-/// Git stats chip showing file count, insertions, and deletions in different colors.
+/// Git stats chip showing file count, insertions, and deletions in theme colors.
 #[derive(IntoElement)]
 pub struct GitStatsChip {
     files_changed: u32,
     insertions: u32,
     deletions: u32,
-    neutral_color: Oklch,
-    insert_color: Oklch,
-    delete_color: Oklch,
 }
 
 impl GitStatsChip {
@@ -220,15 +226,14 @@ impl GitStatsChip {
             files_changed,
             insertions,
             deletions,
-            neutral_color: rgb(0xc8c8c8).into(),
-            insert_color: rgb(0x00BFFF).into(),
-            delete_color: rgb(0xff5f5f).into(),
         }
     }
 }
 
 impl RenderOnce for GitStatsChip {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
+        let chip = &cx.theme().colors().chip;
+
         h_flex()
             .gap(px(4.0))
             .items_center()
@@ -236,27 +241,27 @@ impl RenderOnce for GitStatsChip {
             .py(px(2.0))
             .rounded(px(4.0))
             .border_1()
-            .border_color(cx.theme().colors().border)
-            .bg(cx.theme().colors().element_background)
+            .border_color(chip.border)
+            .bg(chip.background)
             .text_xs()
             .child(
                 Icon::new(IconName::FileDiff)
                     .size(IconSize::XSmall)
-                    .color(Color::Custom(self.neutral_color)),
+                    .color(Color::Custom(chip.git_stats_neutral)),
             )
             .child(
                 div()
-                    .text_color(self.neutral_color)
+                    .text_color(chip.git_stats_neutral)
                     .child(format!("{} \u{00b7} ", self.files_changed)),
             )
             .child(
                 div()
-                    .text_color(self.insert_color)
+                    .text_color(chip.git_stats_insert)
                     .child(format!("+{}", self.insertions)),
             )
             .child(
                 div()
-                    .text_color(self.delete_color)
+                    .text_color(chip.git_stats_delete)
                     .child(format!("-{}", self.deletions)),
             )
     }
@@ -269,10 +274,13 @@ impl Component for Chip {
 
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {
         let chip_examples = vec![
-            single_example("Default", Chip::new("Chip Example").into_any_element()),
             single_example(
-                "Customized Label Color",
-                Chip::new("Chip Example")
+                "Default",
+                Chip::new("Chip Example").into_any_element(),
+            ),
+            single_example(
+                "With Color",
+                Chip::new("nyxb")
                     .label_color(Color::Accent)
                     .into_any_element(),
             ),

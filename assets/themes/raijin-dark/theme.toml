@@ -134,6 +134,22 @@ opacity = 30
 "block.error_badge" = "oklch(0.7227 0.1589 10.28)"
 "block.running_badge" = "oklch(0.7839 0.1057 75.43)"
 
+# === Context Chips ===
+"chip.background" = "oklch(1.0 0.0 0.0 / 0.03)"
+"chip.border" = "oklch(1.0 0.0 0.0 / 0.08)"
+"chip.hover" = "oklch(1.0 0.0 0.0 / 0.06)"
+"chip.text" = "oklch(0.9581 0.0 0.0)"
+"chip.username" = "oklch(0.7686 0.1489 207.35)"
+"chip.hostname" = "oklch(0.8398 0.0 0.0)"
+"chip.directory" = "oklch(0.8452 0.1472 164.13)"
+"chip.time" = "oklch(0.6039 0.2124 22.77)"
+"chip.shell" = "oklch(0.7020 0.1634 292.79)"
+"chip.git_branch_icon" = "oklch(0.8452 0.1472 164.13)"
+"chip.git_branch_text" = "oklch(0.7686 0.1489 207.35)"
+"chip.git_stats_neutral" = "oklch(0.8398 0.0 0.0)"
+"chip.git_stats_insert" = "oklch(0.8441 0.1991 156.83)"
+"chip.git_stats_delete" = "oklch(0.6039 0.2124 22.77)"
+
 # === Players ===
 [[style.players]]
 cursor = "oklch(0.7554 0.1534 231.64)"

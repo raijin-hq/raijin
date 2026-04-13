@@ -291,6 +291,13 @@ path_hyperlink_regexes = [ "File \"(?<path>[^\"]+)\", line (?<line>[0-9]+)", [ "
 path_hyperlink_timeout_ms = 1
 show_count_badge = false
 
+[chip]
+layout = ["username", "hostname", "directory", "time", "shell", "git_branch", "git_status", "*"]
+show_icons = true
+show_labels = true
+command_timeout = 500
+scan_timeout = 30
+
 [node]
 ignore_system_version = false
 

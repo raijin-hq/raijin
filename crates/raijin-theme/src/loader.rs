@@ -8,7 +8,8 @@ use inazuma_refineable::Refineable;
 
 use crate::accent::AccentColors;
 use crate::colors::{
-    BlockColors, BlockColorsRefinement, ChartColors, ChartColorsRefinement, EditorColors,
+    BlockColors, BlockColorsRefinement, ChartColors, ChartColorsRefinement, ChipColors,
+    ChipColorsRefinement, EditorColors,
     EditorColorsRefinement, MinimapColors, MinimapColorsRefinement, PaneColors,
     PaneColorsRefinement, PanelColors, PanelColorsRefinement, ScrollbarColors,
     ScrollbarColorsRefinement, SearchColors, SearchColorsRefinement, StatusBarColors,
@@ -323,6 +324,7 @@ fn parse_theme_colors(flat: &HashMap<String, String>) -> Result<ThemeColors> {
                 "version_control" => set_version_control_field(&mut refinement.version_control, rest, color),
                 "block" => set_block_field(&mut refinement.block, rest, color),
                 "chart" => set_chart_field(&mut refinement.chart, rest, color),
+                "chip" => set_chip_field(&mut refinement.chip, rest, color),
                 _ => {
                     log::trace!("unknown theme color prefix: '{prefix}' (key: '{key}')");
                 }
@@ -605,6 +607,15 @@ fn set_chart_field(refinement: &mut ChartColorsRefinement, name: &str, color: Ok
 
 // ---------------------------------------------------------------------------
 // StatusColors parsing
+fn set_chip_field(refinement: &mut ChipColorsRefinement, name: &str, color: Oklch) {
+    match_fields!(refinement, name, color,
+        background, border, text, hover,
+        username, hostname, directory, time, shell,
+        git_branch_icon, git_branch_text,
+        git_stats_neutral, git_stats_insert, git_stats_delete,
+    );
+}
+
 // ---------------------------------------------------------------------------
 
 fn parse_status_colors(flat: &HashMap<String, String>) -> Result<StatusColors> {
@@ -1036,6 +1047,22 @@ pub fn default_theme_colors() -> ThemeColors {
             chart_3: hex(0xff79c6),
             chart_4: hex(0xf1fa8c),
             chart_5: hex(0x6272a4),
+        },
+        chip: ChipColors {
+            background: oklcha(1.0, 0.0, 0.0, 0.03),
+            border: oklcha(1.0, 0.0, 0.0, 0.08),
+            text: fg,
+            hover: oklcha(1.0, 0.0, 0.0, 0.06),
+            username: accent,
+            hostname: muted,
+            directory: hex(0x6ee7b7),
+            time: hex(0xff5f5f),
+            shell: hex(0xa78bfa),
+            git_branch_icon: hex(0x6ee7b7),
+            git_branch_text: hex(0x7dd3fc),
+            git_stats_neutral: muted,
+            git_stats_insert: hex(0x14F195),
+            git_stats_delete: hex(0xff5f5f),
         },
     }
 }

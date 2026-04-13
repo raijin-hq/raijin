@@ -221,6 +221,43 @@ pub struct ChartColors {
     pub chart_5: Oklch,
 }
 
+/// Context chip colors (terminal prompt area).
+///
+/// Controls the appearance of Warp-style context chips: semi-transparent background,
+/// subtle border, colored text. Per-chip accent colors allow theme-based customization.
+#[derive(Refineable, Clone, Debug, PartialEq)]
+#[refineable(Debug, serde::Deserialize)]
+pub struct ChipColors {
+    /// Chip background (semi-transparent glass effect).
+    pub background: Oklch,
+    /// Chip border.
+    pub border: Oklch,
+    /// Default chip text color.
+    pub text: Oklch,
+    /// Chip hover background.
+    pub hover: Oklch,
+    /// Username chip accent.
+    pub username: Oklch,
+    /// Hostname chip accent.
+    pub hostname: Oklch,
+    /// Directory chip accent.
+    pub directory: Oklch,
+    /// Time chip accent.
+    pub time: Oklch,
+    /// Shell chip accent.
+    pub shell: Oklch,
+    /// Git branch icon color.
+    pub git_branch_icon: Oklch,
+    /// Git branch text color.
+    pub git_branch_text: Oklch,
+    /// Git stats neutral (file count).
+    pub git_stats_neutral: Oklch,
+    /// Git stats insertions.
+    pub git_stats_insert: Oklch,
+    /// Git stats deletions.
+    pub git_stats_delete: Oklch,
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ThemeColors
 // ─────────────────────────────────────────────────────────────────────────────
@@ -404,6 +441,9 @@ pub struct ThemeColors {
     /// Chart series colors.
     #[refineable]
     pub chart: ChartColors,
+    /// Context chip colors.
+    #[refineable]
+    pub chip: ChipColors,
 }
 
 impl ThemeColors {

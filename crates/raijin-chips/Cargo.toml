@@ -1,0 +1,31 @@
+[package]
+name = "raijin-chips"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.94"
+publish = false
+
+[dependencies]
+inazuma.workspace = true
+raijin-shell.workspace = true
+raijin-ui.workspace = true
+raijin-theme.workspace = true
+log.workspace = true
+rayon.workspace = true
+which.workspace = true
+process_control.workspace = true
+dirs.workspace = true
+serde_json.workspace = true
+regex.workspace = true
+semver.workspace = true
+yaml-rust2.workspace = true
+chrono.workspace = true
+rust-ini.workspace = true
+sha1.workspace = true
+jsonc-parser.workspace = true
+quick-xml.workspace = true
+toml.workspace = true
+versions.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
