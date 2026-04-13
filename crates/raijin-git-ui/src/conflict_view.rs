@@ -451,7 +451,7 @@ fn render_conflict_buttons(
                 Button::new("resolve-with-agent", "Resolve with Agent")
                     .label_size(LabelSize::Small)
                     .start_icon(
-                        Icon::new(IconName::ZedAssistant)
+                        Icon::new(IconName::RaijinAssistant)
                             .size(IconSize::Small)
                             .color(Color::Muted),
                     )
@@ -566,7 +566,7 @@ pub(crate) fn register_conflict_notification(
 
                     MessageNotification::new(message, cx)
                         .primary_message("Resolve with Agent")
-                        .primary_icon(IconName::ZedAssistant)
+                        .primary_icon(IconName::RaijinAssistant)
                         .primary_icon_color(Color::Muted)
                         .primary_on_click({
                             let paths = paths.clone();

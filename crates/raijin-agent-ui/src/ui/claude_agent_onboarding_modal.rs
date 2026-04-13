@@ -196,9 +196,9 @@ impl Render for ClaudeCodeOnboardingModal {
                     .size(LabelSize::Small)
                     .color(Color::Muted),
             )
-            .child(Headline::new("Claude Agent: Natively in Zed").size(HeadlineSize::Large));
+            .child(Headline::new("Claude Agent: Natively in Raijin").size(HeadlineSize::Large));
 
-        let copy = "Powered by the Agent Client Protocol, you can now run Claude Agent as\na first-class citizen in Zed's agent panel.";
+        let copy = "Powered by the Agent Client Protocol, you can now run Claude Agent as\na first-class citizen in Raijin's agent panel.";
 
         let open_panel_button = Button::new("open-panel", "Start with Claude Agent")
             .style(ButtonStyle::tinted(TintColor::Accent))

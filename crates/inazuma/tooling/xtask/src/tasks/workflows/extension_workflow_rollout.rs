@@ -55,7 +55,7 @@ fn fetch_extension_repos(filter_repos_input: &WorkflowInput) -> (NamedJob, JobOu
                 "script",
                 formatdoc! {r#"
                     const repos = await github.paginate(github.rest.repos.listForOrg, {{
-                        org: 'zed-extensions',
+                        org: 'raijin-extensions',
                         type: 'public',
                         per_page: 100,
                     }});
@@ -195,7 +195,7 @@ fn rollout_workflows_to_extension(
         steps::checkout_repo()
             .with_custom_name("checkout_extension_repo")
             .with_token(token)
-            .with_repository("zed-extensions/${{ matrix.repo }}")
+            .with_repository("raijin-extensions/${{ matrix.repo }}")
             .with_path("extension")
     }
 
@@ -261,8 +261,8 @@ fn rollout_workflows_to_extension(
         let title = format!("Update CI workflows to `{short_sha}`");
 
         let body = formatdoc! {r#"
-            This PR updates the CI workflow files from the main Zed repository
-            based on the commit zed-industries/zed@${{{{ github.sha }}}}
+            This PR updates the CI workflow files from the main Raijin repository
+            based on the commit raijin-hq/raijin@${{{{ github.sha }}}}
 
             {context_input}
         "#,
@@ -276,11 +276,11 @@ fn rollout_workflows_to_extension(
             .add_with(("branch", "update-workflows"))
             .add_with((
                 "committer",
-                "zed-zippy[bot] <234243425+zed-zippy[bot]@users.noreply.github.com>",
+                "raijin-zippy[bot] <234243425+raijin-zippy[bot]@users.noreply.github.com>",
             ))
             .add_with((
                 "author",
-                "zed-zippy[bot] <234243425+zed-zippy[bot]@users.noreply.github.com>",
+                "raijin-zippy[bot] <234243425+raijin-zippy[bot]@users.noreply.github.com>",
             ))
             .add_with(("base", "main"))
             .add_with(("delete-branch", true))
@@ -307,7 +307,7 @@ fn rollout_workflows_to_extension(
         vars::ZED_ZIPPY_APP_ID,
         vars::ZED_ZIPPY_APP_PRIVATE_KEY,
         Some(
-            RepositoryTarget::new("zed-extensions", &["${{ matrix.repo }}"]).permissions([
+            RepositoryTarget::new("raijin-extensions", &["${{ matrix.repo }}"]).permissions([
                 ("permission-pull-requests".to_owned(), Level::Write),
                 ("permission-contents".to_owned(), Level::Write),
                 ("permission-workflows".to_owned(), Level::Write),
@@ -363,8 +363,8 @@ fn create_rollout_tag(rollout_job: &NamedJob, filter_repos_input: &WorkflowInput
 
     fn configure_git() -> Step<Run> {
         named::bash(indoc! {r#"
-            git config user.name "zed-zippy[bot]"
-            git config user.email "234243425+zed-zippy[bot]@users.noreply.github.com"
+            git config user.name "raijin-zippy[bot]"
+            git config user.email "234243425+raijin-zippy[bot]@users.noreply.github.com"
         "#})
     }
 

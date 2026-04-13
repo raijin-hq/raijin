@@ -208,7 +208,7 @@ impl ExtensionBuilder {
 
         let wasm_extension_api_version =
             parse_wasm_extension_version(&manifest.id, &component_bytes)
-                .context("compiled wasm did not contain a valid zed extension api version")?;
+                .context("compiled wasm did not contain a valid raijin extension api version")?;
         manifest.lib.version = Some(wasm_extension_api_version);
 
         let extension_file = extension_dir.join("extension.wasm");

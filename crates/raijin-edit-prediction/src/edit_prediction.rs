@@ -7,7 +7,7 @@ use raijin_cloud_llm_client::predict_edits_v3::{
 use raijin_cloud_llm_client::{
     EditPredictionRejectReason, EditPredictionRejection,
     MAX_EDIT_PREDICTION_REJECTIONS_PER_REQUEST, MINIMUM_REQUIRED_VERSION_HEADER_NAME,
-    PredictEditsRequestTrigger, RejectEditPredictionsBodyRef, ZED_VERSION_HEADER_NAME,
+    PredictEditsRequestTrigger, RejectEditPredictionsBodyRef, RAIJIN_VERSION_HEADER_NAME,
 };
 use inazuma_collections::{HashMap, HashSet};
 use raijin_copilot::{Copilot, Reinstall, SignIn, SignOut};
@@ -69,7 +69,7 @@ pub mod udiff;
 
 mod capture_example;
 pub mod open_ai_compatible;
-mod zed_edit_prediction_delegate;
+mod raijin_edit_prediction_delegate;
 pub mod zeta;
 
 #[cfg(test)]
@@ -79,14 +79,14 @@ use crate::cursor_excerpt::expand_context_syntactically_then_linewise;
 use crate::example_spec::ExampleSpec;
 use crate::license_detection::LicenseDetectionWatcher;
 use crate::mercury::Mercury;
-use crate::onboarding_modal::ZedPredictModal;
+use crate::onboarding_modal::RaijinPredictModal;
 pub use crate::prediction::EditPrediction;
 pub use crate::prediction::EditPredictionId;
 use crate::prediction::EditPredictionResult;
 pub use capture_example::capture_example;
 pub use raijin_language_model::ApiKeyState;
 pub use raijin_telemetry_events::EditPredictionRating;
-pub use zed_edit_prediction_delegate::ZedEditPredictionDelegate;
+pub use raijin_edit_prediction_delegate::RaijinEditPredictionDelegate;
 
 actions!(
     edit_prediction,
@@ -104,7 +104,7 @@ const CHANGE_GROUPING_LINE_SPAN: u32 = 8;
 const EDIT_HISTORY_DIFF_SIZE_LIMIT: usize = 2048 * 3; // ~2048 tokens or ~50% of typical prompt budget
 const COLLABORATOR_EDIT_LOCALITY_CONTEXT_TOKENS: usize = 512;
 const LAST_CHANGE_GROUPING_TIME: Duration = Duration::from_secs(1);
-const ZED_PREDICT_DATA_COLLECTION_CHOICE: &str = "zed_predict_data_collection_choice";
+const RAIJIN_PREDICT_DATA_COLLECTION_CHOICE: &str = "raijin_predict_data_collection_choice";
 const REJECT_REQUEST_DEBOUNCE: Duration = Duration::from_secs(15);
 const EDIT_PREDICTION_SETTLED_EVENT: &str = "Edit Prediction Settled";
 const EDIT_PREDICTION_SETTLED_TTL: Duration = Duration::from_secs(60 * 5);
@@ -810,10 +810,10 @@ impl EditPredictionStore {
     }
 
     fn zeta2_raw_config_from_env() -> Option<Zeta2RawConfig> {
-        let version_str = env::var("ZED_ZETA_FORMAT").ok()?;
+        let version_str = env::var("RAIJIN_ZETA_FORMAT").ok()?;
         let format = ZetaFormat::parse(&version_str).ok()?;
-        let model_id = env::var("ZED_ZETA_MODEL").ok();
-        let environment = env::var("ZED_ZETA_ENVIRONMENT").ok();
+        let model_id = env::var("RAIJIN_ZETA_MODEL").ok();
+        let environment = env::var("RAIJIN_ZETA_ENVIRONMENT").ok();
         Some(Zeta2RawConfig {
             model_id,
             environment,
@@ -869,12 +869,12 @@ impl EditPredictionStore {
                 .background_spawn(async move {
                     let http_client = client.http_client();
                     let token = llm_token.acquire(&client, organization_id).await?;
-                    let url = http_client.build_zed_llm_url("/edit_prediction_experiments", &[])?;
+                    let url = http_client.build_raijin_llm_url("/edit_prediction_experiments", &[])?;
                     let request = http_client::Request::builder()
                         .method(Method::GET)
                         .uri(url.as_ref())
                         .header("Authorization", format!("Bearer {}", token))
-                        .header(ZED_VERSION_HEADER_NAME, app_version.to_string())
+                        .header(RAIJIN_VERSION_HEADER_NAME, app_version.to_string())
                         .body(Default::default())?;
                     let mut response = http_client.send(request).await?;
                     if response.status().is_success() {
@@ -909,11 +909,11 @@ impl EditPredictionStore {
                 raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::Inception)
             }
             EditPredictionModel::Zeta => {
-                raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
-                    .with_disabled(IconName::ZedPredictDisabled)
-                    .with_up(IconName::ZedPredictUp)
-                    .with_down(IconName::ZedPredictDown)
-                    .with_error(IconName::ZedPredictError)
+                raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::RaijinPredict)
+                    .with_disabled(IconName::RaijinPredictDisabled)
+                    .with_up(IconName::RaijinPredictUp)
+                    .with_down(IconName::RaijinPredictDown)
+                    .with_error(IconName::RaijinPredictError)
             }
             EditPredictionModel::Fim { .. } => {
                 let settings = &all_language_settings(None, cx).edit_predictions;
@@ -1532,7 +1532,7 @@ impl EditPredictionStore {
 
             let url = client
                 .http_client()
-                .build_zed_llm_url("/predict_edits/reject", &[])
+                .build_raijin_llm_url("/predict_edits/reject", &[])
                 .unwrap();
 
             let flush_count = batched
@@ -2012,7 +2012,7 @@ fn currently_following(project: &Entity<Project>, cx: &App) -> bool {
 
 fn is_ep_store_provider(provider: EditPredictionProvider) -> bool {
     match provider {
-        EditPredictionProvider::Zed
+        EditPredictionProvider::Raijin
         | EditPredictionProvider::Mercury
         | EditPredictionProvider::Ollama
         | EditPredictionProvider::OpenAiCompatibleApi
@@ -2051,7 +2051,7 @@ impl EditPredictionStore {
 
         let (needs_acceptance_tracking, max_pending_predictions) =
             match all_language_settings(None, cx).edit_predictions.provider {
-                EditPredictionProvider::Zed
+                EditPredictionProvider::Raijin
                 | EditPredictionProvider::Mercury
                 | EditPredictionProvider::Experimental(_) => (true, 2),
                 EditPredictionProvider::Ollama => (false, 1),
@@ -2462,7 +2462,7 @@ impl EditPredictionStore {
         } else {
             client
                 .http_client()
-                .build_zed_llm_url("/predict_edits/raw", &[])?
+                .build_raijin_llm_url("/predict_edits/raw", &[])?
         };
 
         Self::send_api_request(
@@ -2491,7 +2491,7 @@ impl EditPredictionStore {
     ) -> Result<(PredictEditsV3Response, Option<EditPredictionUsage>)> {
         let url = client
             .http_client()
-            .build_zed_llm_url("/predict_edits/v3", &[])?;
+            .build_raijin_llm_url("/predict_edits/v3", &[])?;
 
         let request = PredictEditsV3Request { input, trigger };
 
@@ -2543,7 +2543,7 @@ impl EditPredictionStore {
 
             let mut request_builder = request_builder
                 .header("Content-Type", "application/json")
-                .header(ZED_VERSION_HEADER_NAME, app_version.to_string());
+                .header(RAIJIN_VERSION_HEADER_NAME, app_version.to_string());
 
             // Only add Authorization header if we have a token
             if let Some(ref token_value) = token {
@@ -2562,7 +2562,7 @@ impl EditPredictionStore {
             {
                 anyhow::ensure!(
                     app_version >= minimum_required_version,
-                    ZedUpdateRequiredError {
+                    RaijinUpdateRequiredError {
                         minimum_version: minimum_required_version
                     }
                 );
@@ -2653,7 +2653,7 @@ impl EditPredictionStore {
 
     fn load_data_collection_choice(cx: &App) -> DataCollectionChoice {
         let choice = KeyValueStore::global(cx)
-            .read_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE)
+            .read_kvp(RAIJIN_PREDICT_DATA_COLLECTION_CHOICE)
             .log_err()
             .flatten();
 
@@ -2661,7 +2661,7 @@ impl EditPredictionStore {
             Some("true") => DataCollectionChoice::Enabled,
             Some("false") => DataCollectionChoice::Disabled,
             Some(_) => {
-                log::error!("unknown value in '{ZED_PREDICT_DATA_COLLECTION_CHOICE}'");
+                log::error!("unknown value in '{RAIJIN_PREDICT_DATA_COLLECTION_CHOICE}'");
                 DataCollectionChoice::NotAnswered
             }
             None => DataCollectionChoice::NotAnswered,
@@ -2675,7 +2675,7 @@ impl EditPredictionStore {
         let kvp = KeyValueStore::global(cx);
         raijin_db::write_and_log(cx, move || async move {
             kvp.write_kvp(
-                ZED_PREDICT_DATA_COLLECTION_CHOICE.into(),
+                RAIJIN_PREDICT_DATA_COLLECTION_CHOICE.into(),
                 is_enabled.to_string(),
             )
             .await
@@ -2866,9 +2866,9 @@ fn merge_anchor_ranges(
 
 #[derive(Error, Debug)]
 #[error(
-    "You must update to Zed version {minimum_version} or higher to continue using edit predictions."
+    "You must update to Raijin version {minimum_version} or higher to continue using edit predictions."
 )]
-pub struct ZedUpdateRequiredError {
+pub struct RaijinUpdateRequiredError {
     minimum_version: Version,
 }
 
@@ -2909,19 +2909,19 @@ impl From<bool> for DataCollectionChoice {
     }
 }
 
-struct ZedPredictUpsell;
+struct RaijinPredictUpsell;
 
-impl Dismissable for ZedPredictUpsell {
+impl Dismissable for RaijinPredictUpsell {
     const KEY: &'static str = "dismissed-edit-predict-upsell";
 
     fn dismissed(cx: &App) -> bool {
-        // To make this backwards compatible with older versions of Zed, we
+        // To make this backwards compatible with older versions of Raijin, we
         // check if the user has seen the previous Edit Prediction Onboarding
         // before, by checking the data collection choice which was written to
         // the database once the user clicked on "Accept and Enable"
         let kvp = KeyValueStore::global(cx);
         if kvp
-            .read_kvp(ZED_PREDICT_DATA_COLLECTION_CHOICE)
+            .read_kvp(RAIJIN_PREDICT_DATA_COLLECTION_CHOICE)
             .log_err()
             .is_some_and(|s| s.is_some())
         {
@@ -2935,14 +2935,14 @@ impl Dismissable for ZedPredictUpsell {
 }
 
 pub fn should_show_upsell_modal(cx: &App) -> bool {
-    !ZedPredictUpsell::dismissed(cx)
+    !RaijinPredictUpsell::dismissed(cx)
 }
 
 pub fn init(cx: &mut App) {
     cx.observe_new(move |workspace: &mut Workspace, _, _cx| {
         workspace.register_action(
             move |workspace, _: &raijin_actions::OpenRaijinPredictOnboarding, window, cx| {
-                ZedPredictModal::toggle(
+                RaijinPredictModal::toggle(
                     workspace,
                     workspace.user_store().clone(),
                     workspace.client().clone(),

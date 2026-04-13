@@ -17,7 +17,7 @@ use crate::tasks::workflows::{
 const VERSION_CHECK: &str =
     r#"sed -n 's/^version = \"\(.*\)\"/\1/p' < extension.toml | tr -d '[:space:]'"#;
 
-// This is used by various extensions repos in the zed-extensions org to bump extension versions.
+// This is used by various extensions repos in the raijin-extensions org to bump extension versions.
 pub(crate) fn extension_bump() -> Workflow {
     let bump_type = WorkflowInput::string("bump-type", Some("patch".to_owned()));
     // TODO: Ideally, this would have a default of `false`, but this is currently not
@@ -327,7 +327,7 @@ fn bump_version(
             {{
                 echo "title=Bump version to ${{NEW_VERSION}}";
                 echo "body=This PR bumps the version of this extension to v${{NEW_VERSION}}";
-                echo "branch_name=zed-zippy-autobump";
+                echo "branch_name=raijin-zippy-autobump";
             }} >> "$GITHUB_OUTPUT"
         else
             {{
@@ -339,7 +339,7 @@ fn bump_version(
                 echo "";
                 echo "- N/A";
                 echo "EOF";
-                echo "branch_name=zed-zippy-${{EXTENSION_ID}}-autobump";
+                echo "branch_name=raijin-zippy-${{EXTENSION_ID}}-autobump";
             }} >> "$GITHUB_OUTPUT"
         fi
 
@@ -372,7 +372,7 @@ fn create_pull_request(
             .add("branch", branch_name.to_string())
             .add(
                 "committer",
-                "zed-zippy[bot] <234243425+zed-zippy[bot]@users.noreply.github.com>",
+                "raijin-zippy[bot] <234243425+raijin-zippy[bot]@users.noreply.github.com>",
             )
             .add("base", "main")
             .add("delete-branch", true)
@@ -388,7 +388,7 @@ fn trigger_release(
     app_id: &WorkflowSecret,
     app_secret: &WorkflowSecret,
 ) -> NamedJob {
-    let extension_registry = RepositoryTarget::new("zed-industries", &["extensions"]);
+    let extension_registry = RepositoryTarget::new("raijin-hq", &["extensions"]);
     let (generate_token, generated_token) = generate_token(
         &app_id.to_string(),
         &app_secret.to_string(),
@@ -434,12 +434,12 @@ fn release_action(
 ) -> (Step<Use>, StepOutput) {
     let step = named::uses(
         "huacnlee",
-        "zed-extension-action",
+        "raijin-extension-action",
         "82920ff0876879f65ffbcfa3403589114a8919c6",
     )
     .id("extension-update")
     .add_with(("extension-name", extension_id.to_string()))
-    .add_with(("push-to", "zed-industries/extensions"))
+    .add_with(("push-to", "raijin-hq/extensions"))
     .add_with(("tag", tag.to_string()))
     .add_env(("COMMITTER_TOKEN", generated_token.to_string()));
 
@@ -467,7 +467,7 @@ fn enable_automerge_if_staff(
                 let isStaff = false;
                 try {
                     const response = await github.rest.teams.getMembershipForUserInOrg({
-                        org: 'zed-industries',
+                        org: 'raijin-hq',
                         team_slug: 'staff',
                         username: author
                     });
@@ -487,16 +487,16 @@ fn enable_automerge_if_staff(
                 const pullNumber = parseInt(prNumber);
 
                 await github.rest.issues.addAssignees({
-                    owner: 'zed-industries',
+                    owner: 'raijin-hq',
                     repo: 'extensions',
                     issue_number: pullNumber,
                     assignees: [author]
                 });
-                console.log(`Assigned ${author} to PR #${prNumber} in zed-industries/extensions`);
+                console.log(`Assigned ${author} to PR #${prNumber} in raijin-hq/extensions`);
 
                 // Get the GraphQL node ID
                 const { data: pr } = await github.rest.pulls.get({
-                    owner: 'zed-industries',
+                    owner: 'raijin-hq',
                     repo: 'extensions',
                     pull_number: pullNumber
                 });
@@ -513,7 +513,7 @@ fn enable_automerge_if_staff(
                     }
                 `, { pullRequestId: pr.node_id });
 
-                console.log(`Automerge enabled for PR #${prNumber} in zed-industries/extensions`);
+                console.log(`Automerge enabled for PR #${prNumber} in raijin-hq/extensions`);
             "#},
         ))
         .add_env(("PR_NUMBER", pull_request_number.to_string()))

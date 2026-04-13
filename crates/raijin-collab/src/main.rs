@@ -208,7 +208,7 @@ async fn setup_app_database(config: &Config) -> Result<()> {
 }
 
 async fn handle_root(Extension(mode): Extension<ServiceMode>) -> String {
-    format!("zed:{mode} v{VERSION} ({})", REVISION.unwrap_or("unknown"))
+    format!("raijin:{mode} v{VERSION} ({})", REVISION.unwrap_or("unknown"))
 }
 
 async fn handle_liveness_probe(app_state: Option<Extension<Arc<AppState>>>) -> Result<String> {

@@ -254,7 +254,7 @@ impl From<Pixels> for ButtonRounded {
 }
 
 // ---------------------------------------------------------------------------
-// TintColor — backwards compat for the original Zed API
+// TintColor — backwards compat for the original Raijin API
 // ---------------------------------------------------------------------------
 
 /// A semantic tint color used to color a button, mapping to status colors
@@ -535,7 +535,7 @@ fn tint_for_variant(variant: &ButtonVariant, _cx: &mut App) -> Option<TintColor>
 }
 
 // ---------------------------------------------------------------------------
-// ButtonVariant — Zed-style resolution (ButtonLikeStyles)
+// ButtonVariant — Raijin-style resolution (ButtonLikeStyles)
 // ---------------------------------------------------------------------------
 
 impl ButtonVariant {

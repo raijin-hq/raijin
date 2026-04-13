@@ -662,11 +662,11 @@ impl Copilot {
 
             let editor_info = request::SetEditorInfoParams {
                 editor_info: request::EditorInfo {
-                    name: "zed".into(),
+                    name: "raijin".into(),
                     version: env!("CARGO_PKG_VERSION").into(),
                 },
                 editor_plugin_info: request::EditorPluginInfo {
-                    name: "zed-copilot".into(),
+                    name: "raijin-copilot".into(),
                     version: "0.0.1".into(),
                 },
             };

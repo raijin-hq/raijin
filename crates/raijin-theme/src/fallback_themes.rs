@@ -61,7 +61,7 @@ pub fn apply_theme_color_defaults(
 
 // ---------------------------------------------------------------------------
 // Raijin Dark — from assets/themes/raijin-dark/theme.toml
-// Fields not in our TOML are derived from Zed's One Dark, adapted to our palette.
+// Fields not in our TOML are derived from the original One Dark, adapted to our palette.
 // ---------------------------------------------------------------------------
 
 pub(crate) fn raijin_default_dark() -> Theme {
@@ -94,7 +94,7 @@ pub(crate) fn raijin_default_dark() -> Theme {
     let text_muted = oklch(0.6268, 0.0, 0.0);
     let text_placeholder = oklch(0.4495, 0.0, 0.0);
 
-    // Derived grays (for fields not in our TOML, adapted from Zed)
+    // Derived grays (for fields not in our TOML, adapted from reference)
     let comment_gray = oklch(0.4955, 0.0682, 274.37);
 
     let player = PlayerColors(vec![
@@ -510,7 +510,7 @@ pub(crate) fn raijin_default_dark() -> Theme {
 
 // ---------------------------------------------------------------------------
 // Raijin Light — inverted version of Raijin Dark
-// Uses light-adapted values, fills from Zed's One Light where needed.
+// Uses light-adapted values, fills from the original One Light where needed.
 // ---------------------------------------------------------------------------
 
 pub(crate) fn raijin_default_light() -> Theme {

@@ -1613,7 +1613,7 @@ fn up_down_buffer_rows(
     // This can happen when moving down (Bias::Right) and hitting an inlay hint.
     // Re-clip with opposite bias to stay on the intended line.
     //
-    // See: https://github.com/zed-industries/zed/issues/29134
+    // See: https://github.com/raijin-industries/raijin/issues/29134
     if clipped_point.row() > point.row() {
         clipped_point = map.clip_point(point, Bias::Left);
     }

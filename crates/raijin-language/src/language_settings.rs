@@ -84,7 +84,7 @@ pub struct LanguageSettings {
     pub ensure_final_newline_on_save: bool,
     /// How to perform a buffer format.
     pub formatter: inazuma_settings_framework::FormatterList,
-    /// Zed's Prettier integration settings.
+    /// Raijin's Prettier integration settings.
     pub prettier: PrettierSettings,
     /// Whether to automatically close JSX tags.
     pub jsx_tag_auto_close: bool,
@@ -240,13 +240,13 @@ pub struct LanguageTaskSettings {
     /// Extra task variables to set for a particular language.
     pub variables: HashMap<String, String>,
     pub enabled: bool,
-    /// Use LSP tasks over Zed language extension ones.
+    /// Use LSP tasks over Raijin language extension ones.
     /// If no LSP tasks are returned due to error/timeout or regular execution,
-    /// Zed language extension tasks will be used instead.
+    /// Raijin language extension tasks will be used instead.
     ///
-    /// Other Zed tasks will still be shown:
-    /// * Zed task from either of the task config file
-    /// * Zed task from history (e.g. one-off task was spawned before)
+    /// Other Raijin tasks will still be shown:
+    /// * Raijin task from either of the task config file
+    /// * Raijin task from history (e.g. one-off task was spawned before)
     pub prefer_lsp: bool,
 }
 

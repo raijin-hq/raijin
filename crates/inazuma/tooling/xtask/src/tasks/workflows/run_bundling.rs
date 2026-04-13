@@ -51,7 +51,7 @@ fn nix_job(platform: Platform, arch: Arch) -> NamedJob {
         arch,
         "default",
         // don't push PR builds to the cache
-        Some("-zed-editor-[0-9.]*"),
+        Some("-raijin-editor-[0-9.]*"),
         &[],
     );
     job.job = job.job.cond(Expression::new(format!(
@@ -213,13 +213,13 @@ fn set_release_channel_to_nightly(platform: Platform) -> Step<Run> {
             set -eu
             version=$(git rev-parse --short HEAD)
             echo "Publishing version: ${version} on release channel nightly"
-            echo "nightly" > crates/zed/RELEASE_CHANNEL
+            echo "nightly" > crates/raijin-app/RELEASE_CHANNEL
         "#}),
         Platform::Windows => named::pwsh(indoc::indoc! {r#"
             $ErrorActionPreference = "Stop"
             $version = git rev-parse --short HEAD
             Write-Host "Publishing version: $version on release channel nightly"
-            "nightly" | Set-Content -Path "crates/zed/RELEASE_CHANNEL"
+            "nightly" | Set-Content -Path "crates/raijin-app/RELEASE_CHANNEL"
         "#})
         .working_directory("${{ env.ZED_WORKSPACE }}"),
     }

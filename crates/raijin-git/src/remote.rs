@@ -36,34 +36,34 @@ mod tests {
     fn test_parsing_valid_remote_urls() {
         let valid_urls = vec![
             (
-                "https://github.com/octocat/zed.git",
+                "https://github.com/octocat/raijin.git",
                 "https",
                 "github.com",
-                "/octocat/zed.git",
+                "/octocat/raijin.git",
             ),
             (
-                "git@github.com:octocat/zed.git",
+                "git@github.com:octocat/raijin.git",
                 "ssh",
                 "github.com",
-                "/octocat/zed.git",
+                "/octocat/raijin.git",
             ),
             (
-                "org-000000@github.com:octocat/zed.git",
+                "org-000000@github.com:octocat/raijin.git",
                 "ssh",
                 "github.com",
-                "/octocat/zed.git",
+                "/octocat/raijin.git",
             ),
             (
-                "ssh://git@github.com/octocat/zed.git",
+                "ssh://git@github.com/octocat/raijin.git",
                 "ssh",
                 "github.com",
-                "/octocat/zed.git",
+                "/octocat/raijin.git",
             ),
             (
-                "file:///path/to/local/zed",
+                "file:///path/to/local/raijin",
                 "file",
                 "",
-                "/path/to/local/zed",
+                "/path/to/local/raijin",
             ),
         ];
 

@@ -3141,7 +3141,7 @@ async fn spawn_companion(
 }
 
 async fn get_or_install_companion(node: NodeRuntime, cx: &mut AsyncApp) -> Result<PathBuf> {
-    const PACKAGE_NAME: &str = "@zed-industries/js-debug-companion-cli";
+    const PACKAGE_NAME: &str = "@raijin-hq/js-debug-companion-cli";
 
     async fn install_latest_version(dir: PathBuf, node: NodeRuntime) -> Result<PathBuf> {
         let temp_dir = tempfile::tempdir().context("creating temporary directory")?;

@@ -26,7 +26,7 @@
 - [ ] Real-time Diff Tracking (geänderte Zeilen markiert vs. Git HEAD)
 - [ ] Code Review Panel: Accept/Reject/Edit Diffs inline
 - [ ] Open Files from Explorer in Editor (Doppelklick oder Enter)
-- [ ] External Editor Integration: "Open in VS Code/Zed/Cursor" Button
+- [ ] External Editor Integration: "Open in VS Code/Cursor" Button
 - [ ] Lightweight — bewusst kein vollständiger IDE-Ersatz
 
 ---

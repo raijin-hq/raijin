@@ -66,7 +66,7 @@ impl Render for ToolbarControls {
                     })
             })
             .child({
-                IconButton::new("inline_assist", IconName::ZedAssistant)
+                IconButton::new("inline_assist", IconName::RaijinAssistant)
                     .icon_size(IconSize::Small)
                     .tooltip(Tooltip::for_action_title(
                         "Inline Assist",

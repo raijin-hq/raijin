@@ -33,7 +33,7 @@ raijin-ui/src/
 
 ### Warum OKLCH
 
-Zed nutzt intern `Hsla` — wir migrieren komplett auf **OKLCH** (Oklab Lightness Chroma Hue).
+Die Referenz nutzt intern `Hsla` — wir migrieren komplett auf **OKLCH** (Oklab Lightness Chroma Hue).
 
 | Problem mit HSLA | Lösung durch OKLCH |
 |---|---|
@@ -108,7 +108,7 @@ Der Color-Parser in Inazuma akzeptiert alle gängigen Formate und konvertiert in
 
 ### Blending & Interpolation in OKLCH
 
-Zed blendet Farben in HSLA (über Rgba-Konvertierung) — das erzeugt perceptual Artefakte. Wir machen Blending direkt in Oklch:
+Die Referenz blendet Farben in HSLA (über Rgba-Konvertierung) — das erzeugt perceptual Artefakte. Wir machen Blending direkt in Oklch:
 
 ```rust
 impl Oklch {
@@ -119,7 +119,7 @@ impl Oklch {
 }
 ```
 
-### Was von Zed bleibt (Compat)
+### Was von der Referenz bleibt (Compat)
 
 - `Rgba` — bleibt als GPU-Output-Format und für Hex-Serialisierung
 - `Hsla` — bleibt für Legacy-Compat, wird aber intern nicht mehr für Blending/Interpolation genutzt
@@ -132,7 +132,7 @@ impl Oklch {
 
 ### `ThemeColors` Struct
 
-Inspiriert von Zeds `ThemeColors`, aber alle Felder sind `Oklch` statt `Hsla`:
+Inspiriert von der Referenz `ThemeColors`, aber alle Felder sind `Oklch` statt `Hsla`:
 
 ```rust
 pub struct ThemeColors {
@@ -248,7 +248,7 @@ pub struct StatusColors {
 
 ## Schritt 3: 12-Step Color Scales (`raijin-ui/scale.rs`)
 
-OKLCH-basierte Farbskalen — perceptually uniforme Stufen statt Zeds HSLA-Scales:
+OKLCH-basierte Farbskalen — perceptually uniforme Stufen statt HSLA-Scales:
 
 ```rust
 pub struct ColorScale {
@@ -271,7 +271,7 @@ pub enum ColorScaleStep {
 }
 ```
 
-**Vorteil gegenüber Zed:** Bei OKLCH reicht es, L linear von ~0.15 bis ~0.95 zu skalieren bei konstantem C und H — die Stufen sehen dann tatsächlich gleichmäßig verteilt aus. Bei HSLA müsste man pro Hue manuell korrigieren.
+**Vorteil gegenüber der Referenz:** Bei OKLCH reicht es, L linear von ~0.15 bis ~0.95 zu skalieren bei konstantem C und H — die Stufen sehen dann tatsächlich gleichmäßig verteilt aus. Bei HSLA müsste man pro Hue manuell korrigieren.
 
 ```rust
 impl ColorScale {
@@ -339,7 +339,7 @@ pub trait ActiveTheme {
 }
 ```
 
-### Refinement Pattern (von Zed übernommen)
+### Refinement Pattern (von der Referenz übernommen)
 
 Themes können partiell überschrieben werden — alle Felder `Option<Oklch>`:
 
@@ -360,11 +360,11 @@ Nützlich für: User-Overrides in der Config, Accent-Color Anpassung, partielle 
 
 ### Warum TOML statt JSON
 
-Raijin ist ein Hybrid aus Terminal (Warp) und Editor (Zed). Beide Welten brauchen ein mächtiges Theme-System mit ~120+ semantischen Tokens und Syntax-Highlighting. Die Formatwahl wurde bewusst getroffen:
+Raijin ist ein Hybrid aus Terminal (Warp) und Editor. Beide Welten brauchen ein mächtiges Theme-System mit ~120+ semantischen Tokens und Syntax-Highlighting. Die Formatwahl wurde bewusst getroffen:
 
-**Zed's Theme-Struktur ist flach, nicht tief verschachtelt.** Das `style`-Objekt in Zed-Themes ist ein flaches Key-Value-Mapping mit Dot-Notation (`"editor.background"`, `"terminal.ansi.red"`, `"border.focused"`). Es gibt keine tiefen Objekt-Hierarchien — nur ~120 flache Farbwerte + eine `syntax`-Map. TOML kann das identisch abbilden.
+**Die Referenz-Theme-Struktur ist flach, nicht tief verschachtelt.** Das `style`-Objekt in den Referenz-Themes ist ein flaches Key-Value-Mapping mit Dot-Notation (`"editor.background"`, `"terminal.ansi.red"`, `"border.focused"`). Es gibt keine tiefen Objekt-Hierarchien — nur ~120 flache Farbwerte + eine `syntax`-Map. TOML kann das identisch abbilden.
 
-| Aspekt | JSON (Zed/VS Code) | TOML (Raijin) |
+| Aspekt | JSON (Referenz/VS Code) | TOML (Raijin) |
 |---|---|---|
 | **Kommentare** | Nicht möglich (JSONC als Hack) | Nativ — Theme-Autoren können Farbgruppen dokumentieren |
 | **Boilerplate** | `{}`, `""` um jeden Key, Trailing-Comma-Probleme | Minimal — saubere Key=Value Syntax |
@@ -379,16 +379,16 @@ Raijin ist ein Hybrid aus Terminal (Warp) und Editor (Zed). Beide Welten brauche
 - Alacritty (seit 0.13.0), Rio, Helix Editor — alle TOML für Themes
 - Ghostty — TOML-ähnliches Flat-Format
 - Warp — YAML (kein Vorbild)
-- Zed, VS Code — JSON (historisch bedingt, Atom/Electron-Erbe)
+- Referenz, VS Code — JSON (historisch bedingt, Atom/Electron-Erbe)
 
-**Zed-Kompatibilität:** Die semantischen Token-Namen sind 1:1 kompatibel mit Zed's Schema. Ein Konverter kann Zed-JSON-Themes automatisch nach Raijin-TOML importieren, da die Struktur identisch ist — nur das Serialisierungsformat unterscheidet sich.
+**Referenz-Kompatibilität:** Die semantischen Token-Namen sind 1:1 kompatibel mit dem Referenz-Schema. Ein Konverter kann Referenz-JSON-Themes automatisch nach Raijin-TOML importieren, da die Struktur identisch ist — nur das Serialisierungsformat unterscheidet sich.
 
 ### Format
 
-Raijin-Themes nutzen **Zed-kompatible semantische Token-Namen** in TOML. Die `style`-Sektion verwendet dieselbe Dot-Notation wie Zed, alle ~120+ Tokens werden unterstützt.
+Raijin-Themes nutzen **Referenz-kompatible semantische Token-Namen** in TOML. Die `style`-Sektion verwendet dieselbe Dot-Notation wie die Referenz, alle ~120+ Tokens werden unterstützt.
 
 ```toml
-# Raijin Theme — Zed-kompatibles Token-Schema in TOML
+# Raijin Theme — Referenz-kompatibles Token-Schema in TOML
 #
 # Alle Farbformate erlaubt: #hex, rgb(), oklch(), hsl()
 # Fehlende Tokens werden vom Theme-Resolver mit Defaults gefüllt.
@@ -619,9 +619,9 @@ font_weight = 700
 # font_style = "italic"
 ```
 
-### Zed-Theme Import
+### Referenz-Theme Import
 
-Da Raijin dieselben semantischen Token-Namen wie Zed verwendet, können Zed-JSON-Themes automatisch importiert werden:
+Da Raijin dieselben semantischen Token-Namen wie die Referenz verwendet, können Referenz-JSON-Themes automatisch importiert werden:
 
 ```
 zed-theme.json                    raijin-theme.toml
@@ -669,15 +669,15 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 - [x] Konvertierungen: Oklch ↔ Rgba (via Oklab intern), culori-Referenz-Koeffizienten
 - [x] `oklch()` und `oklcha()` Constructor-Funktionen + `hsla()` gibt jetzt Oklch zurück
 - [x] Blending & Interpolation direkt in Oklch (shortest-arc Hue)
-- [x] `ThemeColors` Struct mit 278 semantischen Tokens (Zed-kompatibel)
+- [x] `ThemeColors` Struct mit 278 semantischen Tokens (Referenz-kompatibel)
 - [x] `StatusColors`, `AccentColors`, `SyntaxTheme`, `ColorScale`, `PlayerColors`
 - [x] `Theme`, `ThemeFamily`, `ThemeStyles`, `ThemeColorsRefinement`
 - [x] `GlobalTheme` via `inazuma::Global` + `ActiveTheme` Trait
 - [x] `ThemeRegistry` (HashMap-basiert)
 - [x] Raijin Dark Fallback-Theme (hardcoded: #121212 bg, #00BFFF accent, #f1f1f1 fg)
 - [x] 6 Bundled Theme TOML-Dateien: Raijin Dark, Dracula, Nord, Gruvbox, One Dark, Catppuccin
-- [x] Zed-Theme-Importer: `import_zed_theme(json)` + VS Code Importer
-- [x] Token-Kompatibilität: 278 Zed-kompatible ThemeColors Tokens
+- [x] Theme-Importer: `import_zed_theme(json)` (imports Zed-format themes) + VS Code Importer
+- [x] Token-Kompatibilität: 278 Referenz-kompatible ThemeColors Tokens
 - [x] GPU-Shaders (Metal/WGSL/HLSL): `oklch_to_rgba()` ersetzt `hsla_to_rgba()`
 - [x] GPU-Primitive Structs: `Edges<Oklch>`, `color: Oklch`
 - [x] Wide Gamut P3: sRGB auf CAMetalLayer, Gamut-Mapping (clamp_to_srgb/p3)
@@ -733,7 +733,7 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 - [ ] **`terminal_accent`**: Selection (@8%), Hover (@15%), Cursor, aktive Ränder — Opacity hardcoded, nur Farbe einstellbar
 - [ ] **Window Opacity**: Separates Feature (NSWindow), NICHT Theme — für später
 
-### Offen — App Chrome (wie Zed)
+### Offen — App Chrome
 
 - [ ] **Command Palette**: `Shift+Cmd+P` → Modal mit allen Actions (Referenz: `.reference/zed/crates/command_palette/`)
 - [ ] **Theme Picker**: Via Command Palette "theme" eingeben → ThemeSelector Modal
@@ -767,9 +767,9 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 
 ---
 
-## Vergleich: Zed vs. Raijin Architektur
+## Vergleich: Referenz vs. Raijin Architektur
 
-| Aspekt | Zed | Raijin |
+| Aspekt | Referenz | Raijin |
 |---|---|---|
 | **Interner Farbraum** | `Hsla` | `Oklch` |
 | **User-Input Format** | nur `#hex` | `#hex`, `rgb()`, `oklch()`, `hsl()` |
@@ -779,7 +779,7 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 | **Palette-Generierung** | Manuelle Korrekturen pro Hue nötig | L linear skalieren bei konstantem C/H |
 | **Gamut-Mapping (P3)** | Nicht unterstützt | Oklch Chroma-Clipping für sRGB/P3 |
 | **Contrast-Checks** | Ungenau (HSLA L ≠ wahrgenommene Helligkeit) | L-Differenz ≈ tatsächlicher Kontrast |
-| **Framework-Primitiv** | `Hsla` in GPUI | `Oklch` in Inazuma (Hsla komplett entfernt) |
+| **Framework-Primitiv** | `Hsla` in der Referenz | `Oklch` in Inazuma (Hsla komplett entfernt) |
 | **Struct Felder** | ~100 ThemeColors Felder | ~100 ThemeColors + Raijin-spezifische (Blocks, Input) |
 | **Global Access** | `cx.theme()` via Global Trait | Identisch: `cx.theme()` via `inazuma::Global` |
 | **Refinement** | `ThemeColorsRefinement` (alle Optional) | Identisch: partielle Overrides |
@@ -803,7 +803,7 @@ crates/raijin-ui/themes/*.toml     # Bundled Themes
 ✅ 6 Bundled Themes verfügbar (TOML)
 ✅ Perceptually korrekte Farb-Interpolation (Oklch Blending)
 ✅ GPU-Shaders auf Oklch migriert (Metal + WGSL + HLSL)
-✅ Zed + VS Code Theme-Importer
+✅ Zed-format + VS Code Theme-Importer
 ⬜ TOML-Themes tatsächlich laden (Loader nicht verdrahtet)
 ⬜ Theme-Switching zur Laufzeit (Command Palette + Modal)
 ⬜ User Menu mit Settings/Themes/Extensions

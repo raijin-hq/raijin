@@ -668,7 +668,7 @@ impl Vim {
 }
 
 impl Replacement {
-    // convert a vim query into something more usable by zed.
+    // convert a vim query into something more usable by raijin.
     // we don't attempt to fully convert between the two regex syntaxes,
     // but we do flip \( and \) to ( and ) (and vice-versa) in the pattern,
     // and convert \0..\9 to $0..$9 in the replacement so that common idioms work.
@@ -1175,7 +1175,7 @@ mod test {
     async fn test_replace_gdefault(cx: &mut inazuma::TestAppContext) {
         let mut cx = NeovimBackedTestContext::new(cx).await;
 
-        // Set the `gdefault` option in both Zed and Neovim.
+        // Set the `gdefault` option in both Raijin and Neovim.
         cx.simulate_shared_keystrokes(": s e t space g d e f a u l t")
             .await;
         cx.simulate_shared_keystrokes("enter").await;

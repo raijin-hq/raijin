@@ -8,7 +8,7 @@ use raijin_theme::{ActiveTheme, Appearance, GlobalTheme, ThemeMeta, ThemeRegistr
 
 /// A modal picker for selecting themes from the registry.
 ///
-/// Implements live theme preview (Zed-style hot-swap): navigating the list
+/// Implements live theme preview (live hot-swap): navigating the list
 /// immediately applies each theme. Dismissing reverts to the original;
 /// confirming persists the selection.
 pub struct ThemeSelector {

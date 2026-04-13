@@ -4,7 +4,7 @@ use raijin_dap::DebugRequest;
 use raijin_extension::{DebugTaskDefinition, KeyValueStoreDelegate, WorktreeDelegate};
 use inazuma::BackgroundExecutor;
 use raijin_lsp::LanguageServerName;
-use raijin_task::{DebugScenario, SpawnInTerminal, TaskTemplate, ZedDebugConfig};
+use raijin_task::{DebugScenario, SpawnInTerminal, TaskTemplate, RaijinDebugConfig};
 
 use super::{WasmState, wasm_engine};
 use anyhow::{Context as _, Result, anyhow};
@@ -289,7 +289,7 @@ impl Extension {
     pub async fn call_dap_config_to_scenario(
         &self,
         store: &mut Store<WasmState>,
-        config: ZedDebugConfig,
+        config: RaijinDebugConfig,
     ) -> Result<Result<DebugScenario, String>> {
         let config = config.into();
         let result = self

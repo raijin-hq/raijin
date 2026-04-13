@@ -1,5 +1,5 @@
 //! This is a fork of gpui's anchored element that adds support for offsetting
-//! https://github.com/zed-industries/zed/blob/b06f4088a3565c5e30663106ff79c1ced645d87a/crates/gpui/src/elements/anchored.rs
+//! https://github.com/raijin-industries/raijin/blob/b06f4088a3565c5e30663106ff79c1ced645d87a/crates/gpui/src/elements/anchored.rs
 use inazuma::{
     AnyElement, App, Axis, Bounds, Display, Edges, Element, GlobalElementId, Half,
     InspectorElementId, IntoElement, LayoutId, ParentElement, Pixels, Point, Position, Size, Style,
@@ -298,7 +298,7 @@ impl AnchoredPositionMode {
         }
     }
 
-    // Ref https://github.com/zed-industries/zed/blob/b06f4088a3565c5e30663106ff79c1ced645d87a/crates/gpui/src/geometry.rs#L863
+    // Ref https://github.com/raijin-industries/raijin/blob/b06f4088a3565c5e30663106ff79c1ced645d87a/crates/gpui/src/geometry.rs#L863
     fn from_corner_and_size(
         anchor: Anchor,
         origin: Point<Pixels>,

@@ -1,12 +1,12 @@
-# Phase 35: Zed Dead Code Cleanup — Terminal-first Window-Modell
+# Phase 35: Dead Code Cleanup — Terminal-first Window-Modell
 
 ## Ziel
 
-Zed-Editor-Semantik entfernen die für Raijin's Terminal-first Modell irrelevant ist. MultiWorkspace, WorkspaceStore, und die "Projekt → Fenster"-Logik raus. Das Window-Modell wird: **ein Fenster, ein Workspace, Tabs als Kontext-Container.**
+Geerbte Editor-Semantik entfernen die für Raijin's Terminal-first Modell irrelevant ist. MultiWorkspace, WorkspaceStore, und die "Projekt → Fenster"-Logik raus. Das Window-Modell wird: **ein Fenster, ein Workspace, Tabs als Kontext-Container.**
 
 ## Warum
 
-Zed: MultiWorkspace → Workspace₁ + Workspace₂ (ein Projekt pro Workspace, neues Fenster pro Projekt)
+Referenz: MultiWorkspace → Workspace₁ + Workspace₂ (ein Projekt pro Workspace, neues Fenster pro Projekt)
 Raijin: AppShell → Workspace → Tabs (ein Fenster, Projekt-Kontext pro Tab via ProjectRegistry)
 
 Die geerbte MultiWorkspace-Infrastruktur verursacht:
@@ -73,7 +73,7 @@ Oder noch besser: eine neue Funktion `with_active_workspace(cx, f)` die direkt a
 
 **Aufwand:** Mittel (5 Dateien, ~150 Zeilen)
 
-WorkspaceStore trackt Workspaces über Fenster für Zed-Collaboration. Raijin hat ein Fenster → kein Tracking nötig.
+WorkspaceStore trackt Workspaces über Fenster für Collaboration. Raijin hat ein Fenster → kein Tracking nötig.
 
 **Was passiert mit den Methoden:**
 - `workspaces()` / `workspaces_with_windows()` — nicht mehr nötig (ein Fenster)

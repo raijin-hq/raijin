@@ -1,6 +1,6 @@
 # Inspector
 
-This is a tool for inspecting and manipulating rendered elements in Zed. It is only available in debug builds. Use the `dev::ToggleInspector` action to toggle inspector mode and click on UI elements to inspect them.
+This is a tool for inspecting and manipulating rendered elements in Raijin. It is only available in debug builds. Use the `dev::ToggleInspector` action to toggle inspector mode and click on UI elements to inspect them.
 
 # Current features
 
@@ -52,7 +52,7 @@ I attempted to fix it by creating a new buffer and setting the buffer associated
 
 ## Methods that take arguments in Rust style editor
 
-Could use TreeSitter to parse out the fluent style method chain and arguments. Tricky part of this is completions - ideally the Rust Analyzer already being used by the developer's Zed would be used.
+Could use TreeSitter to parse out the fluent style method chain and arguments. Tricky part of this is completions - ideally the Rust Analyzer already being used by the developer's Raijin would be used.
 
 ## Edit original code in Rust style editor
 
@@ -60,7 +60,7 @@ Two approaches:
 
 1. Open an excerpt of the original file.
 
-2. Communicate with the Zed process that has the repo open - it would send the code for the element. This seems like a lot of work, but would be very nice for rapid development, and it would allow use of rust analyzer.
+2. Communicate with the Raijin process that has the repo open - it would send the code for the element. This seems like a lot of work, but would be very nice for rapid development, and it would allow use of rust analyzer.
 
 With both approaches, would need to record the buffer version and use that when referring to source locations, since editing elements can cause code layout shift.
 
@@ -94,9 +94,9 @@ If support is added for editing original code, then the logical selector in this
 
 Currently the inspector has special rendering in the UI, but maybe it could just be a workspace item.
 
-## Pull more inspector logic out of GPUI
+## Pull more inspector logic out of Inazuma
 
-Currently `crates/gpui/inspector.rs` and `crates/inspector_ui/inspector.rs` are quite entangled.  It seems cleaner to pull as much logic a possible out of GPUI.
+Currently `crates/inazuma/inspector.rs` and `crates/raijin-inspector-ui/inspector.rs` are quite entangled.  It seems cleaner to pull as much logic a possible out of Inazuma.
 
 ## Cleaner lifecycle for inspector state viewers / editors
 

@@ -112,7 +112,7 @@ pub fn open_rules_library(
         cx.update(|cx| {
             let app_id = ReleaseChannel::global(cx).app_id();
             let bounds = Bounds::centered(None, size(px(1024.0), px(768.0)), cx);
-            let window_decorations = match std::env::var("ZED_WINDOW_DECORATIONS") {
+            let window_decorations = match std::env::var("RAIJIN_WINDOW_DECORATIONS") {
                 Ok(val) if val == "server" => inazuma::WindowDecorations::Server,
                 Ok(val) if val == "client" => inazuma::WindowDecorations::Client,
                 _ => match WorkspaceSettings::get_global(cx).window_decorations {
@@ -343,7 +343,7 @@ impl PickerDelegate for RulePickerDelegate {
         match self.filtered_entries.get(ix)? {
             RulePickerEntry::Header(title) => {
                 let tooltip_text = if title.as_ref() == "Built-in Rules" {
-                    "Built-in rules are those included out of the box with Zed."
+                    "Built-in rules are those included out of the box with Raijin."
                 } else {
                     "Default Rules are attached by default with every new thread."
                 };

@@ -41,8 +41,8 @@ impl Pasteboard {
     fn new(inner: Retained<NSPasteboard>) -> Self {
         Self {
             inner,
-            text_hash_type: NSString::from_str("zed-text-hash"),
-            metadata_type: NSString::from_str("zed-metadata"),
+            text_hash_type: NSString::from_str("raijin-text-hash"),
+            metadata_type: NSString::from_str("raijin-metadata"),
         }
     }
 

@@ -35,7 +35,7 @@ use std::{
     sync::{Arc, LazyLock, OnceLock},
     time::Duration,
 };
-use raijin_task::{DebugScenario, SpawnInTerminal, TaskTemplate, ZedDebugConfig};
+use raijin_task::{DebugScenario, SpawnInTerminal, TaskTemplate, RaijinDebugConfig};
 use inazuma_util::paths::SanitizedPath;
 use wasmtime::{
     CacheStore, Engine, Store,
@@ -470,7 +470,7 @@ impl raijin_extension::Extension for WasmExtension {
         .await?
     }
 
-    async fn dap_config_to_scenario(&self, config: ZedDebugConfig) -> Result<DebugScenario> {
+    async fn dap_config_to_scenario(&self, config: RaijinDebugConfig) -> Result<DebugScenario> {
         self.call(|extension, store| {
             async move {
                 let kind = extension

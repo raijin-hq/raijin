@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 - 2025 Zed Industries, Inc.
+ * Copyright 2022 - 2025 Raijin Industries, Inc.
  * License: Apache-2.0
  * See LICENSE-APACHE for complete license terms
  *

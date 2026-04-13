@@ -37,7 +37,7 @@ impl GoDebugAdapter {
         delegate: &Arc<dyn DapDelegate>,
     ) -> Result<AdapterVersion> {
         let release = latest_github_release(
-            "zed-industries/delve-shim-dap",
+            "raijin-hq/delve-shim-dap",
             true,
             false,
             delegate.http_client(),
@@ -159,7 +159,7 @@ impl DebugAdapter for GoDebugAdapter {
             "cwd": {
                 "type": "string",
                 "description": "Workspace relative or absolute path to the working directory of the program being debugged.",
-                "default": "${ZED_WORKTREE_ROOT}"
+                "default": "${RAIJIN_WORKTREE_ROOT}"
             },
             "dlvFlags": {
                 "type": "array",
@@ -255,7 +255,7 @@ impl DebugAdapter for GoDebugAdapter {
             "program": {
                 "type": "string",
                 "description": "Path to the program folder or file to debug.",
-                "default": "${ZED_WORKTREE_ROOT}"
+                "default": "${RAIJIN_WORKTREE_ROOT}"
             },
             "args": {
                 "type": ["array", "string"],
@@ -394,8 +394,8 @@ impl DebugAdapter for GoDebugAdapter {
         })
     }
 
-    async fn config_from_zed_format(&self, zed_scenario: ZedDebugConfig) -> Result<DebugScenario> {
-        let mut args = match &zed_scenario.request {
+    async fn config_from_raijin_format(&self, raijin_scenario: RaijinDebugConfig) -> Result<DebugScenario> {
+        let mut args = match &raijin_scenario.request {
             raijin_dap::DebugRequest::Attach(attach_config) => {
                 json!({
                     "request": "attach",
@@ -423,13 +423,13 @@ impl DebugAdapter for GoDebugAdapter {
 
         let map = args.as_object_mut().unwrap();
 
-        if let Some(stop_on_entry) = zed_scenario.stop_on_entry {
+        if let Some(stop_on_entry) = raijin_scenario.stop_on_entry {
             map.insert("stopOnEntry".into(), stop_on_entry.into());
         }
 
         Ok(DebugScenario {
-            adapter: zed_scenario.adapter,
-            label: zed_scenario.label,
+            adapter: raijin_scenario.adapter,
+            label: raijin_scenario.label,
             build: None,
             config: args,
             tcp_connection: None,

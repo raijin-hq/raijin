@@ -6,7 +6,7 @@ use inazuma::{Subscription, WeakEntity};
 use inazuma_picker::{Picker, PickerDelegate};
 use raijin_project::Project;
 use raijin_rpc::proto;
-use raijin_task::ZedDebugConfig;
+use raijin_task::RaijinDebugConfig;
 use inazuma_util::debug_panic;
 
 use std::sync::Arc;
@@ -27,7 +27,7 @@ pub(super) struct Candidate {
 
 pub(crate) enum ModalIntent {
     ResolveProcessId(Option<oneshot::Sender<Option<i32>>>),
-    AttachToProcess(ZedDebugConfig),
+    AttachToProcess(RaijinDebugConfig),
 }
 
 pub(crate) struct AttachModalDelegate {
@@ -265,7 +265,7 @@ impl PickerDelegate for AttachModalDelegate {
 
                 let definition = definition.clone();
                 cx.spawn_in(window, async move |this, cx| {
-                    let Ok(scenario) = adapter.config_from_zed_format(definition).await else {
+                    let Ok(scenario) = adapter.config_from_raijin_format(definition).await else {
                         return;
                     };
 

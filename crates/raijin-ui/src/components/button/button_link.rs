@@ -3,7 +3,7 @@ use inazuma::{IntoElement, Window, prelude::*};
 use crate::{ButtonLike, prelude::*};
 
 /// A button that takes an underline to look like a regular web link.
-/// It also contains an arrow icon to communicate the link takes you out of Zed.
+/// It also contains an arrow icon to communicate the link takes you out of Raijin.
 ///
 /// # Usage Example
 ///
@@ -92,7 +92,7 @@ impl Component for ButtonLink {
                 .child(
                     example_group(vec![single_example(
                         "Simple",
-                        ButtonLink::new("zed.dev", "https://zed.dev").into_any_element(),
+                        ButtonLink::new("raijin.dev", "https://raijin.dev").into_any_element(),
                     )])
                     .vertical(),
                 )

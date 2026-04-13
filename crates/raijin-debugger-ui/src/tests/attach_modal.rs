@@ -128,7 +128,7 @@ async fn test_show_attach_modal_and_select_process(
                     .into_iter()
                     .collect(),
                     true,
-                    ModalIntent::AttachToProcess(raijin_task::ZedDebugConfig {
+                    ModalIntent::AttachToProcess(raijin_task::RaijinDebugConfig {
                         adapter: FakeAdapter::ADAPTER_NAME.into(),
                         request: raijin_dap::DebugRequest::Attach(AttachRequest::default()),
                         label: "attach example".into(),

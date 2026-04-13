@@ -368,9 +368,9 @@ async fn test_channel_room(
     let client_b = server.create_client(cx_b, "user_b").await;
     let client_c = server.create_client(cx_c, "user_c").await;
 
-    let zed_id = server
+    let raijin_id = server
         .make_channel(
-            "zed",
+            "raijin",
             None,
             (&client_a, cx_a),
             &mut [(&client_b, cx_b), (&client_c, cx_c)],
@@ -381,7 +381,7 @@ async fn test_channel_room(
     let active_call_b = cx_b.read(ActiveCall::global);
 
     active_call_a
-        .update(cx_a, |active_call, cx| active_call.join_channel(zed_id, cx))
+        .update(cx_a, |active_call, cx| active_call.join_channel(raijin_id, cx))
         .await
         .unwrap();
 
@@ -394,7 +394,7 @@ async fn test_channel_room(
     cx_a.read(|cx| {
         client_a.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_a.user_id().unwrap()],
             );
         })
@@ -404,15 +404,15 @@ async fn test_channel_room(
         client_b.channel_store(),
         cx_b,
         &[ExpectedChannel {
-            id: zed_id,
-            name: "zed".into(),
+            id: raijin_id,
+            name: "raijin".into(),
             depth: 0,
         }],
     );
     cx_b.read(|cx| {
         client_b.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_a.user_id().unwrap()],
             );
         })
@@ -421,14 +421,14 @@ async fn test_channel_room(
     cx_c.read(|cx| {
         client_c.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_a.user_id().unwrap()],
             );
         })
     });
 
     active_call_b
-        .update(cx_b, |active_call, cx| active_call.join_channel(zed_id, cx))
+        .update(cx_b, |active_call, cx| active_call.join_channel(raijin_id, cx))
         .await
         .unwrap();
 
@@ -437,7 +437,7 @@ async fn test_channel_room(
     cx_a.read(|cx| {
         client_a.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_a.user_id().unwrap(), client_b.user_id().unwrap()],
             );
         })
@@ -446,7 +446,7 @@ async fn test_channel_room(
     cx_b.read(|cx| {
         client_b.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_a.user_id().unwrap(), client_b.user_id().unwrap()],
             );
         })
@@ -455,7 +455,7 @@ async fn test_channel_room(
     cx_c.read(|cx| {
         client_c.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_a.user_id().unwrap(), client_b.user_id().unwrap()],
             );
         })
@@ -495,7 +495,7 @@ async fn test_channel_room(
     cx_a.read(|cx| {
         client_a.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_b.user_id().unwrap()],
             );
         })
@@ -504,7 +504,7 @@ async fn test_channel_room(
     cx_b.read(|cx| {
         client_b.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_b.user_id().unwrap()],
             );
         })
@@ -513,7 +513,7 @@ async fn test_channel_room(
     cx_c.read(|cx| {
         client_c.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_b.user_id().unwrap()],
             );
         })
@@ -528,29 +528,29 @@ async fn test_channel_room(
 
     cx_a.read(|cx| {
         client_a.channel_store().read_with(cx, |channels, _| {
-            assert_participants_eq(channels.channel_participants(zed_id), &[]);
+            assert_participants_eq(channels.channel_participants(raijin_id), &[]);
         })
     });
 
     cx_b.read(|cx| {
         client_b.channel_store().read_with(cx, |channels, _| {
-            assert_participants_eq(channels.channel_participants(zed_id), &[]);
+            assert_participants_eq(channels.channel_participants(raijin_id), &[]);
         })
     });
 
     cx_c.read(|cx| {
         client_c.channel_store().read_with(cx, |channels, _| {
-            assert_participants_eq(channels.channel_participants(zed_id), &[]);
+            assert_participants_eq(channels.channel_participants(raijin_id), &[]);
         })
     });
 
     active_call_a
-        .update(cx_a, |active_call, cx| active_call.join_channel(zed_id, cx))
+        .update(cx_a, |active_call, cx| active_call.join_channel(raijin_id, cx))
         .await
         .unwrap();
 
     active_call_b
-        .update(cx_b, |active_call, cx| active_call.join_channel(zed_id, cx))
+        .update(cx_b, |active_call, cx| active_call.join_channel(raijin_id, cx))
         .await
         .unwrap();
 
@@ -584,8 +584,8 @@ async fn test_channel_jumping(executor: BackgroundExecutor, cx_a: &mut TestAppCo
     let mut server = TestServer::start(executor.clone()).await;
     let client_a = server.create_client(cx_a, "user_a").await;
 
-    let zed_id = server
-        .make_channel("zed", None, (&client_a, cx_a), &mut [])
+    let raijin_id = server
+        .make_channel("raijin", None, (&client_a, cx_a), &mut [])
         .await;
     let rust_id = server
         .make_channel("rust", None, (&client_a, cx_a), &mut [])
@@ -594,7 +594,7 @@ async fn test_channel_jumping(executor: BackgroundExecutor, cx_a: &mut TestAppCo
     let active_call_a = cx_a.read(ActiveCall::global);
 
     active_call_a
-        .update(cx_a, |active_call, cx| active_call.join_channel(zed_id, cx))
+        .update(cx_a, |active_call, cx| active_call.join_channel(raijin_id, cx))
         .await
         .unwrap();
 
@@ -604,7 +604,7 @@ async fn test_channel_jumping(executor: BackgroundExecutor, cx_a: &mut TestAppCo
     cx_a.read(|cx| {
         client_a.channel_store().read_with(cx, |channels, _| {
             assert_participants_eq(
-                channels.channel_participants(zed_id),
+                channels.channel_participants(raijin_id),
                 &[client_a.user_id().unwrap()],
             );
             assert_participants_eq(channels.channel_participants(rust_id), &[]);
@@ -622,7 +622,7 @@ async fn test_channel_jumping(executor: BackgroundExecutor, cx_a: &mut TestAppCo
 
     cx_a.read(|cx| {
         client_a.channel_store().read_with(cx, |channels, _| {
-            assert_participants_eq(channels.channel_participants(zed_id), &[]);
+            assert_participants_eq(channels.channel_participants(raijin_id), &[]);
             assert_participants_eq(
                 channels.channel_participants(rust_id),
                 &[client_a.user_id().unwrap()],
@@ -949,7 +949,7 @@ async fn test_channel_link_notifications(
     let user_c = client_c.user_id().unwrap();
 
     let channels = server
-        .make_channel_tree(&[("zed", None)], (&client_a, cx_a))
+        .make_channel_tree(&[("raijin", None)], (&client_a, cx_a))
         .await;
     let zed_channel = channels[0];
 
@@ -983,7 +983,7 @@ async fn test_channel_link_notifications(
 
     executor.run_until_parked();
 
-    // we have an admin (a), member (b) and guest (c) all part of the zed channel.
+    // we have an admin (a), member (b) and guest (c) all part of the raijin channel.
 
     // create a new private channel, make it public, and move it under the previous one, and verify it shows for b and not c
     let active_channel = client_a
@@ -1105,7 +1105,7 @@ async fn test_channel_membership_notifications(
 
     let channels = server
         .make_channel_tree(
-            &[("zed", None), ("vim", Some("zed")), ("opensource", None)],
+            &[("raijin", None), ("vim", Some("raijin")), ("opensource", None)],
             (&client_a, cx_a),
         )
         .await;
@@ -1136,7 +1136,7 @@ async fn test_channel_membership_notifications(
 
     executor.run_until_parked();
 
-    // we have an admin (a), and a guest (b) with access to all of zed, and membership in vim.
+    // we have an admin (a), and a guest (b) with access to all of raijin, and membership in vim.
     assert_channels(
         client_b.channel_store(),
         cx_b,
@@ -1144,7 +1144,7 @@ async fn test_channel_membership_notifications(
             ExpectedChannel {
                 depth: 0,
                 id: zed_channel,
-                name: "zed".into(),
+                name: "raijin".into(),
             },
             ExpectedChannel {
                 depth: 1,

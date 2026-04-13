@@ -2,7 +2,7 @@
 
 ## Vision
 
-Raijin = Warp (Terminal-first) + Zed (Editor-power). Beide Herzen schlagen gleichberechtigt. Jedes Feature das heute nur mit dem Editor funktioniert muss auch mit dem Terminal funktionieren. Nicht durch Duplizierung, sondern durch **abstrakte Traits und das Provider-Pattern**.
+Raijin = Warp (Terminal-first) + Editor-power. Beide Herzen schlagen gleichberechtigt. Jedes Feature das heute nur mit dem Editor funktioniert muss auch mit dem Terminal funktionieren. Nicht durch Duplizierung, sondern durch **abstrakte Traits und das Provider-Pattern**.
 
 ## Das Problem
 

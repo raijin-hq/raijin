@@ -45,10 +45,10 @@ async fn test_extension_store(cx: &mut TestAppContext) {
         "/the-extension-dir",
         json!({
             "installed": {
-                "zed-monokai": {
+                "raijin-monokai": {
                     "extension.json": r#"{
-                        "id": "zed-monokai",
-                        "name": "Zed Monokai",
+                        "id": "raijin-monokai",
+                        "name": "Raijin Monokai",
                         "version": "2.0.0",
                         "themes": {
                             "Monokai Dark": "themes/monokai.json",
@@ -92,10 +92,10 @@ async fn test_extension_store(cx: &mut TestAppContext) {
                         }"#,
                     }
                 },
-                "zed-ruby": {
+                "raijin-ruby": {
                     "extension.json": r#"{
-                        "id": "zed-ruby",
-                        "name": "Zed Ruby",
+                        "id": "raijin-ruby",
+                        "name": "Raijin Ruby",
                         "version": "1.0.0",
                         "grammars": {
                             "ruby": "grammars/ruby.wasm",
@@ -137,11 +137,11 @@ async fn test_extension_store(cx: &mut TestAppContext) {
     let mut expected_index = ExtensionIndex {
         extensions: [
             (
-                "zed-ruby".into(),
+                "raijin-ruby".into(),
                 ExtensionIndexEntry {
                     manifest: Arc::new(ExtensionManifest {
-                        id: "zed-ruby".into(),
-                        name: "Zed Ruby".into(),
+                        id: "raijin-ruby".into(),
+                        name: "Raijin Ruby".into(),
                         version: "1.0.0".into(),
                         schema_version: SchemaVersion::ZERO,
                         description: None,
@@ -171,11 +171,11 @@ async fn test_extension_store(cx: &mut TestAppContext) {
                 },
             ),
             (
-                "zed-monokai".into(),
+                "raijin-monokai".into(),
                 ExtensionIndexEntry {
                     manifest: Arc::new(ExtensionManifest {
-                        id: "zed-monokai".into(),
-                        name: "Zed Monokai".into(),
+                        id: "raijin-monokai".into(),
+                        name: "Raijin Monokai".into(),
                         version: "2.0.0".into(),
                         schema_version: SchemaVersion::ZERO,
                         description: None,
@@ -209,7 +209,7 @@ async fn test_extension_store(cx: &mut TestAppContext) {
             (
                 "ERB".into(),
                 ExtensionIndexLanguageEntry {
-                    extension: "zed-ruby".into(),
+                    extension: "raijin-ruby".into(),
                     path: "languages/erb".into(),
                     grammar: Some("embedded_template".into()),
                     hidden: false,
@@ -223,7 +223,7 @@ async fn test_extension_store(cx: &mut TestAppContext) {
             (
                 "Ruby".into(),
                 ExtensionIndexLanguageEntry {
-                    extension: "zed-ruby".into(),
+                    extension: "raijin-ruby".into(),
                     path: "languages/ruby".into(),
                     grammar: Some("ruby".into()),
                     hidden: false,
@@ -241,28 +241,28 @@ async fn test_extension_store(cx: &mut TestAppContext) {
             (
                 "Monokai Dark".into(),
                 ExtensionIndexThemeEntry {
-                    extension: "zed-monokai".into(),
+                    extension: "raijin-monokai".into(),
                     path: "themes/monokai.json".into(),
                 },
             ),
             (
                 "Monokai Light".into(),
                 ExtensionIndexThemeEntry {
-                    extension: "zed-monokai".into(),
+                    extension: "raijin-monokai".into(),
                     path: "themes/monokai.json".into(),
                 },
             ),
             (
                 "Monokai Pro Dark".into(),
                 ExtensionIndexThemeEntry {
-                    extension: "zed-monokai".into(),
+                    extension: "raijin-monokai".into(),
                     path: "themes/monokai-pro.json".into(),
                 },
             ),
             (
                 "Monokai Pro Light".into(),
                 ExtensionIndexThemeEntry {
-                    extension: "zed-monokai".into(),
+                    extension: "raijin-monokai".into(),
                     path: "themes/monokai-pro.json".into(),
                 },
             ),
@@ -329,11 +329,11 @@ async fn test_extension_store(cx: &mut TestAppContext) {
     });
 
     fs.insert_tree(
-        "/the-extension-dir/installed/zed-gruvbox",
+        "/the-extension-dir/installed/raijin-gruvbox",
         json!({
             "extension.json": r#"{
-                "id": "zed-gruvbox",
-                "name": "Zed Gruvbox",
+                "id": "raijin-gruvbox",
+                "name": "Raijin Gruvbox",
                 "version": "1.0.0",
                 "themes": {
                     "Gruvbox": "themes/gruvbox.json"
@@ -357,11 +357,11 @@ async fn test_extension_store(cx: &mut TestAppContext) {
     .await;
 
     expected_index.extensions.insert(
-        "zed-gruvbox".into(),
+        "raijin-gruvbox".into(),
         ExtensionIndexEntry {
             manifest: Arc::new(ExtensionManifest {
-                id: "zed-gruvbox".into(),
-                name: "Zed Gruvbox".into(),
+                id: "raijin-gruvbox".into(),
+                name: "Raijin Gruvbox".into(),
                 version: "1.0.0".into(),
                 schema_version: SchemaVersion::ZERO,
                 description: None,
@@ -388,7 +388,7 @@ async fn test_extension_store(cx: &mut TestAppContext) {
     expected_index.themes.insert(
         "Gruvbox".into(),
         ExtensionIndexThemeEntry {
-            extension: "zed-gruvbox".into(),
+            extension: "raijin-gruvbox".into(),
             path: "themes/gruvbox.json".into(),
         },
     );
@@ -428,7 +428,7 @@ async fn test_extension_store(cx: &mut TestAppContext) {
     let prev_fs_metadata_call_count = fs.metadata_call_count();
     let prev_fs_read_dir_call_count = fs.read_dir_call_count();
 
-    // Create new extension store, as if Zed were restarting.
+    // Create new extension store, as if Raijin were restarting.
     drop(store);
     let store = cx.new(|cx| {
         ExtensionStore::new(
@@ -497,12 +497,12 @@ async fn test_extension_store(cx: &mut TestAppContext) {
 
     store.update(cx, |store, cx| {
         store
-            .uninstall_extension("zed-ruby".into(), cx)
+            .uninstall_extension("raijin-ruby".into(), cx)
             .detach_and_log_err(cx);
     });
 
     cx.executor().advance_clock(RELOAD_DEBOUNCE_DURATION);
-    expected_index.extensions.remove("zed-ruby");
+    expected_index.extensions.remove("raijin-ruby");
     expected_index.languages.remove("Ruby");
     expected_index.languages.remove("ERB");
 
@@ -678,7 +678,7 @@ async fn test_extension_store_with_test_extension(cx: &mut TestAppContext) {
     });
     let user_agent = cx.update(|cx| {
         format!(
-            "Zed/{} ({}; {})",
+            "Raijin/{} ({}; {})",
             AppVersion::global(cx),
             std::env::consts::OS,
             std::env::consts::ARCH

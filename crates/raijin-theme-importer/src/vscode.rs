@@ -66,7 +66,7 @@ fn color_or_map(colors: &HashMap<String, serde_json::Value>, key: &str, fallback
 
 /// Imports a VS Code theme JSON file and converts it to a raijin ThemeFamily.
 ///
-/// VS Code themes use a different token name structure than Zed. The `colors` object
+/// VS Code themes use a different token name structure than Raijin. The `colors` object
 /// contains UI colors with keys like `editor.background`, `terminal.ansiRed`, etc.
 /// The `tokenColors` array provides syntax highlighting via TextMate scopes.
 pub fn import_vscode_theme(json: &str) -> Result<ThemeFamily> {

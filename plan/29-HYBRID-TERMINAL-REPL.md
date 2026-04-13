@@ -2,7 +2,7 @@
 
 ## Vision
 
-Das erste Terminal der Welt das nahtlos zwischen Shell-Mode und Kernel-Mode wechselt. Shell-Commands laufen als normale Blocks (OSC 133). Sobald ein REPL erkannt wird (`python`, `node`, `irb`, `ghci`, etc.), wechselt Raijin in den Kernel-Mode: Jupyter-Kernel als Sidecar, strukturierter Input/Output über das Wire Protocol, Rich Output (Bilder, Tabellen, Charts) GPU-gerendert direkt in Blocks. Kein anderes Terminal kann das — Warp hat nur Text, VS Code braucht eine separate Notebook-UI, Zed kann es nur im Editor.
+Das erste Terminal der Welt das nahtlos zwischen Shell-Mode und Kernel-Mode wechselt. Shell-Commands laufen als normale Blocks (OSC 133). Sobald ein REPL erkannt wird (`python`, `node`, `irb`, `ghci`, etc.), wechselt Raijin in den Kernel-Mode: Jupyter-Kernel als Sidecar, strukturierter Input/Output über das Wire Protocol, Rich Output (Bilder, Tabellen, Charts) GPU-gerendert direkt in Blocks. Kein anderes Terminal kann das — Warp hat nur Text, VS Code braucht eine separate Notebook-UI, andere Editoren können es nur im Editor.
 
 ## Ausgangslage
 

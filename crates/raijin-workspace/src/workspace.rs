@@ -5834,7 +5834,7 @@ impl Workspace {
 
             let Some(task) = task else {
                 anyhow::bail!(
-                    "failed to construct view from leader (maybe from a different version of zed?)"
+                    "failed to construct view from leader (maybe from a different version of raijin?)"
                 );
             };
 
@@ -8637,7 +8637,7 @@ actions!(
         ///
         /// If you want to open a specific channel, use `raijin::OpenRaijinUrl` with a channel notes URL -
         /// can be copied via "Copy link to section" in the context menu of the channel notes
-        /// buffer. These URLs look like `https://zed.dev/channel/channel-name-CHANNEL_ID/notes`.
+        /// buffer. These URLs look like `https://raijin.dev/channel/channel-name-CHANNEL_ID/notes`.
         OpenChannelNotes,
         /// Mutes your microphone.
         Mute,
@@ -8663,11 +8663,11 @@ pub struct OpenChannelNotesById {
 }
 
 actions!(
-    zed,
+    raijin,
     [
-        /// Opens the Zed log file.
+        /// Opens the Raijin log file.
         OpenLog,
-        /// Reveals the Zed log file in the system file manager.
+        /// Reveals the Raijin log file in the system file manager.
         RevealLogInFileManager
     ]
 );
@@ -8881,7 +8881,7 @@ pub fn join_channel(
                         let detail: SharedString = match err.error_code() {
                             ErrorCode::SignedOut => "Please sign in to continue.".into(),
                             ErrorCode::UpgradeRequired => concat!(
-                                "Your are running an unsupported version of Zed. ",
+                                "Your are running an unsupported version of Raijin.",
                                 "Please update to continue."
                             )
                             .into(),
@@ -8928,7 +8928,7 @@ pub async fn get_any_active_multi_workspace(
         cx.update(|cx| Workspace::new_local(vec![], app_state.clone(), None, None, None, true, cx))
             .await?;
     }
-    activate_any_workspace_window(&mut cx).context("could not open zed")
+    activate_any_workspace_window(&mut cx).context("could not open raijin")
 }
 
 fn activate_any_workspace_window(cx: &mut AsyncApp) -> Option<WindowHandle<MultiWorkspace>> {

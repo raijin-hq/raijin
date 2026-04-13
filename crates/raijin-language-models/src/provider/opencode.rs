@@ -600,7 +600,7 @@ impl Render for ConfigurationView {
             v_flex()
                 .on_action(cx.listener(Self::save_api_key))
                 .child(Label::new(
-                    "To use OpenCode Zen models in Zed, you need an API key:",
+                    "To use OpenCode Zen models in Raijin, you need an API key:",
                 ))
                 .child(
                     List::new()
@@ -619,7 +619,7 @@ impl Render for ConfigurationView {
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(format!(
-                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."
+                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Raijin."
                     ))
                     .size(LabelSize::Small)
                     .color(Color::Muted),

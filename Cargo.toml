@@ -217,7 +217,7 @@ members = [
 
     # Batch 8 — Extension System
     # TODO: raijin-extension-cli, raijin-extension-host, raijin-extension-api need full rewrite:
-    # WIT namespace zed→raijin, wasmtime 33→36, drop legacy API versions — see plan/27-EXTENSION-SYSTEM-REWRITE.md
+    # WIT namespace needs migration, wasmtime 33→36, drop legacy API versions — see plan/27-EXTENSION-SYSTEM-REWRITE.md
     "crates/raijin-extension-cli",
     "crates/raijin-extension-host",
     "crates/raijin-extensions-ui",
@@ -260,7 +260,7 @@ members = [
     "crates/raijin-git-graph",
     "crates/raijin-git-ui",
 
-    # Batch 11 — Platform Split (SKIPPED: needs extraction from inazuma/src/platform/ with our objc2 migration, not Zed's cocoa API)
+    # Batch 11 — Platform Split (SKIPPED: needs extraction from inazuma/src/platform/ with our objc2 migration)
 
     # Dev tooling
     "crates/cargo-raijin",
@@ -531,7 +531,7 @@ raijin-log-settings = { path = "crates/raijin-log-settings" }
 raijin-git-graph = { path = "crates/raijin-git-graph" }
 raijin-git-ui = { path = "crates/raijin-git-ui" }
 
-# Batch 11 — Platform Split (SKIPPED: needs objc2 extraction from inazuma, not Zed's cocoa API)
+# Batch 11 — Platform Split (SKIPPED: needs objc2 extraction from inazuma)
 
 # External Dependencies
 agent-client-protocol = { version = "=0.10.2", features = ["unstable"] }
@@ -715,7 +715,7 @@ objc2-core-text = { version = "0.3", features = ["CTFont", "CTFontCollection", "
 objc2-core-media = "0.3"
 objc2-screen-capture-kit = "0.3"
 
-# --- Phase 21: Dependencies für portierte Zed-Crates ---
+# --- Phase 21: Dependencies für portierte Raijin-Crates ---
 async-compat = "0.2.1"
 async-dispatcher = "0.1"
 async-task = "4.7"

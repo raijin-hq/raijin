@@ -447,8 +447,8 @@ pub async fn stream_completion(
         .uri(uri)
         .header("Content-Type", "application/json")
         .header("Authorization", format!("Bearer {}", api_key))
-        .header("HTTP-Referer", "https://zed.dev")
-        .header("X-Title", "Zed Editor");
+        .header("HTTP-Referer", "https://raijin.dev")
+        .header("X-Title", "Raijin Editor");
 
     let request = request_builder
         .body(AsyncBody::from(
@@ -540,8 +540,8 @@ pub async fn list_models(
         .uri(uri)
         .header("Accept", "application/json")
         .header("Authorization", format!("Bearer {}", api_key))
-        .header("HTTP-Referer", "https://zed.dev")
-        .header("X-Title", "Zed Editor");
+        .header("HTTP-Referer", "https://raijin.dev")
+        .header("X-Title", "Raijin Editor");
 
     let request = request_builder
         .body(AsyncBody::default())

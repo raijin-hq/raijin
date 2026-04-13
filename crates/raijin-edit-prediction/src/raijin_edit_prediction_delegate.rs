@@ -12,13 +12,13 @@ use raijin_project::Project;
 
 use crate::{BufferEditPrediction, EditPredictionStore};
 
-pub struct ZedEditPredictionDelegate {
+pub struct RaijinEditPredictionDelegate {
     store: Entity<EditPredictionStore>,
     project: Entity<Project>,
     singleton_buffer: Option<Entity<Buffer>>,
 }
 
-impl ZedEditPredictionDelegate {
+impl RaijinEditPredictionDelegate {
     pub fn new(
         project: Entity<Project>,
         singleton_buffer: Option<Entity<Buffer>>,
@@ -44,13 +44,13 @@ impl ZedEditPredictionDelegate {
     }
 }
 
-impl EditPredictionDelegate for ZedEditPredictionDelegate {
+impl EditPredictionDelegate for RaijinEditPredictionDelegate {
     fn name() -> &'static str {
-        "zed-predict"
+        "raijin-predict"
     }
 
     fn display_name() -> &'static str {
-        "Zed's Edit Predictions"
+        "Raijin's Edit Predictions"
     }
 
     fn show_predictions_in_menu() -> bool {

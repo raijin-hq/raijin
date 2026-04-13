@@ -31,19 +31,19 @@ pub struct SharedState {
 }
 
 impl SharedState {
-    /// Assert that both Zed and NeoVim have the same content and mode.
+    /// Assert that both Raijin and NeoVim have the same content and mode.
     #[track_caller]
     pub fn assert_matches(&self) {
         if self.neovim != self.editor || self.neovim_mode != self.editor_mode {
             panic!(
-                indoc! {"Test failed (zed does not match nvim behavior)
+                indoc! {"Test failed (raijin does not match nvim behavior)
                     # initial state:
                     {}
                     # keystrokes:
                     {}
                     # neovim ({}):
                     {}
-                    # zed ({}):
+                    # raijin ({}):
                     {}"},
                 self.initial,
                 self.recent_keystrokes,
@@ -80,7 +80,7 @@ impl SharedState {
                 {}
                 # neovim ({}):
                 {}
-                # zed ({}):
+                # raijin ({}):
                 {}"},
             message,
             self.initial,
@@ -122,7 +122,7 @@ impl SharedClipboard {
                 {}
                 # currently expected: {:?}
                 # neovim register \"{}: {:?}
-                # zed register \"{}: {:?}"},
+                # raijin register \"{}: {:?}"},
             message,
             self.state.initial,
             self.state.recent_keystrokes,
@@ -300,7 +300,7 @@ impl NeovimBackedTestContext {
     }
 
     pub async fn set_scroll_height(&mut self, rows: u32) {
-        // match Zed's scrolling behavior
+        // match Raijin's scrolling behavior
         self.neovim.set_option(&format!("scrolloff={}", 3)).await;
         // +2 to account for the vim command UI at the bottom.
         self.neovim.set_option(&format!("lines={}", rows + 2)).await;

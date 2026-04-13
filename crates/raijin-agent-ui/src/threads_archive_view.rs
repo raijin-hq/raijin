@@ -686,7 +686,7 @@ impl ThreadsArchiveView {
             .color(Color::Muted)
             .size(IconSize::Small)
         } else {
-            Icon::new(IconName::ZedAgent)
+            Icon::new(IconName::RaijinAgent)
                 .color(Color::Muted)
                 .size(IconSize::Small)
         };
@@ -708,8 +708,8 @@ impl ThreadsArchiveView {
             .menu(move |window, cx| {
                 Some(ContextMenu::build(window, cx, |menu, _window, cx| {
                     menu.item(
-                        ContextMenuEntry::new("Zed Agent")
-                            .icon(IconName::ZedAgent)
+                        ContextMenuEntry::new("Raijin Agent")
+                            .icon(IconName::RaijinAgent)
                             .icon_color(Color::Muted)
                             .handler({
                                 let this = this.clone();
@@ -765,7 +765,7 @@ impl ThreadsArchiveView {
                             if let Some(icon_path) = icon_path {
                                 entry = entry.custom_icon_svg(icon_path);
                             } else {
-                                entry = entry.icon(IconName::ZedAgent);
+                                entry = entry.icon(IconName::RaijinAgent);
                             }
 
                             entry = entry.icon_color(Color::Muted).handler({

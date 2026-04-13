@@ -19,11 +19,11 @@ pub fn get_or_create_id(path: &Path) -> Result<String> {
 pub fn eval_system_id_path() -> PathBuf {
     dirs::data_local_dir()
         .unwrap_or_else(|| PathBuf::from("."))
-        .join("zed-eval-system-id")
+        .join("raijin-eval-system-id")
 }
 
 pub fn eval_installation_id_path() -> PathBuf {
     dirs::data_local_dir()
         .unwrap_or_else(|| PathBuf::from("."))
-        .join("zed-eval-installation-id")
+        .join("raijin-eval-installation-id")
 }

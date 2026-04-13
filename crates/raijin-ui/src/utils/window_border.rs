@@ -1,5 +1,5 @@
 // From:
-// https://github.com/zed-industries/zed/blob/56daba28d40301ee4c05546fadb691d070b7b2b6/crates/gpui/examples/window_shadow.rs
+// https://github.com/raijin-industries/raijin/blob/56daba28d40301ee4c05546fadb691d070b7b2b6/crates/gpui/examples/window_shadow.rs
 use inazuma::{
     AnyElement, App, Bounds, CursorStyle, Decorations, Edges, HitboxBehavior,
     InteractiveElement as _, IntoElement, MouseButton, ParentElement, Pixels, Point, RenderOnce,

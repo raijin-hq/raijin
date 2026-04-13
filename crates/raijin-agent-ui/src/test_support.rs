@@ -48,7 +48,7 @@ where
     C: 'static + AgentConnection + Send + Clone,
 {
     fn logo(&self) -> raijin_ui::IconName {
-        raijin_ui::IconName::ZedAgent
+        raijin_ui::IconName::RaijinAgent
     }
 
     fn agent_id(&self) -> AgentId {

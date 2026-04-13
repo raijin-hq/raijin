@@ -2461,11 +2461,11 @@ mod tests {
     async fn test_streaming_authorize(cx: &mut TestAppContext) {
         let (tool, _project, _action_log, _fs, _thread) = setup_test(cx, json!({})).await;
 
-        // Test 1: Path with .zed component should require confirmation
+        // Test 1: Path with .raijin component should require confirmation
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         let _auth = cx.update(|cx| {
             tool.authorize(
-                &PathBuf::from(".zed/settings.json"),
+                &PathBuf::from(".raijin/settings.json"),
                 "test 1",
                 &stream_tx,
                 cx,
@@ -2486,7 +2486,7 @@ mod tests {
         let event = stream_rx.expect_authorization().await;
         assert_eq!(event.tool_call.fields.title, Some("test 2".into()));
 
-        // Test 3: Relative path without .zed should not require confirmation
+        // Test 3: Relative path without .raijin should not require confirmation
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         cx.update(|cx| {
             tool.authorize(&PathBuf::from("root/src/main.rs"), "test 3", &stream_tx, cx)
@@ -2495,11 +2495,11 @@ mod tests {
         .unwrap();
         assert!(stream_rx.try_next().is_err());
 
-        // Test 4: Path with .zed in the middle should require confirmation
+        // Test 4: Path with .raijin in the middle should require confirmation
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         let _auth = cx.update(|cx| {
             tool.authorize(
-                &PathBuf::from("root/.zed/tasks.json"),
+                &PathBuf::from("root/.raijin/tasks.json"),
                 "test 4",
                 &stream_tx,
                 cx,
@@ -2519,11 +2519,11 @@ mod tests {
             raijin_agent_settings::AgentSettings::override_global(settings, cx);
         });
 
-        // 5.1: .zed/settings.json is a sensitive path — still prompts
+        // 5.1: .raijin/settings.json is a sensitive path — still prompts
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         let _auth = cx.update(|cx| {
             tool.authorize(
-                &PathBuf::from(".zed/settings.json"),
+                &PathBuf::from(".raijin/settings.json"),
                 "test 5.1",
                 &stream_tx,
                 cx,
@@ -2844,7 +2844,7 @@ mod tests {
         fs.insert_tree(
             "/workspace/shared",
             json!({
-                ".zed": {
+                ".raijin": {
                     "settings.json": "{}"
                 }
             }),
@@ -2865,9 +2865,9 @@ mod tests {
             ("frontend/src/main.js", false, "File in first worktree"),
             ("backend/src/main.rs", false, "File in second worktree"),
             (
-                "shared/.zed/settings.json",
+                "shared/.raijin/settings.json",
                 true,
-                ".zed file in third worktree",
+                ".raijin file in third worktree",
             ),
             ("/etc/hosts", true, "Absolute path outside all worktrees"),
             (
@@ -2903,11 +2903,11 @@ mod tests {
         fs.insert_tree(
             "/project",
             json!({
-                ".zed": {
+                ".raijin": {
                     "settings.json": "{}"
                 },
                 "src": {
-                    ".zed": {
+                    ".raijin": {
                         "local.json": "{}"
                     }
                 }
@@ -2965,7 +2965,7 @@ mod tests {
             "/project",
             json!({
                 "existing.txt": "content",
-                ".zed": {
+                ".raijin": {
                     "settings.json": "{}"
                 }
             }),
@@ -2977,11 +2977,11 @@ mod tests {
         let modes = vec![StreamingEditFileMode::Edit, StreamingEditFileMode::Write];
 
         for _mode in modes {
-            // Test .zed path with different modes
+            // Test .raijin path with different modes
             let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
             let _auth = cx.update(|cx| {
                 tool.authorize(
-                    &PathBuf::from("project/.zed/settings.json"),
+                    &PathBuf::from("project/.raijin/settings.json"),
                     "Edit settings",
                     &stream_tx,
                     cx,

@@ -50,8 +50,8 @@ pub(crate) fn call_bump_version(
                 .actions(Level::Write),
         )
         .uses(
-            "zed-industries",
-            "zed",
+            "raijin-hq",
+            "raijin",
             ".github/workflows/extension_bump.yml",
             target_ref.map_or("main", AsRef::as_ref),
         )

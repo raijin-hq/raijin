@@ -1,5 +1,5 @@
 syntax = "proto3";
-package zed.messages;
+package raijin.messages;
 
 import "buffer.proto";
 import "channel.proto";

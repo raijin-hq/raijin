@@ -2,24 +2,24 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ${ZED_KUBE_NAMESPACE}
+  name: ${RAIJIN_KUBE_NAMESPACE}
 
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  namespace: ${ZED_KUBE_NAMESPACE}
-  name: ${ZED_SERVICE_NAME}
+  namespace: ${RAIJIN_KUBE_NAMESPACE}
+  name: ${RAIJIN_SERVICE_NAME}
   annotations:
-    service.beta.kubernetes.io/do-loadbalancer-name: "${ZED_SERVICE_NAME}-${ZED_KUBE_NAMESPACE}"
-    service.beta.kubernetes.io/do-loadbalancer-size-unit: "${ZED_LOAD_BALANCER_SIZE_UNIT}"
+    service.beta.kubernetes.io/do-loadbalancer-name: "${RAIJIN_SERVICE_NAME}-${RAIJIN_KUBE_NAMESPACE}"
+    service.beta.kubernetes.io/do-loadbalancer-size-unit: "${RAIJIN_LOAD_BALANCER_SIZE_UNIT}"
     service.beta.kubernetes.io/do-loadbalancer-tls-ports: "443"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: ${ZED_DO_CERTIFICATE_ID}
+    service.beta.kubernetes.io/do-loadbalancer-certificate-id: ${RAIJIN_DO_CERTIFICATE_ID}
     service.beta.kubernetes.io/do-loadbalancer-disable-lets-encrypt-dns-records: "true"
 spec:
   type: LoadBalancer
   selector:
-    app: ${ZED_SERVICE_NAME}
+    app: ${RAIJIN_SERVICE_NAME}
   ports:
     - name: web
       protocol: TCP
@@ -30,8 +30,8 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: ${ZED_KUBE_NAMESPACE}
-  name: ${ZED_SERVICE_NAME}
+  namespace: ${RAIJIN_KUBE_NAMESPACE}
+  name: ${RAIJIN_SERVICE_NAME}
 
 spec:
   replicas: 1
@@ -42,18 +42,18 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app: ${ZED_SERVICE_NAME}
+      app: ${RAIJIN_SERVICE_NAME}
   template:
     metadata:
       labels:
-        app: ${ZED_SERVICE_NAME}
+        app: ${RAIJIN_SERVICE_NAME}
     spec:
       containers:
-        - name: ${ZED_SERVICE_NAME}
-          image: "${ZED_IMAGE_ID}"
+        - name: ${RAIJIN_SERVICE_NAME}
+          image: "${RAIJIN_IMAGE_ID}"
           args:
             - serve
-            - ${ZED_SERVICE_NAME}
+            - ${RAIJIN_SERVICE_NAME}
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -92,10 +92,10 @@ spec:
                 secretKeyRef:
                   name: api
                   key: token
-            - name: ZED_CLIENT_CHECKSUM_SEED
+            - name: RAIJIN_CLIENT_CHECKSUM_SEED
               valueFrom:
                 secretKeyRef:
-                  name: zed-client
+                  name: raijin-client
                   key: checksum-seed
             - name: LIVEKIT_SERVER
               valueFrom:
@@ -168,8 +168,8 @@ spec:
               value: ${RUST_LOG}
             - name: LOG_JSON
               value: "true"
-            - name: ZED_ENVIRONMENT
-              value: ${ZED_ENVIRONMENT}
+            - name: RAIJIN_ENVIRONMENT
+              value: ${RAIJIN_ENVIRONMENT}
           securityContext:
             capabilities:
               # TODO - Switch to the more restrictive `PERFMON` capability.

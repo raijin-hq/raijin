@@ -1,6 +1,6 @@
 # Terminal Resize: Code Comparison
 
-## Pattern 1: Zed's TerminalElement.prepaint() — Production Pattern
+## Pattern 1: Reference TerminalElement.prepaint() — Production Pattern
 
 **Location:** `crates/terminal_view/src/terminal_element.rs:863-1012`
 
@@ -77,7 +77,7 @@ fn prepaint(
 
 ---
 
-## Pattern 2: Zed's Terminal.set_size() — Queuing Mechanism
+## Pattern 2: Reference Terminal.set_size() — Queuing Mechanism
 
 **Location:** `crates/terminal/src/terminal.rs:1438-1442`
 
@@ -93,7 +93,7 @@ pub fn set_size(&mut self, new_bounds: TerminalBounds) {
 
 ---
 
-## Pattern 3: Zed's Terminal Event Processing — Resize → PTY → Grid
+## Pattern 3: Reference Terminal Event Processing — Resize → PTY → Grid
 
 **Location:** `crates/terminal/src/terminal.rs:1024-1043`
 
@@ -349,7 +349,7 @@ let rows = (available_height / cell_height).max(1.0) as u16;
 
 ## Side-by-Side Comparison
 
-| Aspect | Zed | Alacritty | Ghostty | Raijin |
+| Aspect | Reference | Alacritty | Ghostty | Raijin |
 |--------|-----|-----------|---------|--------|
 | **Resize location** | prepaint() | event_loop | sync() | ❌ nowhere |
 | **Bounds source** | prepaint param | window event | renderer | ✅ available |
@@ -409,7 +409,7 @@ fn prepaint(
 2. Calculates rows/cols from bounds + font metrics
 3. Calls idempotent set_size() that was already implemented
 4. No frame delay (same frame as render)
-5. Matches production pattern from Zed
+5. Matches production pattern from reference codebase
 
 ---
 

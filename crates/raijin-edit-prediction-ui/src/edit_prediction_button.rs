@@ -56,7 +56,7 @@ actions!(
 
 const COPILOT_SETTINGS_PATH: &str = "/settings/copilot";
 const COPILOT_SETTINGS_URL: &str = concat!("https://github.com", "/settings/copilot");
-const PRIVACY_DOCS: &str = "https://zed.dev/docs/ai/privacy-and-security";
+const PRIVACY_DOCS: &str = "https://raijin.dev/docs/ai/privacy-and-security";
 
 struct CopilotErrorToast;
 
@@ -324,7 +324,7 @@ impl Render for EditPredictionButton {
                 )
             }
             provider @ (EditPredictionProvider::Experimental(_)
-            | EditPredictionProvider::Zed
+            | EditPredictionProvider::Raijin
             | EditPredictionProvider::Mercury) => {
                 let enabled = self.editor_enabled.unwrap_or(true);
                 let file = self.file.clone();
@@ -332,7 +332,7 @@ impl Render for EditPredictionButton {
                 let project = self.project.clone();
                 let provider_name: &'static str = match provider {
                     EditPredictionProvider::Experimental(name) => name,
-                    EditPredictionProvider::Zed => "zed",
+                    EditPredictionProvider::Raijin => "raijin",
                     _ => "unknown",
                 };
                 let icons = self
@@ -340,7 +340,7 @@ impl Render for EditPredictionButton {
                     .as_ref()
                     .map(|p| p.icons(cx))
                     .unwrap_or_else(|| {
-                        raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
+                        raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::RaijinPredict)
                     });
 
                 let ep_icon;
@@ -378,7 +378,7 @@ impl Render for EditPredictionButton {
                     };
 
                     return div().child(
-                        IconButton::new("zed-predict-pending-button", ep_icon)
+                        IconButton::new("raijin-predict-pending-button", ep_icon)
                             .shape(IconButtonShape::Square)
                             .indicator(Indicator::dot().color(Color::Muted))
                             .indicator_border_color(Some(cx.theme().colors().status_bar.background))
@@ -428,7 +428,7 @@ impl Render for EditPredictionButton {
                     None
                 };
 
-                let icon_button = IconButton::new("zed-predict-pending-button", ep_icon)
+                let icon_button = IconButton::new("raijin-predict-pending-button", ep_icon)
                     .shape(IconButtonShape::Square)
                     .when_some(indicator_color, |this, color| {
                         this.indicator(Indicator::dot().color(color))
@@ -637,10 +637,10 @@ impl EditPredictionButton {
                 }
             })
             .separator()
-            .entry("Use Zed AI", None, {
+            .entry("Use Raijin AI", None, {
                 let fs = fs.clone();
                 move |_window, cx| {
-                    set_completion_provider(fs.clone(), cx, EditPredictionProvider::Zed)
+                    set_completion_provider(fs.clone(), cx, EditPredictionProvider::Raijin)
                 }
             })
         })
@@ -770,7 +770,7 @@ impl EditPredictionButton {
 
         menu = menu.separator().header("Privacy");
 
-        if matches!(provider, EditPredictionProvider::Zed) {
+        if matches!(provider, EditPredictionProvider::Raijin) {
             if let Some(provider) = &self.edit_prediction_provider {
                 let data_collection = provider.data_collection_state(cx);
 
@@ -823,7 +823,7 @@ impl EditPredictionButton {
                                     .child(
                                         Label::new(indoc!{
                                             "Help us improve our open dataset model by sharing data from open source repositories. \
-                                            Zed must detect a license file in your repo for this setting to take effect. \
+                                            Raijin must detect a license file in your repo for this setting to take effect. \
                                             Files with sensitive data and secrets are excluded by default."
                                         })
                                     )
@@ -877,7 +877,7 @@ impl EditPredictionButton {
                 .icon_color(Color::Muted)
                 .documentation_aside(DocumentationSide::Left, |_| {
                     Label::new(indoc!{"
-                        Open your settings to add sensitive paths for which Zed will never predict edits."}).into_any_element()
+                        Open your settings to add sensitive paths for which Raijin will never predict edits."}).into_any_element()
                 })
                 .handler(move |window, cx| {
                     raijin_telemetry::event!(
@@ -915,7 +915,7 @@ impl EditPredictionButton {
                 .as_ref()
                 .map(|p| p.icons(cx))
                 .unwrap_or_else(|| {
-                    raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::ZedPredict)
+                    raijin_edit_prediction_types::EditPredictionIconSet::new(IconName::RaijinPredict)
                 });
             menu = menu.item(
                 ContextMenuEntry::new("This file is excluded.")
@@ -1037,7 +1037,7 @@ impl EditPredictionButton {
             let needs_sign_in = user.is_none()
                 && matches!(
                     provider,
-                    EditPredictionProvider::None | EditPredictionProvider::Zed
+                    EditPredictionProvider::None | EditPredictionProvider::Raijin
                 );
 
             if needs_sign_in {
@@ -1065,7 +1065,7 @@ impl EditPredictionButton {
                         raijin_telemetry::event!(
                             "Edit Prediction Menu Action",
                             action = "sign_in",
-                            provider = "zed",
+                            provider = "raijin",
                         );
                         let client = Client::global(cx);
                         window
@@ -1171,7 +1171,7 @@ impl EditPredictionButton {
                             },
                             |_window, cx| cx.open_url(&raijin_urls::account_url(cx)),
                         )
-                        .entry("Upgrade to Zed Pro or contact us.", None, |_window, cx| {
+                        .entry("Upgrade to Raijin Pro or contact us.", None, |_window, cx| {
                             raijin_telemetry::event!(
                                 "Edit Prediction Menu Action",
                                 action = "upsell_clicked",
@@ -1194,7 +1194,7 @@ impl EditPredictionButton {
                             },
                         )
                         .entry(
-                            "Check your payment status or contact us at billing-support@zed.dev to continue using this feature.",
+                            "Check your payment status or contact us at billing-support@raijin.dev to continue using this feature.",
                             None,
                             |_window, cx| {
                                 cx.open_url(&raijin_urls::account_url(cx))
@@ -1416,7 +1416,7 @@ pub fn set_completion_provider(fs: Arc<dyn Fs>, cx: &mut App, provider: EditPred
 pub fn get_available_providers(cx: &mut App) -> Vec<EditPredictionProvider> {
     let mut providers = Vec::new();
 
-    providers.push(EditPredictionProvider::Zed);
+    providers.push(EditPredictionProvider::Raijin);
 
     if let Some(app_state) = raijin_workspace::AppState::global(cx).upgrade()
         && raijin_copilot::GlobalCopilotAuth::try_get_or_init(app_state, cx)
@@ -1564,7 +1564,7 @@ fn render_zeta_tab_animation(cx: &App) -> impl IntoElement {
             8.,
         ))
         .child(tab_sequence(true))
-        .child(Icon::new(IconName::ZedPredict))
+        .child(Icon::new(IconName::RaijinPredict))
         .child(tab_sequence(false))
 }
 

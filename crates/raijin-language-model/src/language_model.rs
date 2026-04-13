@@ -58,9 +58,9 @@ pub const OPEN_AI_PROVIDER_NAME: LanguageModelProviderName =
 pub const X_AI_PROVIDER_ID: LanguageModelProviderId = LanguageModelProviderId::new("x_ai");
 pub const X_AI_PROVIDER_NAME: LanguageModelProviderName = LanguageModelProviderName::new("xAI");
 
-pub const ZED_CLOUD_PROVIDER_ID: LanguageModelProviderId = LanguageModelProviderId::new("zed.dev");
+pub const ZED_CLOUD_PROVIDER_ID: LanguageModelProviderId = LanguageModelProviderId::new("raijin.dev");
 pub const ZED_CLOUD_PROVIDER_NAME: LanguageModelProviderName =
-    LanguageModelProviderName::new("Zed");
+    LanguageModelProviderName::new("Raijin");
 
 pub fn init(user_store: Entity<UserStore>, client: Arc<Client>, cx: &mut App) {
     init_settings(cx);
@@ -815,7 +815,7 @@ pub enum AuthenticateError {
 /// Either a built-in icon name or a path to an external SVG.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum IconOrSvg {
-    /// A built-in icon from Zed's icon set.
+    /// A built-in icon from Raijin's icon set.
     Icon(IconName),
     /// Path to a custom SVG icon file.
     Svg(SharedString),
@@ -823,7 +823,7 @@ pub enum IconOrSvg {
 
 impl Default for IconOrSvg {
     fn default() -> Self {
-        Self::Icon(IconName::ZedAssistant)
+        Self::Icon(IconName::RaijinAssistant)
     }
 }
 
@@ -853,7 +853,7 @@ pub trait LanguageModelProvider: 'static {
 #[derive(Default, Clone, PartialEq, Eq)]
 pub enum ConfigurationViewTargetAgent {
     #[default]
-    ZedAgent,
+    RaijinAgent,
     Other(SharedString),
 }
 

@@ -31,7 +31,7 @@ impl AgentServer for NativeAgentServer {
     }
 
     fn logo(&self) -> raijin_ui::IconName {
-        raijin_ui::IconName::ZedAgent
+        raijin_ui::IconName::RaijinAgent
     }
 
     fn connect(

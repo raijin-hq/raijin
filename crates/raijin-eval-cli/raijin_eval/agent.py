@@ -1,4 +1,4 @@
-"""Harbor agent wrapper for Zed's eval-cli binary.
+"""Harbor agent wrapper for Raijin's eval-cli binary.
 
 Usage:
     # Build eval-cli locally first:
@@ -6,13 +6,13 @@ Usage:
 
     # Run via Harbor with a local binary:
     harbor run -d "dataset@version" \
-        --agent-import-path zed_eval.agent:ZedAgent \
+        --agent-import-path raijin_eval.agent:RaijinAgent \
         --ae binary_path=/path/to/target/release/eval-cli \
         --agent-model anthropic/claude-sonnet-4-6-latest
 
     # Or with a download URL (for CI):
     harbor run -d "dataset@version" \
-        --agent-import-path zed_eval.agent:ZedAgent \
+        --agent-import-path raijin_eval.agent:RaijinAgent \
         --ae download_url=https://example.com/eval-cli \
         --agent-model anthropic/claude-sonnet-4-6-latest
 """
@@ -27,11 +27,11 @@ from harbor.environments.base import BaseEnvironment
 from harbor.models.agent.context import AgentContext
 
 
-class ZedAgent(BaseInstalledAgent):
-    """Runs Zed's headless AI agent (eval-cli) to solve tasks.
+class RaijinAgent(BaseInstalledAgent):
+    """Runs Raijin's headless AI agent (eval-cli) to solve tasks.
 
     The eval-cli binary boots a headless GPUI application and uses the same
-    NativeAgent + AcpThread pipeline as the production Zed editor, driving
+    NativeAgent + AcpThread pipeline as the production Raijin terminal, driving
     the full agentic loop (tool calls, subagents, retries) without a GUI.
     """
 
@@ -49,7 +49,7 @@ class ZedAgent(BaseInstalledAgent):
 
     @staticmethod
     def name() -> str:
-        return "zed"
+        return "raijin"
 
     @property
     def _install_agent_template_path(self) -> Path:

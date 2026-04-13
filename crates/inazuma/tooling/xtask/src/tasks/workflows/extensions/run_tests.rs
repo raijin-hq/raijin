@@ -20,8 +20,8 @@ pub(crate) fn call_extension_tests(target_ref: Option<&GitSha>) -> NamedJob<Uses
     let job = Job::default()
         .permissions(Permissions::default().contents(Level::Read))
         .uses(
-            "zed-industries",
-            "zed",
+            "raijin-hq",
+            "raijin",
             ".github/workflows/extension_tests.yml",
             target_ref.map_or("main", AsRef::as_ref),
         );

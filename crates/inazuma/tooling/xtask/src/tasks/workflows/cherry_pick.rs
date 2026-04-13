@@ -39,8 +39,8 @@ fn run_cherry_pick(
             .add_env(("BRANCH", branch.to_string()))
             .add_env(("COMMIT", commit.to_string()))
             .add_env(("CHANNEL", channel.to_string()))
-            .add_env(("GIT_COMMITTER_NAME", "Zed Zippy"))
-            .add_env(("GIT_COMMITTER_EMAIL", "hi@zed.dev"))
+            .add_env(("GIT_COMMITTER_NAME", "Raijin Zippy"))
+            .add_env(("GIT_COMMITTER_EMAIL", "hi@raijin.dev"))
             .add_env(("GITHUB_TOKEN", token))
     }
 

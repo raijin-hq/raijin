@@ -821,7 +821,7 @@ mod tests {
 
     #[test]
     fn does_not_treat_web_links_as_preview_paths() {
-        assert_eq!(resolve_preview_path("https://zed.dev", None), None);
+        assert_eq!(resolve_preview_path("https://raijin.dev", None), None);
         assert_eq!(resolve_preview_path("http://example.com", None), None);
     }
 }

@@ -88,7 +88,7 @@ pub fn init(cx: &mut App) {
                 raijin_workspace::register_project_item::<NotebookEditor>(cx);
             } else {
                 // todo: there is no way to unregister a project item, so if the feature flag
-                // gets turned off they need to restart Zed.
+                // gets turned off they need to restart Raijin.
             }
         }
     })

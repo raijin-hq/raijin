@@ -23,9 +23,9 @@ pub(crate) const SNOWFLAKE_SUCCESS_CODE: &str = "090001";
 pub(crate) const SNOWFLAKE_ASYNC_IN_PROGRESS_CODE: &str = "333334";
 const SNOWFLAKE_TIMEOUT_CODE: &str = "000630";
 
-/// Minimum Zed version for filtering captured examples.
+/// Minimum Raijin version for filtering captured examples.
 /// For example, `MinCaptureVersion { minor: 224, patch: 1 }` means only pull examples
-/// where `zed_version >= 0.224.1`.
+/// where `raijin_version >= 0.224.1`.
 #[derive(Clone, Copy, Debug)]
 pub struct MinCaptureVersion {
     pub minor: u32,
@@ -578,16 +578,16 @@ pub async fn fetch_rejected_examples_after(
                 requested_output AS output,
                 is_ep_shown_before_rejected AS was_shown,
                 ep_rejected_reason AS reason,
-                zed_version AS zed_version
+                raijin_version AS raijin_version
             FROM ZED_DBT.DBT_PROD.fct_edit_prediction_examples
             WHERE ep_outcome LIKE 'Rejected%'
                 AND is_ep_shown_before_rejected = true
                 AND requested_at > TRY_TO_TIMESTAMP_NTZ(?)
                 AND (? IS NULL OR (
-                    TRY_CAST(SPLIT_PART(zed_version, '.', 2) AS INTEGER) > ?
+                    TRY_CAST(SPLIT_PART(raijin_version, '.', 2) AS INTEGER) > ?
                     OR (
-                        TRY_CAST(SPLIT_PART(zed_version, '.', 2) AS INTEGER) = ?
-                        AND TRY_CAST(SPLIT_PART(SPLIT_PART(zed_version, '.', 3), '+', 1) AS INTEGER) >= ?
+                        TRY_CAST(SPLIT_PART(raijin_version, '.', 2) AS INTEGER) = ?
+                        AND TRY_CAST(SPLIT_PART(SPLIT_PART(raijin_version, '.', 3), '+', 1) AS INTEGER) >= ?
                     )
                 ))
             ORDER BY requested_at ASC
@@ -625,7 +625,7 @@ pub async fn fetch_rejected_examples_after(
                 "output",
                 "was_shown",
                 "reason",
-                "zed_version",
+                "raijin_version",
             ],
             rejected_examples_from_response,
         )
@@ -674,14 +674,14 @@ pub async fn fetch_requested_examples_after(
                 requested_at::string AS continuation_time,
                 requested_at::string AS time,
                 input_payload AS input,
-                zed_version AS zed_version
+                raijin_version AS raijin_version
             FROM ZED_DBT.DBT_PROD.fct_edit_prediction_examples
             WHERE requested_at > TRY_TO_TIMESTAMP_NTZ(?)
                 AND (? IS NULL OR (
-                    TRY_CAST(SPLIT_PART(zed_version, '.', 2) AS INTEGER) > ?
+                    TRY_CAST(SPLIT_PART(raijin_version, '.', 2) AS INTEGER) > ?
                     OR (
-                        TRY_CAST(SPLIT_PART(zed_version, '.', 2) AS INTEGER) = ?
-                        AND TRY_CAST(SPLIT_PART(SPLIT_PART(zed_version, '.', 3), '+', 1) AS INTEGER) >= ?
+                        TRY_CAST(SPLIT_PART(raijin_version, '.', 2) AS INTEGER) = ?
+                        AND TRY_CAST(SPLIT_PART(SPLIT_PART(raijin_version, '.', 3), '+', 1) AS INTEGER) >= ?
                     )
                 ))
             ORDER BY requested_at ASC
@@ -710,7 +710,7 @@ pub async fn fetch_requested_examples_after(
                     "7": { "type": "FIXED", "value": retry_state.offset.to_string() }
                 })
             },
-            &["request_id", "device_id", "time", "input", "zed_version"],
+            &["request_id", "device_id", "time", "input", "raijin_version"],
             requested_examples_from_response,
         )
         .await?;
@@ -756,16 +756,16 @@ pub async fn fetch_captured_examples_after(
                 input_payload AS input,
                 settled_editable_region AS settled_editable_region,
                 example_payload AS example,
-                zed_version AS zed_version
+                raijin_version AS raijin_version
             FROM ZED_DBT.DBT_PROD.fct_edit_prediction_examples
             WHERE settled_editable_region IS NOT NULL
                 AND example_payload IS NOT NULL
                 AND requested_at > TRY_TO_TIMESTAMP_NTZ(?)
                 AND (? IS NULL OR (
-                    TRY_CAST(SPLIT_PART(zed_version, '.', 2) AS INTEGER) > ?
+                    TRY_CAST(SPLIT_PART(raijin_version, '.', 2) AS INTEGER) > ?
                     OR (
-                        TRY_CAST(SPLIT_PART(zed_version, '.', 2) AS INTEGER) = ?
-                        AND TRY_CAST(SPLIT_PART(SPLIT_PART(zed_version, '.', 3), '+', 1) AS INTEGER) >= ?
+                        TRY_CAST(SPLIT_PART(raijin_version, '.', 2) AS INTEGER) = ?
+                        AND TRY_CAST(SPLIT_PART(SPLIT_PART(raijin_version, '.', 3), '+', 1) AS INTEGER) >= ?
                     )
                 ))
             ORDER BY requested_at ASC
@@ -801,7 +801,7 @@ pub async fn fetch_captured_examples_after(
                 "input",
                 "settled_editable_region",
                 "example",
-                "zed_version",
+                "raijin_version",
             ],
             captured_examples_from_response,
         )
@@ -846,7 +846,7 @@ pub async fn fetch_settled_examples_after(
                 requested_output AS requested_output,
                 settled_editable_region AS settled_editable_region,
                 requested_format AS requested_format,
-                zed_version AS zed_version
+                raijin_version AS raijin_version
             FROM ZED_DBT.DBT_PROD.fct_edit_prediction_examples
             WHERE settled_editable_region IS NOT NULL
                 AND requested_at > TRY_TO_TIMESTAMP_NTZ(?)
@@ -880,7 +880,7 @@ pub async fn fetch_settled_examples_after(
                 "requested_output",
                 "settled_editable_region",
                 "requested_format",
-                "zed_version",
+                "raijin_version",
             ],
             settled_examples_from_response,
         )
@@ -935,7 +935,7 @@ pub async fn fetch_rated_examples_after(
                 requested_at::string AS time,
                 NULL AS experiment_name,
                 NULL AS environment,
-                zed_version AS zed_version
+                raijin_version AS raijin_version
             FROM ZED_DBT.DBT_PROD.fct_edit_prediction_examples
             WHERE rating IS NOT NULL
                 AND (? IS NULL OR rating = ?)
@@ -977,7 +977,7 @@ pub async fn fetch_rated_examples_after(
                 "time",
                 "experiment_name",
                 "environment",
-                "zed_version",
+                "raijin_version",
             ],
             rated_examples_from_response,
         )
@@ -1049,7 +1049,7 @@ fn rated_examples_from_response<'a>(
             let time = get_string("time");
             let experiment_name = get_string("experiment_name");
             let environment = get_string("environment");
-            let zed_version = get_string("zed_version");
+            let raijin_version = get_string("raijin_version");
 
             match (inputs, output.clone(), rating.clone(), time.clone()) {
                 (Some(inputs), Some(output), Some(rating), Some(time)) => {
@@ -1063,7 +1063,7 @@ fn rated_examples_from_response<'a>(
                         feedback,
                         experiment_name,
                         environment,
-                        zed_version,
+                        raijin_version,
                     ))
                 }
                 _ => {
@@ -1092,7 +1092,7 @@ fn build_rated_example(
     feedback: String,
     experiment_name: Option<String>,
     environment: Option<String>,
-    zed_version: Option<String>,
+    raijin_version: Option<String>,
 ) -> Example {
     let parsed_rating = if rating == "Positive" {
         EditPredictionRating::Positive
@@ -1116,7 +1116,7 @@ fn build_rated_example(
     }
 
     let mut example =
-        build_example_from_snowflake(request_id, device_id, time, input, tags, None, zed_version);
+        build_example_from_snowflake(request_id, device_id, time, input, tags, None, raijin_version);
 
     example.spec.rating = Some(parsed_rating);
 
@@ -1181,7 +1181,7 @@ fn requested_examples_from_response<'a>(
             let input_json = get_json("input");
             let input: Option<ZetaPromptInput> =
                 input_json.clone().and_then(|v| serde_json::from_value(v).ok());
-            let zed_version = get_string("zed_version");
+            let raijin_version = get_string("raijin_version");
 
             match (request_id_str.clone(), device_id.clone(), time.clone(), input) {
                 (Some(request_id), Some(device_id), Some(time), Some(input)) => {
@@ -1192,7 +1192,7 @@ fn requested_examples_from_response<'a>(
                         input,
                         vec!["requested".to_string()],
                         None,
-                        zed_version,
+                        raijin_version,
                     ))
                 }
                 _ => {
@@ -1266,7 +1266,7 @@ fn settled_examples_from_response<'a>(
             let settled_editable_region = get_string("settled_editable_region");
             let requested_format =
                 get_string("requested_format").and_then(|s| ZetaFormat::parse(&s).ok());
-            let zed_version = get_string("zed_version");
+            let raijin_version = get_string("raijin_version");
 
             match (
                 request_id_str.clone(),
@@ -1293,7 +1293,7 @@ fn settled_examples_from_response<'a>(
                     requested_output,
                     settled_editable_region,
                     requested_format,
-                    zed_version,
+                    raijin_version,
                 )),
                 _ => {
                     let mut missing_fields = Vec::new();
@@ -1399,7 +1399,7 @@ fn captured_examples_from_response<'a>(
             });
             let has_example_spec = example_spec.is_some();
             let settled_editable_region = get_string("settled_editable_region");
-            let zed_version = get_string("zed_version");
+            let raijin_version = get_string("raijin_version");
 
             match (
                 request_id.clone(),
@@ -1423,7 +1423,7 @@ fn captured_examples_from_response<'a>(
                     input,
                     example_spec,
                     settled_editable_region,
-                    zed_version,
+                    raijin_version,
                 )),
                 _ => {
                     let mut missing_fields = Vec::new();
@@ -1467,7 +1467,7 @@ fn build_settled_example(
     requested_output: String,
     settled_editable_region: String,
     requested_format: ZetaFormat,
-    zed_version: Option<String>,
+    raijin_version: Option<String>,
 ) -> Example {
     let requested_editable_range =
         excerpt_range_for_format(requested_format, &input.excerpt_ranges).0;
@@ -1483,7 +1483,7 @@ fn build_settled_example(
         input,
         vec!["settled".to_string()],
         None,
-        zed_version,
+        raijin_version,
     );
 
     if !requested_range_is_valid {
@@ -1522,7 +1522,7 @@ fn build_captured_example(
     input: ZetaPromptInput,
     mut example_spec: ExampleSpec,
     settled_editable_region: String,
-    zed_version: Option<String>,
+    raijin_version: Option<String>,
 ) -> Example {
     let expected_patch = build_output_patch(
         &input.cursor_path,
@@ -1542,7 +1542,7 @@ fn build_captured_example(
 
     Example {
         spec: example_spec,
-        zed_version,
+        raijin_version,
         prompt_inputs: Some(input),
         prompt: None,
         predictions: Vec::new(),
@@ -1610,7 +1610,7 @@ fn rejected_examples_from_response<'a>(
             let output = get_string("output");
             let was_shown = get_bool("was_shown");
             let reason = get_string("reason");
-            let zed_version = get_string("zed_version");
+            let raijin_version = get_string("raijin_version");
 
             match (request_id_str.clone(), device_id.clone(), time.clone(), input, output.clone(), was_shown, reason.clone()) {
                 (Some(request_id), Some(device_id), Some(time), Some(input), Some(output), Some(was_shown), Some(reason)) => {
@@ -1623,7 +1623,7 @@ fn rejected_examples_from_response<'a>(
                         output,
                         was_shown,
                         reason,
-                        zed_version,
+                        raijin_version,
                     ))
                 }
                 _ => {
@@ -1654,7 +1654,7 @@ fn build_rejected_example(
     output: String,
     was_shown: bool,
     reason: String,
-    zed_version: Option<String>,
+    raijin_version: Option<String>,
 ) -> Example {
     let rejected_patch = build_output_patch(
         &input.cursor_path,
@@ -1669,7 +1669,7 @@ fn build_rejected_example(
         input,
         vec![format!("rejection:{}", reason.to_lowercase())],
         Some(RejectionInfo { reason, was_shown }),
-        zed_version,
+        raijin_version,
     );
     example.spec.rejected_patch = Some(rejected_patch);
     example.prompt = prompt.map(|prompt| ExamplePrompt {
@@ -1694,7 +1694,7 @@ fn build_example_from_snowflake(
     input: ZetaPromptInput,
     tags: Vec<String>,
     rejection: Option<RejectionInfo>,
-    zed_version: Option<String>,
+    raijin_version: Option<String>,
 ) -> Example {
     let cursor_excerpt = input.cursor_excerpt.as_ref();
     let cursor_offset = input.cursor_offset_in_excerpt;
@@ -1735,7 +1735,7 @@ fn build_example_from_snowflake(
 
     Example {
         spec,
-        zed_version,
+        raijin_version,
         prompt_inputs: Some(input),
         prompt: None,
         predictions: Vec::new(),

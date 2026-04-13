@@ -2,13 +2,13 @@
 
 ## Problem
 
-The extension system was copied from Zed but never properly migrated:
+The extension system was copied from the reference codebase but never properly migrated:
 
 1. **WIT namespace is `zed:extension`** — must be `raijin:extension`
-2. **10 legacy API versions** (`since_v0_0_1` through `since_v0_8_0`) for backwards compatibility with Zed extensions we don't have
+2. **10 legacy API versions** (`since_v0_0_1` through `since_v0_8_0`) for backwards compatibility with reference extensions we don't have
 3. **wasmtime 33** — tree-sitter 0.26.8 pulls wasmtime 36 transitively, causing dual-version conflicts
 4. **800+ compile errors** from the wasmtime 33→36 API changes (`async: true` removed from bindgen!, WASI trait restructuring)
-5. **`zed::extension::*` module paths** throughout the generated bindings
+5. **`zed::extension::*` module paths** throughout the generated bindings (must become `raijin::extension::*`)
 
 ## Decision
 

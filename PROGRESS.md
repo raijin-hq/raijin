@@ -25,7 +25,7 @@
 - TerminalElement: Custom Inazuma Element für Grid-Rendering
 - ANSI-Farben (16 + 256 + TrueColor) mit Tokyo Night Palette
 - Keyboard Input → PTY Bytes Translation (Arrows, Ctrl, Alt, Special Keys)
-- Terminal Grid Resize (Zed-Pattern: jeden Frame neu berechnen)
+- Terminal Grid Resize (jeden Frame neu berechnen, wie Referenz-Codebase)
 
 ---
 

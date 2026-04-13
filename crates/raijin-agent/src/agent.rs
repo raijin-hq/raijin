@@ -1403,7 +1403,7 @@ impl raijin_acp_thread::AgentModelSelector for NativeAgentModelSelector {
     }
 }
 
-pub static ZED_AGENT_ID: LazyLock<AgentId> = LazyLock::new(|| AgentId::new("Zed Agent"));
+pub static ZED_AGENT_ID: LazyLock<AgentId> = LazyLock::new(|| AgentId::new("Raijin Agent"));
 
 impl raijin_acp_thread::AgentConnection for NativeAgentConnection {
     fn agent_id(&self) -> AgentId {
@@ -1411,7 +1411,7 @@ impl raijin_acp_thread::AgentConnection for NativeAgentConnection {
     }
 
     fn telemetry_id(&self) -> SharedString {
-        "zed".into()
+        "raijin".into()
     }
 
     fn new_session(
@@ -2264,7 +2264,7 @@ mod internal_tests {
                     name: "Fake".into(),
                     description: None,
                     icon: Some(raijin_acp_thread::AgentModelIcon::Named(
-                        raijin_ui::IconName::ZedAssistant
+                        raijin_ui::IconName::RaijinAssistant
                     )),
                     is_latest: false,
                     cost: None,

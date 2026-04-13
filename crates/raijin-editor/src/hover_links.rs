@@ -1342,25 +1342,25 @@ mod tests {
         .await;
 
         cx.set_state(indoc! {"
-            Let's test a [complex](https://zed.dev/channel/had-(oops)) caseˇ.
+            Let's test a [complex](https://raijin.dev/channel/had-(oops)) caseˇ.
         "});
 
         let screen_coord = cx.pixel_position(indoc! {"
-            Let's test a [complex](https://zed.dev/channel/had-(ˇoops)) case.
+            Let's test a [complex](https://raijin.dev/channel/had-(ˇoops)) case.
             "});
 
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
             indoc! {"
-            Let's test a [complex](«https://zed.dev/channel/had-(oops)ˇ») case.
+            Let's test a [complex](«https://raijin.dev/channel/had-(oops)ˇ») case.
         "},
         );
 
         cx.simulate_click(screen_coord, Modifiers::secondary_key());
         assert_eq!(
             cx.opened_url(),
-            Some("https://zed.dev/channel/had-(oops)".into())
+            Some("https://raijin.dev/channel/had-(oops)".into())
         );
     }
 
@@ -1393,32 +1393,32 @@ mod tests {
 
         // No link
         cx.set_state(indoc! {"
-            Let's test a [complex](https://zed.dev/channel/) caseˇ.
+            Let's test a [complex](https://raijin.dev/channel/) caseˇ.
         "});
         assert_no_highlight!(cx);
 
         // No modifier
         let screen_coord = cx.pixel_position(indoc! {"
-            Let's test a [complex](https://zed.dev/channel/ˇ) case.
+            Let's test a [complex](https://raijin.dev/channel/ˇ) case.
             "});
         cx.simulate_mouse_move(screen_coord, None, Modifiers::none());
         assert_no_highlight!(cx);
 
         // Modifier active
         let screen_coord = cx.pixel_position(indoc! {"
-            Let's test a [complex](https://zed.dev/channeˇl/) case.
+            Let's test a [complex](https://raijin.dev/channeˇl/) case.
             "});
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
             indoc! {"
-            Let's test a [complex](«https://zed.dev/channel/ˇ») case.
+            Let's test a [complex](«https://raijin.dev/channel/ˇ») case.
         "},
         );
 
         // Cursor hidden with secondary key
         let screen_coord = cx.pixel_position(indoc! {"
-            Let's test a [complex](https://zed.dev/ˇchannel/) case.
+            Let's test a [complex](https://raijin.dev/ˇchannel/) case.
             "});
         cx.simulate_mouse_move(screen_coord, None, Modifiers::none());
         cx.update_editor(|editor, _, cx| {
@@ -1429,13 +1429,13 @@ mod tests {
 
         // Cursor active again
         let screen_coord = cx.pixel_position(indoc! {"
-            Let's test a [complex](https://ˇzed.dev/channel/) case.
+            Let's test a [complex](https://ˇraijin.dev/channel/) case.
             "});
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
             indoc! {"
-            Let's test a [complex](«https://zed.dev/channel/ˇ») case.
+            Let's test a [complex](«https://raijin.dev/channel/ˇ») case.
         "},
         );
     }
@@ -1451,19 +1451,19 @@ mod tests {
         )
         .await;
 
-        cx.set_state(indoc! {"https://zed.dev/releases is a cool ˇwebpage."});
+        cx.set_state(indoc! {"https://raijin.dev/releases is a cool ˇwebpage."});
 
         let screen_coord =
-            cx.pixel_position(indoc! {"https://zed.dev/relˇeases is a cool webpage."});
+            cx.pixel_position(indoc! {"https://raijin.dev/relˇeases is a cool webpage."});
 
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
-            indoc! {"«https://zed.dev/releasesˇ» is a cool webpage."},
+            indoc! {"«https://raijin.dev/releasesˇ» is a cool webpage."},
         );
 
         cx.simulate_click(screen_coord, Modifiers::secondary_key());
-        assert_eq!(cx.opened_url(), Some("https://zed.dev/releases".into()));
+        assert_eq!(cx.opened_url(), Some("https://raijin.dev/releases".into()));
     }
 
     #[inazuma::test]
@@ -1477,19 +1477,19 @@ mod tests {
         )
         .await;
 
-        cx.set_state(indoc! {"A cool ˇwebpage is https://zed.dev/releases"});
+        cx.set_state(indoc! {"A cool ˇwebpage is https://raijin.dev/releases"});
 
         let screen_coord =
-            cx.pixel_position(indoc! {"A cool webpage is https://zed.dev/releˇases"});
+            cx.pixel_position(indoc! {"A cool webpage is https://raijin.dev/releˇases"});
 
         cx.simulate_mouse_move(screen_coord, None, Modifiers::secondary_key());
         cx.assert_editor_text_highlights(
             HighlightKey::HoveredLinkState,
-            indoc! {"A cool webpage is «https://zed.dev/releasesˇ»"},
+            indoc! {"A cool webpage is «https://raijin.dev/releasesˇ»"},
         );
 
         cx.simulate_click(screen_coord, Modifiers::secondary_key());
-        assert_eq!(cx.opened_url(), Some("https://zed.dev/releases".into()));
+        assert_eq!(cx.opened_url(), Some("https://raijin.dev/releases".into()));
     }
 
     #[test]

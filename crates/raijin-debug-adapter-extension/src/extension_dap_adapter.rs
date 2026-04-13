@@ -15,7 +15,7 @@ use raijin_dap::{
 };
 use raijin_extension::{Extension, WorktreeDelegate};
 use inazuma::AsyncApp;
-use raijin_task::{DebugScenario, ZedDebugConfig};
+use raijin_task::{DebugScenario, RaijinDebugConfig};
 use inazuma_util::rel_path::RelPath;
 
 pub(crate) struct ExtensionDapAdapter {
@@ -104,8 +104,8 @@ impl DebugAdapter for ExtensionDapAdapter {
             .await
     }
 
-    async fn config_from_zed_format(&self, zed_scenario: ZedDebugConfig) -> Result<DebugScenario> {
-        self.extension.dap_config_to_scenario(zed_scenario).await
+    async fn config_from_raijin_format(&self, raijin_scenario: RaijinDebugConfig) -> Result<DebugScenario> {
+        self.extension.dap_config_to_scenario(raijin_scenario).await
     }
 
     async fn request_kind(

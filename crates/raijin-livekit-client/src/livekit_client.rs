@@ -18,7 +18,7 @@ pub use livekit::webrtc::stats::RtcStats;
 
 /// Session-level statistics aggregated from publisher and subscriber WebRTC stats.
 /// Defined here because the crates.io livekit crate does not export this type
-/// (it exists only in Zed's fork).
+/// (it exists only in Raijin's fork).
 #[derive(Clone, Debug, Default)]
 pub struct SessionStats {
     pub publisher_stats: Vec<RtcStats>,

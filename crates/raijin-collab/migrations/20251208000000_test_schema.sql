@@ -120,7 +120,7 @@ CREATE TABLE public.channels (
     created_at timestamp without time zone DEFAULT now() NOT NULL,
     visibility text DEFAULT 'members'::text NOT NULL,
     parent_path text NOT NULL,
-    requires_zed_cla boolean DEFAULT false NOT NULL,
+    requires_raijin_cla boolean DEFAULT false NOT NULL,
     channel_order integer DEFAULT 1 NOT NULL
 );
 

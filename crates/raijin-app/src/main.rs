@@ -217,7 +217,7 @@ fn main() {
 
 /// Watches ~/.raijin/settings.toml via Fs::watch and loads changes into SettingsStore.
 ///
-/// Uses the same pattern as Zed: `watch_config_file()` from inazuma-settings-framework,
+/// Uses the same pattern as the reference: `watch_config_file()` from inazuma-settings-framework,
 /// initial blocking load + async continuous watching.
 fn handle_settings_file(fs: Arc<dyn raijin_fs::Fs>, cx: &mut App) {
     let settings_path = raijin_paths::settings_file().clone();

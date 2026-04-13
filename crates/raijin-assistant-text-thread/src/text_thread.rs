@@ -796,7 +796,7 @@ impl TextThread {
         let buffer = self.buffer.read(cx);
         SavedTextThread {
             id: Some(self.id.clone()),
-            zed: "context".into(),
+            raijin: "context".into(),
             version: SavedTextThread::VERSION.into(),
             text: buffer.text(),
             messages: self
@@ -2872,7 +2872,7 @@ impl TextThread {
                 let mut new_path;
                 loop {
                     new_path = text_threads_dir().join(&format!(
-                        "{} - {}.zed.json",
+                        "{} - {}.raijin.json",
                         summary.trim(),
                         discriminant
                     ));
@@ -3016,7 +3016,7 @@ pub struct SavedMessage {
 #[derive(Serialize, Deserialize)]
 pub struct SavedTextThread {
     pub id: Option<TextThreadId>,
-    pub zed: String,
+    pub raijin: String,
     pub version: String,
     pub text: String,
     pub messages: Vec<SavedMessage>,
@@ -3173,7 +3173,7 @@ struct SavedMessageMetadataPreV0_4_0 {
 #[derive(Serialize, Deserialize)]
 struct SavedContextV0_3_0 {
     id: Option<TextThreadId>,
-    zed: String,
+    raijin: String,
     version: String,
     text: String,
     messages: Vec<SavedMessagePreV0_4_0>,
@@ -3188,7 +3188,7 @@ impl SavedContextV0_3_0 {
     fn upgrade(self) -> SavedTextThread {
         SavedTextThread {
             id: self.id,
-            zed: self.zed,
+            raijin: self.raijin,
             version: SavedTextThread::VERSION.into(),
             text: self.text,
             messages: self
@@ -3222,7 +3222,7 @@ impl SavedContextV0_3_0 {
 #[derive(Serialize, Deserialize)]
 struct SavedContextV0_2_0 {
     id: Option<TextThreadId>,
-    zed: String,
+    raijin: String,
     version: String,
     text: String,
     messages: Vec<SavedMessagePreV0_4_0>,
@@ -3236,7 +3236,7 @@ impl SavedContextV0_2_0 {
     fn upgrade(self) -> SavedTextThread {
         SavedContextV0_3_0 {
             id: self.id,
-            zed: self.zed,
+            raijin: self.raijin,
             version: SavedContextV0_3_0::VERSION.to_string(),
             text: self.text,
             messages: self.messages,
@@ -3251,7 +3251,7 @@ impl SavedContextV0_2_0 {
 #[derive(Serialize, Deserialize)]
 struct SavedContextV0_1_0 {
     id: Option<TextThreadId>,
-    zed: String,
+    raijin: String,
     version: String,
     text: String,
     messages: Vec<SavedMessagePreV0_4_0>,
@@ -3267,7 +3267,7 @@ impl SavedContextV0_1_0 {
     fn upgrade(self) -> SavedTextThread {
         SavedContextV0_2_0 {
             id: self.id,
-            zed: self.zed,
+            raijin: self.raijin,
             version: SavedContextV0_2_0::VERSION.to_string(),
             text: self.text,
             messages: self.messages,

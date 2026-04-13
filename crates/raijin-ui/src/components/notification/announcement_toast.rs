@@ -211,7 +211,7 @@ impl Component for AnnouncementToast {
             div().w_80().child(
                 AnnouncementToast::new()
                     .illustration(illustration)
-                    .heading("What's new in Zed")
+                    .heading("What's new in Raijin")
                     .description(
                         "This version comes in with some changes to the workspace for a better experience.",
                     )

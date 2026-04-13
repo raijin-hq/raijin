@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::{EditPredictionStore, ZedPredictUpsell};
+use crate::{EditPredictionStore, RaijinPredictUpsell};
 use raijin_ai_onboarding::EditPredictionOnboarding;
 use raijin_client::{Client, UserStore};
 use raijin_db::kvp::Dismissable;
@@ -24,8 +24,8 @@ macro_rules! onboarding_event {
     };
 }
 
-/// Introduces user to Zed's Edit Prediction feature
-pub struct ZedPredictModal {
+/// Introduces user to Raijin's Edit Prediction feature
+pub struct RaijinPredictModal {
     onboarding: Entity<EditPredictionOnboarding>,
     focus_handle: FocusHandle,
 }
@@ -42,7 +42,7 @@ pub(crate) fn set_edit_prediction_provider(provider: EditPredictionProvider, cx:
     });
 }
 
-impl ZedPredictModal {
+impl RaijinPredictModal {
     pub fn toggle(
         workspace: &mut Workspace,
         user_store: Entity<UserStore>,
@@ -66,15 +66,15 @@ impl ZedPredictModal {
                         Arc::new({
                             let this = weak_entity.clone();
                             move |_window, cx| {
-                                ZedPredictUpsell::set_dismissed(true, cx);
-                                set_edit_prediction_provider(EditPredictionProvider::Zed, cx);
+                                RaijinPredictUpsell::set_dismissed(true, cx);
+                                set_edit_prediction_provider(EditPredictionProvider::Raijin, cx);
                                 this.update(cx, |_, cx| cx.emit(DismissEvent)).ok();
                             }
                         }),
                         Arc::new({
                             let this = weak_entity.clone();
                             move |window, cx| {
-                                ZedPredictUpsell::set_dismissed(true, cx);
+                                RaijinPredictUpsell::set_dismissed(true, cx);
                                 set_edit_prediction_provider(EditPredictionProvider::Copilot, cx);
                                 this.update(cx, |_, cx| cx.emit(DismissEvent)).ok();
                                 if let Some(copilot) = copilot.clone() {
@@ -91,38 +91,38 @@ impl ZedPredictModal {
     }
 
     fn cancel(&mut self, _: &inazuma_menu::Cancel, _: &mut Window, cx: &mut Context<Self>) {
-        ZedPredictUpsell::set_dismissed(true, cx);
+        RaijinPredictUpsell::set_dismissed(true, cx);
         cx.emit(DismissEvent);
     }
 }
 
-impl EventEmitter<DismissEvent> for ZedPredictModal {}
+impl EventEmitter<DismissEvent> for RaijinPredictModal {}
 
-impl Focusable for ZedPredictModal {
+impl Focusable for RaijinPredictModal {
     fn focus_handle(&self, _cx: &App) -> FocusHandle {
         self.focus_handle.clone()
     }
 }
 
-impl ModalView for ZedPredictModal {
+impl ModalView for RaijinPredictModal {
     fn on_before_dismiss(
         &mut self,
         _window: &mut Window,
         cx: &mut Context<Self>,
     ) -> raijin_workspace::DismissDecision {
-        ZedPredictUpsell::set_dismissed(true, cx);
+        RaijinPredictUpsell::set_dismissed(true, cx);
         raijin_workspace::DismissDecision::Dismiss(true)
     }
 }
 
-impl Render for ZedPredictModal {
+impl Render for RaijinPredictModal {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let window_height = window.viewport_size().height;
         let max_height = window_height - px(200.);
 
         v_flex()
             .id("edit-prediction-onboarding")
-            .key_context("ZedPredictModal")
+            .key_context("RaijinPredictModal")
             .relative()
             .w(px(550.))
             .h_full()

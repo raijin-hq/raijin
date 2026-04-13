@@ -1,5 +1,5 @@
 [package]
-description = "Shared protocol for communication between the Zed app and the zed.dev server"
+description = "Shared protocol for communication between the Raijin app and the raijin.dev server"
 edition.workspace = true
 name = "raijin-proto"
 version = "0.1.0"

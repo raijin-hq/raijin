@@ -1,9 +1,9 @@
-// Zed keymap
+// Raijin keymap
 //
-// For information on binding keys, see the Zed
-// documentation: https://zed.dev/docs/key-bindings
+// For information on binding keys, see the Raijin
+// documentation: https://raijin.dev/docs/key-bindings
 //
-// To see the default key bindings run `zed: open default keymap`
+// To see the default key bindings run `raijin: open default keymap`
 // from the command palette.
 [
   {

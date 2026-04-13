@@ -1,4 +1,4 @@
-//! The prelude of this crate. When building UI in Zed you almost always want to import this.
+//! The prelude of this crate. When building UI in Raijin you almost always want to import this.
 
 pub use inazuma::prelude::*;
 pub use inazuma::{

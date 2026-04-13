@@ -3386,7 +3386,7 @@ mod tests {
             .unwrap();
 
         thread
-            .update(cx, |thread, cx| thread.send_raw("Hello from Zed!", cx))
+            .update(cx, |thread, cx| thread.send_raw("Hello from Raijin!", cx))
             .await
             .unwrap();
 
@@ -3396,7 +3396,7 @@ mod tests {
             indoc! {r#"
             ## User
 
-            Hello from Zed!
+            Hello from Raijin!
 
             ## Assistant
 

@@ -243,7 +243,7 @@ impl LineWrapper {
         // e.g. `a-b`, `var_name`, `I'm`/`won’t`, '@mention`, `#hashtag`, `100%`, `3.1415`,
         // `2^3`, `a~b`, `a=1`, `Self::new`, etc.
         matches!(c, '-' | '_' | '.' | '\'' | '’' | '‘' | '$' | '%' | '@' | '#' | '^' | '~' | ',' | '=' | ':') ||
-        // `⋯` character is special used in Zed, to keep this at the end of the line.
+        // `⋯` character is special used in Raijin, to keep this at the end of the line.
         matches!(c, '⋯')
     }
 
@@ -388,7 +388,7 @@ mod tests {
     fn build_wrapper() -> LineWrapper {
         let dispatcher = TestDispatcher::new(0);
         let cx = TestAppContext::build(dispatcher, None);
-        let id = cx.text_system().resolve_font(&font(".ZedMono"));
+        let id = cx.text_system().resolve_font(&font(".RaijinMono"));
         LineWrapper::new(id, px(16.), cx.text_system().clone())
     }
 
@@ -846,8 +846,8 @@ mod tests {
 
         // URL case
         assert_word("github.com");
-        assert_not_word("zed-industries/zed");
-        assert_not_word("zed-industries\\zed");
+        assert_not_word("raijin-industries/raijin");
+        assert_not_word("raijin-industries\\raijin");
         assert_not_word("a=1&b=2");
         assert_not_word("foo?b=2");
 
@@ -859,7 +859,7 @@ mod tests {
         assert_word("ƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏ");
         // Cyrillic
         assert_word("АБВГДЕЖЗИЙКЛМНОП");
-        // Vietnamese (https://github.com/zed-industries/zed/issues/23245)
+        // Vietnamese (https://github.com/raijin-industries/raijin/issues/23245)
         assert_word("ThậmchíđếnkhithuachạychúngcònnhẫntâmgiếtnốtsốđôngtùchínhtrịởYênBáivàCaoBằng");
         // Bengali
         assert_word("গিয়েছিলেন");

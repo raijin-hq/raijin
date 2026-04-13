@@ -24,7 +24,7 @@ use inazuma::{App, BorrowAppContext};
 use javascript::JsDebugAdapter;
 use python::PythonDebugAdapter;
 use serde_json::json;
-use raijin_task::{DebugScenario, ZedDebugConfig};
+use raijin_task::{DebugScenario, RaijinDebugConfig};
 
 pub fn init(cx: &mut App) {
     cx.update_default_global(|registry: &mut DapRegistry, _cx| {

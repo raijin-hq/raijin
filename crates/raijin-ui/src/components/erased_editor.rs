@@ -10,7 +10,7 @@ use inazuma::{AnyElement, App, FocusHandle, Subscription, Window};
 /// it will also implement this trait — and the Picker works with both
 /// without any changes.
 ///
-/// Ported from Zed's `ui_input::ErasedEditor`.
+/// Ported from Raijin's `ui_input::ErasedEditor`.
 pub trait ErasedEditor: 'static {
     fn text(&self, cx: &App) -> String;
     fn set_text(&self, text: &str, window: &mut Window, cx: &mut App);

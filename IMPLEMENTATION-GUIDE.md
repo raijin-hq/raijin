@@ -165,10 +165,10 @@ pub fn set_size(&self, rows: u16, cols: u16) {
 
 ### 4. Follows Production Pattern
 
-This is exactly how Zed's TerminalElement does it:
+This is exactly how the reference codebase's TerminalElement does it:
 
 ```rust
-// From Zed crates/terminal_view/src/terminal_element.rs:966-991
+// From reference crates/terminal_view/src/terminal_element.rs:966-991
 let mut size = bounds.size;
 size.width -= gutter;
 
@@ -267,7 +267,7 @@ These are already defined and used for rendering, so no changes needed.
 2. Before rendering (can prepare state)
 3. In the same frame as paint
 4. Idempotent (safe to call every frame)
-5. Matches Zed's production architecture
+5. Matches the reference codebase's production architecture
 
 ---
 
@@ -318,7 +318,7 @@ Should match your calculated cols/rows.
 **Confidence Level: 95% (production-ready)**
 
 Rationale:
-- ✅ Pattern is proven (Zed uses same approach)
+- ✅ Pattern is proven (reference codebase uses same approach)
 - ✅ No API changes needed
 - ✅ Fits existing element lifecycle
 - ✅ Idempotent (safe, no edge cases)
@@ -340,7 +340,7 @@ Once resize works:
 1. **Optimize**: Cache cell_width/cell_height calculations if needed
 2. **Edge cases**: Test with font size changes, theme changes, etc.
 3. **Synchronized output**: Consider disabling sync output on resize (like Ghostty) for immediate visual update
-4. **Selection preservation**: Handle text selection during resize (like Zed/Alacritty do)
+4. **Selection preservation**: Handle text selection during resize (like Alacritty does)
 5. **Performance monitoring**: Profile prepaint() for resize-heavy workloads
 
 ---
@@ -361,4 +361,4 @@ Once resize works:
 
 Raijin already has 95% of a production terminal resize implementation. This fix connects the final piece: calling `set_size()` at the right time (prepaint) with the right data (bounds-derived rows/cols).
 
-The pattern is proven by Zed, battle-tested by alacritty, and matches the architecture of other GPU-accelerated terminals. Implementation is straightforward and low-risk.
+The pattern is proven by the reference codebase, battle-tested by alacritty, and matches the architecture of other GPU-accelerated terminals. Implementation is straightforward and low-risk.

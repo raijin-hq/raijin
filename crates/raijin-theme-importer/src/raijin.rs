@@ -10,48 +10,48 @@ use raijin_theme::{
     SyntaxTheme, SystemColors, Theme, ThemeColors, ThemeFamily, ThemeStyles,
 };
 
-// === Zed Theme JSON Schema ===
+// === Raijin Theme JSON Schema (for importing Raijin themes) ===
 
 #[derive(Deserialize)]
-struct ZedThemeFamily {
+struct RaijinThemeFamily {
     name: String,
     author: String,
-    themes: Vec<ZedTheme>,
+    themes: Vec<RaijinTheme>,
 }
 
 #[derive(Deserialize)]
-struct ZedTheme {
+struct RaijinTheme {
     name: String,
-    appearance: ZedAppearance,
-    style: ZedStyle,
+    appearance: RaijinAppearance,
+    style: RaijinStyle,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "snake_case")]
-enum ZedAppearance {
+enum RaijinAppearance {
     Light,
     Dark,
 }
 
 #[derive(Deserialize)]
-struct ZedStyle {
+struct RaijinStyle {
     #[serde(flatten)]
     colors: HashMap<String, serde_json::Value>,
     #[serde(default)]
-    syntax: HashMap<String, ZedSyntaxStyle>,
+    syntax: HashMap<String, RaijinSyntaxStyle>,
     #[serde(default)]
-    players: Vec<ZedPlayer>,
+    players: Vec<RaijinPlayer>,
 }
 
 #[derive(Deserialize)]
-struct ZedSyntaxStyle {
+struct RaijinSyntaxStyle {
     color: Option<String>,
     font_weight: Option<f32>,
     font_style: Option<String>,
 }
 
 #[derive(Deserialize)]
-struct ZedPlayer {
+struct RaijinPlayer {
     cursor: Option<String>,
     background: Option<String>,
     selection: Option<String>,
@@ -80,29 +80,29 @@ fn color_or(colors: &HashMap<String, serde_json::Value>, key: &str, fallback: Ok
 
 // === Import Entry Point ===
 
-/// Imports a Zed theme JSON file and converts it to a raijin ThemeFamily.
+/// Imports a Raijin theme JSON file and converts it to a raijin ThemeFamily.
 ///
-/// Zed themes use `#rrggbbaa` hex color strings. The token names in Zed's style
+/// Raijin themes use `#rrggbbaa` hex color strings. The token names in Raijin's style
 /// object use dot-separated paths (e.g. `terminal.ansi.red`) which map directly
 /// to raijin-theme's ThemeColors field names with dots replaced by underscores.
-pub fn import_zed_theme(json: &str) -> Result<ThemeFamily> {
-    let zed_family: ZedThemeFamily =
-        serde_json::from_str(json).context("failed to deserialize Zed theme JSON")?;
+pub fn import_raijin_theme(json: &str) -> Result<ThemeFamily> {
+    let raijin_family: RaijinThemeFamily =
+        serde_json::from_str(json).context("failed to deserialize Raijin theme JSON")?;
 
-    if zed_family.themes.is_empty() {
-        bail!("Zed theme family '{}' contains no themes", zed_family.name);
+    if raijin_family.themes.is_empty() {
+        bail!("Raijin theme family '{}' contains no themes", raijin_family.name);
     }
 
-    let themes: Vec<Theme> = zed_family
+    let themes: Vec<Theme> = raijin_family
         .themes
         .into_iter()
-        .map(|zed_theme| convert_zed_theme(&zed_theme, &zed_family.name))
+        .map(|raijin_theme| convert_raijin_theme(&raijin_theme, &raijin_family.name))
         .collect::<Result<Vec<_>>>()?;
 
     Ok(ThemeFamily {
-        id: slug(&zed_family.name),
-        name: SharedString::from(zed_family.name.clone()),
-        author: zed_family.author,
+        id: slug(&raijin_family.name),
+        name: SharedString::from(raijin_family.name.clone()),
+        author: raijin_family.author,
         themes,
     })
 }
@@ -114,10 +114,10 @@ fn slug(name: &str) -> String {
         .collect()
 }
 
-fn convert_zed_theme(theme: &ZedTheme, _family_name: &str) -> Result<Theme> {
+fn convert_raijin_theme(theme: &RaijinTheme, _family_name: &str) -> Result<Theme> {
     let appearance = match theme.appearance {
-        ZedAppearance::Light => Appearance::Light,
-        ZedAppearance::Dark => Appearance::Dark,
+        RaijinAppearance::Light => Appearance::Light,
+        RaijinAppearance::Dark => Appearance::Dark,
     };
 
     let colors = convert_theme_colors(&theme.style.colors, appearance);
@@ -144,8 +144,8 @@ fn convert_zed_theme(theme: &ZedTheme, _family_name: &str) -> Result<Theme> {
 
 // === ThemeColors Conversion ===
 
-/// Maps Zed's dot-separated color keys to ThemeColors fields.
-/// Zed uses keys like "border", "text", "terminal.ansi.red" etc.
+/// Maps Raijin's dot-separated color keys to ThemeColors fields.
+/// Raijin uses keys like "border", "text", "terminal.ansi.red" etc.
 /// The raijin ThemeColors field names use underscores instead of dots.
 fn convert_theme_colors(colors: &HashMap<String, serde_json::Value>, appearance: Appearance) -> ThemeColors {
     // Default colors based on appearance
@@ -342,7 +342,7 @@ fn convert_theme_colors(colors: &HashMap<String, serde_json::Value>, appearance:
         editor_debugger_active_line_background: color_or(colors, "editor.debugger_active_line.background", parse_color("#ff9e6426").unwrap_or_default()),
         editor_hover_line_number: color_or(colors, "editor.hover_line_number", fg),
 
-        // Raijin-specific (derived from other colors since Zed themes won't have these)
+        // Raijin-specific (derived from other colors since imported themes won't have these)
         block_success_badge: color_or(colors, "block_success.badge",
             color_or(colors, "terminal.ansi.green", parse_color("#14F195ff").unwrap_or_default())),
         block_error_badge: color_or(colors, "block_error.badge",
@@ -354,7 +354,7 @@ fn convert_theme_colors(colors: &HashMap<String, serde_json::Value>, appearance:
 
 // === Syntax Conversion ===
 
-fn convert_syntax(syntax: &HashMap<String, ZedSyntaxStyle>) -> SyntaxTheme {
+fn convert_syntax(syntax: &HashMap<String, RaijinSyntaxStyle>) -> SyntaxTheme {
     let mut highlights = HashMap::new();
 
     for (scope, style) in syntax {
@@ -388,7 +388,7 @@ fn parse_font_style(s: &str) -> FontStyle {
 
 // === Player Colors ===
 
-fn convert_players(players: &[ZedPlayer], colors: &ThemeColors) -> Vec<PlayerColor> {
+fn convert_players(players: &[RaijinPlayer], colors: &ThemeColors) -> Vec<PlayerColor> {
     if players.is_empty() {
         return default_players(colors);
     }

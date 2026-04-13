@@ -1298,7 +1298,7 @@ impl ConversationView {
                     } else {
                         "New message"
                     },
-                    IconName::ZedAssistant,
+                    IconName::RaijinAssistant,
                     window,
                     cx,
                 );
@@ -1672,7 +1672,7 @@ impl ConversationView {
         window.spawn(cx, async move |cx| {
             let mut task = login.clone();
             if let Some(cmd) = &task.command {
-                // Have "node" command use Zed's managed Node runtime by default
+                // Have "node" command use Raijin's managed Node runtime by default
                 if cmd == "node" {
                     let resolved_node_runtime = project.update(cx, |project, cx| {
                         let agent_server_store = project.agent_server_store().clone();
@@ -2035,7 +2035,7 @@ impl ConversationView {
         cx: &mut Context<Self>,
     ) -> AnyElement {
         let (heading_label, description_label) = (
-            format!("Upgrade {} to work with Zed", self.agent.agent_id()),
+            format!("Upgrade {} to work with Raijin", self.agent.agent_id()),
             if version.is_empty() {
                 format!(
                     "Currently using {}, which does not report a valid --version",
@@ -2518,7 +2518,7 @@ impl ConversationView {
     }
 
     fn current_model_name(&self, cx: &App) -> SharedString {
-        // For native agent (Zed Agent), use the specific model name (e.g., "Claude 3.5 Sonnet")
+        // For native agent (Raijin Agent), use the specific model name (e.g., "Claude 3.5 Sonnet")
         // For ACP agents, use the agent name (e.g., "Claude Agent", "Gemini CLI")
         // This provides better clarity about what refused the request
         if self.as_native_connection(cx).is_some() {
@@ -3649,7 +3649,7 @@ pub(crate) mod tests {
         C: 'static + AgentConnection + Send + Clone,
     {
         fn logo(&self) -> raijin_ui::IconName {
-            raijin_ui::IconName::ZedAgent
+            raijin_ui::IconName::RaijinAgent
         }
 
         fn agent_id(&self) -> AgentId {
@@ -3689,7 +3689,7 @@ pub(crate) mod tests {
         ) -> Task<inazuma::Result<Rc<dyn AgentConnection>>> {
             Task::ready(Err(anyhow!(
                 "extracting downloaded asset for \
-                 https://github.com/zed-industries/codex-acp/releases/download/v0.9.4/\
+                 https://github.com/raijin-hq/codex-acp/releases/download/v0.9.4/\
                  codex-acp-0.9.4-aarch64-pc-windows-msvc.zip: \
                  failed to iterate over archive: Invalid gzip header"
             )))

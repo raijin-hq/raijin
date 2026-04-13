@@ -12,12 +12,12 @@ use crate::tasks::workflows::{
     vars::{PathCondition, StepOutput, WorkflowInput, one_workflow_per_non_main_branch_and_token},
 };
 
-pub(crate) const ZED_EXTENSION_CLI_SHA: &str = "03d8e9aee95ea6117d75a48bcac2e19241f6e667";
+pub(crate) const RAIJIN_EXTENSION_CLI_SHA: &str = "03d8e9aee95ea6117d75a48bcac2e19241f6e667";
 
 // This should follow the set target in crates/extension/src/extension_builder.rs
 const EXTENSION_RUST_TARGET: &str = "wasm32-wasip2";
 
-// This is used by various extensions repos in the zed-extensions org to run automated tests.
+// This is used by various extensions repos in the raijin-extensions org to run automated tests.
 pub(crate) fn extension_tests() -> Workflow {
     let should_check_rust = PathCondition::new("check_rust", r"^(Cargo.lock|Cargo.toml|.*\.rs)$");
     let should_check_extension =
@@ -51,7 +51,7 @@ pub(crate) fn extension_tests() -> Workflow {
         .add_env(("CARGO_TERM_COLOR", "always"))
         .add_env(("RUST_BACKTRACE", 1))
         .add_env(("CARGO_INCREMENTAL", 0))
-        .add_env(("ZED_EXTENSION_CLI_SHA", ZED_EXTENSION_CLI_SHA))
+        .add_env(("RAIJIN_EXTENSION_CLI_SHA", RAIJIN_EXTENSION_CLI_SHA))
         .add_env(("RUSTUP_TOOLCHAIN", "stable"))
         .add_env(("CARGO_BUILD_TARGET", EXTENSION_RUST_TARGET))
         .map(|workflow| {
@@ -159,11 +159,11 @@ pub fn cache_zed_extension_cli() -> (Step<Use>, StepOutput) {
         "cache",
         "0057852bfaa89a56745cba8c7296529d2fc39830",
     )
-    .id("cache-zed-extension-cli")
+    .id("cache-raijin-extension-cli")
     .with(
         Input::default()
-            .add("path", "zed-extension")
-            .add("key", "zed-extension-${{ env.ZED_EXTENSION_CLI_SHA }}"),
+            .add("path", "raijin-extension")
+            .add("key", "raijin-extension-${{ env.RAIJIN_EXTENSION_CLI_SHA }}"),
     );
     let output = StepOutput::new(&step, "cache-hit");
     (step, output)
@@ -173,8 +173,8 @@ pub fn download_zed_extension_cli(cache_hit: StepOutput) -> Step<Run> {
     named::bash(
     indoc! {
         r#"
-        wget --quiet "https://zed-extension-cli.nyc3.digitaloceanspaces.com/$ZED_EXTENSION_CLI_SHA/x86_64-unknown-linux-gnu/zed-extension" -O "$GITHUB_WORKSPACE/zed-extension"
-        chmod +x "$GITHUB_WORKSPACE/zed-extension"
+        wget --quiet "https://raijin-extension-cli.nyc3.digitaloceanspaces.com/$RAIJIN_EXTENSION_CLI_SHA/x86_64-unknown-linux-gnu/raijin-extension" -O "$GITHUB_WORKSPACE/raijin-extension"
+        chmod +x "$GITHUB_WORKSPACE/raijin-extension"
         "#,
     }
     ).if_condition(Expression::new(format!("{} != 'true'", cache_hit.expr())))
@@ -185,16 +185,16 @@ pub fn check() -> Step<Run> {
         r#"
         mkdir -p /tmp/ext-scratch
         mkdir -p /tmp/ext-output
-        "$GITHUB_WORKSPACE/zed-extension" --source-dir . --scratch-dir /tmp/ext-scratch --output-dir /tmp/ext-output
+        "$GITHUB_WORKSPACE/raijin-extension" --source-dir . --scratch-dir /tmp/ext-scratch --output-dir /tmp/ext-output
         "#
     })
 }
 
 fn verify_version_did_not_change(version_changed: StepOutput) -> Step<Run> {
     named::bash(indoc! {r#"
-        if [[ "$VERSION_CHANGED" == "true" && "$GITHUB_EVENT_NAME" == "pull_request" && "$PR_USER_LOGIN" != "zed-zippy[bot]" ]] ; then
+        if [[ "$VERSION_CHANGED" == "true" && "$GITHUB_EVENT_NAME" == "pull_request" && "$PR_USER_LOGIN" != "raijin-zippy[bot]" ]] ; then
             echo "Version change detected in your change!"
-            echo "Version changes happen in separate PRs and will be performed by the zed-zippy bot"
+            echo "Version changes happen in separate PRs and will be performed by the raijin-zippy bot"
             exit 42
         fi
         "#

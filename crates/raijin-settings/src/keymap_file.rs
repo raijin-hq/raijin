@@ -7,7 +7,7 @@ use inazuma::{App, DummyKeyboardMapper, KeyBinding, KeyBindingContextPredicate};
 use serde::Deserialize;
 
 /// Bundled assets for settings and keymaps — embedded at compile time.
-/// Like Zed's `SettingsAssets`, each crate embeds only the assets it needs.
+/// Like Raijin's `SettingsAssets`, each crate embeds only the assets it needs.
 #[derive(rust_embed::RustEmbed)]
 #[folder = "../../assets"]
 #[include = "keymaps/*"]
@@ -143,7 +143,7 @@ impl KeymapFile {
 pub fn load_default_and_user_keymap(cx: &mut App) {
     let mut all_bindings = Vec::new();
 
-    // Load default keymap from bundled assets (compile-time, like Zed's SettingsAssets)
+    // Load default keymap from bundled assets (compile-time, like Raijin's SettingsAssets)
     let default_keymap_path = if cfg!(target_os = "macos") {
         "keymaps/default-macos.toml"
     } else if cfg!(target_os = "windows") {

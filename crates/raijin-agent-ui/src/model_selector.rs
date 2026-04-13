@@ -626,7 +626,7 @@ mod tests {
     async fn test_fuzzy_match(cx: &mut TestAppContext) {
         let models = create_model_list(vec![
             (
-                "zed",
+                "raijin",
                 vec![
                     "Claude 3.7 Sonnet",
                     "Claude 3.7 Sonnet Thinking",
@@ -639,13 +639,13 @@ mod tests {
         ]);
 
         // Results should preserve models order whenever possible.
-        // In the case below, `zed/gpt-5-mini` and `openai/gpt-5-mini` have identical
-        // similarity scores, but `zed/gpt-5-mini` was higher in the models list,
+        // In the case below, `raijin/gpt-5-mini` and `openai/gpt-5-mini` have identical
+        // similarity scores, but `raijin/gpt-5-mini` was higher in the models list,
         // so it should appear first in the results.
         let results = fuzzy_search(models.clone(), "mini".into(), cx.executor()).await;
         assert_models_eq(
             results,
-            vec![("zed", vec!["gpt-5-mini"]), ("openai", vec!["gpt-5-mini"])],
+            vec![("raijin", vec!["gpt-5-mini"]), ("openai", vec!["gpt-5-mini"])],
         );
 
         // Fuzzy search - test with specific model name
@@ -656,10 +656,10 @@ mod tests {
     #[inazuma::test]
     fn test_favorites_section_appears_when_favorites_exist(_cx: &mut TestAppContext) {
         let models = create_model_list(vec![
-            ("zed", vec!["zed/claude", "zed/gemini"]),
+            ("raijin", vec!["raijin/claude", "raijin/gemini"]),
             ("openai", vec!["openai/gpt-5"]),
         ]);
-        let favorites = create_favorites(vec!["zed/gemini"]);
+        let favorites = create_favorites(vec!["raijin/gemini"]);
 
         let entries = info_list_to_picker_entries(models, &favorites);
 
@@ -669,36 +669,36 @@ mod tests {
         ));
 
         let model_ids = get_entry_model_ids(&entries);
-        assert_eq!(model_ids[0], "zed/gemini");
+        assert_eq!(model_ids[0], "raijin/gemini");
     }
 
     #[inazuma::test]
     fn test_no_favorites_section_when_no_favorites(_cx: &mut TestAppContext) {
-        let models = create_model_list(vec![("zed", vec!["zed/claude", "zed/gemini"])]);
+        let models = create_model_list(vec![("raijin", vec!["raijin/claude", "raijin/gemini"])]);
         let favorites = create_favorites(vec![]);
 
         let entries = info_list_to_picker_entries(models, &favorites);
 
         assert!(matches!(
             entries.first(),
-            Some(ModelPickerEntry::Separator(s)) if s == "zed"
+            Some(ModelPickerEntry::Separator(s)) if s == "raijin"
         ));
     }
 
     #[inazuma::test]
     fn test_models_have_correct_actions(_cx: &mut TestAppContext) {
         let models = create_model_list(vec![
-            ("zed", vec!["zed/claude", "zed/gemini"]),
+            ("raijin", vec!["raijin/claude", "raijin/gemini"]),
             ("openai", vec!["openai/gpt-5"]),
         ]);
-        let favorites = create_favorites(vec!["zed/claude"]);
+        let favorites = create_favorites(vec!["raijin/claude"]);
 
         let entries = info_list_to_picker_entries(models, &favorites);
 
         for entry in &entries {
             if let ModelPickerEntry::Model(info, is_favorite) = entry {
-                if info.id.0.as_ref() == "zed/claude" {
-                    assert!(is_favorite, "zed/claude should be a favorite");
+                if info.id.0.as_ref() == "raijin/claude" {
+                    assert!(is_favorite, "raijin/claude should be a favorite");
                 } else {
                     assert!(!is_favorite, "{} should not be a favorite", info.id.0);
                 }
@@ -709,31 +709,31 @@ mod tests {
     #[inazuma::test]
     fn test_favorites_appear_in_both_sections(_cx: &mut TestAppContext) {
         let models = create_model_list(vec![
-            ("zed", vec!["zed/claude", "zed/gemini"]),
+            ("raijin", vec!["raijin/claude", "raijin/gemini"]),
             ("openai", vec!["openai/gpt-5", "openai/gpt-4"]),
         ]);
-        let favorites = create_favorites(vec!["zed/gemini", "openai/gpt-5"]);
+        let favorites = create_favorites(vec!["raijin/gemini", "openai/gpt-5"]);
 
         let entries = info_list_to_picker_entries(models, &favorites);
         let model_ids = get_entry_model_ids(&entries);
 
-        assert_eq!(model_ids[0], "zed/gemini");
+        assert_eq!(model_ids[0], "raijin/gemini");
         assert_eq!(model_ids[1], "openai/gpt-5");
 
-        assert!(model_ids[2..].contains(&"zed/gemini"));
+        assert!(model_ids[2..].contains(&"raijin/gemini"));
         assert!(model_ids[2..].contains(&"openai/gpt-5"));
     }
 
     #[inazuma::test]
     fn test_favorites_are_not_duplicated_when_repeated_in_other_sections(_cx: &mut TestAppContext) {
         let models = create_model_list(vec![
-            ("Recommended", vec!["zed/claude", "anthropic/claude"]),
-            ("Zed", vec!["zed/claude", "zed/gpt-5"]),
+            ("Recommended", vec!["raijin/claude", "anthropic/claude"]),
+            ("Raijin", vec!["raijin/claude", "raijin/gpt-5"]),
             ("Antropic", vec!["anthropic/claude"]),
             ("OpenAI", vec!["openai/gpt-5"]),
         ]);
 
-        let favorites = create_favorites(vec!["zed/claude"]);
+        let favorites = create_favorites(vec!["raijin/claude"]);
 
         let entries = info_list_to_picker_entries(models, &favorites);
         let labels = get_entry_labels(&entries);
@@ -742,13 +742,13 @@ mod tests {
             labels,
             vec![
                 "Favorite",
-                "zed/claude",
+                "raijin/claude",
                 "Recommended",
-                "zed/claude",
+                "raijin/claude",
                 "anthropic/claude",
-                "Zed",
-                "zed/claude",
-                "zed/gpt-5",
+                "Raijin",
+                "raijin/claude",
+                "raijin/gpt-5",
                 "Antropic",
                 "anthropic/claude",
                 "OpenAI",
@@ -761,7 +761,7 @@ mod tests {
     fn test_flat_model_list_with_favorites(_cx: &mut TestAppContext) {
         let models = AgentModelList::Flat(vec![
             raijin_acp_thread::AgentModelInfo {
-                id: acp::ModelId::new("zed/claude".to_string()),
+                id: acp::ModelId::new("raijin/claude".to_string()),
                 name: "Claude".into(),
                 description: None,
                 icon: None,
@@ -769,7 +769,7 @@ mod tests {
                 cost: None,
             },
             raijin_acp_thread::AgentModelInfo {
-                id: acp::ModelId::new("zed/gemini".to_string()),
+                id: acp::ModelId::new("raijin/gemini".to_string()),
                 name: "Gemini".into(),
                 description: None,
                 icon: None,
@@ -777,7 +777,7 @@ mod tests {
                 cost: None,
             },
         ]);
-        let favorites = create_favorites(vec!["zed/gemini"]);
+        let favorites = create_favorites(vec!["raijin/gemini"]);
 
         let entries = info_list_to_picker_entries(models, &favorites);
 

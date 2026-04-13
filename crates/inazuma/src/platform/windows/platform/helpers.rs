@@ -274,7 +274,7 @@ pub(super) fn handle_gpu_device_lost(
     Ok(())
 }
 
-pub(super) const PLATFORM_WINDOW_CLASS_NAME: PCWSTR = w!("Zed::PlatformWindow");
+pub(super) const PLATFORM_WINDOW_CLASS_NAME: PCWSTR = w!("Raijin::PlatformWindow");
 
 pub(super) fn register_platform_window_class() {
     let wc = WNDCLASSW {

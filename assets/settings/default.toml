@@ -1,5 +1,5 @@
 # Raijin Default Settings
-# Auto-generated from Zed reference + Raijin struct definitions
+# Auto-generated from Raijin struct definitions
 
 base_keymap = "VSCode"
 vim_mode = false
@@ -27,12 +27,12 @@ package = "*"
 mode = "dark"
 light = "Raijin Light"
 dark = "Raijin Dark"
-icon_theme = "Zed (Default)"
-buffer_font_family = ".ZedMono"
+icon_theme = "Raijin (Default)"
+buffer_font_family = ".RaijinMono"
 buffer_font_size = 15
 buffer_font_weight = 400
 buffer_line_height = "comfortable"
-ui_font_family = ".ZedSans"
+ui_font_family = ".RaijinSans"
 ui_font_weight = 400
 ui_font_size = 16
 agent_buffer_font_size = 12
@@ -448,7 +448,7 @@ show = "always"
 [git_panel.scrollbar]
 
 [agent.default_model]
-provider = "zed.dev"
+provider = "raijin.dev"
 model = "claude-sonnet-4"
 enable_thinking = false
 
@@ -530,7 +530,7 @@ api_url = "https://ai-gateway.vercel.sh/v1"
 [language_models.x_ai]
 api_url = "https://api.x.ai/v1"
 
-[language_models."zed.dev"]
+[language_models."raijin.dev"]
 
 [global_lsp_settings.notifications]
 dismiss_timeout_ms = 5000
@@ -586,13 +586,13 @@ debuggers = []
 word_diff_enabled = true
 
 [project.all_languages.edit_predictions]
-provider = "zed"
-disabled_globs = [ "**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/.dev.vars", "**/secrets.yml", "**/.zed/settings.json", "/**/zed/settings.json", "/**/zed/keymap.json",]
+provider = "raijin"
+disabled_globs = [ "**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/.dev.vars", "**/secrets.yml", "**/.raijin/settings.json", "/**/raijin/settings.json", "/**/raijin/keymap.json",]
 mode = "eager"
 enabled_in_text_threads = true
 
 [project.all_languages.file_types]
-JSONC = [ "**/.zed/*.json", "**/.vscode/**/*.json", "**/{zed,Zed}/{settings,keymap,tasks,debug}.json", "tsconfig*.json",]
+JSONC = [ "**/.raijin/*.json", "**/.vscode/**/*.json", "**/{raijin,Raijin}/{settings,keymap,tasks,debug}.json", "tsconfig*.json",]
 Markdown = [ ".rules", ".cursorrules", ".windsurfrules", ".clinerules",]
 "Shell Script" = [ ".env.*",]
 

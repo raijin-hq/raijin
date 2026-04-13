@@ -74,16 +74,16 @@ impl Render for MarkdownExample {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let markdown_style = MarkdownStyle {
             base_text_style: inazuma::TextStyle {
-                font_family: ".ZedSans".into(),
+                font_family: ".RaijinSans".into(),
                 color: cx.theme().colors().terminal.ansi.black,
                 ..Default::default()
             },
             code_block: StyleRefinement::default()
-                .font_family(".ZedMono")
+                .font_family(".RaijinMono")
                 .m(rems(1.))
                 .bg(rgb(0xAAAAAAA)),
             inline_code: inazuma::TextStyleRefinement {
-                font_family: Some(".ZedMono".into()),
+                font_family: Some(".RaijinMono".into()),
                 color: Some(cx.theme().colors().editor.foreground),
                 background_color: Some(cx.theme().colors().editor.background),
                 ..Default::default()

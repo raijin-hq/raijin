@@ -46,11 +46,11 @@ pub fn after_release() -> Workflow {
 fn rebuild_releases_page() -> NamedJob {
     fn refresh_cloud_releases() -> Step<Run> {
         named::bash(format!(
-            "curl -fX POST https://cloud.zed.dev/releases/refresh?expect_tag={TAG_NAME}"
+            "curl -fX POST https://cloud.raijin.dev/releases/refresh?expect_tag={TAG_NAME}"
         ))
     }
 
-    fn redeploy_zed_dev() -> Step<Run> {
+    fn redeploy_raijin_dev() -> Step<Run> {
         named::bash("./script/redeploy-vercel").add_env(("VERCEL_TOKEN", vars::VERCEL_TOKEN))
     }
 
@@ -60,7 +60,7 @@ fn rebuild_releases_page() -> NamedJob {
             .with_repository_owner_guard()
             .add_step(refresh_cloud_releases())
             .add_step(checkout_repo())
-            .add_step(redeploy_zed_dev()),
+            .add_step(redeploy_raijin_dev()),
     )
 }
 
@@ -68,9 +68,9 @@ fn post_to_discord(deps: &[&NamedJob]) -> NamedJob {
     fn get_release_url() -> Step<Run> {
         named::bash(format!(
             r#"if [ "{IS_PRERELEASE}" == "true" ]; then
-    URL="https://zed.dev/releases/preview"
+    URL="https://raijin.dev/releases/preview"
 else
-    URL="https://zed.dev/releases/stable"
+    URL="https://raijin.dev/releases/stable"
 fi
 
 echo "URL=$URL" >> "$GITHUB_OUTPUT"
@@ -89,7 +89,7 @@ echo "URL=$URL" >> "$GITHUB_OUTPUT"
         .add_with((
             "stringToTruncate",
             format!(
-                "📣 Zed [{TAG_NAME}](<${{{{ steps.get-release-url.outputs.URL }}}}>)  was just released!\n\n{RELEASE_BODY}\n"
+                "📣 Raijin [{TAG_NAME}](<${{{{ steps.get-release-url.outputs.URL }}}}>)  was just released!\n\n{RELEASE_BODY}\n"
             ),
         ))
         .add_with(("maxLength", 2000))
@@ -138,9 +138,9 @@ fn publish_winget() -> NamedJob {
     fn set_package_name() -> (Step<Run>, StepOutput) {
         let script = format!(
             r#"if ("{IS_PRERELEASE}" -eq "true") {{
-    $PACKAGE_NAME = "ZedIndustries.Zed.Preview"
+    $PACKAGE_NAME = "RaijinIndustries.Raijin.Preview"
 }} else {{
-    $PACKAGE_NAME = "ZedIndustries.Zed"
+    $PACKAGE_NAME = "RaijinIndustries.Raijin"
 }}
 
 echo "PACKAGE_NAME=$PACKAGE_NAME" >> $env:GITHUB_OUTPUT

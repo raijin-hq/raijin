@@ -579,7 +579,7 @@ impl AgentType {
 
     fn label(&self) -> SharedString {
         match self {
-            Self::NativeAgent | Self::TextThread => "Zed Agent".into(),
+            Self::NativeAgent | Self::TextThread => "Raijin Agent".into(),
             Self::Custom { id, .. } => id.0.clone(),
         }
     }
@@ -1228,7 +1228,7 @@ impl AgentPanel {
     }
 
     fn new_text_thread(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        raijin_telemetry::event!("Agent Thread Started", agent = "zed-text");
+        raijin_telemetry::event!("Agent Thread Started", agent = "raijin-text");
 
         let context = self
             .text_thread_store
@@ -3174,7 +3174,7 @@ impl Panel for AgentPanel {
     }
 
     fn icon(&self, _window: &Window, cx: &App) -> Option<IconName> {
-        (self.enabled(cx) && AgentSettings::get_global(cx).button).then_some(IconName::ZedAssistant)
+        (self.enabled(cx) && AgentSettings::get_global(cx).button).then_some(IconName::RaijinAssistant)
     }
 
     fn icon_tooltip(&self, _window: &Window, _cx: &App) -> Option<&'static str> {
@@ -3768,7 +3768,7 @@ impl AgentPanel {
                             }
                         })
                         .item(
-                            ContextMenuEntry::new("Zed Agent")
+                            ContextMenuEntry::new("Raijin Agent")
                                 .when(
                                     is_agent_selected(AgentType::NativeAgent)
                                         | is_agent_selected(AgentType::TextThread),
@@ -3778,7 +3778,7 @@ impl AgentPanel {
                                         }))
                                     },
                                 )
-                                .icon(IconName::ZedAgent)
+                                .icon(IconName::RaijinAgent)
                                 .icon_color(Color::Muted)
                                 .handler({
                                     let workspace = workspace.clone();
@@ -4019,7 +4019,7 @@ impl AgentPanel {
                     .size(IconSize::Small)
                     .color(icon_color)
             } else {
-                let icon_name = selected_agent_builtin_icon.unwrap_or(IconName::ZedAgent);
+                let icon_name = selected_agent_builtin_icon.unwrap_or(IconName::RaijinAgent);
                 Icon::new(icon_name).size(IconSize::Small).color(icon_color)
             };
 
@@ -4364,7 +4364,7 @@ impl AgentPanel {
         let zed_provider_configured = AgentSettings::get_global(cx)
             .default_model
             .as_ref()
-            .is_some_and(|selection| selection.provider.0.as_str() == "zed.dev");
+            .is_some_and(|selection| selection.provider.0.as_str() == "raijin.dev");
 
         let callout = if zed_provider_configured {
             Callout::new()
@@ -4373,7 +4373,7 @@ impl AgentPanel {
                 .when(border_bottom, |this| {
                     this.border_position(raijin_ui::BorderPosition::Bottom)
                 })
-                .title("Sign in to continue using Zed as your LLM provider.")
+                .title("Sign in to continue using Raijin as your LLM provider.")
                 .actions_slot(
                     Button::new("sign_in", "Sign In")
                         .style(ButtonStyle::tinted(raijin_ui::TintColor::Warning))
@@ -5453,8 +5453,8 @@ mod tests {
             "resource text should be the raw conflict"
         );
         assert!(
-            uri.starts_with("zed:///agent/merge-conflict"),
-            "URI should use the zed merge-conflict scheme, got: {uri}"
+            uri.starts_with("raijin:///agent/merge-conflict"),
+            "URI should use the raijin merge-conflict scheme, got: {uri}"
         );
         assert!(uri.contains("utils.rs"), "URI should encode the file path");
     }

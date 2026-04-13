@@ -25,12 +25,12 @@ pub fn router() -> Router {
         .route("/telemetry/hangs", post(post_panic))
 }
 
-pub struct ZedChecksumHeader(Vec<u8>);
+pub struct RaijinChecksumHeader(Vec<u8>);
 
-impl Header for ZedChecksumHeader {
+impl Header for RaijinChecksumHeader {
     fn name() -> &'static HeaderName {
-        static ZED_CHECKSUM_HEADER: OnceLock<HeaderName> = OnceLock::new();
-        ZED_CHECKSUM_HEADER.get_or_init(|| HeaderName::from_static("x-zed-checksum"))
+        static RAIJIN_CHECKSUM_HEADER: OnceLock<HeaderName> = OnceLock::new();
+        RAIJIN_CHECKSUM_HEADER.get_or_init(|| HeaderName::from_static("x-raijin-checksum"))
     }
 
     fn decode<'i, I>(values: &mut I) -> Result<Self, axum::headers::Error>
@@ -61,7 +61,7 @@ pub async fn post_panic() -> Result<()> {
 
 pub async fn post_events(
     Extension(app): Extension<Arc<AppState>>,
-    TypedHeader(ZedChecksumHeader(checksum)): TypedHeader<ZedChecksumHeader>,
+    TypedHeader(RaijinChecksumHeader(checksum)): TypedHeader<RaijinChecksumHeader>,
     country_code_header: Option<TypedHeader<CloudflareIpCountryHeader>>,
     body: Bytes,
 ) -> Result<()> {
@@ -161,7 +161,7 @@ fn for_snowflake(
         }
 
         // NOTE: most amplitude user properties are read out of our event_properties
-        // dictionary. See https://app.amplitude.com/data/zed/Zed/sources/detail/production/falcon%3A159998
+        // dictionary. See https://app.amplitude.com/data/raijin/Raijin/sources/detail/production/falcon%3A159998
         // for how that is configured.
         let user_properties = body.is_staff.map(|is_staff| {
             serde_json::json!({

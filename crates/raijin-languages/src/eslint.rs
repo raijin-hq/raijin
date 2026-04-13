@@ -73,7 +73,7 @@ impl LspInstaller for EsLintLspAdapter {
         _: &mut AsyncApp,
     ) -> Result<GitHubLspBinaryVersion> {
         let url = build_asset_url(
-            "zed-industries/vscode-eslint",
+            "raijin-hq/vscode-eslint",
             Self::CURRENT_VERSION_TAG_NAME,
             Self::GITHUB_ASSET_KIND,
         )?;
@@ -194,7 +194,7 @@ impl LspAdapter for EsLintLspAdapter {
             "problems": {},
             "codeActionOnSave": {
                 // We enable this, but without also configuring code_actions_on_format
-                // in the Zed configuration, it doesn't have an effect.
+                // in the Raijin configuration, it doesn't have an effect.
                 "enable": true,
             },
             "codeAction": {

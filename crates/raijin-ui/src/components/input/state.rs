@@ -1,7 +1,7 @@
 //! A text input field that allows the user to enter text.
 //!
 //! Based on the `Input` example from the `gpui` crate.
-//! https://github.com/zed-industries/zed/blob/main/crates/gpui/examples/input.rs
+//! https://github.com/raijin-industries/raijin/blob/main/crates/gpui/examples/input.rs
 use anyhow::Result;
 use inazuma::{
     Action, App, AppContext, Bounds, Context, Entity, EntityInputHandler, EventEmitter, FocusHandle,

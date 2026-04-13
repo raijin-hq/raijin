@@ -505,15 +505,15 @@ pub struct GitSettings {
     /// When the resolved directory is outside the project root, the
     /// project's directory name is automatically appended so that
     /// sibling repos don't collide. For example, with the default
-    /// `"../worktrees"` and a project at `~/code/zed`, worktrees are
-    /// created under `~/code/worktrees/zed/`.
+    /// `"../worktrees"` and a project at `~/code/raijin`, worktrees are
+    /// created under `~/code/worktrees/raijin/`.
     ///
     /// When the resolved directory is inside the project root, no
     /// extra component is added (it's already project-scoped).
     ///
     /// Examples:
     /// - `"../worktrees"` — `~/code/worktrees/<project>/` (default)
-    /// - `".git/zed-worktrees"` — `<project>/.git/zed-worktrees/`
+    /// - `".git/raijin-worktrees"` — `<project>/.git/raijin-worktrees/`
     /// - `"my-worktrees"` — `<project>/my-worktrees/`
     ///
     /// Trailing slashes are ignored.
@@ -725,9 +725,9 @@ pub struct InlineDiagnosticsSettingsContent {
 pub struct NodeBinarySettings {
     /// The path to the Node binary.
     pub path: Option<String>,
-    /// The path to the npm binary Zed should use (defaults to `.path/../npm`).
+    /// The path to the npm binary Raijin should use (defaults to `.path/../npm`).
     pub npm_path: Option<String>,
-    /// If enabled, Zed will download its own copy of Node.
+    /// If enabled, Raijin will download its own copy of Node.
     pub ignore_system_version: Option<bool>,
 }
 

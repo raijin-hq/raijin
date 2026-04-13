@@ -1,7 +1,7 @@
 {
-  "name": "zed",
+  "name": "raijin",
   "aliases": [],
-  "description": "A lightning-fast, collaborative code editor written in Rust",
+  "description": "A GPU-accelerated terminal emulator built on the Inazuma UI framework",
   "subcommands": [],
   "options": [
     {
@@ -20,7 +20,7 @@
         "-v",
         "--version"
       ],
-      "description": "Print Zed's version and the app path",
+      "description": "Print Raijin's version and the app path",
       "takes_arg": false,
       "arg_name": null,
       "arg_template": null,
@@ -42,7 +42,7 @@
         "-b",
         "--bundle-path"
       ],
-      "description": "Custom Zed.app path",
+      "description": "Custom Raijin.app path",
       "takes_arg": true,
       "arg_name": "bundle_path",
       "arg_template": "folders",

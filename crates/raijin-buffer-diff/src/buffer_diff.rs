@@ -1112,7 +1112,7 @@ fn compute_hunks(
         )
         .log_err();
 
-        // A common case in Zed is that the empty buffer is represented as just a newline,
+        // A common case in Raijin is that the empty buffer is represented as just a newline,
         // but if we just compute a naive diff you get a "preserved" line in the middle,
         // which is a bit odd.
         if buffer_text == "\n" && diff_base.ends_with("\n") && diff_base.len() > 1 {
@@ -2688,7 +2688,7 @@ mod tests {
 
     #[inazuma::test]
     async fn test_stage_all_with_stale_buffer(cx: &mut TestAppContext) {
-        // Regression test for ZED-5R2: when the buffer is edited after the diff is
+        // Regression test for RAIJIN-5R2: when the buffer is edited after the diff is
         // computed but before staging, anchor positions shift while diff_base_byte_range
         // values don't. If the primary (HEAD) hunk extends past the unstaged (index)
         // hunk, an edit in the extension region shifts the primary hunk end without

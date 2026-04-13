@@ -1,6 +1,6 @@
 use crate::{Channel, ChannelStore};
 use anyhow::Result;
-use raijin_client::{ChannelId, Client, Collaborator, Subscription as ClientSubscription, UserStore, ZED_ALWAYS_ACTIVE};
+use raijin_client::{ChannelId, Client, Collaborator, Subscription as ClientSubscription, UserStore, RAIJIN_ALWAYS_ACTIVE};
 use inazuma_collections::HashMap;
 use inazuma::{App, AppContext as _, AsyncApp, Context, Entity, EventEmitter, Task};
 use raijin_language::proto::serialize_version;
@@ -204,7 +204,7 @@ impl ChannelBuffer {
                 operation,
                 is_local: true,
             } => {
-                if *ZED_ALWAYS_ACTIVE
+                if *RAIJIN_ALWAYS_ACTIVE
                     && let raijin_language::Operation::UpdateSelections { selections, .. } = operation
                     && selections.is_empty()
                 {

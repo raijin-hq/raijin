@@ -1,4 +1,4 @@
-//! Headless CLI binary for running Zed's agent in evaluation/benchmark environments.
+//! Headless CLI binary for running Raijin's agent in evaluation/benchmark environments.
 //!
 //! Designed to work inside containerized environments (like Harbor/termbench) where:
 //! - The repository is already checked out at the working directory
@@ -61,7 +61,7 @@ use crate::headless::AgentCliAppState;
 )]
 struct Args {
     /// Output current environment variables as JSON to stdout.
-    /// Used internally by Zed's shell environment capture.
+    /// Used internally by Raijin's shell environment capture.
     #[arg(long, hide = true)]
     printenv: bool,
 

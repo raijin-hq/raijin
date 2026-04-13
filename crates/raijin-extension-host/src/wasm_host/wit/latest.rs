@@ -27,7 +27,7 @@ use std::{
     str::FromStr,
     sync::{Arc, OnceLock},
 };
-use raijin_task::{SpawnInTerminal, ZedDebugConfig};
+use raijin_task::{SpawnInTerminal, RaijinDebugConfig};
 use url::Url;
 use inazuma_util::{
     archive::extract_zip, fs::make_file_executable, maybe, paths::PathStyle, rel_path::RelPath,
@@ -204,8 +204,8 @@ impl From<AttachRequest> for raijin_task::AttachRequest {
     }
 }
 
-impl From<ZedDebugConfig> for DebugConfig {
-    fn from(value: ZedDebugConfig) -> Self {
+impl From<RaijinDebugConfig> for DebugConfig {
+    fn from(value: RaijinDebugConfig) -> Self {
         Self {
             label: value.label.into(),
             adapter: value.adapter.into(),

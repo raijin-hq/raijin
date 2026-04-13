@@ -650,7 +650,7 @@ pub fn open_settings_editor(
         let scaled_bounds: inazuma::Size<Pixels> = default_bounds.map(|axis| axis * scale_factor);
 
         let app_id = ReleaseChannel::global(cx).app_id();
-        let window_decorations = match std::env::var("ZED_WINDOW_DECORATIONS") {
+        let window_decorations = match std::env::var("RAIJIN_WINDOW_DECORATIONS") {
             Ok(val) if val == "server" => inazuma::WindowDecorations::Server,
             Ok(val) if val == "client" => inazuma::WindowDecorations::Client,
             _ => inazuma::WindowDecorations::Client,
@@ -1237,7 +1237,7 @@ fn render_settings_item_link(
         .read_from_clipboard()
         .and_then(|entry| entry.text())
         .map_or(false, |maybe_url| {
-            json_path.is_some() && maybe_url.strip_prefix("zed://settings/") == json_path
+            json_path.is_some() && maybe_url.strip_prefix("raijin://settings/") == json_path
         });
 
     let (link_icon, link_icon_color) = if clipboard_has_link {
@@ -1266,7 +1266,7 @@ fn render_settings_item_link(
                 .tooltip(Tooltip::text("Copy Link"))
                 .when_some(json_path, |this, path| {
                     this.on_click(cx.listener(move |_, _, _, cx| {
-                        let link = format!("zed://settings/{}", path);
+                        let link = format!("raijin://settings/{}", path);
                         cx.write_to_clipboard(ClipboardItem::new_string(link));
                         cx.notify();
                     }))
@@ -1405,7 +1405,7 @@ fn all_language_names(cx: &App) -> Vec<SharedString> {
                 .languages
                 .language_names()
                 .into_iter()
-                .filter(|name| name.as_ref() != "Zed Keybind Context")
+                .filter(|name| name.as_ref() != "Raijin Keybind Context")
                 .map(Into::into)
                 .collect()
         })
@@ -3410,7 +3410,7 @@ impl SettingsWindow {
 
                 let worktree_id = *worktree_id;
 
-                // TODO: move zed::open_local_file() APIs to this crate, and
+                // TODO: move raijin::open_local_file() APIs to this crate, and
                 // re-implement the "initial_contents" behavior
                 let workspace_weak = corresponding_workspace.downgrade();
                 workspace_window

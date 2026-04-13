@@ -5,7 +5,7 @@
 //! Only visible range are rendered for performance reasons.
 //!
 //! Inspired by `inazuma::uniform_list`.
-//! https://github.com/zed-industries/zed/blob/0ae1603610ab6b265bdfbee7b8dbc23c5ab06edc/crates/gpui/src/elements/uniform_list.rs
+//! https://github.com/raijin-industries/raijin/blob/0ae1603610ab6b265bdfbee7b8dbc23c5ab06edc/crates/gpui/src/elements/uniform_list.rs
 //!
 //! Unlike the `uniform_list`, the each item can have different size.
 //!
@@ -271,7 +271,7 @@ impl VirtualList {
                 }
             }
             _ => {
-                // Ref: https://github.com/zed-industries/zed/blob/0d145289e0867a8d5d63e5e1397a5ca69c9d49c3/crates/gpui/src/elements/div.rs#L3026
+                // Ref: https://github.com/raijin-industries/raijin/blob/0d145289e0867a8d5d63e5e1397a5ca69c9d49c3/crates/gpui/src/elements/div.rs#L3026
                 if self.axis.is_vertical() {
                     if bounds.top() + scroll_offset.y < content_bounds.top() {
                         scroll_offset.y = content_bounds.top() - bounds.top()
@@ -291,7 +291,7 @@ impl VirtualList {
         scroll_offset
     }
 
-    /// Ref from: https://github.com/zed-industries/zed/blob/83f9f9d9e3f5914392cab9a09e3472711a1d7b38/crates/gpui/src/elements/uniform_list.rs#L660
+    /// Ref from: https://github.com/raijin-industries/raijin/blob/83f9f9d9e3f5914392cab9a09e3472711a1d7b38/crates/gpui/src/elements/uniform_list.rs#L660
     fn measure_item(
         &self,
         list_width: Option<Pixels>,

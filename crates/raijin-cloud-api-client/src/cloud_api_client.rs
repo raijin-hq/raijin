@@ -75,7 +75,7 @@ impl CloudApiClient {
         let request = self.build_request(
             Request::builder().method(Method::GET).uri(
                 self.http_client
-                    .build_zed_cloud_url("/client/users/me")?
+                    .build_raijin_cloud_url("/client/users/me")?
                     .as_ref(),
             ),
             AsyncBody::default(),
@@ -114,7 +114,7 @@ impl CloudApiClient {
     pub fn connect(&self, cx: &App) -> Result<Task<Result<Connection>>> {
         let mut connect_url = self
             .http_client
-            .build_zed_cloud_url("/client/users/connect")?;
+            .build_raijin_cloud_url("/client/users/connect")?;
         connect_url
             .set_scheme(match connect_url.scheme() {
                 "https" => "wss",
@@ -149,11 +149,11 @@ impl CloudApiClient {
             .method(Method::POST)
             .uri(
                 self.http_client
-                    .build_zed_cloud_url("/client/llm_tokens")?
+                    .build_raijin_cloud_url("/client/llm_tokens")?
                     .as_ref(),
             )
             .when_some(system_id, |builder, system_id| {
-                builder.header(ZED_SYSTEM_ID_HEADER_NAME, system_id)
+                builder.header(RAIJIN_SYSTEM_ID_HEADER_NAME, system_id)
             });
 
         let request = self.build_request(
@@ -195,7 +195,7 @@ impl CloudApiClient {
         let request = build_request(
             Request::builder().method(Method::GET).uri(
                 self.http_client
-                    .build_zed_cloud_url("/client/users/me")?
+                    .build_raijin_cloud_url("/client/users/me")?
                     .as_ref(),
             ),
             AsyncBody::default(),
@@ -227,7 +227,7 @@ impl CloudApiClient {
         let request = self.build_request(
             Request::builder().method(Method::POST).uri(
                 self.http_client
-                    .build_zed_cloud_url("/client/feedback/agent_thread")?
+                    .build_raijin_cloud_url("/client/feedback/agent_thread")?
                     .as_ref(),
             ),
             AsyncBody::from(serde_json::to_string(&body)?),
@@ -255,7 +255,7 @@ impl CloudApiClient {
         let request = self.build_request(
             Request::builder().method(Method::POST).uri(
                 self.http_client
-                    .build_zed_cloud_url("/client/feedback/agent_thread_comments")?
+                    .build_raijin_cloud_url("/client/feedback/agent_thread_comments")?
                     .as_ref(),
             ),
             AsyncBody::from(serde_json::to_string(&body)?),
@@ -283,7 +283,7 @@ impl CloudApiClient {
         let request = self.build_request(
             Request::builder().method(Method::POST).uri(
                 self.http_client
-                    .build_zed_cloud_url("/client/feedback/edit_prediction")?
+                    .build_raijin_cloud_url("/client/feedback/edit_prediction")?
                     .as_ref(),
             ),
             AsyncBody::from(serde_json::to_string(&body)?),

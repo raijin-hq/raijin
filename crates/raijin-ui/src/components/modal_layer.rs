@@ -1,6 +1,6 @@
 /// Modal layer system — manages the lifecycle of modal views.
 ///
-/// Ported from Zed's workspace/modal_layer.rs. Provides:
+/// Ported from the reference workspace/modal_layer.rs. Provides:
 /// - `ModalView` trait for modal implementations
 /// - `ModalLayer` entity for managing active modals (toggle, hide, focus)
 /// - Overlay background with click-to-dismiss

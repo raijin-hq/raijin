@@ -21,13 +21,13 @@ fn process_settings(cx: &mut App) {
     if settings.use_system_prompts && cfg!(not(any(target_os = "linux", target_os = "freebsd"))) {
         cx.reset_prompt_builder();
     } else {
-        cx.set_prompt_builder(zed_prompt_renderer);
+        cx.set_prompt_builder(raijin_prompt_renderer);
     }
 }
 
 /// Use this function in conjunction with [App::set_prompt_builder] to force
 /// the framework to use the internal prompt system.
-fn zed_prompt_renderer(
+fn raijin_prompt_renderer(
     level: PromptLevel,
     message: &str,
     detail: Option<&str>,
@@ -37,7 +37,7 @@ fn zed_prompt_renderer(
     cx: &mut App,
 ) -> RenderablePromptHandle {
     let renderer = cx.new({
-        |cx| ZedPromptRenderer {
+        |cx| RaijinPromptRenderer {
             _level: level,
             message: cx.new(|cx| Markdown::new(SharedString::new(message), None, None, cx)),
             actions: actions.iter().map(|a| a.label().to_string()).collect(),
@@ -52,7 +52,7 @@ fn zed_prompt_renderer(
     handle.with_view(renderer, window, cx)
 }
 
-pub struct ZedPromptRenderer {
+pub struct RaijinPromptRenderer {
     _level: PromptLevel,
     message: Entity<Markdown>,
     actions: Vec<String>,
@@ -61,7 +61,7 @@ pub struct ZedPromptRenderer {
     detail: Option<Entity<Markdown>>,
 }
 
-impl ZedPromptRenderer {
+impl RaijinPromptRenderer {
     fn confirm(&mut self, _: &inazuma_menu::Confirm, _window: &mut Window, cx: &mut Context<Self>) {
         cx.emit(PromptResponse(self.active_action_id));
     }
@@ -107,7 +107,7 @@ impl ZedPromptRenderer {
     }
 }
 
-impl Render for ZedPromptRenderer {
+impl Render for RaijinPromptRenderer {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let settings = ThemeSettings::get_global(cx);
 
@@ -196,9 +196,9 @@ fn markdown_style(main_message: bool, window: &Window, cx: &App) -> MarkdownStyl
     }
 }
 
-impl EventEmitter<PromptResponse> for ZedPromptRenderer {}
+impl EventEmitter<PromptResponse> for RaijinPromptRenderer {}
 
-impl Focusable for ZedPromptRenderer {
+impl Focusable for RaijinPromptRenderer {
     fn focus_handle(&self, _: &inazuma::App) -> FocusHandle {
         self.focus.clone()
     }

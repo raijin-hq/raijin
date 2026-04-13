@@ -186,12 +186,12 @@ impl Component for StatusToast {
             |this, _| this.icon(ToastIcon::new(IconName::Check).color(Color::Muted)),
         );
 
-        let success_example = StatusToast::new("Pushed 4 changes to `zed/main`", cx, |this, _| {
+        let success_example = StatusToast::new("Pushed 4 changes to `raijin/main`", cx, |this, _| {
             this.icon(ToastIcon::new(IconName::Check).color(Color::Success))
         });
 
         let error_example = StatusToast::new(
-            "git push: Couldn't find remote origin `iamnbutler/zed`",
+            "git push: Couldn't find remote origin `iamnbutler/raijin`",
             cx,
             |this, _cx| {
                 this.icon(ToastIcon::new(IconName::XCircle).color(Color::Error))
@@ -205,7 +205,7 @@ impl Component for StatusToast {
         });
 
         let pr_example =
-            StatusToast::new("`zed/new-notification-system` created!", cx, |this, _cx| {
+            StatusToast::new("`raijin/new-notification-system` created!", cx, |this, _cx| {
                 this.icon(ToastIcon::new(IconName::GitBranchAlt).color(Color::Muted))
                     .action("Open Pull Request", |_, cx| {
                         cx.open_url("https://github.com/")

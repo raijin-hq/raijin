@@ -12,7 +12,7 @@ The PTY resize happens as a side effect of the terminal state update, not in a s
 
 ---
 
-## 1. Zed's Implementation (GPUI Framework) — PRODUCTION PATTERN
+## 1. Reference Implementation (GPUI Framework) — PRODUCTION PATTERN
 
 **File:** `crates/terminal_view/src/terminal_element.rs` (lines 863-991)
 
@@ -61,7 +61,7 @@ fn prepaint(
 
 ---
 
-## 2. Terminal State Machine (Zed) — How Resize is Processed
+## 2. Terminal State Machine (Reference) — How Resize is Processed
 
 **File:** `crates/terminal/src/terminal.rs` (lines 1438-1043)
 
@@ -205,7 +205,7 @@ pub fn resize(
 }
 ```
 
-### Key Differences from Zed:
+### Key Differences from Reference:
 - **Explicit locking scope**: Minimizes critical section
 - **Synchronized output disabled**: Forces immediate rendering
 - **In-band reporting**: Can send CSI 9 size reports to shell
@@ -213,11 +213,11 @@ pub fn resize(
 
 ---
 
-## 5. GPUI/Inazuma Element Lifecycle
+## 5. Inazuma Element Lifecycle
 
 **Files:**
-- Zed GPUI: `crates/gpui/src/element.rs`
-- Inazuma (fork): `crates/inazuma/src/element.rs`
+- Reference GPUI: `crates/gpui/src/element.rs`
+- Inazuma (our fork): `crates/inazuma/src/element.rs`
 
 ### Phase Order: request_layout → prepaint → paint
 
@@ -351,7 +351,7 @@ The grid_element needs to:
 
 **Is it acceptable?** Generally, NO for interactive terminals.
 
-### Why Zed does it in the same frame:
+### Why the reference codebase does it in the same frame:
 - User expectation: resize window → immediate text reflow
 - Text wrapping depends on column count
 - Delaying creates visual glitch
@@ -362,12 +362,12 @@ The grid_element needs to:
 - No frame delay
 
 ### Raijin's options:
-1. **Prepaint resize** (recommended, like Zed): Same frame, clean
+1. **Prepaint resize** (recommended, like reference): Same frame, clean
 2. **Deferred resize** (one-frame delay): Causes text wrap artifacts, bad UX
 
 ---
 
-## 8. Critical Observation: Zed's Workspace Pattern
+## 8. Critical Observation: Reference Workspace Pattern
 
 Key architectural decision: **Workspace doesn't manage terminal resize directly.**
 
@@ -406,7 +406,7 @@ Window::handle_resize_event()
 
 ## 10. Specific Code References
 
-### Zed's Terminal: Resize in Prepaint
+### Reference Terminal: Resize in Prepaint
 
 ```
 File: crates/terminal_view/src/terminal_element.rs
@@ -488,13 +488,13 @@ fn prepaint(
 1. **Bounds are fresh**: From Taffy layout this frame
 2. **Idempotent**: `set_size()` checks and early-exits if unchanged
 3. **No frame delay**: Resize and render happen same frame
-4. **Follows Zed pattern**: Production-tested approach
+4. **Follows reference pattern**: Production-tested approach
 
 ---
 
 ## Relevant Architecture Decisions
 
-| Decision | Raijin | Zed | Ghostty |
+| Decision | Raijin | Reference | Ghostty |
 |----------|--------|-----|---------|
 | Where resize happens | ❌ Nowhere | ✅ prepaint() | ✅ sync() method |
 | Frame delay | ✅ (bug) | ❌ Same frame | ❌ Same frame |
@@ -509,7 +509,7 @@ fn prepaint(
 
 | System | Lifecycle | Resize Trigger | Timing | Idempotent |
 |--------|-----------|----------------|--------|-----------|
-| **Zed** | request_layout → Taffy → prepaint → paint | prepaint(bounds) | Same frame | Yes (state.set_size checks) |
+| **Reference** | request_layout → Taffy → prepaint → paint | prepaint(bounds) | Same frame | Yes (state.set_size checks) |
 | **Alacritty** | Event loop driven | window resize event | Event frame | Yes (grid.resize checks) |
 | **Ghostty** | Renderer driven | resize() method | Sync frame | Implicit (always resize) |
 | **Raijin (current)** | request_layout → prepaint → paint | ❌ NEVER | N/A | set_size() ready but unused |

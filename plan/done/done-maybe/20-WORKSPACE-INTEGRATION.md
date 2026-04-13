@@ -1,12 +1,12 @@
-# Phase 20: Workspace Integration — Zed's Workspace als Raijin-Fundament
+# Phase 20: Workspace Integration — Workspace als Raijin-Fundament
 
 ## Ziel
 
-Zed's Workspace-System (`raijin-workspace`) als Fundament übernehmen, unser Terminal-Design als primäre Oberfläche drüberlegen. Zed's Editor/Panels bleiben angeschlossen aber initial nicht sichtbar. Das Ergebnis sieht aus wie Raijin (Warp-Style Terminal), nutzt aber unter der Haube Zed's Workspace-Architektur.
+Das Workspace-System (`raijin-workspace`) als Fundament übernehmen, unser Terminal-Design als primäre Oberfläche drüberlegen. Editor/Panels bleiben angeschlossen aber initial nicht sichtbar. Das Ergebnis sieht aus wie Raijin (Warp-Style Terminal), nutzt aber unter der Haube die Workspace-Architektur.
 
 ## Warum
 
-Zed's Workspace gibt uns gratis:
+Das Workspace-System gibt uns gratis:
 
 - **Pane-System** — Split-Panes, Tab-Navigation, Keyboard-Shortcuts
 - **Dock-System** — Left/Right/Bottom Panels, drag-to-resize
@@ -44,14 +44,14 @@ All das selber bauen wäre Monate Arbeit und würde schlechter sein.
 
 **TitleBar = Tab Bar** — Eine einzige Zeile wie bei Warp: Traffic Lights links, Terminal-Tabs in der Mitte, Aktions-Buttons rechts. Kein separates Element. Die Pane-interne Tab-Bar wird per `TabBarSettings { show: false }` unterdrückt.
 
-**StatusBar** — Initial ausgeblendet per `StatusBarSettings { show: false }`. Zed nutzt die StatusBar für Editor-spezifische Infos (Cursor-Position, Sprache, Encoding, LSP-Status, Diagnostics, Vim-Mode, Zeilenenden) — alles davon initial irrelevant für ein Terminal. Kann später aktiviert werden wenn Editor-Features kommen.
+**StatusBar** — Initial ausgeblendet per `StatusBarSettings { show: false }`. Die StatusBar wird für Editor-spezifische Infos genutzt (Cursor-Position, Sprache, Encoding, LSP-Status, Diagnostics, Vim-Mode, Zeilenenden) — alles davon initial irrelevant für ein Terminal. Kann später aktiviert werden wenn Editor-Features kommen.
 
 ### Wie das zusammenpasst
 
-**Raijin's Terminal-View = ein Workspace Item.** Genau wie Zed's Editor ein Item ist, wird unser Terminal-View (`RaijinTerminalPane`) ein Item im Workspace-Pane-System.
+**Raijin's Terminal-View = ein Workspace Item.** Genau wie der Editor ein Item ist, wird unser Terminal-View (`RaijinTerminalPane`) ein Item im Workspace-Pane-System.
 
 ```
-Workspace (Zed's Architektur)
+Workspace (Architektur)
 ├── TitleBar → RaijinTitleBar (View, wraps PlatformTitleBar Entity — Traffic Lights + Tabs + Actions)
 ├── Left Dock → hidden (initial), später: File Tree
 ├── Center Pane
@@ -99,7 +99,7 @@ pub fn new(
 ) -> Self
 ```
 
-Wir behalten die volle Zed-Architektur — kein Abspecken, keine Feature-Gates. Stattdessen instanziieren wir alles normal, aber ohne aktiven Collaboration-Server und ohne Node Runtime. Das ist genau das Pattern das Zed in seinen Tests nutzt.
+Wir behalten die volle Architektur — kein Abspecken, keine Feature-Gates. Stattdessen instanziieren wir alles normal, aber ohne aktiven Collaboration-Server und ohne Node Runtime. Das ist genau das Pattern das die Referenz in ihren Tests nutzt.
 
 **Konkrete Init-Kette:**
 
@@ -136,7 +136,7 @@ Wir behalten die volle Zed-Architektur — kein Abspecken, keine Feature-Gates. 
    );
    ```
 
-4. **AppState zusammenbauen** (wie Zed's Test-Setup, `workspace.rs:7139`):
+4. **AppState zusammenbauen** (wie Referenz-Test-Setup, `workspace.rs:7139`):
    ```rust
    let app_state = Arc::new(AppState {
        languages: project.read(cx).languages().clone(),
@@ -375,15 +375,15 @@ Wir behalten die volle Zed-Architektur — kein Abspecken, keine Feature-Gates. 
    }
    ```
 
-**Referenz:** Zed's Terminal-Item in `.reference/zed/crates/terminal_view/src/terminal_panel.rs`
+**Referenz:** Terminal-Item in `.reference/zed/crates/terminal_view/src/terminal_panel.rs`
 
 ### Phase 2: TitleBar als kombinierte Tab Bar
 
-**Ziel:** Zed's TitleBar wird zu unserer Warp-Style TitleBar/TabBar.
+**Ziel:** Die TitleBar wird zu unserer Warp-Style TitleBar/TabBar.
 
-**Architektur:** Exakt wie Zed es macht — die TitleBar ist ein **View** (`impl Render`), kein Element. Sie wraps `PlatformTitleBar` (aus dem `platform_title_bar` Crate) per Komposition. `PlatformTitleBar` bringt Traffic Lights, Window-Drag, und Platform-Abstraction mit. RaijinTitleBar packt ihren Content (Tabs, Buttons) als Children rein.
+**Architektur:** Exakt wie die Referenz es macht — die TitleBar ist ein **View** (`impl Render`), kein Element. Sie wraps `PlatformTitleBar` (aus dem `platform_title_bar` Crate) per Komposition. `PlatformTitleBar` bringt Traffic Lights, Window-Drag, und Platform-Abstraction mit. RaijinTitleBar packt ihren Content (Tabs, Buttons) als Children rein.
 
-**Referenz:** Zed's TitleBar in `.reference/zed/crates/title_bar/src/title_bar.rs` — gleiche Architektur, nur mit Project/Branch statt Terminal-Tabs.
+**Referenz:** TitleBar in `.reference/zed/crates/title_bar/src/title_bar.rs` — gleiche Architektur, nur mit Project/Branch statt Terminal-Tabs.
 
 **Aufgaben:**
 
@@ -397,7 +397,7 @@ Wir behalten die volle Zed-Architektur — kein Abspecken, keine Feature-Gates. 
    }
    ```
 
-2. **Subscription-Pattern** (wie Zed, Pull-basiert):
+2. **Subscription-Pattern** (wie die Referenz, Pull-basiert):
 
    ```rust
    impl RaijinTitleBar {
@@ -457,7 +457,7 @@ Wir behalten die volle Zed-Architektur — kein Abspecken, keine Feature-Gates. 
 
    Workspace emittiert relevante Events: `PaneAdded`, `PaneRemoved`, `ActiveItemChanged`, `ItemAdded`, `ItemRemoved`. Pane emittiert: `ActivateItem`, `ChangeItemTitle`, `Remove`, `Focus`, `Split`. Das `cx.observe()` auf den Workspace fängt all das ab und triggert Re-Render.
 
-4. **Registrierung** via `cx.observe_new()` in einer `init()` Funktion (wie Zed):
+4. **Registrierung** via `cx.observe_new()` in einer `init()` Funktion (wie die Referenz):
 
    ```rust
    pub fn init(cx: &mut App) {
@@ -484,7 +484,7 @@ Wir behalten die volle Zed-Architektur — kein Abspecken, keine Feature-Gates. 
 
 ### Phase 3: Docks und StatusBar initial verstecken
 
-**Ziel:** Zed's Docks und StatusBar sind da aber nicht sichtbar. Können später aktiviert werden.
+**Ziel:** Docks und StatusBar sind da aber nicht sichtbar. Können später aktiviert werden.
 
 **Aufgaben:**
 
@@ -703,30 +703,30 @@ NICHT im Item (kommt vom Workspace):
 ## Abhängigkeiten
 
 - **Phase 19 (Settings)** muss zuerst fertig sein — `WorkspaceSettings`, `TabBarSettings`, `StatusBarSettings` nutzen alle `inazuma-settings-framework` und `get_global(cx)`. Phase 19 muss auch die Raijin-Defaults für `tab_bar.show = false` und `status_bar.show = false` in der Default-TOML-Datei setzen.
-- **Entity\<Project\> + Arc\<AppState\>** — Volle Initialisierung wie Zed es macht, mit `Client::new()`, `NodeRuntime::unavailable()`, und `Project::local()`. Kein Abspecken.
+- **Entity\<Project\> + Arc\<AppState\>** — Volle Initialisierung wie die Referenz es macht, mit `Client::new()`, `NodeRuntime::unavailable()`, und `Project::local()`. Kein Abspecken.
 - **Item Trait** erfordert `Focusable + EventEmitter<Self::Event> + Render + Sized` plus Associated Type `type Event`
 
-## Fehlende Crates — Porting von Zed
+## Fehlende Crates — Porting von der Referenz
 
-Diese Zed-Crates existieren in `.reference/zed/crates/` und müssen nach Raijin geportet werden. Alle sind workspace-relevant. Porting-Prinzip: vollständig übernehmen, `gpui` → `inazuma`, `ui` → `raijin-ui`, `zed_actions` → `raijin-actions`, Inhalt auf Terminal-Kontext anpassen wo nötig.
+Diese Referenz-Crates existieren in `.reference/zed/crates/` und müssen nach Raijin geportet werden. Alle sind workspace-relevant. Porting-Prinzip: vollständig übernehmen, `gpui` → `inazuma`, `ui` → `raijin-ui`, `zed_actions` → `raijin-actions`, Inhalt auf Terminal-Kontext anpassen wo nötig.
 
 ### Tier 1 — Workspace-Infrastruktur (MUSS vor Phase 1-2)
 
-| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+| Neues Crate | Referenz-Quelle | Zeilen | Was es tut |
 |---|---|---|---|
 | `raijin-panel` | `panel` | ~75 | `PanelHeader` + `PanelTabs` Traits (erweitern `workspace::Panel`), Helper-Buttons. Deps: `inazuma`, `raijin-ui`, `raijin-workspace` |
 | `raijin-platform-title-bar` | `platform_title_bar` | ~1.186 | Cross-platform TitleBar **View** (`impl Render`). `SystemWindowTabs` (Multi-Window Tab Drag/Drop), `PlatformStyle` (Mac/Linux/Windows), Linux/Windows Window-Controls. Deps: `inazuma`, `raijin-ui`, `raijin-workspace`, `raijin-settings-framework`, `raijin-feature-flags` |
-| `raijin-title-bar` | `title_bar` | ~1.267 | App-Level TitleBar View der `PlatformTitleBar` Entity wraps. Zeigt Project-Info, Git-Branch, User-Menu, Update-Notifications. Raijin-Anpassung: statt Zed's Collab/Branch → Shell-Context (CWD, Git-Branch, User@Host). Deps: `raijin-platform-title-bar`, `raijin-workspace`, `raijin-project`, `raijin-client`, `raijin-settings-framework`, `raijin-theme` |
+| `raijin-title-bar` | `title_bar` | ~1.267 | App-Level TitleBar View der `PlatformTitleBar` Entity wraps. Zeigt Project-Info, Git-Branch, User-Menu, Update-Notifications. Raijin-Anpassung: statt Collab/Branch → Shell-Context (CWD, Git-Branch, User@Host). Deps: `raijin-platform-title-bar`, `raijin-workspace`, `raijin-project`, `raijin-client`, `raijin-settings-framework`, `raijin-theme` |
 
 ### Tier 2 — Terminal als Workspace-Item (KERN)
 
-| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+| Neues Crate | Referenz-Quelle | Zeilen | Was es tut |
 |---|---|---|---|
-| `raijin-terminal-view` | `terminal_view` | ~7.034 | `TerminalView` (`impl Item`, `impl SerializableItem`, `impl SearchableItem`), `TerminalElement` (GPUI Element für Grid-Rendering), `TerminalPanel` (`impl Panel` für Dock), `TerminalScrollbar` (ScrollableHandle), Persistence (SQLite Schema), `terminal_path_like_target` (Hover/Click auf Dateipfade). **Raijin hat bereits** `raijin-app/src/terminal/` mit eigenem Grid/Block-Rendering — dieses muss in die Zed-Item-Architektur eingebettet werden, kein blindes Kopieren. Deps: `raijin-workspace`, `raijin-terminal`, `raijin-project`, `raijin-editor`, `raijin-task`, `raijin-db`, `raijin-ui` |
+| `raijin-terminal-view` | `terminal_view` | ~7.034 | `TerminalView` (`impl Item`, `impl SerializableItem`, `impl SearchableItem`), `TerminalElement` (GPUI Element für Grid-Rendering), `TerminalPanel` (`impl Panel` für Dock), `TerminalScrollbar` (ScrollableHandle), Persistence (SQLite Schema), `terminal_path_like_target` (Hover/Click auf Dateipfade). **Raijin hat bereits** `raijin-app/src/terminal/` mit eigenem Grid/Block-Rendering — dieses muss in die Item-Architektur eingebettet werden, kein blindes Kopieren. Deps: `raijin-workspace`, `raijin-terminal`, `raijin-project`, `raijin-editor`, `raijin-task`, `raijin-db`, `raijin-ui` |
 
 ### Tier 3 — Essenzielle Modals & Navigation
 
-| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+| Neues Crate | Referenz-Quelle | Zeilen | Was es tut |
 |---|---|---|---|
 | `raijin-command-palette-hooks` | `command_palette_hooks` | ~153 | Global Filtering/Interception für Command Palette. `CommandPaletteFilter`, `GlobalCommandPaletteInterceptor`. Muss VOR `raijin-command-palette` existieren. Deps: `inazuma`, `raijin-workspace`, `inazuma-collections` |
 | `raijin-command-palette` | `command_palette` | ~1.223 | Fuzzy-Searchable Action-Palette Modal. `CommandPalette` (`impl ModalView`), `CommandPaletteDelegate` (`impl PickerDelegate`). Deps: `raijin-command-palette-hooks`, `inazuma-picker`, `inazuma-fuzzy`, `raijin-workspace`, `raijin-settings-framework` |
@@ -736,9 +736,9 @@ Diese Zed-Crates existieren in `.reference/zed/crates/` und müssen nach Raijin 
 
 ### Tier 4 — Panels & Sidebar
 
-| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+| Neues Crate | Referenz-Quelle | Zeilen | Was es tut |
 |---|---|---|---|
-| `raijin-sidebar` | `sidebar` | ~7.151 | Sidebar-Architektur mit Thread/Session-Management. **Stark Zed-Agent-spezifisch** — Architektur porten, Inhalt komplett auf Raijin anpassen (statt Agent-Threads → Terminal-Sessions). Deps: `raijin-workspace`, `raijin-project`, `raijin-git`, `raijin-editor`, `raijin-theme`, `raijin-settings-framework` |
+| `raijin-sidebar` | `sidebar` | ~7.151 | Sidebar-Architektur mit Thread/Session-Management. **Stark Agent-spezifisch** — Architektur porten, Inhalt komplett auf Raijin anpassen (statt Agent-Threads → Terminal-Sessions). Deps: `raijin-workspace`, `raijin-project`, `raijin-git`, `raijin-editor`, `raijin-theme`, `raijin-settings-framework` |
 | `raijin-project-panel` | `project_panel` | groß | File-Tree Panel (linke Sidebar). `impl Panel`. Deps: `raijin-workspace`, `raijin-project`, `raijin-editor`, `raijin-git`, `raijin-file-icons`, `raijin-settings-framework` |
 | `raijin-outline` | `outline` | ~1.110 | Code-Outline Modal. Symbol-Navigation im Editor-Buffer. Deps: `inazuma-picker`, `raijin-editor`, `raijin-language`, `raijin-workspace`, `inazuma-fuzzy` |
 | `raijin-outline-panel` | `outline_panel` | groß | Persistent Outline Panel als Dock-Item. Deps: `raijin-workspace`, `raijin-outline`, `raijin-editor`, `raijin-settings-framework` |
@@ -747,13 +747,13 @@ Diese Zed-Crates existieren in `.reference/zed/crates/` und müssen nach Raijin 
 
 ### Tier 5 — Kleinere Features
 
-| Neues Crate | Zed-Quelle | Zeilen | Was es tut |
+| Neues Crate | Referenz-Quelle | Zeilen | Was es tut |
 |---|---|---|---|
 | `raijin-which-key` | `which_key` | ~94 | Vi-style Key-Hint Modal. Zeigt Pending-Keystrokes nach Delay. Trivial — fast 1:1 kopieren. Deps: `raijin-workspace`, `raijin-settings-framework`, `inazuma` |
 
 ### Bereits vorhanden (kein Porting nötig)
 
-| Raijin Crate | Zed-Äquivalent | Status |
+| Raijin Crate | Referenz-Äquivalent | Status |
 |---|---|---|
 | `raijin-workspace/notifications.rs` + `toast_layer.rs` | `notifications` | ✅ Voll implementiert |
 | `inazuma-picker` | `picker` | ✅ Voll implementiert |
@@ -787,11 +787,11 @@ Tier 5 (jederzeit):
   raijin-which-key
 ```
 
-## Was Zed hat das wir später aktivieren
+## Was die Referenz hat das wir später aktivieren
 
 Diese Workspace-Features sind da, initial versteckt, können schrittweise aktiviert werden:
 
-| Feature | Zed Component | Raijin Nutzung | Wann |
+| Feature | Referenz Component | Raijin Nutzung | Wann |
 |---|---|---|---|
 | File Tree | Left Dock + Project Panel | Dateibrowser für CWD | Phase 21+ |
 | Editor | Center Pane Item | Code-Editing direkt im Terminal | Phase 22+ |
@@ -809,7 +809,7 @@ Diese Workspace-Features sind da, initial versteckt, können schrittweise aktivi
 3. **Focus-Chain** — Terminal braucht spezielles Keyboard-Handling (Raw-Mode vs. UI-Mode), muss sauber mit Workspace-Focus interagieren. `interactive_mode` steuert ob Keystrokes ans PTY oder an die UI gehen.
 4. **Performance** — Terminal-Rendering darf nicht durch Workspace-Layout-Passes verlangsamt werden. `block_list` und Grid-Rendering sind bereits optimiert (Viewport-Culling, GPU-Primitives).
 5. **Persistence** — `SerializableItem` ist optional aber nötig für Layout-Restore. Alle 5 Methoden sind Pflicht (keine Defaults). Braucht Schema: Shell-Name, CWD, Pane-Position.
-6. **Entity\<Project\> Init-Kette** — `Project::local()` braucht `Client`, `NodeRuntime`, `UserStore`, `LanguageRegistry`, `Fs`. Wir instanziieren alles normal (volle Zed-Architektur), aber ohne aktive Server-Verbindung und mit `NodeRuntime::unavailable()`. Die internen Subsysteme (LspStore, DapStore, GitStore, etc.) existieren alle, sind aber ohne Verbindungen harmlos.
+6. **Entity\<Project\> Init-Kette** — `Project::local()` braucht `Client`, `NodeRuntime`, `UserStore`, `LanguageRegistry`, `Fs`. Wir instanziieren alles normal (volle Architektur), aber ohne aktive Server-Verbindung und mit `NodeRuntime::unavailable()`. Die internen Subsysteme (LspStore, DapStore, GitStore, etc.) existieren alle, sind aber ohne Verbindungen harmlos.
 7. **clone_on_split() ist async** — PTY-Spawn kann fehlschlagen (Shell nicht gefunden, Permissions, etc.). Fehlerfall muss sauber gehandhabt werden. `cx.spawn_in()` Closure bekommt `WeakEntity<Self>` als ersten Parameter.
 8. **Pane-Tab-Bar Dopplung** — Ohne `TabBarSettings { show: false }` zeigt jeder Pane seine eigene Tab-Leiste zusätzlich zur TitleBar. Muss in Phase 19 Default-Settings gesetzt werden.
 

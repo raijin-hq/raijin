@@ -1,8 +1,8 @@
-# Phase 21: Vollständige Portierung aller fehlenden Zed-Crates
+# Phase 21: Vollständige Portierung aller fehlenden Referenz-Crates
 
 ## Ziel
 
-Alle 134 fehlenden Zed-Crates nach Raijin portieren. Jeder Crate wird kopiert, umbenannt und angepasst — exakt wie bei den ~90 Crates die wir bereits portiert haben.
+Alle 134 fehlenden Referenz-Crates nach Raijin portieren. Jeder Crate wird kopiert, umbenannt und angepasst — exakt wie bei den ~90 Crates die wir bereits portiert haben.
 
 ## Quelle
 
@@ -12,15 +12,15 @@ Alle Crates kommen aus: `/Users/nyxb/Projects/raijin/.reference/zed/crates/`
 
 ### Grundregel: inazuma vs raijin
 
-**Inazuma (稲妻)** = Das UI-Framework. Alles was in Zed `gpui` heißt oder ein reiner Framework-Baustein ist (collections, text, rope, fuzzy, clock, menu, picker, settings, etc.) wird `inazuma-*`. Das sind generische, wiederverwendbare Komponenten die nichts mit der Raijin-App selbst zu tun haben.
+**Inazuma (稲妻)** = Das UI-Framework. Alles was in der Referenz `gpui` heißt oder ein reiner Framework-Baustein ist (collections, text, rope, fuzzy, clock, menu, picker, settings, etc.) wird `inazuma-*`. Das sind generische, wiederverwendbare Komponenten die nichts mit der Raijin-App selbst zu tun haben.
 
-**Raijin (雷神)** = Die App und alles App-spezifische. Alles was in Zed `zed` heißt oder ein Feature/Panel/Provider/Tool ist (editor, workspace, theme, terminal, vim, agent, collab, etc.) wird `raijin-*`.
+**Raijin (雷神)** = Die App und alles App-spezifische. Alles was in der Referenz `zed` heißt oder ein Feature/Panel/Provider/Tool ist (editor, workspace, theme, terminal, vim, agent, collab, etc.) wird `raijin-*`.
 
 **Faustregel:** Wenn es ohne Raijin als eigenständige Library existieren könnte → `inazuma`. Wenn es Raijin-spezifische Logik enthält → `raijin`.
 
 ### Crate-Verzeichnisse und Package-Names
 
-| Zed Prefix/Name | Raijin Prefix/Name |
+| Referenz Prefix/Name | Raijin Prefix/Name |
 |---|---|
 | `gpui_*` | `inazuma-*` (z.B. `gpui_linux` → `inazuma-linux`) |
 | `zed` | `raijin-app` (schon da) |
@@ -41,7 +41,7 @@ Für jede `Cargo.toml`:
 
 1. **Package name** umbenennen:
    ```toml
-   # Vorher (Zed)
+   # Vorher (Referenz)
    name = "command_palette"
    # Nachher (Raijin)
    name = "raijin-command-palette"
@@ -52,7 +52,7 @@ Für jede `Cargo.toml`:
    license = "GPL-3.0-or-later"
    ```
 
-3. **Dependencies** umbenennen — JEDE Dependency die ein Zed-Crate ist:
+3. **Dependencies** umbenennen — JEDE Dependency die ein Referenz-Crate ist:
    ```toml
    # Vorher
    gpui.workspace = true
@@ -73,7 +73,7 @@ Für jede `Cargo.toml`:
 
 4. **Vollständige Dependency-Mapping-Tabelle** (alle bekannten Renames):
 
-   | Zed Dependency | Raijin Dependency |
+   | Referenz Dependency | Raijin Dependency |
    |---|---|
    | `gpui` | `inazuma` |
    | `gpui_macros` | _(in inazuma/tooling/macros)_ |
@@ -128,7 +128,7 @@ Für jede `.rs` Datei im `src/` Verzeichnis:
 #### 1. `use`-Statement Renames
 
 ```rust
-// Vorher (Zed)
+// Vorher (Referenz)
 use gpui::{...};
 use gpui_util::...;
 use ui::{...};
@@ -173,7 +173,7 @@ use inazuma_story::{...};
 use raijin_actions::{...};
 ```
 
-Für alle anderen Zed-Crates:
+Für alle anderen Referenz-Crates:
 ```rust
 // use xyz::... → use raijin_xyz::...
 // Bindestriche im Crate-Name werden Unterstriche im use-Statement
@@ -210,7 +210,7 @@ Diese Submodule/Pfade dürfen NICHT umbenannt werden — sie sind lokale Module 
 | `inazuma_util::fs::*` | `fs` ist Submodul von inazuma-util, nicht raijin-fs |
 | `raijin_rpc::proto::*` | `proto` ist Re-export in raijin-rpc, nicht raijin-proto |
 
-**Regel:** Wenn etwas ein `::submodul` nach einem Crate-Namen ist, prüfen ob es ein lokales Submodul ist oder ein separater Crate. Im Zweifelsfall: den Zed-Code lesen und schauen woher der Import kommt.
+**Regel:** Wenn etwas ein `::submodul` nach einem Crate-Namen ist, prüfen ob es ein lokales Submodul ist oder ein separater Crate. Im Zweifelsfall: den Referenz-Code lesen und schauen woher der Import kommt.
 
 #### 4. Hsla → Oklch Konvertierung
 
@@ -226,7 +226,7 @@ Für Crates die Farben enthalten (Themes, UI, etc.):
 
 ```toml
 # Vorher
-{ git = "https://github.com/zed-industries/..." }
+{ git = "https://github.com/raijin-hq/..." }
 
 # Nachher
 { git = "https://github.com/raijin-hq/..." }
@@ -255,9 +255,9 @@ Jeder neue Crate muss in `/Users/nyxb/Projects/raijin/Cargo.toml` eingetragen we
 cp -r .reference/zed/crates/CRATE_NAME crates/RAIJIN_NAME
 ```
 
-### Die 134 Crates mit Zed-Name → Raijin-Name
+### Die 134 Crates mit Referenz-Name → Raijin-Name
 
-| # | Zed Crate | Raijin Verzeichnis | Raijin Package Name |
+| # | Referenz Crate | Raijin Verzeichnis | Raijin Package Name |
 |---|---|---|---|
 | 1 | `acp_thread` | `raijin-acp-thread` | `raijin-acp-thread` |
 | 2 | `acp_tools` | `raijin-acp-tools` | `raijin-acp-tools` |
@@ -431,6 +431,7 @@ cargo build -p RAIJIN_NAME
 ## Bekannte Fallstricke
 
 ### 1. Falsche Agent-Renames (aus vorherigen Sessions)
+
 Diese Fehler sind bereits passiert und müssen beim Portieren vermieden werden:
 - `std::collections` → ~~`std::inazuma_collections`~~ (FALSCH — `std::collections` bleibt)
 - `futures::task` → ~~`futures::raijin_task`~~ (FALSCH — `futures::task` bleibt)
@@ -458,17 +459,17 @@ Nur für Crates die Farbwerte definieren. Die meisten Crates nutzen `Oklch` nur 
 node scripts/convert-hsla-to-oklch.mjs crates/RAIJIN_NAME/src/FILE.rs --inplace
 ```
 
-### 5. Platform-Crates NICHT von Zed kopieren
-Die 6 Platform-Crates (`gpui_linux`, `gpui_macos`, `gpui_platform`, `gpui_web`, `gpui_wgpu`, `gpui_windows`) dürfen **NICHT** einfach von Zed kopiert werden! Unser `inazuma` hat den Platform-Code schon drin UND wir haben die `objc2`-Migration durchgeführt (weg von `cocoa 0.26` + `objc 0.2`). Zed nutzt noch die alte API. Kopieren würde unsere Migration zerstören.
+### 5. Platform-Crates NICHT von der Referenz kopieren
+Die 6 Platform-Crates (`gpui_linux`, `gpui_macos`, `gpui_platform`, `gpui_web`, `gpui_wgpu`, `gpui_windows`) dürfen **NICHT** einfach von der Referenz kopiert werden! Unser `inazuma` hat den Platform-Code schon drin UND wir haben die `objc2`-Migration durchgeführt (weg von `cocoa 0.26` + `objc 0.2`). Die Referenz nutzt noch die alte API. Kopieren würde unsere Migration zerstören.
 
 **Stattdessen:** Diese 6 Crates müssen aus unserem bestehenden `inazuma/src/platform/` Code extrahiert werden. Das ist ein eigenes Refactoring (Platform-Split), nicht Teil des Kopier-Prozesses. Bis dahin: leere Placeholder-Crates erstellen die auf `inazuma` re-exportieren, oder als `[workspace.members]` weglassen.
 
 ### 6. `component` ≠ `inazuma-component`
-Zed's `component` Crate (534 Zeilen) ist NUR der Component Trait + Layout. Das haben wir bereits als `inazuma-component-registry`. Unser `inazuma-component` (250 Dateien, 70+ UI Components) hat kein Zed-Äquivalent — es ist unsere eigene erweiterte Library basierend auf gpui-ce-component. `component_preview` von Zed referenziert Zed's kleines `component`, nicht unsere große Library.
+Der Referenz-`component` Crate (534 Zeilen) ist NUR der Component Trait + Layout. Das haben wir bereits als `inazuma-component-registry`. Unser `inazuma-component` (250 Dateien, 70+ UI Components) hat kein Referenz-Äquivalent — es ist unsere eigene erweiterte Library basierend auf gpui-ce-component. `component_preview` von der Referenz referenziert deren kleinen `component`, nicht unsere große Library.
 
 ### 7. Theme-System Unterschiede
-Unser `raijin-theme` hat eigene Architektur die von Zed abweicht:
-- Gruppierte `StatusColors` (`StatusStyle { color, background, border }`) statt Zed's flache Felder
+Unser `raijin-theme` hat eigene Architektur die von der Referenz abweicht:
+- Gruppierte `StatusColors` (`StatusStyle { color, background, border }`) statt der flachen Referenz-Felder
 - TOML-Loader statt JSON-Schema-System
 - OKLCH Farbsystem statt HSLA
 - `fallback_themes.rs` mit Raijin Dark/Light (nicht One Dark/Light)
@@ -476,24 +477,24 @@ Unser `raijin-theme` hat eigene Architektur die von Zed abweicht:
 
 Crates die auf Theme-Typen zugreifen müssen nach dem Kopieren auf unsere Typen angepasst werden (z.B. `status().error.color` statt `status().error`).
 
-### 8. Terminal-Crates — NICHT von Zed kopieren
-Zed's `terminal` ist ein simpler Wrapper um `alacritty_terminal`. Unser Terminal-System ist fundamental anders — wir haben `alacritty_terminal` komplett geforked und umgebaut zu `raijin-term`:
+### 8. Terminal-Crates — NICHT von der Referenz kopieren
+Der Referenz-`terminal` ist ein simpler Wrapper um `alacritty_terminal`. Unser Terminal-System ist fundamental anders — wir haben `alacritty_terminal` komplett geforked und umgebaut zu `raijin-term`:
 - `raijin-term` — eigener Terminal-Emulations-Core (Fork von alacritty_terminal mit BlockGrid, eigenem VT State Machine, eigenem PTY-Abstraction)
 - `raijin-terminal` — Block-System (BlockManager), OSC 133 Parser, Shell-Integration (ZDOTDIR Injection), PTY-Spawning mit Shell-Hooks
 - `raijin-shell` — Shell-Context (CWD, Git Branch, User Info)
 - `raijin-completions` — Spec-basierte CLI Completion Engine
 
-**`terminal_view` von Zed NICHT kopieren.** Zed's terminal_view ist für deren simplen Wrapper gebaut — passt nicht auf unser Block-System, Input Bar, Context Chips etc. Unser Terminal-View wird in Phase 20 (Workspace Integration) als eigenes Workspace Item gebaut, basierend auf unserem bestehenden `raijin-app/src/workspace.rs` + `terminal_element.rs`.
+**`terminal_view` von der Referenz NICHT kopieren.** Das Referenz-terminal_view ist für deren simplen Wrapper gebaut — passt nicht auf unser Block-System, Input Bar, Context Chips etc. Unser Terminal-View wird in Phase 20 (Workspace Integration) als eigenes Workspace Item gebaut, basierend auf unserem bestehenden `raijin-app/src/workspace.rs` + `terminal_element.rs`.
 
-### 9. `extension_api` hat bei Zed ein spezielles Build-System
+### 9. `extension_api` hat in der Referenz ein spezielles Build-System
 `zed_extension_api` wird als WASM-API kompiliert. Beim Portieren die Build-Konfiguration beibehalten.
 
 ### 6. Platform-Crates (gpui_linux, gpui_macos, etc.)
-Diese sind neu in Zed's Architektur — sie splitten Platform-spezifischen Code aus dem monolithischen `gpui` in separate Crates. Unsere `inazuma` hat diesen Split noch nicht. Diese Crates portieren, aber sie werden erst funktional wenn wir den Platform-Split in inazuma durchführen.
+Diese sind neu in der Referenz-Architektur — sie splitten Platform-spezifischen Code aus dem monolithischen `gpui` in separate Crates. Unsere `inazuma` hat diesen Split noch nicht. Diese Crates portieren, aber sie werden erst funktional wenn wir den Platform-Split in inazuma durchführen.
 
 ## Externe Dependencies
 
-Neue externe Dependencies die mit den 134 Crates reinkommen und im Workspace `Cargo.toml` ergänzt werden müssen. Vor dem Portieren prüfen welche Versions Zed nutzt:
+Neue externe Dependencies die mit den 134 Crates reinkommen und im Workspace `Cargo.toml` ergänzt werden müssen. Vor dem Portieren prüfen welche Versions die Referenz nutzt:
 
 ```bash
 grep "DEPENDENCY_NAME" .reference/zed/Cargo.toml

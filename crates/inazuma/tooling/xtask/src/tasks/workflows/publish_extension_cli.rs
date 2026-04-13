@@ -60,7 +60,7 @@ fn update_sha_in_zed(publish_job: &NamedJob) -> NamedJob {
 
     fn replace_sha() -> Step<Run> {
         named::bash(indoc! {r#"
-            sed -i "s/ZED_EXTENSION_CLI_SHA: &str = \"[a-f0-9]*\"/ZED_EXTENSION_CLI_SHA: \&str = \"$GITHUB_SHA\"/" \
+            sed -i "s/RAIJIN_EXTENSION_CLI_SHA: &str = \"[a-f0-9]*\"/RAIJIN_EXTENSION_CLI_SHA: \&str = \"$GITHUB_SHA\"/" \
                 tooling/xtask/src/tasks/workflows/extension_tests.rs
         "#})
     }
@@ -109,7 +109,7 @@ fn create_pull_request_zed(generated_token: &StepOutput, short_sha: &StepOutput)
             .add("branch", "update-extension-cli-sha")
             .add(
                 "committer",
-                "zed-zippy[bot] <234243425+zed-zippy[bot]@users.noreply.github.com>",
+                "raijin-zippy[bot] <234243425+raijin-zippy[bot]@users.noreply.github.com>",
             )
             .add("base", "main")
             .add("delete-branch", true)
@@ -120,7 +120,7 @@ fn create_pull_request_zed(generated_token: &StepOutput, short_sha: &StepOutput)
 }
 
 fn update_sha_in_extensions(publish_job: &NamedJob) -> NamedJob {
-    let extensions_repo = RepositoryTarget::new("zed-industries", &["extensions"]);
+    let extensions_repo = RepositoryTarget::new("raijin-hq", &["extensions"]);
     let (generate_token, generated_token) = generate_token(
         vars::ZED_ZIPPY_APP_ID,
         vars::ZED_ZIPPY_APP_PRIVATE_KEY,
@@ -133,13 +133,13 @@ fn update_sha_in_extensions(publish_job: &NamedJob) -> NamedJob {
             "checkout",
             "11bd71901bbe5b1630ceea73d27597364c9af683", // v4
         )
-        .add_with(("repository", "zed-industries/extensions"))
+        .add_with(("repository", "raijin-hq/extensions"))
         .add_with(("token", token.to_string()))
     }
 
     fn replace_sha() -> Step<Run> {
         named::bash(indoc! {r#"
-            sed -i "s/ZED_EXTENSION_CLI_SHA: [a-f0-9]*/ZED_EXTENSION_CLI_SHA: $GITHUB_SHA/" \
+            sed -i "s/RAIJIN_EXTENSION_CLI_SHA: [a-f0-9]*/RAIJIN_EXTENSION_CLI_SHA: $GITHUB_SHA/" \
                 .github/workflows/ci.yml
         "#})
     }
@@ -171,14 +171,14 @@ fn create_pull_request_extensions(
             .add(
                 "body",
                 indoc! {r#"
-                    This PR bumps the extension CLI version to https://github.com/zed-industries/zed/commit/${{ github.sha }}.
+                    This PR bumps the extension CLI version to https://github.com/raijin-hq/raijin/commit/${{ github.sha }}.
                 "#},
             )
             .add("commit-message", title)
             .add("branch", "update-extension-cli-sha")
             .add(
                 "committer",
-                "zed-zippy[bot] <234243425+zed-zippy[bot]@users.noreply.github.com>",
+                "raijin-zippy[bot] <234243425+raijin-zippy[bot]@users.noreply.github.com>",
             )
             .add("base", "main")
             .add("delete-branch", true)

@@ -12,7 +12,7 @@ use raijin_project::{LspStore, lsp_store::LocalLspAdapterDelegate};
 use inazuma_settings_framework::{LSP_SETTINGS_SCHEMA_URL_PREFIX, Settings as _, SettingsLocation};
 use inazuma_util::schemars::{AllowTrailingCommas, DefaultDenyUnknownFields};
 
-const SCHEMA_URI_PREFIX: &str = "zed://schemas/";
+const SCHEMA_URI_PREFIX: &str = "raijin://schemas/";
 
 const TSCONFIG_SCHEMA: &str = include_str!("schemas/tsconfig.json");
 const PACKAGE_JSON_SCHEMA: &str = include_str!("schemas/package.json");
@@ -492,7 +492,7 @@ pub fn all_schema_file_associations(
             .unwrap()
             .push(serde_json::json!({
                 "fileMatch": [
-                    "zed-inspector-style.json"
+                    "raijin-inspector-style.json"
                 ],
                 "url": format!("{SCHEMA_URI_PREFIX}zed_inspector_style")
             }));

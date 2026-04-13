@@ -13,7 +13,7 @@ pub struct AudioSettings {
     /// loud you sound to others.
     ///
     /// Recommended: off (default)
-    /// Microphones are too quite in zed, until everyone is on experimental
+    /// Microphones are too quiet in Raijin, until everyone is on experimental
     /// audio and has auto speaker volume on this will make you very loud
     /// compared to other speakers.
     pub auto_microphone_volume: bool,

@@ -26,7 +26,7 @@
 
 Raijin is a terminal emulator built from scratch in Rust. Every command runs in its own block with a header, timing, and exit status — no more scrolling through walls of text. The shell prompt is replaced by native context chips that show git status, language versions, and environment info without Starship or any external tool.
 
-The rendering engine is [Inazuma](crates/inazuma/) (稲妻), a vendored fork of Zed's GPUI framework, delivering 120fps Metal/wgpu rendering with sub-millisecond input latency.
+The rendering engine is [Inazuma](crates/inazuma/) (稲妻), forked from GPUI, delivering 120fps Metal/wgpu rendering with sub-millisecond input latency.
 
 ## Features
 
@@ -114,7 +114,7 @@ cursor_style = "bar"           # "bar", "block", "underline"
 
 ```
 raijin-app          → Binary: workspace layout, terminal rendering, block UI
-├── inazuma         → GPU UI framework (Zed GPUI fork, Metal/wgpu)
+├── inazuma         → GPU UI framework (forked from GPUI, Metal/wgpu)
 ├── inazuma-component → 70+ UI components (input, tabs, chips, title bar, …)
 ├── raijin-terminal → PTY wrapper, OSC 133 parser, BlockManager
 ├── raijin-term     → Terminal emulation core (Grid-per-Block architecture)

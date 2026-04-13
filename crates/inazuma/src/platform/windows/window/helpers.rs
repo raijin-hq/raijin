@@ -279,7 +279,7 @@ pub(super) enum WindowOpenState {
     Windowed,
 }
 
-pub(super) const WINDOW_CLASS_NAME: PCWSTR = w!("Zed::Window");
+pub(super) const WINDOW_CLASS_NAME: PCWSTR = w!("Raijin::Window");
 
 pub(super) fn register_window_class(icon_handle: HICON) {
     static ONCE: Once = Once::new();

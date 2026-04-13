@@ -2,9 +2,9 @@
 
 ## Vision
 
-Raijin's Agent System vereint Warp's ADE-Konzept (Terminal-native, Full Terminal Use, Conversation Management) mit unserer existierenden AI-Infrastruktur (231k Zeilen AI/Agent-Code von Zed). Das Ergebnis: Ein Terminal-first Agent das sowohl interaktive Conversations als auch autonome Cloud Agents unterstützt.
+Raijin's Agent System vereint Warp's ADE-Konzept (Terminal-native, Full Terminal Use, Conversation Management) mit unserer existierenden AI-Infrastruktur (231k Zeilen AI/Agent-Code von der Referenz-Codebase). Das Ergebnis: Ein Terminal-first Agent das sowohl interaktive Conversations als auch autonome Cloud Agents unterstützt.
 
-## Was wir haben (von Zed)
+## Was wir haben (von der Referenz-Codebase)
 
 | Crate | Zeilen | Was es macht |
 |---|---|---|

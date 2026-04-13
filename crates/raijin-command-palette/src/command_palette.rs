@@ -7,7 +7,7 @@ use std::{
     time::Duration,
 };
 
-use raijin_client::parse_zed_link;
+use raijin_client::parse_raijin_link;
 use raijin_command_palette_hooks::{
     CommandInterceptItem, CommandInterceptResult, CommandPaletteFilter,
     GlobalCommandPaletteInterceptor,
@@ -448,7 +448,7 @@ impl PickerDelegate for CommandPaletteDelegate {
         let (mut tx, mut rx) = postage::dispatch::channel(1);
 
         let query_str = query.as_str();
-        let is_zed_link = parse_zed_link(query_str, cx).is_some();
+        let is_raijin_link = parse_raijin_link(query_str, cx).is_some();
 
         let task = cx.background_spawn({
             let mut commands = self.all_commands.clone();
@@ -481,7 +481,7 @@ impl PickerDelegate for CommandPaletteDelegate {
                 )
                 .await;
 
-                let intercept_result = if is_zed_link {
+                let intercept_result = if is_raijin_link {
                     CommandInterceptResult {
                         results: vec![CommandInterceptItem {
                             action: OpenRaijinUrl {

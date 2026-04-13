@@ -107,7 +107,7 @@ impl Global for GlobalThreadMetadataStore {}
 #[derive(Debug, Clone, PartialEq)]
 pub struct ThreadMetadata {
     pub session_id: acp::SessionId,
-    /// `None` for native Zed threads, `Some("claude-code")` etc. for ACP agents.
+    /// `None` for native Raijin threads, `Some("claude-code")` etc. for ACP agents.
     pub agent_id: Option<AgentId>,
     pub title: SharedString,
     pub updated_at: DateTime<Utc>,

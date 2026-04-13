@@ -1,7 +1,7 @@
 [project]
-name = "zed-eval"
+name = "raijin-eval"
 version = "0.1.0"
-description = "Harbor agent wrapper for Zed's eval-cli"
+description = "Harbor agent wrapper for Raijin's eval-cli"
 requires-python = ">=3.12"
 dependencies = ["harbor"]
 

@@ -265,7 +265,7 @@ CREATE TABLE "channels" (
     "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "visibility" VARCHAR NOT NULL,
     "parent_path" TEXT NOT NULL,
-    "requires_zed_cla" BOOLEAN NOT NULL DEFAULT FALSE,
+    "requires_raijin_cla" BOOLEAN NOT NULL DEFAULT FALSE,
     "channel_order" INTEGER NOT NULL DEFAULT 1
 );
 

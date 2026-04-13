@@ -2361,7 +2361,7 @@ mod tests {
         }
     }
 
-    // Regression test for https://github.com/zed-industries/zed/issues/35947
+    // Regression test for https://github.com/raijin-industries/raijin/issues/35947
     // Verifies that deserializing a non-worktree editor does not add the item
     // to any pane as a side effect.
     #[inazuma::test]

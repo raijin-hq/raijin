@@ -1,5 +1,5 @@
 +++
-repository_url = "git@github.com:zed-industries/zed"
+repository_url = "git@github.com:raijin-hq/raijin"
 revision = "b7090c9fae7390a82021b994994c0f587744d96c"
 +++
 

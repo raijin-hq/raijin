@@ -388,7 +388,7 @@ impl LmStudioLanguageModel {
             stop: Some(request.stop),
             // In LM Studio you can configure specific settings you'd like to use for your model.
             // For example Qwen3 is recommended to be used with 0.7 temperature.
-            // It would be a bad UX to silently override these settings from Zed, so we pass no temperature as a default.
+            // It would be a bad UX to silently override these settings from Raijin, so we pass no temperature as a default.
             temperature: request.temperature.or(None),
             tools: request
                 .tools
@@ -854,7 +854,7 @@ impl ConfigurationView {
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(format!(
-                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."
+                        "You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Raijin."
                     ))
                     .size(LabelSize::Small)
                     .color(Color::Muted),

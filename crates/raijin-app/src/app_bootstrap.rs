@@ -11,7 +11,7 @@ use raijin_workspace::{AppState, WorkspaceStore};
 
 /// Build the full `AppState` needed by `raijin_workspace::Workspace::new()`.
 ///
-/// This follows the same pattern as Zed's production init, but without an active
+/// This follows the same pattern as the reference production init, but without an active
 /// collaboration server connection. All subsystems (Client, UserStore, WorkspaceStore,
 /// LanguageRegistry, Fs, Session) are created with real implementations — they're
 /// just not connected to any remote server.

@@ -136,7 +136,7 @@ async fn test_edit_file_tool_in_thread_context(cx: &mut TestAppContext) {
     }
 
     // Send the edit agent's response with the XML format it expects
-    let edit_response = "<old_text>println!(\"Hello, world!\");</old_text>\n<new_text>println!(\"Hello, Zed!\");</new_text>";
+    let edit_response = "<old_text>println!(\"Hello, world!\");</old_text>\n<new_text>println!(\"Hello, Raijin!\");</new_text>";
     fake_model.send_last_completion_stream_text_chunk(edit_response);
     fake_model.end_last_completion_stream();
     cx.run_until_parked();
@@ -159,7 +159,7 @@ async fn test_edit_file_tool_in_thread_context(cx: &mut TestAppContext) {
         .await
         .expect("file should exist");
     assert!(
-        file_content.contains("Hello, Zed!"),
+        file_content.contains("Hello, Raijin!"),
         "File should have been edited. Content: {}",
         file_content
     );

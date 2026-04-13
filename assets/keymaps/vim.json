@@ -112,9 +112,9 @@
       "g s": "outline::Toggle",
       "g shift-o": "outline::Toggle",
       "g shift-s": "project_symbols::Toggle",
-      "g .": "editor::ToggleCodeActions", // zed specific
-      "g shift-a": "editor::FindAllReferences", // zed specific
-      "g space": "editor::OpenExcerpts", // zed specific
+      "g .": "editor::ToggleCodeActions", // raijin specific
+      "g shift-a": "editor::FindAllReferences", // raijin specific
+      "g space": "editor::OpenExcerpts", // raijin specific
       "g *": ["vim::MoveToNext", { "partial_word": true }],
       "g #": ["vim::MoveToPrevious", { "partial_word": true }],
       "g j": ["vim::Down", { "display_lines": true }],
@@ -357,9 +357,9 @@
       "escape": "vim::NormalBefore",
       "ctrl-x": null,
       "ctrl-x ctrl-o": "editor::ShowCompletions",
-      "ctrl-x ctrl-a": "assistant::InlineAssist", // zed specific
-      "ctrl-x ctrl-c": "editor::ShowEditPrediction", // zed specific
-      "ctrl-x ctrl-l": "editor::ToggleCodeActions", // zed specific
+      "ctrl-x ctrl-a": "assistant::InlineAssist", // raijin specific
+      "ctrl-x ctrl-c": "editor::ShowEditPrediction", // raijin specific
+      "ctrl-x ctrl-l": "editor::ToggleCodeActions", // raijin specific
       "ctrl-x ctrl-z": "editor::Cancel",
       "ctrl-x ctrl-e": "vim::LineDown",
       "ctrl-x ctrl-y": "vim::LineUp",
@@ -506,11 +506,11 @@
       "g p": "pane::ActivatePreviousItem",
       "shift-h": "pane::ActivatePreviousItem", // not a helix default
       "g .": "vim::HelixGotoLastModification",
-      "g o": "editor::ToggleSelectedDiffHunks", // Zed specific
-      "g shift-o": "git::ToggleStaged", // Zed specific
-      "g shift-r": "git::Restore", // Zed specific
-      "g u": "git::StageAndNext", // Zed specific
-      "g shift-u": "git::UnstageAndNext", // Zed specific
+      "g o": "editor::ToggleSelectedDiffHunks", // Raijin specific
+      "g shift-o": "git::ToggleStaged", // Raijin specific
+      "g shift-r": "git::Restore", // Raijin specific
+      "g u": "git::StageAndNext", // Raijin specific
+      "g shift-u": "git::UnstageAndNext", // Raijin specific
 
       // Window mode
       "space w v": "pane::SplitRight",
@@ -693,7 +693,7 @@
     "bindings": {
       "c": "vim::CurrentLine",
       "x": "vim::Exchange",
-      "d": "editor::Rename", // zed specific
+      "d": "editor::Rename", // raijin specific
       "s": ["vim::PushChangeSurrounds", {}],
     },
   },
@@ -843,7 +843,7 @@
       "escape": ["vim::Literal", ["escape", "\u001B"]],
       "enter": ["vim::Literal", ["enter", "\u000D"]],
       "tab": ["vim::Literal", ["tab", "\u0009"]],
-      // zed extensions:
+      // raijin extensions:
       "backspace": ["vim::Literal", ["backspace", "\u0008"]],
       "delete": ["vim::Literal", ["delete", "\u007F"]],
     },

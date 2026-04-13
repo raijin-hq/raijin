@@ -3,7 +3,7 @@
 > **Name:** Raijin (雷神) — Der Donnergott unter den Terminals
 > **CLI Command:** `raijin`
 > **Repo:** `nyxb/raijin`
-> **Framework:** Inazuma (稲妻) — gevendorter Fork von Zed's GPUI
+> **Framework:** Inazuma (稲妻) — geforkt von Zed's GPUI
 > **Ziel:** GPU-beschleunigter Terminal-Emulator mit Warp-Level UX & Design
 > **Stack:** Rust + Inazuma + alacritty_terminal + Metal
 
@@ -13,7 +13,7 @@
 
 | Komponente | Technologie |
 |---|---|
-| UI Framework | Inazuma (稲妻) — gevendorter GPUI-Fork |
+| UI Framework | Inazuma (稲妻) — GPU-UI-Framework (geforkt von Zed's GPUI) |
 | UI Components | inazuma-component (70+ Widgets) |
 | GPU Rendering | Metal (macOS) |
 | Terminal Emulation | alacritty_terminal + raijin-term |
@@ -33,7 +33,7 @@
 raijin/
 ├── Cargo.toml                  # Workspace root (Rust nightly, edition 2024)
 ├── crates/
-│   ├── inazuma/                # GPU UI Framework (Zed GPUI Fork)
+│   ├── inazuma/                # GPU UI Framework (forked from Zed's GPUI)
 │   │   └── tooling/macros/     # Proc-Macros
 │   ├── inazuma-component/      # 70+ UI Components (Input, Chips, TitleBar, Tabs)
 │   │   ├── ui/
@@ -52,7 +52,7 @@ raijin/
 │   ├── raijin.bash
 │   ├── raijin.fish
 │   └── nushell/                # Nushell integration
-├── .reference/zed/             # Zed source reference (shallow clone, gitignored)
+├── .reference/zed/             # Reference codebase (shallow clone, gitignored)
 └── plan/                       # Roadmap & Architecture Plans
 ```
 
@@ -79,7 +79,7 @@ raijin/
 ## Nächste Schritte
 
 1. **Plan 04: Block Interaction** — Copy, Collapse, Navigation, Search
-2. **Plan 15: Inazuma-Component Zed Parity** — Fehlende Zed UI-Komponenten portieren
+2. **Plan 15: Inazuma-Component Parity** — Fehlende Referenz UI-Komponenten portieren
 3. **Plan 11: Multi-Tab Session Management** — Tab-System, Session-Lifecycle
 
 ---
@@ -92,7 +92,7 @@ raijin/
 | `01-WARP-FEATURE-ANALYSE.md` | Warp Feature-Analyse (Referenz) | Referenz |
 | `04-PHASE-2-BLOCK-UX.md` | Block-System Architektur | 🔄 Teilweise done |
 | `05-PHASE-3-DESIGN-SYSTEM.md` | Theming, Farben, Typographie | ⬜ Planned |
-| `15-INAZUMA-COMPONENT-ZED-PARITY.md` | Fehlende Zed UI-Komponenten portieren | ⬜ Planned |
+| `15-INAZUMA-COMPONENT-PARITY.md` | Fehlende Referenz UI-Komponenten portieren | ⬜ Planned |
 | `07-PHASE-5-EXPLORER-EDITOR.md` | File Explorer, Code Editor | ⬜ Planned |
 | `08-PHASE-6-AI-AGENTS.md` | AI Integration & Agent Toolbar | ⬜ Planned |
 | `09-PHASE-7-9-FUTURE.md` | Drive, Workflows, Distribution | ⬜ Planned |

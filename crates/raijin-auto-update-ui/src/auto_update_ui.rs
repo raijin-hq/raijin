@@ -176,7 +176,7 @@ fn announcement_for_version(version: &Version) -> Option<AnnouncementContent> {
     match (version.major, version.minor, version.patch) {
         // TODO: Add real version when we have it
         // (0, 225, 0) => Some(AnnouncementContent {
-        //     heading: "What's new in Zed 0.225".into(),
+        //     heading: "What's new in Raijin 0.225".into(),
         //     description: "This release includes some exciting improvements.".into(),
         //     bullet_items: vec![
         //         "Improved agent performance".into(),
@@ -184,7 +184,7 @@ fn announcement_for_version(version: &Version) -> Option<AnnouncementContent> {
         //         "Better agent capabilities".into(),
         //     ],
         //     primary_action_label: "Learn More".into(),
-        //     primary_action_url: Some("https://zed.dev/".into()),
+        //     primary_action_url: Some("https://raijin.dev/".into()),
         // }),
         _ => None,
     }

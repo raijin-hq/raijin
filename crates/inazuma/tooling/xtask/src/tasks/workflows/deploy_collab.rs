@@ -82,13 +82,13 @@ fn publish(deps: &[&NamedJob]) -> NamedJob {
         named::bash(indoc! {r#"
             docker build -f Dockerfile-collab \
               --build-arg "GITHUB_SHA=$GITHUB_SHA" \
-              --tag "registry.digitalocean.com/zed/collab:$GITHUB_SHA" \
+              --tag "registry.digitalocean.com/raijin/collab:$GITHUB_SHA" \
               .
         "#})
     }
 
     fn publish_docker_image() -> Step<Run> {
-        named::bash(r#"docker push "registry.digitalocean.com/zed/collab:${GITHUB_SHA}""#)
+        named::bash(r#"docker push "registry.digitalocean.com/raijin/collab:${GITHUB_SHA}""#)
     }
 
     fn prune_docker_system() -> Step<Run> {
@@ -125,40 +125,40 @@ fn deploy(deps: &[&NamedJob]) -> NamedJob {
         named::bash(indoc! {r#"
             set -eu
             if [[ $GITHUB_REF_NAME = "collab-production" ]]; then
-              export ZED_KUBE_NAMESPACE=production
-              export ZED_COLLAB_LOAD_BALANCER_SIZE_UNIT=10
-              export ZED_API_LOAD_BALANCER_SIZE_UNIT=2
+              export RAIJIN_KUBE_NAMESPACE=production
+              export RAIJIN_COLLAB_LOAD_BALANCER_SIZE_UNIT=10
+              export RAIJIN_API_LOAD_BALANCER_SIZE_UNIT=2
             elif [[ $GITHUB_REF_NAME = "collab-staging" ]]; then
-              export ZED_KUBE_NAMESPACE=staging
-              export ZED_COLLAB_LOAD_BALANCER_SIZE_UNIT=1
-              export ZED_API_LOAD_BALANCER_SIZE_UNIT=1
+              export RAIJIN_KUBE_NAMESPACE=staging
+              export RAIJIN_COLLAB_LOAD_BALANCER_SIZE_UNIT=1
+              export RAIJIN_API_LOAD_BALANCER_SIZE_UNIT=1
             else
               echo "cowardly refusing to deploy from an unknown branch"
               exit 1
             fi
 
-            echo "Deploying collab:$GITHUB_SHA to $ZED_KUBE_NAMESPACE"
+            echo "Deploying collab:$GITHUB_SHA to $RAIJIN_KUBE_NAMESPACE"
 
             source script/lib/deploy-helpers.sh
-            export_vars_for_environment "$ZED_KUBE_NAMESPACE"
+            export_vars_for_environment "$RAIJIN_KUBE_NAMESPACE"
 
-            ZED_DO_CERTIFICATE_ID="$(doctl compute certificate list --format ID --no-header)"
-            export ZED_DO_CERTIFICATE_ID
-            export ZED_IMAGE_ID="registry.digitalocean.com/zed/collab:${GITHUB_SHA}"
+            RAIJIN_DO_CERTIFICATE_ID="$(doctl compute certificate list --format ID --no-header)"
+            export RAIJIN_DO_CERTIFICATE_ID
+            export RAIJIN_IMAGE_ID="registry.digitalocean.com/raijin/collab:${GITHUB_SHA}"
 
-            export ZED_SERVICE_NAME=collab
-            export ZED_LOAD_BALANCER_SIZE_UNIT=$ZED_COLLAB_LOAD_BALANCER_SIZE_UNIT
+            export RAIJIN_SERVICE_NAME=collab
+            export RAIJIN_LOAD_BALANCER_SIZE_UNIT=$RAIJIN_COLLAB_LOAD_BALANCER_SIZE_UNIT
             export DATABASE_MAX_CONNECTIONS=850
             envsubst < crates/collab/k8s/collab.template.yml | kubectl apply -f -
-            kubectl -n "$ZED_KUBE_NAMESPACE" rollout status "deployment/$ZED_SERVICE_NAME" --watch
-            echo "deployed ${ZED_SERVICE_NAME} to ${ZED_KUBE_NAMESPACE}"
+            kubectl -n "$RAIJIN_KUBE_NAMESPACE" rollout status "deployment/$RAIJIN_SERVICE_NAME" --watch
+            echo "deployed ${RAIJIN_SERVICE_NAME} to ${RAIJIN_KUBE_NAMESPACE}"
 
-            export ZED_SERVICE_NAME=api
-            export ZED_LOAD_BALANCER_SIZE_UNIT=$ZED_API_LOAD_BALANCER_SIZE_UNIT
+            export RAIJIN_SERVICE_NAME=api
+            export RAIJIN_LOAD_BALANCER_SIZE_UNIT=$RAIJIN_API_LOAD_BALANCER_SIZE_UNIT
             export DATABASE_MAX_CONNECTIONS=60
             envsubst < crates/collab/k8s/collab.template.yml | kubectl apply -f -
-            kubectl -n "$ZED_KUBE_NAMESPACE" rollout status "deployment/$ZED_SERVICE_NAME" --watch
-            echo "deployed ${ZED_SERVICE_NAME} to ${ZED_KUBE_NAMESPACE}"
+            kubectl -n "$RAIJIN_KUBE_NAMESPACE" rollout status "deployment/$RAIJIN_SERVICE_NAME" --watch
+            echo "deployed ${RAIJIN_SERVICE_NAME} to ${RAIJIN_KUBE_NAMESPACE}"
         "#})
     }
 

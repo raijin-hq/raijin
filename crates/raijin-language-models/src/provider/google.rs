@@ -839,7 +839,7 @@ impl Render for ConfigurationView {
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
                 .child(Label::new(format!("To use {}, you need to add an API key. Follow these steps:", match &self.target_agent {
-                    ConfigurationViewTargetAgent::ZedAgent => "Zed's agent with Google AI".into(),
+                    ConfigurationViewTargetAgent::RaijinAgent => "Raijin's agent with Google AI".into(),
                     ConfigurationViewTargetAgent::Other(agent) => agent.clone(),
                 })))
                 .child(
@@ -856,7 +856,7 @@ impl Render for ConfigurationView {
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(
-                        format!("You can also set the {GEMINI_API_KEY_VAR_NAME} environment variable and restart Zed."),
+                        format!("You can also set the {GEMINI_API_KEY_VAR_NAME} environment variable and restart Raijin."),
                     )
                     .size(LabelSize::Small).color(Color::Muted),
                 )

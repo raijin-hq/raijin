@@ -344,7 +344,7 @@ impl AgentServer for CustomAgentServer {
                     }
                 }
                 GEMINI_ID => {
-                    extra_env.insert("SURFACE".to_owned(), "zed".to_owned());
+                    extra_env.insert("SURFACE".to_owned(), "raijin".to_owned());
                 }
                 _ => {}
             }

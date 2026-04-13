@@ -530,7 +530,7 @@ mod tests {
         Example {
             spec: ExampleSpec {
                 name: "example".to_string(),
-                repository_url: "https://github.com/zed-industries/zed.git".to_string(),
+                repository_url: "https://github.com/raijin-industries/raijin.git".to_string(),
                 revision: "HEAD".to_string(),
                 tags: Vec::new(),
                 reasoning: None,
@@ -563,7 +563,7 @@ mod tests {
             }],
             score: Vec::new(),
             qa: Vec::new(),
-            zed_version: None,
+            raijin_version: None,
             state: None,
         }
     }

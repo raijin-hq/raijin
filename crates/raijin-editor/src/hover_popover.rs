@@ -1689,7 +1689,7 @@ mod tests {
     }
 
     #[inazuma::test]
-    // https://github.com/zed-industries/zed/issues/15498
+    // https://github.com/raijin-industries/raijin/issues/15498
     async fn test_info_hover_with_hrs(cx: &mut inazuma::TestAppContext) {
         init_test(cx, |_| {});
 

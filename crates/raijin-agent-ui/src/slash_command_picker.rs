@@ -315,7 +315,7 @@ where
                         )
                         .into_any_element()
                 },
-                on_confirm: |_, cx| cx.open_url("https://zed.dev/docs/extensions/slash-commands"),
+                on_confirm: |_, cx| cx.open_url("https://raijin.dev/docs/extensions/slash-commands"),
             }])
             .collect::<Vec<_>>();
 

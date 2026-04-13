@@ -1177,7 +1177,7 @@ impl ExternalAgentServer for LocalExtensionArchiveAgent {
             let cmd = &target_config.cmd;
 
             let cmd_path = if cmd == "node" {
-                // Use Zed's managed Node.js runtime
+                // Use Raijin's managed Node.js runtime
                 node_runtime.binary_path().await?
             } else {
                 if cmd.contains("..") {

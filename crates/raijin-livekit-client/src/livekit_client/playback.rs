@@ -417,8 +417,8 @@ impl AudioStack {
 /// This allows using of Rodio's effects library within our home brewn audio
 /// pipeline. The alternative would be inlining Rodio's effects which is
 /// problematic from a legal stance. We would then have to make clear that code
-/// is not owned by zed-industries while the code would be surrounded by
-/// zed-industries owned code.
+/// is not owned by raijin-hq while the code would be surrounded by
+/// raijin-hq owned code.
 ///
 /// This adaptor does incur a slight performance penalty (copying into a
 /// pre-allocated vec and back) however the impact will be immeasurably low.
@@ -907,7 +907,7 @@ mod macos {
         }
     }
 
-    /// Implementation from: https://github.com/zed-industries/cpal/blob/fd8bc2fd39f1f5fdee5a0690656caff9a26d9d50/src/host/coreaudio/macos/property_listener.rs#L15
+    /// Implementation from: https://github.com/raijin-hq/cpal/blob/fd8bc2fd39f1f5fdee5a0690656caff9a26d9d50/src/host/coreaudio/macos/property_listener.rs#L15
     pub struct CoreAudioDefaultDeviceChangeListener {
         rx: UnboundedReceiver<()>,
         callback: Box<PropertyListenerCallbackWrapper>,

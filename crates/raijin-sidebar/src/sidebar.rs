@@ -635,7 +635,7 @@ impl Sidebar {
 
         let resolve_agent = |row: &ThreadMetadata| -> (Agent, IconName, Option<SharedString>) {
             match &row.agent_id {
-                None => (Agent::NativeAgent, IconName::ZedAgent, None),
+                None => (Agent::NativeAgent, IconName::RaijinAgent, None),
                 Some(id) => {
                     let custom_icon = agent_server_store
                         .as_ref()
@@ -3769,7 +3769,7 @@ mod tests {
                         created_at: Some(Utc::now()),
                         meta: None,
                     },
-                    icon: IconName::ZedAgent,
+                    icon: IconName::RaijinAgent,
                     icon_from_external_svg: None,
                     status: AgentThreadStatus::Completed,
                     workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -3793,7 +3793,7 @@ mod tests {
                         created_at: Some(Utc::now()),
                         meta: None,
                     },
-                    icon: IconName::ZedAgent,
+                    icon: IconName::RaijinAgent,
                     icon_from_external_svg: None,
                     status: AgentThreadStatus::Running,
                     workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -3817,7 +3817,7 @@ mod tests {
                         created_at: Some(Utc::now()),
                         meta: None,
                     },
-                    icon: IconName::ZedAgent,
+                    icon: IconName::RaijinAgent,
                     icon_from_external_svg: None,
                     status: AgentThreadStatus::Error,
                     workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -3841,7 +3841,7 @@ mod tests {
                         created_at: Some(Utc::now()),
                         meta: None,
                     },
-                    icon: IconName::ZedAgent,
+                    icon: IconName::RaijinAgent,
                     icon_from_external_svg: None,
                     status: AgentThreadStatus::WaitingForConfirmation,
                     workspace: ThreadEntryWorkspace::Open(workspace.clone()),
@@ -3865,7 +3865,7 @@ mod tests {
                         created_at: Some(Utc::now()),
                         meta: None,
                     },
-                    icon: IconName::ZedAgent,
+                    icon: IconName::RaijinAgent,
                     icon_from_external_svg: None,
                     status: AgentThreadStatus::Completed,
                     workspace: ThreadEntryWorkspace::Open(workspace.clone()),

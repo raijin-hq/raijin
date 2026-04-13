@@ -49,13 +49,13 @@ impl Render for HelloWorld {
     fn render(&mut self, _window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
         let markdown_style = MarkdownStyle {
             base_text_style: inazuma::TextStyle {
-                font_family: "Zed Mono".into(),
+                font_family: "Raijin Mono".into(),
                 color: cx.theme().colors().text,
                 ..Default::default()
             },
             code_block: StyleRefinement {
                 text: inazuma::TextStyleRefinement {
-                    font_family: Some("Zed Mono".into()),
+                    font_family: Some("Raijin Mono".into()),
                     background_color: Some(cx.theme().colors().editor.background),
                     ..Default::default()
                 },
@@ -68,7 +68,7 @@ impl Render for HelloWorld {
                 ..Default::default()
             },
             inline_code: inazuma::TextStyleRefinement {
-                font_family: Some("Zed Mono".into()),
+                font_family: Some("Raijin Mono".into()),
                 background_color: Some(cx.theme().colors().editor.background),
                 ..Default::default()
             },

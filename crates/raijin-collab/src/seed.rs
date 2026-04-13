@@ -123,7 +123,7 @@ async fn fetch_github<T: DeserializeOwned>(client: &reqwest::Client, url: &str) 
             request_builder.header("Authorization", format!("Bearer {}", github_token));
     }
     let response = request_builder
-        .header("user-agent", "zed")
+        .header("user-agent", "raijin")
         .send()
         .await
         .unwrap_or_else(|error| panic!("failed to fetch '{url}': {error}"));

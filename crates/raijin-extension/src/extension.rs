@@ -14,7 +14,7 @@ use inazuma::{App, Task};
 use raijin_language::LanguageName;
 use raijin_lsp::LanguageServerName;
 use semver::Version;
-use raijin_task::{SpawnInTerminal, ZedDebugConfig};
+use raijin_task::{SpawnInTerminal, RaijinDebugConfig};
 use inazuma_util::rel_path::RelPath;
 
 pub use crate::capabilities::*;
@@ -165,7 +165,7 @@ pub trait Extension: Send + Sync + 'static {
         config: serde_json::Value,
     ) -> Result<StartDebuggingRequestArgumentsRequest>;
 
-    async fn dap_config_to_scenario(&self, config: ZedDebugConfig) -> Result<DebugScenario>;
+    async fn dap_config_to_scenario(&self, config: RaijinDebugConfig) -> Result<DebugScenario>;
 
     async fn dap_locator_create_scenario(
         &self,
@@ -192,7 +192,7 @@ pub fn parse_wasm_extension_version(extension_id: &str, wasm_bytes: &[u8]) -> Re
             version = parse_wasm_extension_version_custom_section(s.data());
             if version.is_none() {
                 bail!(
-                    "extension {} has invalid zed:api-version section: {:?}",
+                    "extension {} has invalid raijin:api-version section: {:?}",
                     extension_id,
                     s.data()
                 );
@@ -205,7 +205,7 @@ pub fn parse_wasm_extension_version(extension_id: &str, wasm_bytes: &[u8]) -> Re
     //
     // By parsing the entirety of the Wasm bytes before we return, we're able to detect this problem
     // earlier as an `Err` rather than as a panic.
-    version.with_context(|| format!("extension {extension_id} has no zed:api-version section"))
+    version.with_context(|| format!("extension {extension_id} has no raijin:api-version section"))
 }
 
 fn parse_wasm_extension_version_custom_section(data: &[u8]) -> Option<Version> {

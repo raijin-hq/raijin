@@ -140,7 +140,7 @@ pub struct ThemeSettingsContent {
     pub agent_ui_font_size: Option<FontSize>,
     /// The font size for user messages in the agent panel.
     pub agent_buffer_font_size: Option<FontSize>,
-    /// The name of the Zed theme to use.
+    /// The name of the Raijin theme to use.
     pub theme: Option<ThemeSelection>,
     /// The name of the icon theme to use.
     pub icon_theme: Option<IconThemeSelection>,
@@ -339,7 +339,7 @@ pub enum ThemeAppearanceMode {
 }
 
 /// Specifies the density of the UI.
-/// Note: This setting is still experimental. See [this tracking issue](https://github.com/zed-industries/zed/issues/18078)
+/// Note: This setting is still experimental. See [this tracking issue](https://github.com/raijin-industries/raijin/issues/18078)
 #[derive(
     Debug,
     Default,

@@ -38,12 +38,12 @@ impl ThemeSettingsProvider for ThemeSettingsProviderImpl {
 
 /// Initialize the theme system with settings integration.
 ///
-/// Follows Zed's pattern: `theme::init` + settings wiring.
+/// Follows Raijin's pattern: `theme::init` + settings wiring.
 /// The caller passes `LoadThemes::All(Box::new(Assets))` from main.
 pub fn init(themes_to_load: LoadThemes, cx: &mut App) {
     let load_user_themes = matches!(&themes_to_load, LoadThemes::All(_));
 
-    // 1. Initialize theme subsystems (Zed: theme::init)
+    // 1. Initialize theme subsystems (Raijin: theme::init)
     SystemAppearance::init(cx);
     let assets: Box<dyn AssetSource> = match themes_to_load {
         LoadThemes::JustBase => Box::new(()) as Box<dyn AssetSource>,

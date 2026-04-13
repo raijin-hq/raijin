@@ -34,7 +34,7 @@ const PROVIDER_NAME: LanguageModelProviderName = raijin_language_model::ANTHROPI
 #[derive(Default, Clone, Debug, PartialEq)]
 pub struct AnthropicSettings {
     pub api_url: String,
-    /// Extend Zed's list of Anthropic models.
+    /// Extend Raijin's list of Anthropic models.
     pub available_models: Vec<AvailableModel>,
 }
 
@@ -388,7 +388,7 @@ pub fn into_anthropic_count_tokens_request(
 }
 
 /// Estimate tokens using tiktoken. Used as a fallback when the API is unavailable,
-/// or by providers (like Zed Cloud) that don't have direct Anthropic API access.
+/// or by providers (like Raijin Cloud) that don't have direct Anthropic API access.
 pub fn count_anthropic_tokens_with_tiktoken(request: LanguageModelRequest) -> Result<u64> {
     let messages = request.messages;
     let mut tokens_from_images = 0;
@@ -1094,7 +1094,7 @@ impl Render for ConfigurationView {
                 .size_full()
                 .on_action(cx.listener(Self::save_api_key))
                 .child(Label::new(format!("To use {}, you need to add an API key. Follow these steps:", match &self.target_agent {
-                    ConfigurationViewTargetAgent::ZedAgent => "Zed's agent with Anthropic".into(),
+                    ConfigurationViewTargetAgent::RaijinAgent => "Raijin's agent with Anthropic".into(),
                     ConfigurationViewTargetAgent::Other(agent) => agent.clone(),
                 })))
                 .child(
@@ -1111,7 +1111,7 @@ impl Render for ConfigurationView {
                 .child(self.api_key_editor.clone())
                 .child(
                     Label::new(
-                        format!("You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Zed."),
+                        format!("You can also set the {API_KEY_ENV_VAR_NAME} environment variable and restart Raijin."),
                     )
                     .size(LabelSize::Small)
                     .color(Color::Muted)

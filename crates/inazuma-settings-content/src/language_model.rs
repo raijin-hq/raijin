@@ -23,7 +23,7 @@ pub struct AllLanguageModelSettingsContent {
     pub vercel: Option<VercelSettingsContent>,
     pub vercel_ai_gateway: Option<VercelAiGatewaySettingsContent>,
     pub x_ai: Option<XAiSettingsContent>,
-    #[serde(rename = "zed.dev")]
+    #[serde(rename = "raijin.dev")]
     pub zed_dot_dev: Option<ZedDotDevSettingsContent>,
 }
 

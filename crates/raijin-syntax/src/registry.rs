@@ -424,9 +424,9 @@ pub struct HighlightThemeStyle {
 
 /// Theme for Tree-sitter Highlight from JSON theme file.
 ///
-/// This json is compatible with the Zed theme format.
+/// This json is compatible with the Raijin theme format.
 ///
-/// https://zed.dev/docs/extensions/languages#syntax-highlighting
+/// https://raijin.dev/docs/extensions/languages#syntax-highlighting
 #[derive(Debug, Clone, PartialEq, Eq, Hash, JsonSchema, Serialize, Deserialize)]
 pub struct HighlightTheme {
     pub name: String,

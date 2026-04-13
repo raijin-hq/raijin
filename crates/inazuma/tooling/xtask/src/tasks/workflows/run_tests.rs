@@ -102,9 +102,9 @@ pub(crate) fn run_tests() -> Workflow {
 /// Controls which features `orchestrate_impl` includes in the generated script.
 #[derive(PartialEq, Eq)]
 enum OrchestrateTarget {
-    /// For the main Zed repo: includes the cargo package filter and extension
+    /// For the main Raijin repo: includes the cargo package filter and extension
     /// change detection, but no working-directory scoping.
-    ZedRepo,
+    RaijinRepo,
     /// For individual extension repos: scopes changed-file detection to the
     /// working directory, with no package filter or extension detection.
     Extension,
@@ -113,7 +113,7 @@ enum OrchestrateTarget {
 // Generates a bash script that checks changed files against regex patterns
 // and sets GitHub output variables accordingly
 pub fn orchestrate(rules: &[&PathCondition]) -> NamedJob {
-    orchestrate_impl(rules, OrchestrateTarget::ZedRepo)
+    orchestrate_impl(rules, OrchestrateTarget::RaijinRepo)
 }
 
 pub fn orchestrate_for_extension(rules: &[&PathCondition]) -> NamedJob {
@@ -167,7 +167,7 @@ fn orchestrate_impl(rules: &[&PathCondition], target: OrchestrateTarget) -> Name
 
     let mut outputs = IndexMap::new();
 
-    if target == OrchestrateTarget::ZedRepo {
+    if target == OrchestrateTarget::RaijinRepo {
         script.push_str(indoc::indoc! {r#"
         # Check for changes that require full rebuild (no filter)
         # Direct pushes to main/stable/preview always run full suite
@@ -253,7 +253,7 @@ fn orchestrate_impl(rules: &[&PathCondition], target: OrchestrateTarget) -> Name
         ));
     }
 
-    if target == OrchestrateTarget::ZedRepo {
+    if target == OrchestrateTarget::RaijinRepo {
         script.push_str(DETECT_CHANGED_EXTENSIONS_SCRIPT);
         script.push_str("echo \"changed_extensions=$EXTENSIONS_JSON\" >> \"$GITHUB_OUTPUT\"\n");
 
@@ -364,7 +364,7 @@ pub(crate) fn run_ts_query_ls() -> Step<Run> {
         "$GITHUB_WORKSPACE/ts_query_ls" format --check . || {{
             echo "Found unformatted queries, please format them with ts_query_ls."
             echo "For easy use, install the Tree-sitter query extension:"
-            echo "zed://extension/tree-sitter-query"
+            echo "raijin://extension/tree-sitter-query"
             false
         }}"#
     ))
@@ -630,9 +630,9 @@ pub(crate) fn check_postgres_and_protobuf_migrations() -> NamedJob {
         release_job(&[])
             .runs_on(runners::LINUX_DEFAULT)
             .add_env(("GIT_AUTHOR_NAME", "Protobuf Action"))
-            .add_env(("GIT_AUTHOR_EMAIL", "ci@zed.dev"))
+            .add_env(("GIT_AUTHOR_EMAIL", "ci@raijin.dev"))
             .add_env(("GIT_COMMITTER_NAME", "Protobuf Action"))
-            .add_env(("GIT_COMMITTER_EMAIL", "ci@zed.dev"))
+            .add_env(("GIT_COMMITTER_EMAIL", "ci@raijin.dev"))
             .add_step(steps::checkout_repo().with_full_history())
             .add_step(ensure_fresh_merge())
             .add_step(bufbuild_setup_action())

@@ -286,7 +286,7 @@ fn read_pci_id_from_path(path: impl AsRef<std::path::Path>) -> anyhow::Result<u1
 /// The compiletime value is used by flatpak since it doesn't seem to have a way to provide a
 /// runtime environment variable.
 ///
-/// The runtime value is used by snap since the Zed snaps use release binaries directly, and so
+/// The runtime value is used by snap since the Raijin snaps use release binaries directly, and so
 /// cannot have this baked in.
 fn bundle_type() -> Option<String> {
     option_env!("ZED_BUNDLE_TYPE")

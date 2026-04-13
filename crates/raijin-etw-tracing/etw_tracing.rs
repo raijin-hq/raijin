@@ -580,7 +580,7 @@ pub fn launch_etw_recording(heap_pid: Option<u32>, output_path: &Path) -> Result
     let exe_path = std::env::current_exe().context("Failed to get current exe path")?;
     let pid_arg = heap_pid.map_or(-1i64, |pid| pid as i64);
     let args = format!(
-        "--record-etw-trace --etw-zed-pid {} --etw-output \"{}\" --etw-socket \"{}\"",
+        "--record-etw-trace --etw-raijin-pid {} --etw-output \"{}\" --etw-socket \"{}\"",
         pid_arg,
         output_path.display(),
         sock_path.display(),

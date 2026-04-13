@@ -2,7 +2,7 @@
 
 ## Context
 
-Raijin nutzt TOML für alle Settings (`config.toml`, `default.toml`, `initial_user_settings.toml`). Das Task-System ist noch ein Zed-Überbleibsel das JSON nutzt (`tasks.json`, `debug.json`). Zusätzlich gibt es VS Code Import-Code (`vscode_format.rs`, `vscode_debug_format.rs`) der `.vscode/tasks.json` und `.vscode/launch.json` aus fremden Projekten importiert — ein Editor-Feature das Raijin als Terminal-Emulator nicht braucht.
+Raijin nutzt TOML für alle Settings (`config.toml`, `default.toml`, `initial_user_settings.toml`). Das Task-System ist noch ein Überbleibsel aus der Referenz-Codebase das JSON nutzt (`tasks.json`, `debug.json`). Zusätzlich gibt es VS Code Import-Code (`vscode_format.rs`, `vscode_debug_format.rs`) der `.vscode/tasks.json` und `.vscode/launch.json` aus fremden Projekten importiert — ein Editor-Feature das Raijin als Terminal-Emulator nicht braucht.
 
 **Ziel:** Alles auf TOML vereinheitlichen, VS Code Import komplett entfernen.
 

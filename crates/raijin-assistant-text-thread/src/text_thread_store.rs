@@ -836,7 +836,7 @@ impl TextThreadStore {
                 }
 
                 static ASSISTANT_CONTEXT_REGEX: LazyLock<Regex> =
-                    LazyLock::new(|| Regex::new(r" - \d+.zed.json$").unwrap());
+                    LazyLock::new(|| Regex::new(r" - \d+.raijin.json$").unwrap());
 
                 let metadata = fs.metadata(&path).await?;
                 if let Some((file_name, metadata)) = path
@@ -995,17 +995,17 @@ mod tests {
         let now = chrono::Local::now();
         let older = SavedTextThreadMetadata {
             title: "older".into(),
-            path: Arc::from(PathBuf::from("/root/older.zed.json")),
+            path: Arc::from(PathBuf::from("/root/older.raijin.json")),
             mtime: now - chrono::TimeDelta::days(1),
         };
         let middle = SavedTextThreadMetadata {
             title: "middle".into(),
-            path: Arc::from(PathBuf::from("/root/middle.zed.json")),
+            path: Arc::from(PathBuf::from("/root/middle.raijin.json")),
             mtime: now - chrono::TimeDelta::hours(1),
         };
         let newer = SavedTextThreadMetadata {
             title: "newer".into(),
-            path: Arc::from(PathBuf::from("/root/newer.zed.json")),
+            path: Arc::from(PathBuf::from("/root/newer.raijin.json")),
             mtime: now,
         };
 
@@ -1038,7 +1038,7 @@ mod tests {
         store.update(cx, |store, _| {
             store.text_threads_metadata = vec![SavedTextThreadMetadata {
                 title: "thread".into(),
-                path: Arc::from(PathBuf::from("/root/thread.zed.json")),
+                path: Arc::from(PathBuf::from("/root/thread.raijin.json")),
                 mtime: chrono::Local::now(),
             }];
         });
@@ -1053,8 +1053,8 @@ mod tests {
         let fs = FakeFs::new(cx.background_executor.clone());
         fs.insert_tree("/root", json!({})).await;
 
-        let thread_a = PathBuf::from("/root/thread-a.zed.json");
-        let thread_b = PathBuf::from("/root/thread-b.zed.json");
+        let thread_a = PathBuf::from("/root/thread-a.raijin.json");
+        let thread_b = PathBuf::from("/root/thread-b.raijin.json");
         fs.touch_path(&thread_a).await;
         fs.touch_path(&thread_b).await;
 

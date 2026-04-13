@@ -687,7 +687,7 @@ mod tests {
             "/root",
             json!({
                 ".config": {
-                    "zed": {
+                    "raijin": {
                         "settings.json": r#"{ "formatter": "auto" }"#,
                     },
                 },
@@ -722,7 +722,7 @@ mod tests {
             Prettier::locate_prettier_installation(
                 fs.as_ref(),
                 &HashSet::default(),
-                Path::new("/root/.config/zed/settings.json"),
+                Path::new("/root/.config/raijin/settings.json"),
             )
             .await
             .unwrap(),

@@ -350,7 +350,7 @@ mod tests {
             # here's a comment
             collections = { path = "crates/collections" }
 
-            util = { path = "crates/util", package = "zed-util", version = "0.1.0" }
+            util = { path = "crates/util", package = "raijin-util", version = "0.1.0" }
         "#};
 
         let mut doc = input.parse::<toml_edit::DocumentMut>().unwrap();
@@ -368,7 +368,7 @@ mod tests {
             # here's a comment
             collections = { path = "crates/collections" , version = "0.2.0", package = "gpui_collections" }
 
-            util = { path = "crates/util", package = "zed-util", version = "0.1.0" }
+            util = { path = "crates/util", package = "raijin-util", version = "0.1.0" }
         "#};
 
         assert_eq!(result, output);

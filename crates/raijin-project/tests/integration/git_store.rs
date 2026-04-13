@@ -1200,7 +1200,7 @@ mod git_worktrees {
         assert!(worktrees_directory_for_repo(work_dir, "../worktrees").is_ok());
 
         // Valid: subdirectory
-        assert!(worktrees_directory_for_repo(work_dir, ".git/zed-worktrees").is_ok());
+        assert!(worktrees_directory_for_repo(work_dir, ".git/raijin-worktrees").is_ok());
         assert!(worktrees_directory_for_repo(work_dir, "my-worktrees").is_ok());
 
         // Invalid: just ".." would resolve back to the working directory itself
@@ -1624,17 +1624,17 @@ mod resolve_worktree_tests {
     fn test_linked_worktree_short_name() {
         let examples = [
             (
-                "/home/bob/zed",
-                "/home/bob/worktrees/olivetti/zed",
+                "/home/bob/raijin",
+                "/home/bob/worktrees/olivetti/raijin",
                 Some("olivetti".into()),
             ),
-            ("/home/bob/zed", "/home/bob/zed2", Some("zed2".into())),
+            ("/home/bob/raijin", "/home/bob/raijin2", Some("raijin2".into())),
             (
-                "/home/bob/zed",
-                "/home/bob/worktrees/zed/selectric",
+                "/home/bob/raijin",
+                "/home/bob/worktrees/raijin/selectric",
                 Some("selectric".into()),
             ),
-            ("/home/bob/zed", "/home/bob/zed", None),
+            ("/home/bob/raijin", "/home/bob/raijin", None),
         ];
         for (main_worktree_path, linked_worktree_path, expected) in examples {
             let short_name = linked_worktree_short_name(

@@ -133,7 +133,7 @@ pub struct SettingsContent {
     pub auto_update: Option<bool>,
 
     /// This base keymap settings adjusts the default keybindings in Raijin to be similar
-    /// to other common code editors. By default, Zed's keymap closely follows VSCode's
+    /// to other common code editors. By default, Raijin's keymap closely follows VSCode's
     /// keymap, with minor adjustments, this corresponds to the "VSCode" setting.
     ///
     /// Default: VSCode
@@ -190,7 +190,7 @@ pub struct SettingsContent {
 
     pub proxy: Option<String>,
 
-    /// The URL of the Zed server to connect to.
+    /// The URL of the Raijin server to connect to.
     pub server_url: Option<String>,
 
     /// Configuration for session-related features
@@ -355,7 +355,7 @@ pub struct AudioSettingsContent {
     /// loud you sound to others.
     ///
     /// Recommended: off (default)
-    /// Microphones are too quite in zed, until everyone is on experimental
+    /// Microphones are too quiet in Raijin, until everyone is on experimental
     /// audio and has auto speaker volume on this will make you very loud
     /// compared to other speakers.
     #[serde(rename = "experimental.auto_microphone_volume")]
@@ -410,7 +410,7 @@ pub struct TelemetrySettingsContent {
     ///
     /// Default: true
     pub diagnostics: Option<bool>,
-    /// Send anonymized usage data like what languages you're using Zed with.
+    /// Send anonymized usage data like what languages you're using Raijin with.
     ///
     /// Default: true
     pub metrics: Option<bool>,
@@ -432,7 +432,7 @@ pub struct DebuggerSettingsContent {
     ///
     /// Default: line
     pub stepping_granularity: Option<SteppingGranularity>,
-    /// Whether the breakpoints should be reused across Zed sessions.
+    /// Whether the breakpoints should be reused across Raijin sessions.
     ///
     /// Default: true
     pub save_breakpoints: Option<bool>,
@@ -444,7 +444,7 @@ pub struct DebuggerSettingsContent {
     ///
     /// Default: 2000ms
     pub timeout: Option<u64>,
-    /// Whether to log messages between active debug adapters and Zed
+    /// Whether to log messages between active debug adapters and Raijin
     ///
     /// Default: true
     pub log_dap_communications: Option<bool>,
@@ -705,7 +705,7 @@ pub struct FileFinderSettingsContent {
     /// Default: true
     pub skip_focus_for_active_in_search: Option<bool>,
     /// Whether to use gitignored files when searching.
-    /// Only the file Zed had indexed will be used, not necessary all the gitignored files.
+    /// Only the file Raijin had indexed will be used, not necessary all the gitignored files.
     ///
     /// Default: Smart
     pub include_ignored: Option<IncludeIgnoredContent>,
@@ -733,7 +733,7 @@ pub struct FileFinderSettingsContent {
 pub enum IncludeIgnoredContent {
     /// Use all gitignored files
     All,
-    /// Use only the files Zed had indexed
+    /// Use only the files Raijin had indexed
     Indexed,
     /// Be smart and search for ignored when called from a gitignored worktree
     #[default]
@@ -1075,8 +1075,8 @@ pub struct SshConnection {
     pub projects: inazuma_collections::BTreeSet<RemoteProject>,
     /// Name to use for this server in UI.
     pub nickname: Option<String>,
-    // By default Zed will download the binary to the host directly.
-    // If this is set to true, Zed will download the binary to your local machine,
+    // By default Raijin will download the binary to the host directly.
+    // If this is set to true, Raijin will download the binary to your local machine,
     // and then upload it over the SSH connection. Useful if your SSH server has
     // limited outbound internet access.
     pub upload_binary_over_ssh: Option<bool>,

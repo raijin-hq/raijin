@@ -34,7 +34,7 @@ use crate::{
     example::{Example, ExampleContext, FailedAssertion, JudgeAssertion},
 };
 
-pub const ZED_REPO_URL: &str = "https://github.com/zed-industries/zed.git";
+pub const ZED_REPO_URL: &str = "https://github.com/raijin-hq/raijin.git";
 
 #[derive(Clone)]
 pub struct ExampleInstance {
@@ -288,7 +288,7 @@ impl ExampleInstance {
 
             let last_diff_file_path = this.run_directory.join("last.diff");
 
-            // Write an empty "last.diff" so that it can be opened in Zed for convenient view of the
+            // Write an empty "last.diff" so that it can be opened in Raijin for convenient view of the
             // history using undo/redo.
             std::fs::write(&last_diff_file_path, "")?;
 

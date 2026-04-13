@@ -413,7 +413,7 @@ mod tests {
         fs.insert_tree(
             path!("/dir"),
             json!({
-                ".zed": {
+                ".raijin": {
                     "tasks.json": r#"[
                             {
                                 "label": "example task",

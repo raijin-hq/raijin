@@ -21,7 +21,7 @@ use inazuma::{
 use itertools::Itertools as _;
 use inazuma_picker::{Picker, PickerDelegate, highlighted_match_with_paths::HighlightedMatch};
 use raijin_project::{DebugScenarioContext, Project, TaskContexts, TaskSourceKind, task_store::TaskStore};
-use raijin_task::{DebugScenario, RevealTarget, SharedTaskContext, VariableName, ZedDebugConfig};
+use raijin_task::{DebugScenario, RevealTarget, SharedTaskContext, VariableName, RaijinDebugConfig};
 use raijin_ui::{
     ContextMenu, DropdownMenu, IconWithIndicator, Indicator, KeyBinding, ListItem, ListItemSpacing,
     Switch, SwitchLabelPosition, ToggleButtonGroup, ToggleButtonSimple, ToggleState, Tooltip,
@@ -330,7 +330,7 @@ impl NewProcessModal {
             None
         };
 
-        let session_scenario = ZedDebugConfig {
+        let session_scenario = RaijinDebugConfig {
             adapter: debugger.to_owned().into(),
             label,
             request,
@@ -341,7 +341,7 @@ impl NewProcessModal {
             .global::<DapRegistry>()
             .adapter(&session_scenario.adapter);
 
-        cx.spawn(async move |_| adapter?.config_from_zed_format(session_scenario).await.ok())
+        cx.spawn(async move |_| adapter?.config_from_raijin_format(session_scenario).await.ok())
     }
 
     fn start_new_session(&mut self, window: &mut Window, cx: &mut Context<Self>) {
@@ -828,7 +828,7 @@ pub(super) struct ConfigureMode {
 impl ConfigureMode {
     pub(super) fn new(window: &mut Window, cx: &mut App) -> Entity<Self> {
         let program = cx.new(|cx| {
-            InputField::new(window, cx, "ENV=Zed ~/bin/program --option")
+            InputField::new(window, cx, "ENV=Raijin ~/bin/program --option")
                 .label("Program")
                 .tab_stop(true)
                 .tab_index(1)
@@ -959,7 +959,7 @@ impl ConfigureMode {
 
 #[derive(Clone)]
 pub(super) struct AttachMode {
-    pub(super) definition: ZedDebugConfig,
+    pub(super) definition: RaijinDebugConfig,
     pub(super) attach_picker: Entity<AttachModal>,
 }
 
@@ -971,7 +971,7 @@ impl AttachMode {
         window: &mut Window,
         cx: &mut Context<NewProcessModal>,
     ) -> Entity<Self> {
-        let definition = ZedDebugConfig {
+        let definition = RaijinDebugConfig {
             adapter: debugger.unwrap_or(DebugAdapterName("".into())).0,
             label: "Attach New Session Setup".into(),
             request: raijin_dap::DebugRequest::Attach(raijin_task::AttachRequest { process_id: None }),
@@ -1068,7 +1068,7 @@ impl DebugDelegate {
                     };
 
                     match path.components().next_back() {
-                        Some(".zed") => {
+                        Some(".raijin") => {
                             path.push(RelPath::unix("debug.json").unwrap());
                         }
                         Some(".vscode") => {
@@ -1165,7 +1165,7 @@ impl DebugDelegate {
                         id: _,
                         directory_in_worktree: dir,
                         id_base: _,
-                    } => dir.ends_with(RelPath::unix(".zed").unwrap()),
+                    } => dir.ends_with(RelPath::unix(".raijin").unwrap()),
                     _ => false,
                 });
 

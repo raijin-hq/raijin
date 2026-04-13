@@ -1,12 +1,12 @@
-# Zed Schema Generator
+# Raijin Schema Generator
 
-Prints various Zed schemas to stdout.
+Prints various Raijin schemas to stdout.
 
 ## Usage
 
 ```sh
-cargo run -p schema_generator -- --help
+cargo run -p raijin-schema-generator -- --help
 
-cargo run -p schema_generator -- theme
-cargo run -p schema_generator -- icon_theme
+cargo run -p raijin-schema-generator -- theme
+cargo run -p raijin-schema-generator -- icon_theme
 ```

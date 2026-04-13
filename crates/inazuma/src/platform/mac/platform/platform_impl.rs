@@ -367,7 +367,7 @@ impl Platform for MacPlatform {
                                             .split(|&b| b == b'.')
                                             .collect::<Vec<_>>();
 
-                                        // https://github.com/zed-industries/zed/issues/16969
+                                        // https://github.com/raijin-industries/raijin/issues/16969
                                         // Workaround a bug in macOS Sequoia that adds an extra file-extension
                                         // sometimes.
                                         if chunks.len() == 3

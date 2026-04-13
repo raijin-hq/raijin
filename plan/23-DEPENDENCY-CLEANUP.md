@@ -158,7 +158,7 @@ cargo check
 - **`inazuma-component/ui/Cargo.toml`** — diverse lokale Deps
 - **`raijin-denoise/Cargo.toml`** — candle, rodio, rustfft lokal
 - **`raijin-media/Cargo.toml`** — bindgen als build-dep (Ausnahme OK)
-- **Diverse neue Crates** aus Phase 21 — manche haben noch lokale Deps von Zed
+- **Diverse neue Crates** aus Phase 21 — manche haben noch lokale Deps von der Referenz-Codebase
 
 ## Regel für die Zukunft
 

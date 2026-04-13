@@ -167,7 +167,7 @@ impl RenderOnce for AiUpsellCard {
         match self.sign_in_status {
             SignInStatus::SignedIn => match self.user_plan {
                 None | Some(Plan::ZedFree) => card
-                    .child(Label::new("Try Zed AI").size(LabelSize::Large))
+                    .child(Label::new("Try Raijin AI").size(LabelSize::Large))
                     .map(|this| {
                         if self.account_too_young {
                             this.child(YoungAccountBanner).child(
@@ -234,7 +234,7 @@ impl RenderOnce for AiUpsellCard {
                     }),
                 Some(Plan::ZedProTrial) => card
                     .child(pro_trial_stamp)
-                    .child(Label::new("You're in the Zed Pro Trial").size(LabelSize::Large))
+                    .child(Label::new("You're in the Raijin Pro Trial").size(LabelSize::Large))
                     .child(
                         Label::new("Here's what you get for the next 14 days:")
                             .color(Color::Muted)
@@ -243,7 +243,7 @@ impl RenderOnce for AiUpsellCard {
                     .child(PlanDefinitions.pro_trial(false)),
                 Some(Plan::ZedPro) => card
                     .child(certified_user_stamp)
-                    .child(Label::new("You're in the Zed Pro plan").size(LabelSize::Large))
+                    .child(Label::new("You're in the Raijin Pro plan").size(LabelSize::Large))
                     .child(
                         Label::new("Here's what you get:")
                             .color(Color::Muted)
@@ -252,7 +252,7 @@ impl RenderOnce for AiUpsellCard {
                     .child(PlanDefinitions.pro_plan()),
                 Some(Plan::ZedBusiness) => card
                     .child(certified_user_stamp)
-                    .child(Label::new("You're in the Zed Business plan").size(LabelSize::Large))
+                    .child(Label::new("You're in the Raijin Business plan").size(LabelSize::Large))
                     .child(
                         Label::new("Here's what you get:")
                             .color(Color::Muted)
@@ -261,7 +261,7 @@ impl RenderOnce for AiUpsellCard {
                     .child(PlanDefinitions.business_plan()),
                 Some(Plan::ZedStudent) => card
                     .child(certified_user_stamp)
-                    .child(Label::new("You're in the Zed Student plan").size(LabelSize::Large))
+                    .child(Label::new("You're in the Raijin Student plan").size(LabelSize::Large))
                     .child(
                         Label::new("Here's what you get:")
                             .color(Color::Muted)
@@ -271,7 +271,7 @@ impl RenderOnce for AiUpsellCard {
             },
             // Signed Out State
             _ => card
-                .child(Label::new("Try Zed AI").size(LabelSize::Large))
+                .child(Label::new("Try Raijin AI").size(LabelSize::Large))
                 .child(
                     div()
                         .max_w_3_4()
@@ -310,7 +310,7 @@ impl Component for AiUpsellCard {
     }
 
     fn description() -> Option<&'static str> {
-        Some("A card presenting the Zed AI product during user's first-open onboarding flow.")
+        Some("A card presenting the Raijin AI product during user's first-open onboarding flow.")
     }
 
     fn preview(_window: &mut Window, _cx: &mut App) -> Option<AnyElement> {

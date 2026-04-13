@@ -109,8 +109,8 @@ pub fn init(crash_init: InitCrashHandler, spawn: impl FnOnce(BoxFuture<'static, 
 /// keepalive ping loop. Called on a background executor by [`init`].
 async fn connect_and_keepalive(crash_init: InitCrashHandler, handler: CrashHandler) {
     let exe = env::current_exe().expect("unable to find ourselves");
-    let zed_pid = process::id();
-    let socket_name = raijin_paths::temp_dir().join(format!("zed-crash-handler-{zed_pid}"));
+    let raijin_pid = process::id();
+    let socket_name = raijin_paths::temp_dir().join(format!("raijin-crash-handler-{raijin_pid}"));
     #[cfg(not(target_os = "windows"))]
     let _crash_handler = Command::new(exe)
         .arg("--crash-handler")

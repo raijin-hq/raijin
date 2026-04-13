@@ -1,11 +1,11 @@
 use inazuma::{IntoElement, ParentElement};
 use raijin_ui::{List, ListBulletItem, prelude::*};
 
-/// Centralized definitions for Zed AI plans
+/// Centralized definitions for Raijin AI plans
 pub struct PlanDefinitions;
 
 impl PlanDefinitions {
-    pub const AI_DESCRIPTION: &'static str = "Zed offers a complete agentic experience, with robust editing and reviewing features to collaborate with AI.";
+    pub const AI_DESCRIPTION: &'static str = "Raijin offers a complete agentic experience, with robust editing and reviewing features to collaborate with AI.";
 
     pub fn free_plan(&self) -> impl IntoElement {
         List::new()

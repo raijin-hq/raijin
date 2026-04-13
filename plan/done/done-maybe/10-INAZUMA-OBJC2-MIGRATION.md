@@ -141,7 +141,7 @@ float3 linear_to_srgb(float3 color) { return pow(color, float3(1.0 / 2.2)); }
 
 **`text_system.rs`:** Nutzt `CGColorSpace::create_device_rgb()` für Glyph-Rasterisierung — device-abhängig statt sRGB-getagged.
 
-Zed hat **exakt den gleichen Zustand** — kein Color Management.
+Die Referenz hat **exakt den gleichen Zustand** — kein Color Management.
 
 ## Implementierung
 

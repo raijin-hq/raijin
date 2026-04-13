@@ -633,7 +633,7 @@ enum RemoteEntry {
 }
 
 impl RemoteEntry {
-    fn is_from_zed(&self) -> bool {
+    fn is_from_raijin(&self) -> bool {
         matches!(self, Self::Project { .. })
     }
 
@@ -1525,7 +1525,7 @@ impl RemoteServerProjects {
         cx: &mut Context<Self>,
     ) -> impl IntoElement {
         let create_new_window = self.create_new_window;
-        let is_from_zed = server.is_from_zed();
+        let is_from_raijin = server.is_from_raijin();
         let element_id_base = SharedString::from(format!(
             "remote-project-{}",
             match server_ix {
@@ -1620,7 +1620,7 @@ impl RemoteServerProjects {
                         callback(this, secondary_confirm, window, cx)
                     }))
                     .tooltip(Tooltip::text(project.paths.join("\n")))
-                    .when(is_from_zed, |server_list_item| {
+                    .when(is_from_raijin, |server_list_item| {
                         server_list_item.end_hover_slot::<AnyElement>(Some(
                             div()
                                 .mr_2()
@@ -1962,7 +1962,7 @@ impl RemoteServerProjects {
                                         .inset(true)
                                         .spacing(raijin_ui::ListItemSpacing::Sparse)
                                         .start_slot(Icon::new(IconName::File).color(Color::Muted))
-                                        .child(Label::new("Open Zed Log"))
+                                        .child(Label::new("Open Raijin Log"))
                                         .on_click(cx.listener(|_, _, window, cx| {
                                             window.dispatch_action(Box::new(OpenLog), cx);
                                             cx.emit(DismissEvent);

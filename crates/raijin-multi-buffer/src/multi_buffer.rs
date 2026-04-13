@@ -72,7 +72,7 @@ pub struct ExcerptId(u32);
 
 /// One or more [`Buffers`](Buffer) being edited in a single view.
 ///
-/// See <https://zed.dev/features#multi-buffers>
+/// See <https://raijin.dev/features#multi-buffers>
 pub struct MultiBuffer {
     /// A snapshot of the [`Excerpt`]s in the MultiBuffer.
     /// Use [`MultiBuffer::snapshot`] to get a up-to-date snapshot.

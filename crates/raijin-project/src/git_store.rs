@@ -3709,8 +3709,8 @@ impl RepositorySnapshot {
     /// The main worktree is the original checkout that other worktrees were
     /// created from.
     ///
-    /// For example, if you had both `~/code/zed` and `~/code/worktrees/zed-2`,
-    /// then `~/code/zed` is the main worktree and `~/code/worktrees/zed-2` is a linked worktree.
+    /// For example, if you had both `~/code/raijin` and `~/code/worktrees/raijin-2`,
+    /// then `~/code/raijin` is the main worktree and `~/code/worktrees/raijin-2` is a linked worktree.
     pub fn is_main_worktree(&self) -> bool {
         self.work_directory_abs_path == self.original_repo_abs_path
     }

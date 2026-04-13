@@ -27,9 +27,9 @@ pub struct OpenRecentProject {
 }
 
 actions!(
-    zed,
+    raijin,
     [
-        /// Show the Zed welcome screen
+        /// Show the Raijin welcome screen
         ShowWelcome
     ]
 );
@@ -204,7 +204,7 @@ const CONTENT: (Section<4>, Section<3>) = (
                 visibility_guard: SectionVisibility::Always,
             },
             SectionEntry {
-                icon: IconName::ZedAssistant,
+                icon: IconName::RaijinAssistant,
                 title: "View AI Settings",
                 action: &agent::OpenSettings,
                 visibility_guard: SectionVisibility::Conditional(|cx| {
@@ -409,9 +409,9 @@ impl Render for WelcomePage {
         };
 
         let welcome_label = if self.fallback_to_recent_projects {
-            "Welcome back to Zed"
+            "Welcome back to Raijin"
         } else {
-            "Welcome to Zed"
+            "Welcome to Raijin"
         };
 
         h_flex()

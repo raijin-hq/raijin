@@ -33,8 +33,8 @@ use std::time::{Duration, SystemTime};
 use url::Url;
 use inazuma_util::ResultExt as _;
 
-/// The CIMD URL where Zed's OAuth client metadata document is hosted.
-pub const CIMD_URL: &str = "https://zed.dev/oauth/client-metadata.json";
+/// The CIMD URL where Raijin's OAuth client metadata document is hosted.
+pub const CIMD_URL: &str = "https://raijin.dev/oauth/client-metadata.json";
 
 /// Validate that a URL is safe to use as an OAuth endpoint.
 ///
@@ -66,7 +66,7 @@ fn require_https_or_loopback(url: &Url) -> Result<()> {
 /// protections against private/reserved IP ranges.
 ///
 /// This wraps [`require_https_or_loopback`] and adds IP-range checks to prevent
-/// an attacker-controlled MCP server from directing Zed to fetch internal
+/// an attacker-controlled MCP server from directing Raijin to fetch internal
 /// network resources via metadata URLs.
 ///
 /// **Known limitation:** Domain-name URLs that resolve to private IPs are *not*
@@ -674,7 +674,7 @@ pub fn token_refresh_params(
 /// exact URI we intend to use.
 pub fn dcr_registration_body(redirect_uri: &str) -> serde_json::Value {
     serde_json::json!({
-        "client_name": "Zed",
+        "client_name": "Raijin",
         "redirect_uris": [redirect_uri],
         "grant_types": ["authorization_code"],
         "response_types": ["code"],
@@ -1108,14 +1108,14 @@ pub async fn start_callback_server() -> Result<(
                 Ok(_) => (
                     200,
                     "<html><body><h1>Authorization successful</h1>\
-                     <p>You can close this tab and return to Zed.</p></body></html>",
+                     <p>You can close this tab and return to Raijin.</p></body></html>",
                 ),
                 Err(err) => {
                     log::error!("OAuth callback error: {}", err);
                     (
                         400,
                         "<html><body><h1>Authorization failed</h1>\
-                         <p>Something went wrong. Please try again from Zed.</p></body></html>",
+                         <p>Something went wrong. Please try again from Raijin.</p></body></html>",
                     )
                 }
             };
@@ -1809,7 +1809,7 @@ mod tests {
         };
         let url = build_authorization_url(
             &metadata,
-            "https://zed.dev/oauth/client-metadata.json",
+            "https://raijin.dev/oauth/client-metadata.json",
             "http://127.0.0.1:12345/callback",
             &["files:read".into(), "files:write".into()],
             "https://mcp.example.com",
@@ -1821,7 +1821,7 @@ mod tests {
         assert_eq!(pairs.get("response_type").unwrap(), "code");
         assert_eq!(
             pairs.get("client_id").unwrap(),
-            "https://zed.dev/oauth/client-metadata.json"
+            "https://raijin.dev/oauth/client-metadata.json"
         );
         assert_eq!(
             pairs.get("redirect_uri").unwrap(),
@@ -1929,7 +1929,7 @@ mod tests {
     #[test]
     fn test_dcr_registration_body_shape() {
         let body = dcr_registration_body("http://127.0.0.1:12345/callback");
-        assert_eq!(body["client_name"], "Zed");
+        assert_eq!(body["client_name"], "Raijin");
         assert_eq!(body["redirect_uris"][0], "http://127.0.0.1:12345/callback");
         assert_eq!(body["grant_types"][0], "authorization_code");
         assert_eq!(body["response_types"][0], "code");

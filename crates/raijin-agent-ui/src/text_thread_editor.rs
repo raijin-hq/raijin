@@ -408,7 +408,7 @@ impl TextThreadEditor {
         if self.sending_disabled(cx) {
             return;
         }
-        raijin_telemetry::event!("Agent Message Sent", agent = "zed-text");
+        raijin_telemetry::event!("Agent Message Sent", agent = "raijin-text");
         self.send_to_model(window, cx);
     }
 
@@ -895,7 +895,7 @@ impl TextThreadEditor {
                         |_, _, _, _| Empty.into_any_element(),
                     )
                     .with_metadata(CreaseMetadata {
-                        icon_path: SharedString::from(IconName::ZedAgent.path()),
+                        icon_path: SharedString::from(IconName::RaijinAgent.path()),
                         label: "Thinking Process".into(),
                     }),
                 );
@@ -2247,7 +2247,7 @@ impl TextThreadEditor {
         let provider_icon = active_provider
             .as_ref()
             .map(|p| p.icon())
-            .unwrap_or(IconOrSvg::Icon(IconName::ZedAgent));
+            .unwrap_or(IconOrSvg::Icon(IconName::RaijinAgent));
 
         let (color, icon) = if self.language_model_selector_menu_handle.is_deployed() {
             (Color::Accent, IconName::ChevronUp)
@@ -2316,7 +2316,7 @@ impl TextThreadEditor {
     }
 
     fn render_payment_required_error(&self, cx: &mut Context<Self>) -> AnyElement {
-        const ERROR_MESSAGE: &str = "Free tier exceeded. Subscribe and add payment to continue using Zed LLMs. You'll be billed at cost for tokens used.";
+        const ERROR_MESSAGE: &str = "Free tier exceeded. Subscribe and add payment to continue using Raijin LLMs. You'll be billed at cost for tokens used.";
 
         v_flex()
             .gap_0p5()
@@ -3161,10 +3161,10 @@ mod tests {
     #[inazuma::test]
     async fn test_copy_paste_whole_message(cx: &mut TestAppContext) {
         let (context, text_thread_editor, mut cx) = setup_text_thread_editor_text(vec![
-            (Role::User, "What is the Zed editor?"),
+            (Role::User, "What is the Raijin editor?"),
             (
                 Role::Assistant,
-                "Zed is a modern, high-performance code editor designed from the ground up for speed and collaboration.",
+                "Raijin is a modern, high-performance code editor designed from the ground up for speed and collaboration.",
             ),
             (Role::User, ""),
         ],cx).await;
@@ -3174,9 +3174,9 @@ mod tests {
             &text_thread_editor,
             message_range(&context, 0, &mut cx),
             indoc! {"
-                What is the Zed editor?
-                Zed is a modern, high-performance code editor designed from the ground up for speed and collaboration.
-                What is the Zed editor?
+                What is the Raijin editor?
+                Raijin is a modern, high-performance code editor designed from the ground up for speed and collaboration.
+                What is the Raijin editor?
             "},
             &mut cx,
         );
@@ -3186,10 +3186,10 @@ mod tests {
             &text_thread_editor,
             message_range(&context, 1, &mut cx),
             indoc! {"
-                What is the Zed editor?
-                Zed is a modern, high-performance code editor designed from the ground up for speed and collaboration.
-                What is the Zed editor?
-                Zed is a modern, high-performance code editor designed from the ground up for speed and collaboration.
+                What is the Raijin editor?
+                Raijin is a modern, high-performance code editor designed from the ground up for speed and collaboration.
+                What is the Raijin editor?
+                Raijin is a modern, high-performance code editor designed from the ground up for speed and collaboration.
             "},
             &mut cx,
         );
