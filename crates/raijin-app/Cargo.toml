@@ -11,9 +11,11 @@ path = "src/main.rs"
 [dependencies]
 inazuma = { workspace = true }
 inazuma-clock = { workspace = true }
+inazuma-util = { workspace = true }
 inazuma-settings-framework = { workspace = true }
 raijin-actions = { workspace = true }
 raijin-assets = { workspace = true }
+raijin-call = { workspace = true }
 raijin-client = { workspace = true }
 raijin-command-palette = { workspace = true }
 raijin-completions = { path = "../raijin-completions" }
@@ -26,6 +28,7 @@ raijin-language = { workspace = true }
 raijin-node-runtime = { workspace = true }
 raijin-platform-title-bar = { workspace = true }
 raijin-project = { workspace = true }
+raijin-project-registry = { workspace = true }
 raijin-release-channel = { workspace = true }
 raijin-session = { workspace = true }
 raijin-settings = { workspace = true }

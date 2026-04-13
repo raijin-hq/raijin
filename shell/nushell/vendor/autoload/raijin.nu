@@ -24,9 +24,10 @@ if "metadata" in $features {
             # Git info (only if in a git repo)
             let git_check = (do { git rev-parse --git-dir } | complete)
             if $git_check.exit_code == 0 {
+                let git_root = (git rev-parse --show-toplevel | str trim)
                 let branch = (git rev-parse --abbrev-ref HEAD | str trim)
                 let dirty = ((do { git diff --quiet HEAD } | complete).exit_code != 0)
-                $meta = ($meta | upsert git_branch $branch | upsert git_dirty $dirty)
+                $meta = ($meta | upsert git_root $git_root | upsert git_branch $branch | upsert git_dirty $dirty)
             }
 
             # Command duration from last command

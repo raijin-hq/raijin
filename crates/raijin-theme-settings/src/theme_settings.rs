@@ -3,8 +3,8 @@ use std::sync::Arc;
 use inazuma::{App, AssetSource, Font, Pixels};
 use inazuma_settings_framework::{Settings, SettingsStore};
 use raijin_theme::{
-    Appearance, DEFAULT_DARK_THEME, GlobalTheme, LoadThemes, ThemeRegistry,
-    ThemeSettingsProvider, UiDensity, icon_theme::default_icon_theme,
+    Appearance, DEFAULT_DARK_THEME, FontFamilyCache, GlobalTheme, LoadThemes, SystemAppearance,
+    ThemeRegistry, ThemeSettingsProvider, UiDensity, icon_theme::default_icon_theme,
     set_theme_settings_provider,
 };
 
@@ -43,12 +43,14 @@ impl ThemeSettingsProvider for ThemeSettingsProviderImpl {
 pub fn init(themes_to_load: LoadThemes, cx: &mut App) {
     let load_user_themes = matches!(&themes_to_load, LoadThemes::All(_));
 
-    // 1. Set up ThemeRegistry as global (Zed: theme::init)
+    // 1. Initialize theme subsystems (Zed: theme::init)
+    SystemAppearance::init(cx);
     let assets: Box<dyn AssetSource> = match themes_to_load {
         LoadThemes::JustBase => Box::new(()) as Box<dyn AssetSource>,
         LoadThemes::All(assets) => assets,
     };
     ThemeRegistry::set_global(assets, cx);
+    FontFamilyCache::init_global(cx);
 
     // 2. Register ThemeSettingsProvider — without this, raijin-ui crates crash
     set_theme_settings_provider(Box::new(ThemeSettingsProviderImpl), cx);
@@ -113,8 +115,7 @@ pub fn init(themes_to_load: LoadThemes, cx: &mut App) {
     // 5. Resolve and apply configured theme
     let theme = configured_theme(cx);
     let icon_theme = default_icon_theme();
-    GlobalTheme::update_theme(cx, theme);
-    GlobalTheme::update_icon_theme(cx, icon_theme);
+    cx.set_global(GlobalTheme::new(theme, icon_theme));
 
     // 6. Set up SettingsStore observer for live theme/font reloading
     let settings = ThemeSettings::get_global(cx);

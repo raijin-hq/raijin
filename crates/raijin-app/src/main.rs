@@ -58,6 +58,11 @@ actions!(
 );
 
 fn main() {
+    if std::env::args().any(|arg| arg == "--printenv") {
+        inazuma_util::shell_env::print_env();
+        return;
+    }
+
     env_logger::Builder::from_env(
         env_logger::Env::default().default_filter_or("warn,raijin=debug,raijin_term=debug")
     ).init();
@@ -81,13 +86,27 @@ fn main() {
         let app_version = semver::Version::new(0, 1, 0);
         raijin_release_channel::init(app_version, cx);
 
-        // 3. Build AppState (Client, Session, UserStore, WorkspaceStore, FS, Languages)
+        // 3. Initialize database (required before build_app_state which uses KeyValueStore)
+        let app_db = raijin_db::AppDatabase::new();
+        cx.set_global(app_db);
+
+        // 4. Build AppState (Client, Session, UserStore, WorkspaceStore, FS, Languages)
         let app_state = app_bootstrap::build_app_state(cx);
 
-        // 4. Watch settings.toml + keymap.toml via Fs::watch (like Zed)
+        // 4. Watch settings.toml + keymap.toml via Fs::watch
         let fs = app_state.fs.clone();
         handle_settings_file(fs.clone(), cx);
         handle_keymap_file(fs.clone(), cx);
+
+        // 5. Initialize ProjectRegistry (reactive git-root-based project detection)
+        raijin_project_registry::ProjectRegistry::init(
+            app_state.client.clone(),
+            app_state.user_store.clone(),
+            app_state.languages.clone(),
+            app_state.fs.clone(),
+            raijin_node_runtime::NodeRuntime::unavailable(),
+            cx,
+        );
 
         // 5. Initialize theme system (ThemeSettings via SettingsStore + Provider registration)
         //    MUST happen after SettingsStore init — registers ThemeSettingsProvider for raijin-ui
@@ -124,6 +143,7 @@ fn main() {
 
         // Initialize workspace system + feature crates
         raijin_workspace::init(app_state.clone(), cx);
+        raijin_call::init(app_state.client.clone(), app_state.user_store.clone(), cx);
         raijin_terminal_view::init(cx);
         raijin_title_bar::init(cx);
         raijin_command_palette::init(cx);
@@ -145,13 +165,8 @@ fn main() {
                 ..Default::default()
             },
             |window, cx| {
-                // Resolve initial CWD from GeneralSettings (via SettingsStore)
-                let cwd = {
-                    use inazuma_settings_framework::Settings;
-                    raijin_settings::GeneralSettings::get_global(cx).resolve_working_directory()
-                };
-
-                // Create a local Project (no remote connection, worktree added lazily)
+                // Empty project — worktrees are added reactively when the
+                // shell CWD enters a git repo (via OSC 7/7777 + git root detection).
                 let project = raijin_project::Project::local(
                     app_state.client.clone(),
                     raijin_node_runtime::NodeRuntime::unavailable(),
@@ -162,15 +177,6 @@ fn main() {
                     raijin_project::LocalProjectFlags::default(),
                     cx,
                 );
-
-                // Lazy worktree scan — runs async in background, terminal is
-                // immediately usable. Git status, file finder, project panel
-                // become available once the scan completes.
-                project.update(cx, |project, cx| {
-                    project
-                        .find_or_create_worktree(&cwd, true, cx)
-                        .detach_and_log_err(cx);
-                });
 
                 // Create the Workspace
                 let workspace = cx.new(|cx| {

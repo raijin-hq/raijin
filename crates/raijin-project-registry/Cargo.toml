@@ -1,0 +1,19 @@
+[package]
+name = "raijin-project-registry"
+version = "0.1.0"
+edition.workspace = true
+publish.workspace = true
+
+[dependencies]
+inazuma = { workspace = true }
+inazuma-collections = { workspace = true }
+raijin-project = { workspace = true }
+raijin-fs = { workspace = true }
+raijin-language = { workspace = true }
+raijin-client = { workspace = true }
+raijin-node-runtime = { workspace = true }
+log = { workspace = true }
+anyhow = { workspace = true }
+
+[lints]
+workspace = true

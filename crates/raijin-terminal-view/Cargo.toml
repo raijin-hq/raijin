@@ -25,6 +25,7 @@ parking_lot.workspace = true
 inazuma-settings-framework.workspace = true
 raijin-completions = { path = "../raijin-completions" }
 raijin-project.workspace = true
+raijin-project-registry.workspace = true
 raijin-session.workspace = true
 raijin-settings.workspace = true
 raijin-shell.workspace = true

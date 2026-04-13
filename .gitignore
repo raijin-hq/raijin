@@ -6,3 +6,5 @@
 .claude/
 node_modules/
 package-lock.json
+log.txt
+kill-raijin.sh

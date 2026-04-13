@@ -36,7 +36,10 @@ _raijin_precmd() {
     local _git_branch=""
     local _git_dirty="false"
 
+    local _git_root=""
+
     if git rev-parse --git-dir >/dev/null 2>&1; then
+        _git_root=$(git rev-parse --show-toplevel 2>/dev/null)
         _git_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
         if [[ -n "$_git_branch" ]] && ! git diff --quiet HEAD 2>/dev/null; then
             _git_dirty="true"
@@ -52,6 +55,7 @@ _raijin_precmd() {
     if [[ -n "$_git_branch" ]]; then
         _json+=',"git_branch":"'${_git_branch//\\/\\\\}'"'
         _json+=',"git_dirty":'$_git_dirty
+        _json+=',"git_root":"'${_git_root//\\/\\\\}'"'
     fi
     if [[ $_raijin_state == 1 ]]; then
         _json+=',"last_exit_code":'$ret

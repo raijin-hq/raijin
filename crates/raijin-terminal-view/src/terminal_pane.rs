@@ -118,6 +118,9 @@ pub struct TerminalPane {
     last_terminal_rows: u16,
     last_terminal_cols: u16,
 
+    // Project detection (reactive git root from shell CWD)
+    current_git_root: Option<std::path::PathBuf>,
+
     // Workspace reference (for modal access via action dispatch)
     workspace: Option<inazuma::WeakEntity<Workspace>>,
 }
@@ -166,6 +169,17 @@ impl TerminalPane {
 
         cx.subscribe_in(&input_state, window, Self::on_input_event)
             .detach();
+
+        cx.on_release(|this, cx| {
+            if let Some(ref git_root) = this.current_git_root {
+                if let Some(registry) = raijin_project_registry::ProjectRegistry::try_global(cx) {
+                    registry.update(cx, |reg, cx| {
+                        reg.release(git_root, cx);
+                    });
+                }
+            }
+        })
+        .detach();
 
         let events_rx = terminal.event_receiver().clone();
         cx.spawn_in(window, async move |this, cx| {
@@ -217,6 +231,7 @@ impl TerminalPane {
             show_terminal: false,
             last_terminal_rows: 0,
             last_terminal_cols: 0,
+            current_git_root: None,
             workspace: None,
         }
     }
@@ -293,15 +308,22 @@ impl TerminalPane {
                     self.shell_context.update_from_metadata(&payload);
                     self.shell_completion.update_cwd(new_cwd.clone());
 
-                    // Update project worktree when CWD changes (lazy scan)
-                    if let Some(workspace) = self.workspace.as_ref().and_then(|w| w.upgrade()) {
-                        workspace.update(cx, |ws, cx| {
-                            ws.project().update(cx, |project, cx| {
-                                project
-                                    .find_or_create_worktree(&new_cwd, true, cx)
-                                    .detach_and_log_err(cx);
+                    let new_git_root = payload.git_root.as_ref().map(std::path::PathBuf::from);
+                    if new_git_root != self.current_git_root {
+                        if let Some(registry) = raijin_project_registry::ProjectRegistry::try_global(cx) {
+                            registry.update(cx, |reg, cx| {
+                                // Release old git root
+                                if let Some(ref old) = self.current_git_root {
+                                    reg.release(old, cx);
+                                }
+                                // Acquire new git root
+                                if let Some(ref root) = new_git_root {
+                                    let (_ctx, task) = reg.acquire(root, cx);
+                                    task.detach_and_log_err(cx);
+                                }
                             });
-                        });
+                        }
+                        self.current_git_root = new_git_root;
                     }
                     if let Some(duration_ms) = payload.last_duration_ms {
                         let handle = self.terminal.handle();
@@ -1247,6 +1269,7 @@ impl Item for TerminalPane {
             show_terminal: false,
             last_terminal_rows: last_rows,
             last_terminal_cols: last_cols,
+            current_git_root: None,
             workspace: ws,
         });
 
@@ -1337,3 +1360,4 @@ fn keystroke_to_bytes(keystroke: &inazuma::Keystroke, terminal: &Terminal) -> Ve
 
     Vec::new()
 }
+

@@ -13,6 +13,7 @@ pub struct ShellMetadataPayload {
     pub hostname: Option<String>,
     pub git_branch: Option<String>,
     pub git_dirty: Option<bool>,
+    pub git_root: Option<String>,
     pub last_exit_code: Option<i32>,
     pub last_duration_ms: Option<u64>,
     pub shell: Option<String>,

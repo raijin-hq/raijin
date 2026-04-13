@@ -1,66 +1,364 @@
 # Raijin Default Settings
-# These are the built-in defaults shipped with the application.
-# User overrides go in ~/.raijin/settings.toml
+# Auto-generated from Zed reference + Raijin struct definitions
+
+base_keymap = "VSCode"
+vim_mode = false
+helix_mode = false
+modeline_lines = 5
+auto_update = true
+server_url = "http://localhost:8080"
+line_indicator_format = "long"
+proxy = ""
+[[granted_extension_capabilities]]
+kind = "process:exec"
+command = "*"
+args = [ "**",]
+
+[[granted_extension_capabilities]]
+kind = "download_file"
+host = "*"
+path = [ "**",]
+
+[[granted_extension_capabilities]]
+kind = "npm:install"
+package = "*"
 
 [theme]
-ui_font_family = "DankMono Nerd Font Mono"
-ui_font_size = 15
-ui_font_weight = 400
-buffer_font_family = "DankMono Nerd Font Mono"
+mode = "dark"
+light = "Raijin Light"
+dark = "Raijin Dark"
+icon_theme = "Zed (Default)"
+buffer_font_family = ".ZedMono"
 buffer_font_size = 15
 buffer_font_weight = 400
 buffer_line_height = "comfortable"
+ui_font_family = ".ZedSans"
+ui_font_weight = 400
+ui_font_size = 16
+agent_buffer_font_size = 12
 unnecessary_code_fade = 0.3
-theme = "Raijin Dark"
-
-# === General ===
-# Shell, working directory, input mode, scrollback — terminal IS the app.
-[general]
-shell = "system"
-working_directory = "home"
-input_mode = "raijin"
-scrollback_history = 10000
-alternate_scroll = "on"
-option_as_meta = false
-copy_on_select = false
-keep_selection_on_copy = false
-scroll_multiplier = 1.0
-
-# === Appearance ===
-# Font, cursor, contrast, colorspace — the terminal font IS the main font.
-[appearance]
-font_family = "DankMono Nerd Font Mono"
-font_size = 15
-line_height = 1.60
-cursor_style = "bar"
-cursor_blink = "terminal_controlled"
-minimum_contrast = 45.0
-window_colorspace = "srgb"
-
-# Client/Server settings (required by ClientSettings::from_settings)
-server_url = "http://localhost:8080"
 
 [workspace]
+bottom_dock_layout = "contained"
+pane_split_direction_horizontal = "down"
+pane_split_direction_vertical = "right"
 confirm_quit = false
-show_call_status_icon = false
-autosave = "off"
 restore_on_startup = "empty_tab"
 restore_on_file_reopen = true
+close_on_file_delete = false
+close_panel_on_toggle = false
 drop_target_size = 0.2
-use_system_path_prompts = true
-use_system_prompts = true
 when_closing_with_no_tabs = "platform_default"
 on_last_window_closed = "platform_default"
 text_rendering_mode = "platform_default"
-close_on_file_delete = false
-close_panel_on_toggle = false
-use_system_window_tabs = false
-zoomed_padding = false
+zoomed_padding = true
 window_decorations = "client"
-bottom_dock_layout = "contained"
-pane_split_direction_horizontal = "up"
-pane_split_direction_vertical = "left"
-resize_all_panels_in_dock = ["left"]
+use_system_path_prompts = true
+use_system_prompts = true
+use_system_window_tabs = false
+resize_all_panels_in_dock = [ "left",]
+show_call_status_icon = true
+autosave = "off"
+
+[image_viewer]
+unit = "binary"
+
+[editor]
+multi_cursor_modifier = "alt"
+hover_popover_enabled = true
+hover_popover_delay = 300
+cursor_blink = true
+cursor_shape = "bar"
+hide_mouse = "on_typing_and_movement"
+snippet_sort_order = "inline"
+current_line_highlight = "all"
+selection_highlight = true
+rounded_selection = true
+lsp_highlight_debounce = 75
+minimum_contrast_for_highlights = 45
+completion_menu_scrollbar = "never"
+completion_detail_alignment = "left"
+diff_view_style = "split"
+auto_signature_help = false
+show_signature_help_after_edits = false
+inline_code_actions = true
+go_to_definition_fallback = "find_all_references"
+diagnostics_max_severity = "all"
+redact_private_values = false
+expand_excerpt_lines = 5
+excerpt_context_lines = 2
+middle_click_paste = true
+double_click_in_multibuffer = "select"
+scroll_beyond_last_line = "one_page"
+vertical_scroll_margin = 3
+autoscroll_on_clicks = false
+horizontal_scroll_margin = 5
+scroll_sensitivity = 1.0
+fast_scroll_sensitivity = 4.0
+relative_line_numbers = "disabled"
+search_wrap = true
+seed_search_query_from_cursor = "always"
+use_smartcase_search = false
+lsp_document_colors = "inlay"
+
+[project]
+disable_ai = false
+git_hosting_providers = []
+load_direnv = "direct"
+context_server_timeout = 60
+
+[calls]
+mute_on_join = false
+share_on_join = false
+
+[title_bar]
+show_branch_icon = false
+show_branch_name = true
+show_project_items = true
+show_onboarding_banner = true
+show_user_picture = true
+show_user_menu = true
+show_sign_in = true
+show_menus = false
+button_layout = "platform_default"
+
+[audio]
+"experimental.auto_microphone_volume" = false
+
+[project_panel]
+button = true
+hide_gitignore = false
+default_width = 240
+dock = "left"
+entry_spacing = "comfortable"
+file_icons = true
+folder_icons = true
+git_status = true
+indent_size = 20
+auto_reveal_entries = true
+starts_open = true
+auto_fold_dirs = true
+bold_folder_labels = false
+show_diagnostics = "all"
+sticky_scroll = true
+sort_mode = "directories_first"
+diagnostic_badges = false
+git_status_indicator = false
+drag_and_drop = true
+hide_root = false
+hide_hidden = false
+
+[outline_panel]
+button = true
+default_width = 300
+dock = "left"
+file_icons = true
+folder_icons = true
+git_status = true
+indent_size = 20
+auto_reveal_entries = true
+auto_fold_dirs = true
+expand_outlines_with_depth = 100
+
+[collaboration_panel]
+button = true
+dock = "left"
+default_width = 240
+
+[git_panel]
+button = true
+dock = "left"
+default_width = 360
+status_style = "icon"
+file_icons = false
+folder_icons = true
+fallback_branch_name = "main"
+sort_by_path = false
+collapse_untracked_diff = false
+tree_view = false
+starts_open = false
+show_count_badge = false
+diff_stats = true
+
+[message_editor]
+auto_replace_emoji_shortcode = true
+
+[notification_panel]
+button = true
+dock = "right"
+default_width = 380
+show_count_badge = false
+
+[agent]
+inline_assistant_use_streaming_tools = true
+enabled = true
+button = true
+dock = "right"
+sidebar_side = "follow_agent"
+default_width = 640
+default_height = 320
+default_view = "thread"
+model_parameters = []
+single_file_review = false
+enable_feedback = true
+default_profile = "write"
+new_thread_location = "local_project"
+notify_when_agent_waiting = "primary_screen"
+play_sound_when_agent_done = false
+expand_edit_card = true
+expand_terminal_card = true
+cancel_generation_on_terminal_stop = true
+use_modifier_to_send = false
+message_editor_min_lines = 4
+show_turn_stats = false
+
+[tab_bar]
+show = true
+show_nav_history_buttons = true
+show_tab_bar_buttons = true
+show_pinned_tabs_in_separate_row = false
+
+[tabs]
+git_status = false
+close_position = "right"
+file_icons = false
+show_close_button = "hover"
+activate_on_close = "history"
+show_diagnostics = "off"
+
+[preview_tabs]
+enabled = true
+enable_preview_from_project_panel = true
+enable_preview_from_file_finder = false
+enable_preview_from_multibuffer = true
+enable_preview_multibuffer_from_code_navigation = false
+enable_preview_file_from_code_navigation = true
+enable_keep_preview_on_code_navigation = false
+
+[file_finder]
+file_icons = true
+modal_max_width = "small"
+skip_focus_for_active_in_search = true
+include_ignored = "smart"
+include_channels = false
+
+[telemetry]
+diagnostics = true
+metrics = true
+
+[diagnostics]
+button = true
+include_warnings = true
+
+[git]
+git_gutter = "tracked_files"
+gutter_debounce = 0
+hunk_style = "staged_hollow"
+path_style = "file_name_first"
+worktree_directory = "../worktrees"
+
+[journal]
+path = "~"
+hour_format = "hour12"
+
+[status_bar]
+"experimental.show" = true
+show_active_file = false
+active_language_button = true
+cursor_position_button = true
+line_endings_button = false
+active_encoding_button = "non_utf8"
+
+[terminal]
+shell = "system"
+dock = "bottom"
+default_width = 640
+default_height = 320
+working_directory = "current_project_directory"
+blinking = "terminal_controlled"
+cursor_shape = "block"
+alternate_scroll = "on"
+option_as_meta = false
+copy_on_select = false
+keep_selection_on_copy = true
+button = true
+line_height = "standard"
+font_weight = 400
+max_scroll_history_lines = 10000
+scroll_multiplier = 1.0
+minimum_contrast = 45
+path_hyperlink_regexes = [ "File \"(?<path>[^\"]+)\", line (?<line>[0-9]+)", [ "(?x)", "(?<path>", "    (", "        # multi-char path: first char (not opening delimiter, space, or box drawing char)", "        [^({\\[<\"'`\\ \\u2500-\\u257F]", "        # middle chars: non-space, and colon/paren only if not followed by digit/paren/space", "        ([^\\ :(]|[:(][^0-9()\\ ])*", "        # last char: not closing delimiter or colon", "        [^()}\\]>\"'`.,;:\\ ]", "    |", "        # single-char path: not delimiter, punctuation, space, or box drawing char", "        [^(){}\\[\\]<>\"'`.,;:\\ \\u2500-\\u257F]", "    )", "    # optional line/column suffix (included in path for PathWithPosition::parse_str)", "    (:+[0-9]+(:[0-9]+)?|:?\\([0-9]+([,:]?[0-9]+)?\\))?", ")",],]
+path_hyperlink_timeout_ms = 1
+show_count_badge = false
+
+[node]
+ignore_system_version = false
+
+[session]
+restore_unsaved_buffers = true
+trust_all_worktrees = false
+
+[global_lsp_settings]
+button = true
+request_timeout = 120
+semantic_token_rules = []
+
+[repl]
+max_columns = 128
+max_lines = 32
+output_max_height_lines = 0
+output_max_width_columns = 0
+
+[vim]
+default_mode = "normal"
+toggle_relative_line_numbers = false
+use_system_clipboard = "always"
+use_smartcase_find = false
+gdefault = false
+highlight_on_yank_duration = 200
+
+[which_key]
+enabled = false
+delay_ms = 1000
+
+[remote]
+ssh_connections = []
+read_ssh_config = true
+
+[agent_servers]
+
+[debugger]
+stepping_granularity = "line"
+save_breakpoints = true
+timeout = 2000
+dock = "bottom"
+log_dap_communications = true
+format_dap_log_messages = true
+button = true
+
+[log]
+
+[auto_install_extensions]
+html = true
+
+[preview]
+
+[nightly]
+
+[stable]
+
+[dev]
+
+[linux]
+
+[macos]
+
+[profiles]
+
+[theme.buffer_font_features]
+
+[theme.ui_font_features]
+calt = false
 
 [workspace.active_pane_modifiers]
 border_size = 0.0
@@ -70,42 +368,568 @@ inactive_opacity = 1.0
 left_padding = 0.2
 right_padding = 0.2
 
-[tab_bar]
-show = false
-show_nav_history_buttons = false
-show_tab_bar_buttons = false
-show_pinned_tabs_in_separate_row = false
+[workspace.command_aliases]
 
-[status_bar]
-"experimental.show" = false
-show_active_file = false
-active_language_button = false
-cursor_position_button = false
-line_endings_button = false
-active_encoding_button = "non_utf8"
+[editor.drag_and_drop_selection]
+enabled = true
+delay = 300
 
-[tabs]
-git_status = false
-close_position = "right"
-file_icons = false
-activate_on_close = "history"
-show_diagnostics = "off"
-show_close_button = "hover"
+[editor.toolbar]
+breadcrumbs = true
+quick_actions = true
+selections_menu = true
+agent_review = true
+code_actions = false
 
-[preview_tabs]
+[editor.scrollbar]
+show = "auto"
+cursors = true
+git_diff = true
+search_results = true
+selected_text = true
+selected_symbol = true
+diagnostics = "all"
+
+[editor.minimap]
+show = "never"
+display_in = "active_editor"
+thumb = "always"
+thumb_border = "left_open"
+max_width_columns = 80
+
+[editor.gutter]
+line_numbers = true
+runnables = true
+breakpoints = true
+folds = true
+min_line_number_digits = 4
+
+[editor.sticky_scroll]
 enabled = false
-enable_preview_from_project_panel = false
-enable_preview_from_file_finder = false
-enable_preview_from_multibuffer = false
-enable_preview_multibuffer_from_code_navigation = false
-enable_preview_file_from_code_navigation = false
-enable_keep_preview_on_code_navigation = false
 
-[git]
-git_gutter = "tracked_files"
-gutter_debounce = 0
+[editor.search]
+button = true
+whole_word = false
+case_sensitive = false
+include_ignored = false
+regex = false
+center_on_match = false
+
+[editor.jupyter]
+enabled = true
+
+[project.worktree]
+private_files = [ "**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/secrets.yml",]
+file_scan_exclusions = [ "**/.git", "**/.svn", "**/.hg", "**/.jj", "**/.sl", "**/.repo", "**/CVS", "**/.DS_Store", "**/Thumbs.db", "**/.classpath", "**/.settings",]
+file_scan_inclusions = [ ".env*",]
+hidden_files = [ "**/.*",]
+read_only_files = []
+
+[project.lsp]
+
+[project.context_servers]
+
+[project_panel.scrollbar]
+horizontal_scroll = true
+
+[project_panel.indent_guides]
+show = "always"
+
+[project_panel.auto_open]
+on_create = true
+on_paste = true
+on_drop = true
+
+[outline_panel.indent_guides]
+show = "always"
+
+[outline_panel.scrollbar]
+
+[git_panel.scrollbar]
+
+[agent.default_model]
+provider = "zed.dev"
+model = "claude-sonnet-4"
+enable_thinking = false
+
+[agent.tool_permissions]
+default = "confirm"
+
+[diagnostics.lsp_pull_diagnostics]
+enabled = true
+debounce_ms = 50
+
+[diagnostics.inline]
+enabled = false
+update_debounce_ms = 150
+padding = 4
+min_column = 0
+
+[git.inline_blame]
+enabled = true
+delay_ms = 0
+padding = 7
+show_commit_summary = false
+min_column = 0
+
+[git.blame]
+show_avatar = true
+
+[git.branch_picker]
+show_author_name = true
 
 [git.enabled]
 disable_git = false
 enable_status = true
 enable_diff = true
+
+[terminal.env]
+
+[terminal.toolbar]
+breadcrumbs = false
+
+[terminal.scrollbar]
+
+[language_models.anthropic]
+api_url = "https://api.anthropic.com"
+
+[language_models.bedrock]
+
+[language_models.google]
+api_url = "https://generativelanguage.googleapis.com"
+
+[language_models.ollama]
+api_url = "http://localhost:11434"
+
+[language_models.openai]
+api_url = "https://api.openai.com/v1"
+
+[language_models.openai_compatible]
+
+[language_models.opencode]
+api_url = "https://opencode.ai/zen"
+
+[language_models.open_router]
+api_url = "https://openrouter.ai/api/v1"
+
+[language_models.lmstudio]
+api_url = "http://localhost:1234/api/v0"
+
+[language_models.deepseek]
+api_url = "https://api.deepseek.com/v1"
+
+[language_models.mistral]
+api_url = "https://api.mistral.ai/v1"
+
+[language_models.vercel]
+api_url = "https://api.v0.dev/v1"
+
+[language_models.vercel_ai_gateway]
+api_url = "https://ai-gateway.vercel.sh/v1"
+
+[language_models.x_ai]
+api_url = "https://api.x.ai/v1"
+
+[language_models."zed.dev"]
+
+[global_lsp_settings.notifications]
+dismiss_timeout_ms = 5000
+
+[vim.custom_digraphs]
+
+[vim.cursor_shape]
+normal = "block"
+replace = "underline"
+visual = "block"
+insert = "inherit"
+
+[editor.scrollbar.axes]
+horizontal = true
+vertical = true
+
+[editor.jupyter.kernel_selections]
+
+[project.all_languages.defaults]
+show_completions_on_input = true
+show_completion_documentation = true
+colorize_brackets = false
+show_wrap_guides = true
+wrap_guides = []
+use_on_type_format = true
+use_autoclose = true
+use_auto_surround = true
+auto_indent = "syntax_aware"
+auto_indent_on_paste = true
+always_treat_brackets_as_autoclosed = false
+allow_rewrap = "in_comments"
+show_edit_predictions = true
+edit_predictions_disabled_in = []
+show_whitespaces = "selection"
+enable_language_server = true
+linked_edits = true
+language_servers = [ "...",]
+semantic_tokens = "off"
+document_folding_ranges = "off"
+document_symbols = "off"
+remove_trailing_whitespace_on_save = true
+extend_comment_on_newline = true
+extend_list_on_newline = true
+indent_list_on_tab = true
+ensure_final_newline_on_save = true
+format_on_save = "on"
+formatter = "auto"
+soft_wrap = "none"
+preferred_line_length = 80
+hard_tabs = false
+tab_size = 4
+debuggers = []
+word_diff_enabled = true
+
+[project.all_languages.edit_predictions]
+provider = "zed"
+disabled_globs = [ "**/.env*", "**/*.pem", "**/*.key", "**/*.cert", "**/*.crt", "**/.dev.vars", "**/secrets.yml", "**/.zed/settings.json", "/**/zed/settings.json", "/**/zed/keymap.json",]
+mode = "eager"
+enabled_in_text_threads = true
+
+[project.all_languages.file_types]
+JSONC = [ "**/.zed/*.json", "**/.vscode/**/*.json", "**/{zed,Zed}/{settings,keymap,tasks,debug}.json", "tsconfig*.json",]
+Markdown = [ ".rules", ".cursorrules", ".windsurfrules", ".clinerules",]
+"Shell Script" = [ ".env.*",]
+
+[agent.tool_permissions.tools]
+
+[agent.profiles.write]
+name = "Write"
+enable_all_context_servers = true
+
+[agent.profiles.ask]
+name = "Ask"
+
+[agent.profiles.minimal]
+name = "Minimal"
+enable_all_context_servers = false
+
+[terminal.detect_venv.on]
+directories = [ ".env", "env", ".venv", "venv",]
+activate_script = "default"
+conda_manager = "auto"
+
+[windows.languages.PHP]
+language_servers = [ "intelephense", "!phpactor", "!phptools", "...",]
+
+[project.all_languages.defaults.whitespace_map]
+space = "•"
+tab = "→"
+
+[project.all_languages.defaults.indent_guides]
+enabled = true
+line_width = 1
+active_line_width = 1
+coloring = "fixed"
+background_coloring = "disabled"
+
+[project.all_languages.defaults.inlay_hints]
+enabled = false
+show_type_hints = true
+show_parameter_hints = true
+show_value_hints = true
+show_other_hints = true
+show_background = false
+edit_debounce_ms = 700
+scroll_debounce_ms = 50
+
+[project.all_languages.defaults.code_actions_on_format]
+
+[project.all_languages.defaults.tasks]
+enabled = true
+prefer_lsp = true
+
+[project.all_languages.defaults.completions]
+words = "fallback"
+words_min_length = 3
+lsp = true
+lsp_fetch_timeout_ms = 0
+lsp_insert_mode = "replace_suffix"
+
+[project.all_languages.defaults.prettier]
+allowed = false
+plugins = []
+parser = ""
+
+[project.all_languages.defaults.jsx_tag_auto_close]
+enabled = true
+
+[project.all_languages.edit_predictions.copilot]
+enable_next_edit_suggestions = true
+
+[project.all_languages.edit_predictions.codestral]
+api_url = "https://codestral.mistral.ai"
+model = "codestral-latest"
+max_tokens = 150
+
+[project.all_languages.edit_predictions.ollama]
+api_url = "http://localhost:11434"
+model = "qwen2.5-coder:7b-base"
+prompt_format = "infer"
+max_output_tokens = 64
+
+[project.all_languages.edit_predictions.open_ai_compatible_api]
+api_url = ""
+model = ""
+prompt_format = "infer"
+max_output_tokens = 64
+
+[project.all_languages.languages.Astro]
+language_servers = [ "astro-language-server", "...",]
+
+[project.all_languages.languages.C]
+format_on_save = "off"
+use_on_type_format = false
+
+[project.all_languages.languages."C++"]
+format_on_save = "off"
+use_on_type_format = false
+
+[project.all_languages.languages.CSharp]
+language_servers = [ "roslyn", "!omnisharp", "...",]
+
+[project.all_languages.languages.Dart]
+tab_size = 2
+
+[project.all_languages.languages.Diff]
+show_edit_predictions = false
+remove_trailing_whitespace_on_save = false
+ensure_final_newline_on_save = false
+
+[project.all_languages.languages.EEx]
+language_servers = [ "elixir-ls", "!expert", "!next-ls", "!lexical", "...",]
+
+[project.all_languages.languages.Elixir]
+language_servers = [ "elixir-ls", "!expert", "!next-ls", "!lexical", "...",]
+
+[project.all_languages.languages.Elm]
+tab_size = 4
+
+[project.all_languages.languages.Erlang]
+language_servers = [ "erlang-ls", "!elp", "...",]
+
+[project.all_languages.languages."Git Commit"]
+allow_rewrap = "anywhere"
+soft_wrap = "editor_width"
+preferred_line_length = 72
+
+[project.all_languages.languages.Go]
+hard_tabs = true
+debuggers = [ "Delve",]
+
+[project.all_languages.languages.HEEx]
+language_servers = [ "elixir-ls", "!expert", "!next-ls", "!lexical", "...",]
+
+[project.all_languages.languages."HTML+ERB"]
+language_servers = [ "herb", "!ruby-lsp", "...",]
+
+[project.all_languages.languages.JavaScript]
+language_servers = [ "!typescript-language-server", "vtsls", "...",]
+
+[project.all_languages.languages."JS+ERB"]
+language_servers = [ "!ruby-lsp", "...",]
+
+[project.all_languages.languages.Kotlin]
+language_servers = [ "!kotlin-language-server", "kotlin-lsp", "...",]
+
+[project.all_languages.languages.LaTeX]
+formatter = "language_server"
+language_servers = [ "texlab", "...",]
+
+[project.all_languages.languages.Markdown]
+format_on_save = "off"
+use_on_type_format = false
+remove_trailing_whitespace_on_save = false
+allow_rewrap = "anywhere"
+soft_wrap = "editor_width"
+
+[project.all_languages.languages.PHP]
+language_servers = [ "phpactor", "!intelephense", "!phptools", "...",]
+
+[project.all_languages.languages."Plain Text"]
+allow_rewrap = "anywhere"
+soft_wrap = "editor_width"
+
+[project.all_languages.languages.Proto]
+language_servers = [ "buf", "!protols", "!protobuf-language-server", "...",]
+
+[project.all_languages.languages.Python]
+debuggers = [ "Debugpy",]
+language_servers = [ "basedpyright", "ruff", "!ty", "!pyrefly", "!pyright", "!pylsp", "...",]
+
+[project.all_languages.languages.Ruby]
+language_servers = [ "solargraph", "!ruby-lsp", "!rubocop", "!sorbet", "!steep", "!kanayago", "...",]
+
+[project.all_languages.languages.Rust]
+debuggers = [ "CodeLLDB",]
+
+[project.all_languages.languages.Starlark]
+language_servers = [ "starpls", "!buck2-lsp", "!tilt", "...",]
+
+[project.all_languages.languages.Svelte]
+language_servers = [ "svelte-language-server", "...",]
+
+[project.all_languages.languages.TSX]
+language_servers = [ "!typescript-language-server", "vtsls", "...",]
+
+[project.all_languages.languages.TypeScript]
+language_servers = [ "!typescript-language-server", "vtsls", "...",]
+
+[project.all_languages.languages.SystemVerilog]
+format_on_save = "off"
+language_servers = [ "!slang", "...",]
+use_on_type_format = false
+
+[project.all_languages.languages."Vue.js"]
+language_servers = [ "vue-language-server", "vtsls", "...",]
+
+[project.all_languages.languages."YAML+ERB"]
+language_servers = [ "!ruby-lsp", "...",]
+
+[project.all_languages.languages.Zig]
+language_servers = [ "zls", "...",]
+
+[project.dap.CodeLLDB.env]
+RUST_LOG = "info"
+
+[agent.profiles.write.tools]
+copy_path = true
+create_directory = true
+delete_path = true
+diagnostics = true
+edit_file = true
+fetch = true
+list_directory = true
+project_notifications = false
+move_path = true
+now = true
+find_path = true
+read_file = true
+restore_file_from_disk = true
+save_file = true
+open = true
+grep = true
+spawn_agent = true
+terminal = true
+thinking = true
+update_plan = true
+web_search = true
+
+[agent.profiles.ask.tools]
+diagnostics = true
+fetch = true
+list_directory = true
+project_notifications = false
+now = true
+find_path = true
+read_file = true
+open = true
+grep = true
+spawn_agent = true
+thinking = true
+update_plan = true
+web_search = true
+
+[agent.profiles.minimal.tools]
+
+[project.all_languages.defaults.inlay_hints.toggle_on_modifiers_press]
+control = false
+shift = false
+alt = false
+platform = false
+function = false
+
+[project.all_languages.defaults.tasks.variables]
+
+[project.all_languages.languages.Astro.prettier]
+allowed = true
+plugins = [ "prettier-plugin-astro",]
+
+[project.all_languages.languages.Blade.prettier]
+allowed = true
+
+[project.all_languages.languages.C.prettier]
+allowed = false
+
+[project.all_languages.languages."C++".prettier]
+allowed = false
+
+[project.all_languages.languages.CSS.prettier]
+allowed = true
+
+[project.all_languages.languages.Go.code_actions_on_format]
+"source.organizeImports" = true
+
+[project.all_languages.languages.GraphQL.prettier]
+allowed = true
+
+[project.all_languages.languages.HTML.prettier]
+allowed = true
+
+[project.all_languages.languages.Java.prettier]
+allowed = true
+plugins = [ "prettier-plugin-java",]
+
+[project.all_languages.languages.JavaScript.prettier]
+allowed = true
+
+[project.all_languages.languages.JSON.prettier]
+allowed = true
+
+[project.all_languages.languages.JSONC.prettier]
+allowed = true
+
+[project.all_languages.languages.LaTeX.prettier]
+allowed = true
+plugins = [ "prettier-plugin-latex",]
+
+[project.all_languages.languages.Markdown.completions]
+words = "disabled"
+
+[project.all_languages.languages.Markdown.prettier]
+allowed = true
+
+[project.all_languages.languages.PHP.prettier]
+allowed = true
+plugins = [ "@prettier/plugin-php",]
+parser = "php"
+
+[project.all_languages.languages."Plain Text".completions]
+words = "disabled"
+
+[project.all_languages.languages.Python.code_actions_on_format]
+"source.organizeImports.ruff" = true
+
+[project.all_languages.languages.SCSS.prettier]
+allowed = true
+
+[project.all_languages.languages.Svelte.prettier]
+allowed = true
+plugins = [ "prettier-plugin-svelte",]
+
+[project.all_languages.languages.TSX.prettier]
+allowed = true
+
+[project.all_languages.languages.Twig.prettier]
+allowed = true
+
+[project.all_languages.languages.TypeScript.prettier]
+allowed = true
+
+[project.all_languages.languages."Vue.js".prettier]
+allowed = true
+
+[project.all_languages.languages.XML.prettier]
+allowed = true
+plugins = [ "@prettier/plugin-xml",]
+
+[project.all_languages.languages.YAML.prettier]
+allowed = true
+
+[project.all_languages.languages.Python.formatter.language_server]
+name = "ruff"

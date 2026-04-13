@@ -167,6 +167,7 @@ members = [
     "crates/raijin-search",
     "crates/raijin-file-finder",
     "crates/raijin-project-panel",
+    "crates/raijin-project-registry",
     "crates/raijin-project-symbols",
     "crates/raijin-vim",
     # "crates/raijin-repl",  # see plan/29-HYBRID-TERMINAL-REPL.md — needs terminal type rework for Raijin's block architecture
@@ -440,6 +441,7 @@ raijin-diagnostics = { path = "crates/raijin-diagnostics" }
 raijin-search = { path = "crates/raijin-search" }
 raijin-file-finder = { path = "crates/raijin-file-finder" }
 raijin-project-panel = { path = "crates/raijin-project-panel" }
+raijin-project-registry = { path = "crates/raijin-project-registry" }
 raijin-project-symbols = { path = "crates/raijin-project-symbols" }
 raijin-vim = { path = "crates/raijin-vim" }
 raijin-repl = { path = "crates/raijin-repl" }

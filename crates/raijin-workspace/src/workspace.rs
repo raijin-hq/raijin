@@ -10317,16 +10317,7 @@ pub fn with_active_or_new_workspace(
             });
         }
         None => {
-            let app_state = AppState::global(cx);
-            if let Some(app_state) = app_state.upgrade() {
-                open_new(
-                    OpenOptions::default(),
-                    app_state,
-                    cx,
-                    move |workspace, window, cx| f(workspace, window, cx),
-                )
-                .detach_and_log_err(cx);
-            }
+            log::warn!("with_active_or_new_workspace: no MultiWorkspace window found, ignoring action");
         }
     }
 }

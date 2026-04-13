@@ -283,51 +283,46 @@ fn load_shell_from_passwd() -> Result<()> {
     Ok(())
 }
 
-/// Returns a shell escaped path for the current zed executable
-pub fn get_shell_safe_zed_path(shell_kind: shell::ShellKind) -> anyhow::Result<String> {
+/// Returns a shell escaped path for the current executable
+pub fn get_shell_safe_app_path(shell_kind: shell::ShellKind) -> anyhow::Result<String> {
     use anyhow::Context as _;
     use paths::PathExt;
-    let mut zed_path =
-        std::env::current_exe().context("Failed to determine current zed executable path.")?;
+    let mut raijin_path =
+        std::env::current_exe().context("Failed to determine current executable path.")?;
     if cfg!(target_os = "linux")
-        && !zed_path.is_file()
-        && let Some(truncated) = zed_path
+        && !raijin_path.is_file()
+        && let Some(truncated) = raijin_path
             .clone()
             .file_name()
             .and_then(|s| s.to_str())
             .and_then(|n| n.strip_suffix(" (deleted)"))
     {
         // Might have been deleted during update; let's use the new binary if there is one.
-        zed_path.set_file_name(truncated);
+        raijin_path.set_file_name(truncated);
     }
 
-    zed_path
+    raijin_path
         .try_shell_safe(shell_kind)
-        .context("Failed to shell-escape Zed executable path.")
+        .context("Failed to shell-escape executable path.")
 }
 
-/// Returns a path for the zed cli executable, this function
-/// should be called from the zed executable, not zed-cli.
-pub fn get_zed_cli_path() -> Result<PathBuf> {
+/// Returns a path for the Raijin CLI executable.
+pub fn get_raijin_cli_path() -> Result<PathBuf> {
     use anyhow::Context as _;
-    let zed_path =
-        std::env::current_exe().context("Failed to determine current zed executable path.")?;
-    let parent = zed_path
+    let raijin_path =
+        std::env::current_exe().context("Failed to determine current Raijin executable path.")?;
+    let parent = raijin_path
         .parent()
-        .context("Failed to determine parent directory of zed executable path.")?;
+        .context("Failed to determine parent directory of Raijin executable path.")?;
 
     let possible_locations: &[&str] = if cfg!(target_os = "macos") {
-        // On macOS, the zed executable and zed-cli are inside the app bundle,
-        // so here ./cli is for both installed and development builds.
         &["./cli"]
     } else if cfg!(target_os = "windows") {
-        // bin/zed.exe is for installed builds, ./cli.exe is for development builds.
-        &["bin/zed.exe", "./cli.exe"]
+        &["bin/raijin.exe", "./cli.exe"]
     } else if cfg!(target_os = "linux") || cfg!(target_os = "freebsd") {
-        // bin is the standard, ./cli is for the target directory in development builds.
-        &["../bin/zed", "./cli"]
+        &["../bin/raijin", "./cli"]
     } else {
-        anyhow::bail!("unsupported platform for determining zed-cli path");
+        anyhow::bail!("unsupported platform for determining Raijin CLI path");
     };
 
     possible_locations
@@ -337,11 +332,11 @@ pub fn get_zed_cli_path() -> Result<PathBuf> {
                 .join(p)
                 .canonicalize()
                 .ok()
-                .filter(|p| p != &zed_path)
+                .filter(|p| p != &raijin_path)
         })
         .with_context(|| {
             format!(
-                "could not find zed-cli from any of: {}",
+                "could not find Raijin CLI from any of: {}",
                 possible_locations.join(", ")
             )
         })

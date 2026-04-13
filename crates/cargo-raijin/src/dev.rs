@@ -1,7 +1,8 @@
 use anyhow::{bail, Context, Result};
 use notify_debouncer_mini::{new_debouncer, notify::RecursiveMode};
+use shared_child::SharedChild;
 use std::path::Path;
-use std::process::{Child, Command};
+use std::process::Command;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -40,10 +41,10 @@ pub fn run(workspace_root: &Path, release: bool) -> Result<()> {
 
     let mut child = launch_app(&bundle_path)?;
 
-    // Set up file watcher
+    // Set up file watcher (1s debounce like Tauri to prevent restart storms)
     let (tx, rx) = mpsc::channel();
     let mut debouncer =
-        new_debouncer(Duration::from_millis(500), tx).context("failed to create file watcher")?;
+        new_debouncer(Duration::from_secs(1), tx).context("failed to create file watcher")?;
 
     let watch_dirs = [
         "crates/raijin-app/src",
@@ -80,9 +81,8 @@ pub fn run(workspace_root: &Path, release: bool) -> Result<()> {
 
                 log::info!("🔄 Change detected, rebuilding...");
 
-                // Kill running app
-                let _ = child.kill();
-                let _ = child.wait();
+                // Kill the entire process tree (app + PTY shells + child processes)
+                kill_process_tree(&child);
 
                 // Rebuild
                 if cargo_build(workspace_root, release)? {
@@ -111,8 +111,7 @@ pub fn run(workspace_root: &Path, release: bool) -> Result<()> {
 
     // Cleanup
     log::info!("Shutting down...");
-    let _ = child.kill();
-    let _ = child.wait();
+    kill_process_tree(&child);
 
     Ok(())
 }
@@ -132,17 +131,49 @@ fn cargo_build(workspace_root: &Path, release: bool) -> Result<bool> {
     Ok(status.success())
 }
 
-fn launch_app(bundle_path: &Path) -> Result<Child> {
-    // Launch the binary directly from the .app bundle so we get a real
-    // Child handle for kill/restart. Using `open` detaches the process
-    // and opens new instances on each rebuild.
+fn launch_app(bundle_path: &Path) -> Result<Arc<SharedChild>> {
     let binary = bundle_path.join("Contents/MacOS/raijin");
     log::info!("🚀 Launching {}", binary.display());
 
-    // Set RAIJIN_BUNDLE_PATH so the app knows it's running from a bundle
-    // (macOS needs this for icon loading via Assets.car)
-    Command::new(&binary)
+    let cmd = Command::new(&binary)
         .env("RAIJIN_BUNDLE_PATH", bundle_path)
         .spawn()
-        .with_context(|| format!("failed to launch {}", binary.display()))
+        .with_context(|| format!("failed to launch {}", binary.display()))?;
+
+    Ok(Arc::new(SharedChild::new(cmd).expect("failed to wrap child process")))
+}
+
+/// Kill the entire process tree rooted at `child` (Tauri pattern).
+/// Uses `pgrep -P` to find all descendants recursively, then kills them all.
+fn kill_process_tree(child: &Arc<SharedChild>) {
+    let pid = child.id();
+
+    // Kill all descendants first, then the parent
+    if let Ok(output) = Command::new("sh")
+        .arg("-c")
+        .arg(format!(
+            r#"
+            get_children() {{
+                local cpids=$(pgrep -P "$1" 2>/dev/null)
+                for cpid in $cpids; do
+                    get_children "$cpid"
+                    echo "$cpid"
+                done
+            }}
+            get_children {}
+            "#,
+            pid
+        ))
+        .output()
+    {
+        let pids = String::from_utf8_lossy(&output.stdout);
+        for line in pids.lines() {
+            if let Ok(cpid) = line.trim().parse::<i32>() {
+                unsafe { libc::kill(cpid, libc::SIGKILL); }
+            }
+        }
+    }
+
+    let _ = child.kill();
+    let _ = child.wait();
 }

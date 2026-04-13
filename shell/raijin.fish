@@ -25,7 +25,10 @@ function _raijin_precmd --on-event fish_prompt
     set -l _git_branch ""
     set -l _git_dirty "false"
 
+    set -l _git_root ""
+
     if git rev-parse --git-dir >/dev/null 2>&1
+        set _git_root (git rev-parse --show-toplevel 2>/dev/null)
         set _git_branch (git rev-parse --abbrev-ref HEAD 2>/dev/null)
         if test -n "$_git_branch"; and not git diff --quiet HEAD 2>/dev/null
             set _git_dirty "true"
@@ -41,6 +44,7 @@ function _raijin_precmd --on-event fish_prompt
     if test -n "$_git_branch"
         set _json "$_json,\"git_branch\":\"$_git_branch\""
         set _json "$_json,\"git_dirty\":$_git_dirty"
+        set _json "$_json,\"git_root\":\"$_git_root\""
     end
     if test $_raijin_state -eq 1
         set _json "$_json,\"last_exit_code\":$ret"
