@@ -15,6 +15,7 @@ pub mod grid_snapshot;
 pub mod live_block;
 
 // Terminal UI modules
+pub mod branch_picker;
 pub mod input;
 pub mod shell_install_modal;
 pub mod terminal_pane;

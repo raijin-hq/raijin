@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::rc::Rc;
 
 use inazuma::{AnyElement, App, Window};
 use raijin_theme::{ActiveTheme, ChipColors};
@@ -8,11 +9,35 @@ use crate::context::ChipContext;
 use crate::provider::{ChipId, ChipOutput, ChipProvider};
 use crate::render::render_standard_chip;
 
-/// Signature for custom chip render functions.
+/// Context passed to custom chip renderers.
 ///
-/// Providers with special UI (popovers, multi-color segments) register
-/// a custom render function that replaces the default `render_standard_chip`.
-pub type ChipRenderFn = fn(&ChipOutput, &ChipColors, &mut Window, &App) -> AnyElement;
+/// Provides access to workspace handles, terminal state, and other
+/// resources that renderers may need for interactive features
+/// (opening modals, dispatching actions, etc.).
+///
+/// Extensible — new fields can be added without breaking existing renderers.
+pub struct ChipRenderContext {
+    /// Workspace handle for opening modals, panels, etc.
+    pub workspace: Option<Box<dyn std::any::Any>>,
+    /// Current working directory.
+    pub cwd: String,
+}
+
+impl Default for ChipRenderContext {
+    fn default() -> Self {
+        Self {
+            workspace: None,
+            cwd: String::new(),
+        }
+    }
+}
+
+/// Custom chip render function.
+///
+/// Closures can capture state (workspace handles, terminal references, etc.)
+/// for rich interactions — opening modals, dispatching actions, running commands.
+pub type ChipRenderFn =
+    Rc<dyn Fn(&ChipOutput, &ChipColors, &ChipRenderContext, &mut Window, &App) -> AnyElement>;
 
 /// Registry of chip providers and their optional custom renderers.
 ///
@@ -63,6 +88,7 @@ impl ChipRegistry {
     pub fn render_all(
         &self,
         ctx: &ChipContext,
+        render_ctx: &ChipRenderContext,
         window: &mut Window,
         cx: &App,
     ) -> Vec<AnyElement> {
@@ -84,7 +110,7 @@ impl ChipRegistry {
             .iter()
             .map(|output| {
                 if let Some(render_fn) = self.renderers.get(output.id) {
-                    render_fn(output, chip_colors, window, cx)
+                    render_fn(output, chip_colors, render_ctx, window, cx)
                 } else {
                     render_standard_chip(output, chip_colors, window, cx)
                 }
@@ -125,8 +151,14 @@ impl ChipRegistry {
     }
 
     /// Set a custom renderer for an already-registered provider.
-    pub fn set_renderer(&mut self, id: ChipId, render: ChipRenderFn) {
-        self.renderers.insert(id, render);
+    ///
+    /// The closure can capture state (workspace handles, terminal references, etc.).
+    pub fn set_renderer(
+        &mut self,
+        id: ChipId,
+        render: impl Fn(&ChipOutput, &ChipColors, &ChipRenderContext, &mut Window, &App) -> AnyElement + 'static,
+    ) {
+        self.renderers.insert(id, Rc::new(render));
     }
 
     /// Get the number of registered providers.

@@ -19,6 +19,9 @@ test-support = ["inazuma/test-support"]
 anyhow.workspace = true
 dirs.workspace = true
 inazuma.workspace = true
+inazuma-fuzzy.workspace = true
+inazuma-picker.workspace = true
+inazuma-util.workspace = true
 log.workspace = true
 lsp-types = { version = "0.97", features = ["proposed"] }
 parking_lot.workspace = true

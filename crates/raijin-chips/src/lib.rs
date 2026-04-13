@@ -30,5 +30,5 @@ pub use context::{
 };
 pub use icons::icon_name_from_str;
 pub use provider::{ChipId, ChipOutput, ChipProvider, ChipSegment, parse_version_number};
-pub use registry::{ChipRegistry, ChipRenderFn};
+pub use registry::{ChipRegistry, ChipRenderContext, ChipRenderFn};
 pub use render::{render_standard_chip, chip_theme_color};

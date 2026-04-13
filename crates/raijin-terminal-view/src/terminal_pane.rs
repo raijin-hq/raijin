@@ -831,10 +831,14 @@ impl TerminalPane {
     fn render_input_area(&self, window: &mut Window, cx: &App) -> impl IntoElement {
         let ctx = self.build_chip_context(cx);
 
-        // Render all chips via the registry. The shell chip is rendered
-        // separately because its Popover needs terminal-specific state
-        // (PendingShellSwitch global, detect_available_shells).
-        let elements = self.chip_registry.render_all(&ctx, window, cx);
+        let render_ctx = raijin_chips::ChipRenderContext {
+            workspace: self.workspace.as_ref().map(|ws| {
+                Box::new(ws.clone()) as Box<dyn std::any::Any>
+            }),
+            cwd: self.shell_context.cwd.clone(),
+        };
+
+        let elements = self.chip_registry.render_all(&ctx, &render_ctx, window, cx);
 
         let chips = h_flex()
             .gap(px(6.0))
@@ -1343,6 +1347,7 @@ fn keystroke_to_bytes(keystroke: &inazuma::Keystroke, terminal: &Terminal) -> Ve
 fn render_shell_chip(
     output: &raijin_chips::ChipOutput,
     colors: &raijin_theme::ChipColors,
+    _render_ctx: &raijin_chips::ChipRenderContext,
     _window: &mut Window,
     _cx: &App,
 ) -> inazuma::AnyElement {
@@ -1457,132 +1462,54 @@ fn render_shell_chip(
 }
 
 // ---------------------------------------------------------------------------
-// Git branch chip custom renderer (terminal-specific, needs PendingBranchSwitch)
+// Git branch chip custom renderer — opens modal BranchPicker via workspace
 // ---------------------------------------------------------------------------
 
-/// List local git branches by running `git branch --list`.
-fn list_git_branches(cwd: &str) -> Vec<String> {
-    let output = std::process::Command::new("git")
-        .args(["branch", "--list", "--no-color"])
-        .current_dir(cwd)
-        .output()
-        .ok();
-
-    let Some(output) = output else {
-        return Vec::new();
-    };
-
-    String::from_utf8_lossy(&output.stdout)
-        .lines()
-        .map(|line| line.trim_start_matches(['*', ' ']).trim().to_string())
-        .filter(|b| !b.is_empty())
-        .collect()
-}
-
-/// Custom renderer for the git branch chip — wraps it in a Popover with branch selector.
+/// Custom renderer for the git branch chip.
+///
+/// Renders as an interactive chip. On click, opens a full modal BranchPicker
+/// with fuzzy search, keyboard navigation, and accent-colored current branch.
 fn render_git_branch_chip(
     output: &raijin_chips::ChipOutput,
     colors: &raijin_theme::ChipColors,
+    render_ctx: &raijin_chips::ChipRenderContext,
     _window: &mut Window,
     _cx: &App,
 ) -> inazuma::AnyElement {
     let current_branch = output.label.clone();
     let icon_color = colors.git_branch_icon;
     let text_color = colors.git_branch_text;
+    let cwd = render_ctx.cwd.clone();
 
-    // Get CWD for branch listing
-    let cwd = std::env::current_dir()
-        .map(|p| p.to_string_lossy().to_string())
-        .unwrap_or_else(|_| ".".to_string());
-    let branches = list_git_branches(&cwd);
+    // Extract workspace handle from render context (downcast from Box<dyn Any>)
+    let workspace_handle: Option<inazuma::WeakEntity<Workspace>> =
+        render_ctx.workspace.as_ref().and_then(|ws| {
+            ws.downcast_ref::<inazuma::WeakEntity<Workspace>>().cloned()
+        });
 
-    Popover::new("branch-selector")
-        .anchor(Anchor::BottomLeft)
-        .bg(oklcha(0.23, 0.0, 0.0, 1.0))
-        .border_color(oklcha(0.30, 0.0, 0.0, 1.0))
-        .rounded_lg()
-        .shadow_lg()
-        .trigger(
+    div()
+        .id("git-branch-chip")
+        .cursor_pointer()
+        .child(
             Chip::new(current_branch.clone())
                 .icon_colored(raijin_ui::IconName::GitBranch, icon_color)
                 .color(text_color)
                 .interactive()
                 .tooltip(raijin_ui::ChipTooltip::text("Switch branch")),
         )
-        .content(move |_state, _window, cx| {
-            let popover_entity = cx.entity();
-            let mut list = v_flex()
-                .min_w(px(220.0));
-
-            if branches.is_empty() {
-                return list
-                    .child(
-                        div()
-                            .px(px(8.0))
-                            .py(px(5.0))
-                            .text_sm()
-                            .text_color(Oklch::white().opacity(0.4))
-                            .child("No branches found"),
-                    )
-                    .into_any_element();
+        .on_click({
+            move |_, window, cx| {
+                let Some(ws) = workspace_handle.as_ref().and_then(|w| w.upgrade()) else {
+                    return;
+                };
+                let branches = crate::branch_picker::list_git_branches(&cwd);
+                let current = current_branch.clone();
+                ws.update(cx, |workspace, cx| {
+                    workspace.toggle_modal(window, cx, |window, cx| {
+                        crate::branch_picker::BranchPicker::new(branches, current, window, cx)
+                    });
+                });
             }
-
-            for branch in &branches {
-                let is_current = *branch == current_branch;
-                let branch_name = branch.clone();
-                let branch_for_click = branch.clone();
-                let popover = popover_entity.clone();
-
-                let row = div()
-                    .id(inazuma::ElementId::Name(
-                        format!("branch-{}", branch_name).into(),
-                    ))
-                    .px(px(8.0))
-                    .py(px(5.0))
-                    .text_sm()
-                    .rounded(px(4.0))
-                    .when(!is_current, |s| {
-                        s.cursor_pointer()
-                            .hover(|s| s.bg(Oklch::white().opacity(0.06)))
-                    })
-                    .on_mouse_down(
-                        inazuma::MouseButton::Left,
-                        move |_, window, cx| {
-                            if is_current {
-                                return;
-                            }
-                            popover.update(cx, |state, cx| {
-                                state.dismiss(window, cx);
-                            });
-                            cx.global_mut::<PendingBranchSwitch>().0 =
-                                Some(branch_for_click.clone());
-                            window.refresh();
-                        },
-                    )
-                    .child(
-                        h_flex()
-                            .items_center()
-                            .gap(px(8.0))
-                            .child(
-                                div()
-                                    .w(px(14.0))
-                                    .text_center()
-                                    .when(is_current, |s| {
-                                        s.text_color(rgb(0x14F195)).child("✓")
-                                    }),
-                            )
-                            .child(
-                                div()
-                                    .when(is_current, |s| s.text_color(rgb(0x14F195)))
-                                    .when(!is_current, |s| s.text_color(rgb(0xf1f1f1)))
-                                    .child(branch_name),
-                            ),
-                    );
-
-                list = list.child(row);
-            }
-            list.into_any_element()
         })
         .into_any_element()
 }
-
