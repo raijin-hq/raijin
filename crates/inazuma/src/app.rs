@@ -41,6 +41,7 @@ pub use app_struct::{App, SHUTDOWN_TIMEOUT};
 pub use application::{Application, SystemWindowTab, SystemWindowTabController};
 pub use types::{
     AnyDrag, AnyTooltip, AppCell, AppRef, AppRefMut, GpuiBorrow, KeystrokeEvent, QuitMode,
+    TooltipPlacement,
 };
 
 // pub(crate) re-exports needed by the rest of the crate

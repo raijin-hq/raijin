@@ -545,6 +545,8 @@ impl Interactivity {
         self.tooltip_builder = Some(TooltipBuilder {
             build: Rc::new(build_tooltip),
             hoverable: false,
+            placement: TooltipPlacement::Mouse,
+            delay: None,
         });
     }
 
@@ -564,7 +566,23 @@ impl Interactivity {
         self.tooltip_builder = Some(TooltipBuilder {
             build: Rc::new(build_tooltip),
             hoverable: true,
+            placement: TooltipPlacement::Mouse,
+            delay: None,
         });
+    }
+
+    /// Sets the placement strategy for this element's tooltip.
+    pub fn tooltip_placement(&mut self, placement: TooltipPlacement) {
+        if let Some(builder) = &mut self.tooltip_builder {
+            builder.placement = placement;
+        }
+    }
+
+    /// Sets the delay before the tooltip appears. `Duration::ZERO` for instant.
+    pub fn tooltip_delay(&mut self, delay: Duration) {
+        if let Some(builder) = &mut self.tooltip_builder {
+            builder.delay = Some(delay);
+        }
     }
 
     /// Block the mouse from all interactions with elements behind this element's hitbox. Typically

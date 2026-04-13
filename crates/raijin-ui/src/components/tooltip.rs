@@ -279,6 +279,47 @@ where
     )
 }
 
+/// A compact tooltip for chip elements — smaller, Warp-style.
+///
+/// Renders as a tight pill above the cursor with minimal padding,
+/// light background, and small text.
+pub struct ChipTooltip {
+    title: SharedString,
+}
+
+impl ChipTooltip {
+    /// Returns a closure suitable for use with `.tooltip()` on a chip element.
+    pub fn text(title: impl Into<SharedString>) -> impl Fn(&mut Window, &mut App) -> AnyView {
+        let title = title.into();
+        move |_, cx| {
+            cx.new(|_| ChipTooltip {
+                title: title.clone(),
+            })
+            .into()
+        }
+    }
+}
+
+impl Render for ChipTooltip {
+    fn render(&mut self, _: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
+        let colors = cx.theme().colors();
+
+        div()
+            .py(px(3.0))
+            .px(px(8.0))
+            .rounded(px(6.0))
+            .bg(colors.element_background)
+            .border_1()
+            .border_color(colors.border)
+            .shadow_sm()
+            .child(
+                Label::new(self.title.clone())
+                    .size(LabelSize::Small)
+                    .color(Color::Default),
+            )
+    }
+}
+
 pub struct LinkPreview {
     link: SharedString,
 }

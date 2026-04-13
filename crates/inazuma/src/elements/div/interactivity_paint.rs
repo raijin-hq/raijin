@@ -712,14 +712,16 @@ impl Interactivity {
                     .get_or_insert_with(Default::default)
                     .clone();
 
+                let tooltip_placement = tooltip_builder.placement;
+                let tooltip_delay = tooltip_builder.delay;
                 let tooltip_is_hoverable = tooltip_builder.hoverable;
                 let build_tooltip = Rc::new(move |window: &mut Window, cx: &mut App| {
                     Some(((tooltip_builder.build)(window, cx), tooltip_is_hoverable))
                 });
                 // Use bounds instead of testing hitbox since this is called during prepaint.
+                let source_bounds = hitbox.bounds;
                 let check_is_hovered_during_prepaint = Rc::new({
                     let pending_mouse_down = pending_mouse_down.clone();
-                    let source_bounds = hitbox.bounds;
                     move |window: &Window| {
                         !window.last_input_was_keyboard()
                             && pending_mouse_down.borrow().is_none()
@@ -738,6 +740,9 @@ impl Interactivity {
                     build_tooltip,
                     check_is_hovered,
                     check_is_hovered_during_prepaint,
+                    hitbox.bounds,
+                    tooltip_placement,
+                    tooltip_delay,
                     window,
                 );
             }

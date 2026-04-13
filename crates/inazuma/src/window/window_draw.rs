@@ -1,7 +1,7 @@
 use crate::{
     AnyElement, App, AppContext, Asset, AvailableSpace, Bounds,
     Context, Entity, Pixels,
-    Point, TextStyleRefinement,
+    Point, TextStyleRefinement, TooltipPlacement,
     prelude::*, px, rems,
 };
 use anyhow::Result;
@@ -206,37 +206,85 @@ impl Window {
             };
             let mut element = tooltip_request.tooltip.view.clone().into_any();
             let mouse_position = tooltip_request.tooltip.mouse_position;
+            let element_bounds_opt = tooltip_request.tooltip.element_bounds;
+            let placement = tooltip_request.tooltip.placement;
             let tooltip_size = element.layout_as_root(AvailableSpace::min_size(), self, cx);
 
-            let mut tooltip_bounds =
-                Bounds::new(mouse_position + point(px(1.), px(1.)), tooltip_size);
             let window_bounds = Bounds {
                 origin: Point::default(),
                 size: self.viewport_size(),
             };
 
-            if tooltip_bounds.right() > window_bounds.right() {
-                let new_x = mouse_position.x - tooltip_bounds.size.width - px(1.);
-                if new_x >= Pixels::ZERO {
-                    tooltip_bounds.origin.x = new_x;
-                } else {
-                    tooltip_bounds.origin.x = cmp::max(
-                        Pixels::ZERO,
-                        tooltip_bounds.origin.x - tooltip_bounds.right() - window_bounds.right(),
-                    );
-                }
-            }
+            let gap = px(6.);
 
+            let mut tooltip_bounds = match (placement, element_bounds_opt) {
+                (TooltipPlacement::AboveElement, Some(eb)) => {
+                    let x = (eb.center().x - tooltip_size.width / 2.0)
+                        .max(Pixels::ZERO)
+                        .min(window_bounds.right() - tooltip_size.width);
+                    let y = eb.origin.y - tooltip_size.height - gap;
+                    // Flip below if no space above
+                    let y = if y >= Pixels::ZERO { y } else { eb.bottom() + gap };
+                    Bounds::new(point(x, y), tooltip_size)
+                }
+                (TooltipPlacement::BelowElement, Some(eb)) => {
+                    let x = (eb.center().x - tooltip_size.width / 2.0)
+                        .max(Pixels::ZERO)
+                        .min(window_bounds.right() - tooltip_size.width);
+                    let y = eb.bottom() + gap;
+                    // Flip above if no space below
+                    let y = if y + tooltip_size.height <= window_bounds.bottom() {
+                        y
+                    } else {
+                        (eb.origin.y - tooltip_size.height - gap).max(Pixels::ZERO)
+                    };
+                    Bounds::new(point(x, y), tooltip_size)
+                }
+                (TooltipPlacement::RightOfElement, Some(eb)) => {
+                    let x = eb.right() + gap;
+                    let y = (eb.center().y - tooltip_size.height / 2.0)
+                        .max(Pixels::ZERO)
+                        .min(window_bounds.bottom() - tooltip_size.height);
+                    // Flip left if no space right
+                    let x = if x + tooltip_size.width <= window_bounds.right() {
+                        x
+                    } else {
+                        (eb.origin.x - tooltip_size.width - gap).max(Pixels::ZERO)
+                    };
+                    Bounds::new(point(x, y), tooltip_size)
+                }
+                (TooltipPlacement::LeftOfElement, Some(eb)) => {
+                    let x = eb.origin.x - tooltip_size.width - gap;
+                    let y = (eb.center().y - tooltip_size.height / 2.0)
+                        .max(Pixels::ZERO)
+                        .min(window_bounds.bottom() - tooltip_size.height);
+                    // Flip right if no space left
+                    let x = if x >= Pixels::ZERO { x } else { eb.right() + gap };
+                    Bounds::new(point(x, y), tooltip_size)
+                }
+                // Mouse placement (default) or missing element bounds
+                _ => {
+                    let origin = mouse_position + point(px(1.), px(1.));
+                    Bounds::new(origin, tooltip_size)
+                }
+            };
+
+            // Clamp to window bounds
+            if tooltip_bounds.right() > window_bounds.right() {
+                tooltip_bounds.origin.x =
+                    (window_bounds.right() - tooltip_bounds.size.width).max(Pixels::ZERO);
+            }
+            if tooltip_bounds.origin.x < Pixels::ZERO {
+                tooltip_bounds.origin.x = Pixels::ZERO;
+            }
             if tooltip_bounds.bottom() > window_bounds.bottom() {
                 let new_y = mouse_position.y - tooltip_bounds.size.height - px(1.);
                 if new_y >= Pixels::ZERO {
                     tooltip_bounds.origin.y = new_y;
-                } else {
-                    tooltip_bounds.origin.y = cmp::max(
-                        Pixels::ZERO,
-                        tooltip_bounds.origin.y - tooltip_bounds.bottom() - window_bounds.bottom(),
-                    );
                 }
+            }
+            if tooltip_bounds.origin.y < Pixels::ZERO {
+                tooltip_bounds.origin.y = Pixels::ZERO;
             }
 
             // It's possible for an element to have an active tooltip while not being painted (e.g.

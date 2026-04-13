@@ -3,21 +3,19 @@ use std::path::PathBuf;
 use std::sync::Arc;
 
 use anyhow::{Context, Result, anyhow, bail};
-use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, WindowBackgroundAppearance, oklcha, px};
+use inazuma::{FontStyle, FontWeight, HighlightStyle, Oklch, Rgba, WindowBackgroundAppearance, px};
 use inazuma_refineable::Refineable;
 
 use crate::accent::AccentColors;
 use crate::colors::{
-    BlockColors, BlockColorsRefinement, ChartColors, ChartColorsRefinement, ChipColors,
-    ChipColorsRefinement, EditorColors,
-    EditorColorsRefinement, MinimapColors, MinimapColorsRefinement, PaneColors,
-    PaneColorsRefinement, PanelColors, PanelColorsRefinement, ScrollbarColors,
-    ScrollbarColorsRefinement, SearchColors, SearchColorsRefinement, StatusBarColors,
-    StatusBarColorsRefinement, TabColors, TabColorsRefinement, TerminalAnsiColors,
-    TerminalAnsiColorsRefinement, TerminalColors, TerminalColorsRefinement, ThemeColors,
-    ThemeColorsRefinement, TitleBarColors, TitleBarColorsRefinement, ToolbarColors,
-    ToolbarColorsRefinement, VersionControlColors, VersionControlColorsRefinement, VimColors,
-    VimColorsRefinement,
+    BlockColorsRefinement, ChartColorsRefinement, ChipColorsRefinement,
+    EditorColorsRefinement, MinimapColorsRefinement,
+    PaneColorsRefinement, PanelColorsRefinement,
+    ScrollbarColorsRefinement, SearchColorsRefinement,
+    StatusBarColorsRefinement, TabColorsRefinement,
+    TerminalAnsiColorsRefinement, TerminalColorsRefinement, ThemeColors,
+    ThemeColorsRefinement, TitleBarColorsRefinement, ToolbarColorsRefinement,
+    VersionControlColorsRefinement, VimColorsRefinement,
 };
 use crate::players::{PlayerColor, PlayerColors};
 use crate::status::{StatusColors, StatusStyle};
@@ -91,9 +89,9 @@ pub fn load_theme_from_toml_with_base_dir(
     flatten_table(style, "", &mut flat);
 
     // --- Parse components ---
-    let colors = parse_theme_colors(&flat)?;
-    let status = parse_status_colors(&flat)?;
-    let players = parse_players(players_value)?;
+    let colors = parse_theme_colors(&flat, appearance)?;
+    let status = parse_status_colors(&flat, appearance)?;
+    let players = parse_players(players_value, appearance)?;
     let syntax = parse_syntax_theme(syntax_value)?;
     let background_image = parse_background_image(bg_image_value)?;
 
@@ -279,8 +277,14 @@ fn is_status_key(key: &str) -> bool {
 }
 
 /// Parses the flattened style table into ThemeColors.
-fn parse_theme_colors(flat: &HashMap<String, String>) -> Result<ThemeColors> {
-    let mut colors = default_theme_colors();
+///
+/// Uses the appearance-appropriate defaults from `default_colors.rs` as base,
+/// then refines with any colors specified in the TOML.
+fn parse_theme_colors(flat: &HashMap<String, String>, appearance: Appearance) -> Result<ThemeColors> {
+    let mut colors = match appearance {
+        Appearance::Dark => ThemeColors::dark(),
+        Appearance::Light => ThemeColors::light(),
+    };
     let mut refinement = ThemeColorsRefinement::default();
 
     for (key, value) in flat {
@@ -618,8 +622,11 @@ fn set_chip_field(refinement: &mut ChipColorsRefinement, name: &str, color: Oklc
 
 // ---------------------------------------------------------------------------
 
-fn parse_status_colors(flat: &HashMap<String, String>) -> Result<StatusColors> {
-    let defaults = default_status_colors();
+fn parse_status_colors(flat: &HashMap<String, String>, appearance: Appearance) -> Result<StatusColors> {
+    let defaults = match appearance {
+        Appearance::Dark => StatusColors::dark(),
+        Appearance::Light => StatusColors::light(),
+    };
 
     Ok(StatusColors {
         conflict: parse_status_style(flat, "conflict").unwrap_or(defaults.conflict),
@@ -676,7 +683,12 @@ fn parse_status_style(flat: &HashMap<String, String>, name: &str) -> Option<Stat
 // Player colors parsing
 // ---------------------------------------------------------------------------
 
-fn parse_players(value: Option<&toml::Value>) -> Result<Vec<PlayerColor>> {
+fn parse_players(value: Option<&toml::Value>, appearance: Appearance) -> Result<Vec<PlayerColor>> {
+    let default_players = || match appearance {
+        Appearance::Dark => PlayerColors::dark().0,
+        Appearance::Light => PlayerColors::light().0,
+    };
+
     let arr = match value {
         Some(toml::Value::Array(arr)) => arr,
         _ => return Ok(default_players()),
@@ -722,6 +734,7 @@ fn parse_players(value: Option<&toml::Value>) -> Result<Vec<PlayerColor>> {
     if players.is_empty() {
         return Ok(default_players());
     }
+
 
     Ok(players)
 }
@@ -812,360 +825,6 @@ fn parse_background_image(value: Option<&toml::Value>) -> Result<Option<ThemeBac
         .unwrap_or(15);
 
     Ok(Some(ThemeBackgroundImage { path, opacity }))
-}
-
-// ---------------------------------------------------------------------------
-// Defaults — base values for partial themes
-// ---------------------------------------------------------------------------
-
-/// Converts a hex u32 (0xRRGGBB) to Oklch.
-fn hex(value: u32) -> Oklch {
-    let r = ((value >> 16) & 0xFF) as f32 / 255.0;
-    let g = ((value >> 8) & 0xFF) as f32 / 255.0;
-    let b = (value & 0xFF) as f32 / 255.0;
-    Oklch::from(Rgba { r, g, b, a: 1.0 })
-}
-
-fn hex_a(value: u32, alpha: f32) -> Oklch {
-    let mut c = hex(value);
-    c.a = alpha;
-    c
-}
-
-/// Neutral gray base for ThemeColors — used as fallback for any field
-/// not specified in a TOML theme file.
-pub fn default_theme_colors() -> ThemeColors {
-    let bg = hex(0x121212);
-    let fg = hex(0xf1f1f1);
-    let accent = hex(0x00BFFF);
-    let surface = hex(0x1a1a1a);
-    let elevated = hex(0x222222);
-    let border_color = hex(0x333333);
-    let muted = hex(0x888888);
-    let disabled = hex(0x555555);
-    let transparent = oklcha(0.0, 0.0, 0.0, 0.0);
-
-    ThemeColors {
-        // Semantic tokens
-        primary: accent,
-        primary_foreground: fg,
-        secondary: surface,
-        secondary_foreground: fg,
-        muted: hex(0x1e1e1e),
-        muted_foreground: muted,
-        accent,
-        accent_foreground: fg,
-        destructive: hex(0xff5555),
-        destructive_foreground: fg,
-        background: bg,
-        foreground: fg,
-        card: surface,
-        card_foreground: fg,
-        popover: elevated,
-        popover_foreground: fg,
-        border: border_color,
-        input: hex(0x1e1e1e),
-        ring: accent,
-
-        // Extended base tokens
-        surface,
-        elevated_surface: elevated,
-        border_variant: hex(0x2a2a2a),
-        border_focused: accent,
-        border_selected: accent,
-        border_transparent: transparent,
-        border_disabled: hex(0x2a2a2a),
-        element_background: hex(0x1e1e1e),
-        element_hover: hex(0x252525),
-        element_active: hex(0x2a2a2a),
-        element_selected: hex(0x2e2e2e),
-        element_disabled: hex(0x1a1a1a),
-        element_selection: hex_a(0x14F195, 0.15),
-        ghost_element_background: transparent,
-        ghost_element_hover: hex_a(0xffffff, 0.05),
-        ghost_element_active: hex_a(0xffffff, 0.08),
-        ghost_element_selected: hex_a(0xffffff, 0.1),
-        ghost_element_disabled: transparent,
-        drop_target_background: hex_a(0x14F195, 0.1),
-        drop_target_border: accent,
-        text: fg,
-        text_muted: muted,
-        text_placeholder: hex(0x666666),
-        text_disabled: disabled,
-        text_accent: accent,
-        icon: fg,
-        icon_muted: muted,
-        icon_disabled: disabled,
-        icon_placeholder: hex(0x666666),
-        icon_accent: accent,
-        link_text_hover: accent,
-        debugger_accent: hex(0xff9e64),
-
-        // Contextual sub-structs
-        editor: EditorColors {
-            foreground: fg,
-            background: bg,
-            gutter_background: bg,
-            subheader_background: surface,
-            active_line_background: hex_a(0xffffff, 0.03),
-            highlighted_line_background: hex_a(0xffffff, 0.05),
-            debugger_active_line_background: hex_a(0xff9e64, 0.15),
-            line_number: hex(0x555555),
-            active_line_number: fg,
-            hover_line_number: fg,
-            invisible: hex(0x444444),
-            wrap_guide: hex(0x2a2a2a),
-            active_wrap_guide: hex(0x333333),
-            indent_guide: hex(0x2a2a2a),
-            indent_guide_active: hex(0x444444),
-            document_highlight_read_background: hex_a(0x14F195, 0.1),
-            document_highlight_write_background: hex_a(0x14F195, 0.15),
-            document_highlight_bracket_background: hex_a(0x14F195, 0.1),
-        },
-        terminal: TerminalColors {
-            background: bg,
-            foreground: fg,
-            bright_foreground: hex(0xffffff),
-            dim_foreground: hex(0x999999),
-            accent: hex(0x00BFFF),
-            ansi: TerminalAnsiColors {
-                background: bg,
-                black: hex(0x1a1a2e),
-                bright_black: hex(0x555555),
-                dim_black: hex(0x111111),
-                red: hex(0xff5555),
-                bright_red: hex(0xff7777),
-                dim_red: hex(0xcc4444),
-                green: hex(0x14F195),
-                bright_green: hex(0x50fa7b),
-                dim_green: hex(0x10c070),
-                yellow: hex(0xf1fa8c),
-                bright_yellow: hex(0xffffb0),
-                dim_yellow: hex(0xc0c870),
-                blue: hex(0x6272a4),
-                bright_blue: hex(0x8be9fd),
-                dim_blue: hex(0x4e5a80),
-                magenta: hex(0xff79c6),
-                bright_magenta: hex(0xff99dd),
-                dim_magenta: hex(0xcc60a0),
-                cyan: hex(0x8be9fd),
-                bright_cyan: hex(0xa4ffff),
-                dim_cyan: hex(0x6eb8cc),
-                white: hex(0xf8f8f2),
-                bright_white: hex(0xffffff),
-                dim_white: hex(0xbbbbbb),
-            },
-        },
-        panel: PanelColors {
-            background: bg,
-            focused_border: accent,
-            indent_guide: hex(0x2a2a2a),
-            indent_guide_hover: hex(0x444444),
-            indent_guide_active: hex(0x555555),
-            overlay_background: hex_a(0x000000, 0.5),
-            overlay_hover: hex_a(0x000000, 0.6),
-        },
-        pane: PaneColors {
-            focused_border: accent,
-            group_border: border_color,
-        },
-        tab: TabColors {
-            bar_background: bg,
-            inactive_background: bg,
-            active_background: surface,
-            inactive_foreground: muted,
-            active_foreground: fg,
-        },
-        scrollbar: ScrollbarColors {
-            thumb_background: hex_a(0xffffff, 0.1),
-            thumb_hover_background: hex_a(0xffffff, 0.2),
-            thumb_active_background: hex_a(0xffffff, 0.3),
-            thumb_border: transparent,
-            track_background: transparent,
-            track_border: transparent,
-        },
-        minimap: MinimapColors {
-            thumb_background: hex_a(0xffffff, 0.1),
-            thumb_hover_background: hex_a(0xffffff, 0.15),
-            thumb_active_background: hex_a(0xffffff, 0.2),
-            thumb_border: transparent,
-        },
-        status_bar: StatusBarColors {
-            background: bg,
-        },
-        title_bar: TitleBarColors {
-            background: bg,
-            inactive_background: hex(0x101010),
-        },
-        toolbar: ToolbarColors {
-            background: bg,
-        },
-        search: SearchColors {
-            match_background: hex_a(0x14F195, 0.2),
-            active_match_background: hex_a(0x14F195, 0.35),
-        },
-        vim: VimColors {
-            normal_background: hex(0x6272a4),
-            insert_background: hex(0x14F195),
-            replace_background: hex(0xff5555),
-            visual_background: hex(0xff79c6),
-            visual_line_background: hex(0xff79c6),
-            visual_block_background: hex(0xff79c6),
-            yank_background: hex(0xf1fa8c),
-            helix_normal_background: hex(0x6272a4),
-            helix_select_background: hex(0x8be9fd),
-            normal_foreground: fg,
-            insert_foreground: hex(0x121212),
-            replace_foreground: fg,
-            visual_foreground: hex(0x121212),
-            visual_line_foreground: hex(0x121212),
-            visual_block_foreground: hex(0x121212),
-            helix_normal_foreground: fg,
-            helix_select_foreground: hex(0x121212),
-        },
-        version_control: VersionControlColors {
-            added: hex(0x14F195),
-            deleted: hex(0xff5555),
-            modified: hex(0x8be9fd),
-            renamed: hex(0x6272a4),
-            conflict: hex(0xff79c6),
-            ignored: hex(0x555555),
-            word_added: hex_a(0x14F195, 0.25),
-            word_deleted: hex_a(0xff5555, 0.25),
-            conflict_marker_ours: hex_a(0x14F195, 0.2),
-            conflict_marker_theirs: hex_a(0x8be9fd, 0.2),
-        },
-        radius: px(8.0),
-        block: BlockColors {
-            success_badge: hex(0x14F195),
-            error_badge: hex(0xff5555),
-            running_badge: hex(0xf1fa8c),
-        },
-        chart: ChartColors {
-            chart_1: accent,
-            chart_2: hex(0x14F195),
-            chart_3: hex(0xff79c6),
-            chart_4: hex(0xf1fa8c),
-            chart_5: hex(0x6272a4),
-        },
-        chip: ChipColors {
-            background: oklcha(1.0, 0.0, 0.0, 0.03),
-            border: oklcha(1.0, 0.0, 0.0, 0.08),
-            text: fg,
-            hover: oklcha(1.0, 0.0, 0.0, 0.06),
-            username: accent,
-            hostname: muted,
-            directory: hex(0x6ee7b7),
-            time: hex(0xff5f5f),
-            shell: hex(0xa78bfa),
-            git_branch_icon: hex(0x6ee7b7),
-            git_branch_text: hex(0x7dd3fc),
-            git_stats_neutral: muted,
-            git_stats_insert: hex(0x14F195),
-            git_stats_delete: hex(0xff5f5f),
-        },
-    }
-}
-
-fn default_status_colors() -> StatusColors {
-    StatusColors {
-        conflict: StatusStyle {
-            color: hex(0xff79c6),
-            background: hex_a(0xff79c6, 0.15),
-            border: hex_a(0xff79c6, 0.3),
-        },
-        created: StatusStyle {
-            color: hex(0x14F195),
-            background: hex_a(0x14F195, 0.15),
-            border: hex_a(0x14F195, 0.3),
-        },
-        deleted: StatusStyle {
-            color: hex(0xff5555),
-            background: hex_a(0xff5555, 0.15),
-            border: hex_a(0xff5555, 0.3),
-        },
-        error: StatusStyle {
-            color: hex(0xff5555),
-            background: hex_a(0xff5555, 0.15),
-            border: hex_a(0xff5555, 0.3),
-        },
-        hidden: StatusStyle {
-            color: hex(0x555555),
-            background: hex_a(0x555555, 0.15),
-            border: hex_a(0x555555, 0.3),
-        },
-        hint: StatusStyle {
-            color: hex(0x6272a4),
-            background: hex_a(0x6272a4, 0.15),
-            border: hex_a(0x6272a4, 0.3),
-        },
-        ignored: StatusStyle {
-            color: hex(0x555555),
-            background: hex_a(0x555555, 0.15),
-            border: hex_a(0x555555, 0.3),
-        },
-        info: StatusStyle {
-            color: hex(0x8be9fd),
-            background: hex_a(0x8be9fd, 0.15),
-            border: hex_a(0x8be9fd, 0.3),
-        },
-        modified: StatusStyle {
-            color: hex(0x8be9fd),
-            background: hex_a(0x8be9fd, 0.15),
-            border: hex_a(0x8be9fd, 0.3),
-        },
-        predictive: StatusStyle {
-            color: hex(0x6272a4),
-            background: hex_a(0x6272a4, 0.15),
-            border: hex_a(0x6272a4, 0.3),
-        },
-        renamed: StatusStyle {
-            color: hex(0x6272a4),
-            background: hex_a(0x6272a4, 0.15),
-            border: hex_a(0x6272a4, 0.3),
-        },
-        success: StatusStyle {
-            color: hex(0x14F195),
-            background: hex_a(0x14F195, 0.15),
-            border: hex_a(0x14F195, 0.3),
-        },
-        unreachable: StatusStyle {
-            color: hex(0x555555),
-            background: hex_a(0x555555, 0.15),
-            border: hex_a(0x555555, 0.3),
-        },
-        warning: StatusStyle {
-            color: hex(0xf1fa8c),
-            background: hex_a(0xf1fa8c, 0.15),
-            border: hex_a(0xf1fa8c, 0.3),
-        },
-    }
-}
-
-fn default_players() -> Vec<PlayerColor> {
-    let accent = hex(0x00BFFF);
-    vec![
-        PlayerColor {
-            cursor: accent,
-            background: hex_a(0x14F195, 0.2),
-            selection: hex_a(0x14F195, 0.15),
-        },
-        PlayerColor {
-            cursor: hex(0x8be9fd),
-            background: hex_a(0x8be9fd, 0.2),
-            selection: hex_a(0x8be9fd, 0.15),
-        },
-        PlayerColor {
-            cursor: hex(0xff79c6),
-            background: hex_a(0xff79c6, 0.2),
-            selection: hex_a(0xff79c6, 0.15),
-        },
-        PlayerColor {
-            cursor: hex(0xf1fa8c),
-            background: hex_a(0xf1fa8c, 0.2),
-            selection: hex_a(0xf1fa8c, 0.15),
-        },
-    ]
 }
 
 // ---------------------------------------------------------------------------
@@ -1320,7 +979,7 @@ background = "#7aa2f7"
 selection = "#7aa2f73d"
 "##;
         let theme = load_theme_from_toml("players-test", toml).unwrap();
-        assert_eq!(theme.styles.players.len(), 2);
+        assert_eq!(theme.styles.players.0.len(), 2);
     }
 
     #[test]
@@ -1374,6 +1033,6 @@ appearance = "dark"
 radius = 12
 "##;
         let theme = load_theme_from_toml("radius-test", toml).unwrap();
-        assert!((theme.styles.colors.radius.0 - 12.0).abs() < 0.001);
+        assert!((theme.styles.colors.radius.as_f32() - 12.0).abs() < 0.001);
     }
 }

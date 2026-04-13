@@ -53,7 +53,6 @@ pub(super) use inazuma_util::{ResultExt, measure};
 pub(super) use std::{
     any::{Any, TypeId},
     cell::RefCell,
-    cmp,
     fmt::Debug,
     sync::Arc,
     time::Duration,

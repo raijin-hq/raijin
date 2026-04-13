@@ -7,71 +7,198 @@ author = "nyxb"
 appearance = "dark"
 
 [style]
-# === Backgrounds ===
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Semantic Tokens (shadcn/W3C)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+primary = "oklch(0.7554 0.1534 231.64)"
+primary_foreground = "oklch(0.1822 0 none)"
+secondary = "oklch(0.235 0 none)"
+secondary_foreground = "oklch(0.9581 0 none)"
+muted = "oklch(0.2178 0 none)"
+muted_foreground = "oklch(0.6268 0 none)"
+accent = "oklch(0.285 0 none)"
+accent_foreground = "oklch(0.9581 0 none)"
+destructive = "oklch(0.7227 0.1589 10.28)"
+destructive_foreground = "oklch(0.9581 0 none)"
 background = "oklch(0.1822 0 none)"
+foreground = "oklch(0.9581 0 none)"
+card = "oklch(0.2178 0 none)"
+card_foreground = "oklch(0.9581 0 none)"
+popover = "oklch(0.252 0 none)"
+popover_foreground = "oklch(0.9581 0 none)"
+border = "oklch(0.285 0 none)"
+input = "oklch(0.235 0 none)"
+ring = "oklch(0.7554 0.1534 231.64)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Extended Base Tokens — Surfaces
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "surface.background" = "oklch(0.2178 0 none)"
 "elevated_surface.background" = "oklch(0.252 0 none)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Extended Base Tokens — Elements
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "element.background" = "oklch(0.235 0 none)"
 "element.hover" = "oklch(0.285 0 none)"
 "element.active" = "oklch(0.3211 0 none)"
 "element.selected" = "oklch(0.3211 0 none)"
 "element.disabled" = "oklch(0.235 0 none)"
-"drop_target.background" = "oklch(0.7554 0.1534 231.64 / 0.251)"
+"element.selection" = "oklch(0.7554 0.1534 231.64 / 0.06)"
+
 "ghost_element.background" = "oklch(0 0 none / 0)"
 "ghost_element.hover" = "oklch(0.285 0 none)"
 "ghost_element.active" = "oklch(0.3211 0 none)"
 "ghost_element.selected" = "oklch(0.3211 0 none)"
+"ghost_element.disabled" = "oklch(0 0 none / 0)"
 
-# === Borders ===
-border = "oklch(0.285 0 none)"
+"drop_target.background" = "oklch(0.7554 0.1534 231.64 / 0.251)"
+"drop_target.border" = "oklch(0.9581 0 none)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Extended Base Tokens — Borders
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "border.variant" = "oklch(0.252 0 none)"
 "border.focused" = "oklch(0.7554 0.1534 231.64)"
 "border.selected" = "oklch(0.7554 0.1534 231.64 / 0.4)"
 "border.transparent" = "oklch(0 0 none / 0)"
 "border.disabled" = "oklch(0.235 0 none)"
 
-# === Text ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Extended Base Tokens — Text
+# ═══════════════════════════════════════════════════════════════════════════════
+
 text = "oklch(0.9581 0 none)"
 "text.muted" = "oklch(0.6268 0 none)"
 "text.placeholder" = "oklch(0.4495 0 none)"
 "text.disabled" = "oklch(0.4495 0 none)"
 "text.accent" = "oklch(0.7554 0.1534 231.64)"
 
-# === Icons ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Extended Base Tokens — Icons
+# ═══════════════════════════════════════════════════════════════════════════════
+
 icon = "oklch(0.9581 0 none)"
 "icon.muted" = "oklch(0.6268 0 none)"
 "icon.disabled" = "oklch(0.4495 0 none)"
+"icon.placeholder" = "oklch(0.4495 0 none)"
 "icon.accent" = "oklch(0.7554 0.1534 231.64)"
 
-# === Workspace Chrome ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Extended Base Tokens — Misc
+# ═══════════════════════════════════════════════════════════════════════════════
+
+"link_text.hover" = "oklch(0.7554 0.1534 231.64)"
+"debugger.accent" = "oklch(0.7227 0.1589 10.28)"
+radius = 6.0
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Workspace Chrome — Status Bar
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "status_bar.background" = "oklch(0.1822 0 none)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Workspace Chrome — Title Bar
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "title_bar.background" = "oklch(0.1822 0 none)"
 "title_bar.inactive_background" = "oklch(0.1638 0 none)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Workspace Chrome — Toolbar
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "toolbar.background" = "oklch(0.2178 0 none)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Workspace Chrome — Tab Bar
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "tab_bar.background" = "oklch(0.1638 0 none)"
 "tab.active_background" = "oklch(0.2178 0 none)"
 "tab.inactive_background" = "oklch(0.1638 0 none)"
-"panel.background" = "oklch(0.1638 0 none)"
+"tab.active_foreground" = "oklch(0.9581 0 none)"
+"tab.inactive_foreground" = "oklch(0.6268 0 none)"
 
-# === Editor ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Workspace Chrome — Panel
+# ═══════════════════════════════════════════════════════════════════════════════
+
+"panel.background" = "oklch(0.1638 0 none)"
+"panel.focused_border" = "oklch(0.7554 0.1534 231.64)"
+"panel.indent_guide" = "oklch(0.252 0 none)"
+"panel.indent_guide_hover" = "oklch(0.285 0 none)"
+"panel.indent_guide_active" = "oklch(0.285 0 none)"
+"panel.overlay_background" = "oklch(0.1822 0 none)"
+"panel.overlay_hover" = "oklch(0.285 0 none)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Workspace Chrome — Pane
+# ═══════════════════════════════════════════════════════════════════════════════
+
+"pane.focused_border" = "oklch(0.7554 0.1534 231.64)"
+"pane.group_border" = "oklch(0.285 0 none)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Editor
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "editor.foreground" = "oklch(0.9581 0 none)"
 "editor.background" = "oklch(0.1822 0 none)"
 "editor.gutter.background" = "oklch(0.1822 0 none)"
+"editor.subheader.background" = "oklch(0.2178 0 none)"
 "editor.active_line.background" = "oklch(0.2178 0 none / 0.749)"
+"editor.highlighted_line.background" = "oklch(0.7554 0.1534 231.64 / 0.1)"
+"editor.debugger_active_line.background" = "oklch(0.7554 0.1534 231.64 / 0.2)"
 "editor.line_number" = "oklch(0.459 0.0171 224.8)"
 "editor.active_line_number" = "oklch(0.9581 0 none)"
+"editor.hover_line_number" = "oklch(0.9581 0 none)"
 "editor.invisible" = "oklch(0.3211 0 none)"
 "editor.wrap_guide" = "oklch(0.285 0 none / 0.051)"
+"editor.active_wrap_guide" = "oklch(0.285 0 none / 0.1)"
+"editor.indent_guide" = "oklch(0.252 0 none)"
+"editor.indent_guide_active" = "oklch(0.285 0 none)"
+"editor.document_highlight_read.background" = "oklch(0.7554 0.1534 231.64 / 0.15)"
+"editor.document_highlight_write.background" = "oklch(0.7554 0.1534 231.64 / 0.25)"
+"editor.document_highlight_bracket.background" = "oklch(0.8441 0.1991 156.83 / 0.15)"
 
-# === Search ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Search
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "search.match_background" = "oklch(0.7554 0.1534 231.64 / 0.251)"
+"search.active_match_background" = "oklch(0.7554 0.1534 231.64 / 0.4)"
 
-# === Scrollbar ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Scrollbar
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "scrollbar.thumb.background" = "oklch(1 0 none / 0.102)"
 "scrollbar.thumb.hover_background" = "oklch(1 0 none / 0.2)"
+"scrollbar.thumb.active_background" = "oklch(1 0 none / 0.3)"
+"scrollbar.thumb.border" = "oklch(0 0 none / 0)"
 "scrollbar.track.background" = "oklch(0 0 none / 0)"
+"scrollbar.track.border" = "oklch(0 0 none / 0)"
 
-# === Terminal (ANSI-16 + dim) ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Minimap
+# ═══════════════════════════════════════════════════════════════════════════════
+
+"minimap.thumb.background" = "oklch(1 0 none / 0.1)"
+"minimap.thumb.hover_background" = "oklch(1 0 none / 0.15)"
+"minimap.thumb.active_background" = "oklch(1 0 none / 0.2)"
+"minimap.thumb.border" = "oklch(0 0 none / 0)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Terminal (ANSI-16 + dim)
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "terminal.background" = "oklch(0.1822 0 none)"
 "terminal.accent" = "oklch(0.7554 0.1534 231.64)"
 "terminal.foreground" = "oklch(0.9581 0 none)"
@@ -102,12 +229,47 @@ icon = "oklch(0.9581 0 none)"
 "terminal.ansi.dim_cyan" = "oklch(0.6212 0.0692 222.95)"
 "terminal.ansi.dim_white" = "oklch(0.6268 0 none)"
 
-# === Git / Version Control ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Git / Version Control
+# ═══════════════════════════════════════════════════════════════════════════════
+
 "version_control.added" = "oklch(0.8441 0.1991 156.83)"
 "version_control.modified" = "oklch(0.7839 0.1057 75.43)"
 "version_control.deleted" = "oklch(0.7227 0.1589 10.28)"
+"version_control.renamed" = "oklch(0.7839 0.1057 75.43)"
+"version_control.conflict" = "oklch(0.787 0.1373 50.56)"
+"version_control.ignored" = "oklch(0.4495 0 none)"
+"version_control.word_added" = "oklch(0.8441 0.1991 156.83 / 0.35)"
+"version_control.word_deleted" = "oklch(0.7227 0.1589 10.28 / 0.8)"
+"version_control.conflict_marker_ours" = "oklch(0.8441 0.1991 156.83 / 0.5)"
+"version_control.conflict_marker_theirs" = "oklch(0.719 0.1322 264.2 / 0.5)"
 
-# === Status ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Vim / Helix Modes
+# ═══════════════════════════════════════════════════════════════════════════════
+
+"vim.normal_background" = "oklch(0 0 none / 0)"
+"vim.insert_background" = "oklch(0 0 none / 0)"
+"vim.replace_background" = "oklch(0 0 none / 0)"
+"vim.visual_background" = "oklch(0 0 none / 0)"
+"vim.visual_line_background" = "oklch(0 0 none / 0)"
+"vim.visual_block_background" = "oklch(0 0 none / 0)"
+"vim.yank_background" = "oklch(0.7554 0.1534 231.64 / 0.2)"
+"vim.helix_normal_background" = "oklch(0 0 none / 0)"
+"vim.helix_select_background" = "oklch(0 0 none / 0)"
+"vim.normal_foreground" = "oklch(0 0 none / 0)"
+"vim.insert_foreground" = "oklch(0 0 none / 0)"
+"vim.replace_foreground" = "oklch(0 0 none / 0)"
+"vim.visual_foreground" = "oklch(0 0 none / 0)"
+"vim.visual_line_foreground" = "oklch(0 0 none / 0)"
+"vim.visual_block_foreground" = "oklch(0 0 none / 0)"
+"vim.helix_normal_foreground" = "oklch(0 0 none / 0)"
+"vim.helix_select_foreground" = "oklch(0 0 none / 0)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Status Colors
+# ═══════════════════════════════════════════════════════════════════════════════
+
 error = "oklch(0.7227 0.1589 10.28)"
 "error.background" = "oklch(0.7227 0.1589 10.28 / 0.102)"
 "error.border" = "oklch(0.7227 0.1589 10.28 / 0.2)"
@@ -120,37 +282,78 @@ success = "oklch(0.8441 0.1991 156.83)"
 info = "oklch(0.82 0.1051 235.72)"
 "info.background" = "oklch(0.82 0.1051 235.72 / 0.102)"
 "info.border" = "oklch(0.82 0.1051 235.72 / 0.2)"
+hint = "oklch(0.719 0.1322 264.2)"
+"hint.background" = "oklch(0.719 0.1322 264.2 / 0.102)"
+"hint.border" = "oklch(0.719 0.1322 264.2 / 0.2)"
+conflict = "oklch(0.787 0.1373 50.56)"
+"conflict.background" = "oklch(0.787 0.1373 50.56 / 0.102)"
+"conflict.border" = "oklch(0.787 0.1373 50.56 / 0.2)"
+created = "oklch(0.8441 0.1991 156.83)"
+"created.background" = "oklch(0.8441 0.1991 156.83 / 0.102)"
+"created.border" = "oklch(0.8441 0.1991 156.83 / 0.2)"
+deleted = "oklch(0.7227 0.1589 10.28)"
+"deleted.background" = "oklch(0.7227 0.1589 10.28 / 0.102)"
+"deleted.border" = "oklch(0.7227 0.1589 10.28 / 0.2)"
+hidden = "oklch(0.4495 0 none)"
+"hidden.background" = "oklch(0.4495 0 none / 0.102)"
+"hidden.border" = "oklch(0.4495 0 none / 0.2)"
+ignored = "oklch(0.4495 0 none)"
+"ignored.background" = "oklch(0.4495 0 none / 0.102)"
+"ignored.border" = "oklch(0.4495 0 none / 0.2)"
+modified = "oklch(0.7839 0.1057 75.43)"
+"modified.background" = "oklch(0.7839 0.1057 75.43 / 0.102)"
+"modified.border" = "oklch(0.7839 0.1057 75.43 / 0.2)"
+predictive = "oklch(0.4955 0.0682 274.37)"
+"predictive.background" = "oklch(0.4955 0.0682 274.37 / 0.102)"
+"predictive.border" = "oklch(0.4955 0.0682 274.37 / 0.2)"
+renamed = "oklch(0.719 0.1322 264.2)"
+"renamed.background" = "oklch(0.719 0.1322 264.2 / 0.102)"
+"renamed.border" = "oklch(0.719 0.1322 264.2 / 0.2)"
+unreachable = "oklch(0.4495 0 none)"
+"unreachable.background" = "oklch(0.4495 0 none / 0.102)"
+"unreachable.border" = "oklch(0.4495 0 none / 0.2)"
 
-# === Link ===
-"link_text.hover" = "oklch(0.7554 0.1534 231.64)"
+# ═══════════════════════════════════════════════════════════════════════════════
+# Raijin-specific — Block System
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# === Background Image ===
-[style.background_image]
-path = "bg.png"
-opacity = 30
-
-# === Raijin-spezifisch (Block-System) ===
 "block.success_badge" = "oklch(0.8441 0.1991 156.83)"
 "block.error_badge" = "oklch(0.7227 0.1589 10.28)"
 "block.running_badge" = "oklch(0.7839 0.1057 75.43)"
 
-# === Context Chips ===
-"chip.background" = "oklch(1.0 0.0 0.0 / 0.03)"
-"chip.border" = "oklch(1.0 0.0 0.0 / 0.08)"
-"chip.hover" = "oklch(1.0 0.0 0.0 / 0.06)"
-"chip.text" = "oklch(0.9581 0.0 0.0)"
-"chip.username" = "oklch(0.7686 0.1489 207.35)"
-"chip.hostname" = "oklch(0.8398 0.0 0.0)"
-"chip.directory" = "oklch(0.8452 0.1472 164.13)"
-"chip.time" = "oklch(0.6039 0.2124 22.77)"
-"chip.shell" = "oklch(0.7020 0.1634 292.79)"
-"chip.git_branch_icon" = "oklch(0.8452 0.1472 164.13)"
-"chip.git_branch_text" = "oklch(0.7686 0.1489 207.35)"
-"chip.git_stats_neutral" = "oklch(0.8398 0.0 0.0)"
-"chip.git_stats_insert" = "oklch(0.8441 0.1991 156.83)"
-"chip.git_stats_delete" = "oklch(0.6039 0.2124 22.77)"
+# ═══════════════════════════════════════════════════════════════════════════════
+# Charts
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# === Players ===
+"chart.chart_1" = "oklch(0.7554 0.1534 231.64)"
+"chart.chart_2" = "oklch(0.8441 0.1991 156.83)"
+"chart.chart_3" = "oklch(0.7839 0.1057 75.43)"
+"chart.chart_4" = "oklch(0.7227 0.1589 10.28)"
+"chart.chart_5" = "oklch(0.7515 0.1344 299.5)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Context Chips
+# ═══════════════════════════════════════════════════════════════════════════════
+
+"chip.background" = "oklch(1.0 0.0 0.0 / 0.08)"
+"chip.border" = "oklch(1.0 0.0 0.0 / 0.15)"
+"chip.hover" = "oklch(1.0 0.0 0.0 / 0.12)"
+"chip.text" = "oklch(0.9581 0.0 0.0)"
+"chip.username" = "oklch(0.82 0.1051 235.72)"
+"chip.hostname" = "oklch(0.9581 0 none)"
+"chip.directory" = "oklch(0.8441 0.1991 156.83)"
+"chip.time" = "oklch(0.7227 0.1589 10.28)"
+"chip.shell" = "oklch(0.7515 0.1344 299.5)"
+"chip.git_branch_icon" = "oklch(0.8441 0.1991 156.83)"
+"chip.git_branch_text" = "oklch(0.82 0.1051 235.72)"
+"chip.git_stats_neutral" = "oklch(0.9581 0 none)"
+"chip.git_stats_insert" = "oklch(0.8441 0.1991 156.83)"
+"chip.git_stats_delete" = "oklch(0.7227 0.1589 10.28)"
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Players (cursor, selection)
+# ═══════════════════════════════════════════════════════════════════════════════
+
 [[style.players]]
 cursor = "oklch(0.7554 0.1534 231.64)"
 background = "oklch(0.7554 0.1534 231.64)"
@@ -171,7 +374,10 @@ cursor = "oklch(0.7227 0.1589 10.28)"
 background = "oklch(0.7227 0.1589 10.28)"
 selection = "oklch(0.7227 0.1589 10.28 / 0.239)"
 
-# === Syntax Highlighting ===
+# ═══════════════════════════════════════════════════════════════════════════════
+# Syntax Highlighting
+# ═══════════════════════════════════════════════════════════════════════════════
+
 [style.syntax.attribute]
 color = "oklch(0.719 0.1322 264.2)"
 
@@ -192,11 +398,30 @@ color = "oklch(0.787 0.1373 50.56)"
 [style.syntax.constructor]
 color = "oklch(0.719 0.1322 264.2)"
 
+[style.syntax.enum]
+color = "oklch(0.7537 0.1243 213.18)"
+
 [style.syntax.function]
+color = "oklch(0.719 0.1322 264.2)"
+
+[style.syntax."function.method"]
+color = "oklch(0.719 0.1322 264.2)"
+
+[style.syntax."function.definition"]
+color = "oklch(0.719 0.1322 264.2)"
+
+[style.syntax.hint]
 color = "oklch(0.719 0.1322 264.2)"
 
 [style.syntax.keyword]
 color = "oklch(0.7515 0.1344 299.5)"
+
+[style.syntax.link_text]
+color = "oklch(0.7554 0.1534 231.64)"
+
+[style.syntax.link_uri]
+color = "oklch(0.7554 0.1534 231.64)"
+font_style = "italic"
 
 [style.syntax.number]
 color = "oklch(0.787 0.1373 50.56)"
@@ -237,3 +462,17 @@ color = "oklch(0.7276 0.0609 273.09)"
 [style.syntax.title]
 color = "oklch(0.7227 0.1589 10.28)"
 font_weight = 700
+
+[style.syntax.emphasis]
+font_style = "italic"
+
+[style.syntax."emphasis.strong"]
+font_weight = 700
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# Background Image
+# ═══════════════════════════════════════════════════════════════════════════════
+
+[style.background_image]
+path = "bg.png"
+opacity = 30

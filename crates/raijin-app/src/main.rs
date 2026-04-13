@@ -135,6 +135,7 @@ fn main() {
 
         // Set up globals for shell switching (used by raijin-terminal-view)
         cx.set_global(raijin_terminal_view::terminal_pane::PendingShellSwitch(None));
+        cx.set_global(raijin_terminal_view::terminal_pane::PendingBranchSwitch(None));
         cx.set_global(raijin_terminal_view::terminal_pane::PendingShellInstallName(None));
 
         // Initialize UI components (keybindings, global state)

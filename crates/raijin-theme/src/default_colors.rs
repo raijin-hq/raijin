@@ -244,7 +244,7 @@ impl ThemeColors {
                 chart_5: orange().light().step_11(),
             },
             chip: ChipColors {
-                background: Oklch::black().opacity(0.03),
+                background: Oklch::black().opacity(0.06),
                 border: Oklch::black().opacity(0.08),
                 text: neutral().light().step_12(),
                 hover: Oklch::black().opacity(0.06),
@@ -483,8 +483,8 @@ impl ThemeColors {
                 chart_5: orange().dark().step_11(),
             },
             chip: ChipColors {
-                background: Oklch::white().opacity(0.03),
-                border: Oklch::white().opacity(0.08),
+                background: Oklch::white().opacity(0.08),
+                border: Oklch::white().opacity(0.15),
                 text: neutral().dark().step_12(),
                 hover: Oklch::white().opacity(0.06),
                 username: cyan().dark().step_9(),

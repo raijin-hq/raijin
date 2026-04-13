@@ -215,6 +215,22 @@ pub struct AnyDrag {
 
 use std::sync::Arc;
 
+/// Where to place a tooltip relative to the source element.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum TooltipPlacement {
+    /// Classic behavior: tooltip at the mouse cursor position (below-right).
+    #[default]
+    Mouse,
+    /// Centered above the source element.
+    AboveElement,
+    /// Centered below the source element.
+    BelowElement,
+    /// To the right of the source element, vertically centered.
+    RightOfElement,
+    /// To the left of the source element, vertically centered.
+    LeftOfElement,
+}
+
 /// Contains state associated with a tooltip. You'll only need this struct if you're implementing
 /// tooltip behavior on a custom element. Otherwise, use [Div::tooltip](crate::Interactivity::tooltip).
 #[derive(Clone)]
@@ -224,6 +240,12 @@ pub struct AnyTooltip {
 
     /// The absolute position of the mouse when the tooltip was deployed.
     pub mouse_position: Point<Pixels>,
+
+    /// The bounds of the element that owns the tooltip (for element-relative placement).
+    pub element_bounds: Option<Bounds<Pixels>>,
+
+    /// How to position this tooltip relative to the source element.
+    pub placement: TooltipPlacement,
 
     /// Given the bounds of the tooltip, checks whether the tooltip should still be visible and
     /// updates its state accordingly. This is needed atop the hovered element's mouse move handler

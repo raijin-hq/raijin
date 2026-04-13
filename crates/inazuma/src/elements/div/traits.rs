@@ -667,4 +667,22 @@ pub trait StatefulInteractiveElement: InteractiveElement {
         self.interactivity().hoverable_tooltip(build_tooltip);
         self
     }
+
+    /// Sets the placement strategy for this element's tooltip.
+    fn tooltip_placement(mut self, placement: TooltipPlacement) -> Self
+    where
+        Self: Sized,
+    {
+        self.interactivity().tooltip_placement(placement);
+        self
+    }
+
+    /// Sets the delay before the tooltip appears. `Duration::ZERO` for instant.
+    fn tooltip_delay(mut self, delay: Duration) -> Self
+    where
+        Self: Sized,
+    {
+        self.interactivity().tooltip_delay(delay);
+        self
+    }
 }

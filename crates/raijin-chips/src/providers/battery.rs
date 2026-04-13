@@ -9,26 +9,23 @@ impl ChipProvider for BatteryProvider {
     fn display_name(&self) -> &str { "Battery" }
     fn is_available(&self, _ctx: &ChipContext) -> bool { true }
     fn gather(&self, ctx: &ChipContext) -> ChipOutput {
-        let label = gather_battery(ctx).unwrap_or_default();
+        let (label, icon) = gather_battery(ctx).unwrap_or((String::new(), "Battery"));
         ChipOutput {
             id: self.id(), label,
-            icon: Some("Battery"),
+            icon: Some(icon),
             tooltip: Some("Battery status".into()),
             ..ChipOutput::default()
         }
     }
 }
 
-fn gather_battery(ctx: &ChipContext) -> Option<String> {
+fn gather_battery(ctx: &ChipContext) -> Option<(String, &'static str)> {
     let status = get_battery_status(ctx)?;
-    let symbol = match status.state {
-        battery::State::Charging => "⚡",
-        battery::State::Full => "🔋",
-        battery::State::Discharging => "🔋",
-        battery::State::Empty => "🪫",
-        battery::State::Unknown => "",
+    let icon = match status.state {
+        battery::State::Charging => "BatteryCharging",
+        _ => "Battery",
     };
-    Some(format!("{symbol}{}%", status.percentage.round()))
+    Some((format!("{}%", status.percentage.round()), icon))
 }
 
 fn get_battery_status(ctx: &ChipContext) -> Option<BatteryStatus> {

@@ -63,6 +63,9 @@ pub(crate) fn register_tooltip_mouse_handlers(
     build_tooltip: Rc<dyn Fn(&mut Window, &mut App) -> Option<(AnyView, bool)>>,
     check_is_hovered: Rc<dyn Fn(&Window) -> bool>,
     check_is_hovered_during_prepaint: Rc<dyn Fn(&Window) -> bool>,
+    source_element_bounds: Bounds<Pixels>,
+    placement: TooltipPlacement,
+    delay: Option<Duration>,
     window: &mut Window,
 ) {
     window.on_mouse_event({
@@ -75,6 +78,9 @@ pub(crate) fn register_tooltip_mouse_handlers(
                 &build_tooltip,
                 &check_is_hovered,
                 &check_is_hovered_during_prepaint,
+                source_element_bounds,
+                placement,
+                delay,
                 phase,
                 window,
                 cx,
@@ -117,6 +123,9 @@ fn handle_tooltip_mouse_move(
     build_tooltip: &Rc<dyn Fn(&mut Window, &mut App) -> Option<(AnyView, bool)>>,
     check_is_hovered: &Rc<dyn Fn(&Window) -> bool>,
     check_is_hovered_during_prepaint: &Rc<dyn Fn(&Window) -> bool>,
+    source_element_bounds: Bounds<Pixels>,
+    placement: TooltipPlacement,
+    delay: Option<Duration>,
     phase: DispatchPhase,
     window: &mut Window,
     cx: &mut App,
@@ -164,7 +173,10 @@ fn handle_tooltip_mouse_move(
                 let build_tooltip = build_tooltip.clone();
                 let check_is_hovered_during_prepaint = check_is_hovered_during_prepaint.clone();
                 async move |cx| {
-                    cx.background_executor().timer(TOOLTIP_SHOW_DELAY).await;
+                    let show_delay = delay.unwrap_or(TOOLTIP_SHOW_DELAY);
+                    if !show_delay.is_zero() {
+                        cx.background_executor().timer(show_delay).await;
+                    }
                     cx.update(|window, cx| {
                         let new_tooltip =
                             build_tooltip(window, cx).map(|(view, tooltip_is_hoverable)| {
@@ -173,6 +185,8 @@ fn handle_tooltip_mouse_move(
                                     tooltip: AnyTooltip {
                                         view,
                                         mouse_position: window.mouse_position(),
+                                        element_bounds: Some(source_element_bounds),
+                                        placement,
                                         check_visible_and_update: Rc::new(
                                             move |tooltip_bounds, window, cx| {
                                                 handle_tooltip_check_visible_and_update(

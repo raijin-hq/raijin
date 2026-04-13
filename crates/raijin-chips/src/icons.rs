@@ -83,7 +83,12 @@ pub fn icon_name_from_str(name: &str) -> Option<IconName> {
         "Meson" => Some(IconName::SiMeson),
 
         // Tier 5: System — Lucide fallbacks
-        "Battery" | "BatteryCharging" => Some(IconName::Power),
+        "Battery" => Some(IconName::Battery),
+        "BatteryCharging" => Some(IconName::BatteryCharging),
+        "BatteryFull" => Some(IconName::BatteryFull),
+        "BatteryLow" => Some(IconName::BatteryLow),
+        "BatteryMedium" => Some(IconName::BatteryMedium),
+        "BatteryWarning" => Some(IconName::BatteryWarning),
         "MemoryStick" => Some(IconName::Server),
         "Monitor" => Some(IconName::Screen),
         "Network" => Some(IconName::SignalHigh),

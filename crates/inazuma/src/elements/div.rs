@@ -35,7 +35,7 @@ pub use traits::{InteractiveElement, StatefulInteractiveElement};
 #[cfg(any(target_os = "linux", target_os = "macos"))]
 use crate::PinchEvent;
 use crate::{
-    AbsoluteLength, Action, AnyDrag, AnyElement, AnyTooltip, AnyView, App, Bounds, ClickEvent,
+    AbsoluteLength, Action, AnyDrag, AnyElement, AnyTooltip, AnyView, App, Bounds, ClickEvent, TooltipPlacement,
     DispatchPhase, Display, Element, ElementId, Entity, FocusHandle, Global, GlobalElementId,
     Hitbox, HitboxBehavior, HitboxId, InspectorElementId, IntoElement, IsZero, KeyContext,
     KeyDownEvent, KeyUpEvent, KeyboardButton, KeyboardClickEvent, LayoutId, ModifiersChangedEvent,
@@ -64,7 +64,7 @@ use inazuma_util::ResultExt;
 use super::ImageCacheProvider;
 
 const DRAG_THRESHOLD: f64 = 2.;
-const TOOLTIP_SHOW_DELAY: Duration = Duration::from_millis(500);
+const TOOLTIP_SHOW_DELAY: Duration = Duration::from_millis(200);
 const HOVERABLE_TOOLTIP_HIDE_DELAY: Duration = Duration::from_millis(500);
 
 /// The styling information for a given group.
@@ -131,6 +131,8 @@ type CanDropPredicate = Box<dyn Fn(&dyn Any, &mut Window, &mut App) -> bool + 's
 pub(crate) struct TooltipBuilder {
     pub(crate) build: Rc<dyn Fn(&mut Window, &mut App) -> AnyView + 'static>,
     pub(crate) hoverable: bool,
+    pub(crate) placement: TooltipPlacement,
+    pub(crate) delay: Option<Duration>,
 }
 
 pub(crate) type KeyDownListener =

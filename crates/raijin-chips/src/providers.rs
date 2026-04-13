@@ -96,7 +96,6 @@ mod git_commit;
 mod git_state;
 mod fossil_branch;
 mod fossil_metrics;
-mod git_metrics;
 mod hg_branch;
 mod hg_state;
 mod pijul_channel;
@@ -212,7 +211,6 @@ pub fn register_all(registry: &mut ChipRegistry) {
     registry.register(git_state::GitStateProvider);
     registry.register(fossil_branch::FossilBranchProvider);
     registry.register(fossil_metrics::FossilMetricsProvider);
-    registry.register(git_metrics::GitMetricsProvider);
     registry.register(hg_branch::HgBranchProvider);
     registry.register(hg_state::HgStateProvider);
     registry.register(pijul_channel::PijulChannelProvider);

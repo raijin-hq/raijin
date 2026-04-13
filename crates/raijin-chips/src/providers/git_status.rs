@@ -1,10 +1,6 @@
 use crate::context::ChipContext;
 use crate::provider::{ChipId, ChipOutput, ChipProvider, ChipSegment};
 
-/// Chip provider for git diff statistics.
-///
-/// Visible when git stats are available. Renders multi-colored segments:
-/// `{files_changed} · +{insertions} -{deletions}`
 pub struct GitStatusProvider;
 
 impl ChipProvider for GitStatusProvider {
@@ -17,19 +13,28 @@ impl ChipProvider for GitStatusProvider {
     }
 
     fn is_available(&self, ctx: &ChipContext) -> bool {
-        ctx.shell_context.git_stats.is_some()
+        ctx.shell_context.git_branch.is_some()
     }
 
     fn gather(&self, ctx: &ChipContext) -> ChipOutput {
+        // Run git diff --shortstat directly for accurate stats
         let stats = ctx
-            .shell_context
-            .git_stats
-            .as_ref()
-            .expect("is_available guards this");
+            .exec_cmd("git", &["diff", "--shortstat", "HEAD"])
+            .and_then(|o| parse_shortstat(&o.stdout));
+
+        let (files, insertions, deletions) = match stats {
+            Some(s) => s,
+            None => return ChipOutput { id: self.id(), ..ChipOutput::default() },
+        };
+
+        // Don't show if nothing changed
+        if files == 0 && insertions == 0 && deletions == 0 {
+            return ChipOutput { id: self.id(), ..ChipOutput::default() };
+        }
 
         let segments = vec![
             ChipSegment {
-                text: stats.files_changed.to_string(),
+                text: files.to_string(),
                 color_key: Some("git_stats_neutral"),
             },
             ChipSegment {
@@ -37,7 +42,7 @@ impl ChipProvider for GitStatusProvider {
                 color_key: Some("git_stats_neutral"),
             },
             ChipSegment {
-                text: format!("+{}", stats.insertions),
+                text: format!("+{insertions}"),
                 color_key: Some("git_stats_insert"),
             },
             ChipSegment {
@@ -45,20 +50,49 @@ impl ChipProvider for GitStatusProvider {
                 color_key: None,
             },
             ChipSegment {
-                text: format!("-{}", stats.deletions),
+                text: format!("-{deletions}"),
                 color_key: Some("git_stats_delete"),
             },
         ];
 
         ChipOutput {
             id: self.id(),
-            label: format!(
-                "{} \u{00b7} +{} -{}",
-                stats.files_changed, stats.insertions, stats.deletions
-            ),
+            label: format!("{files} \u{00b7} +{insertions} -{deletions}"),
             icon: Some("FileDiff"),
             segments: Some(segments),
             ..ChipOutput::default()
         }
     }
+}
+
+/// Parse `git diff --shortstat` output.
+/// "3 files changed, 378 insertions(+), 165 deletions(-)" → (3, 378, 165)
+fn parse_shortstat(output: &str) -> Option<(u32, u32, u32)> {
+    let output = output.trim();
+    if output.is_empty() {
+        return None;
+    }
+
+    let mut files = 0u32;
+    let mut insertions = 0u32;
+    let mut deletions = 0u32;
+
+    for part in output.split(',') {
+        let part = part.trim();
+        if part.contains("file") {
+            if let Some(n) = part.split_whitespace().next().and_then(|s| s.parse().ok()) {
+                files = n;
+            }
+        } else if part.contains("insertion") {
+            if let Some(n) = part.split_whitespace().next().and_then(|s| s.parse().ok()) {
+                insertions = n;
+            }
+        } else if part.contains("deletion") {
+            if let Some(n) = part.split_whitespace().next().and_then(|s| s.parse().ok()) {
+                deletions = n;
+            }
+        }
+    }
+
+    Some((files, insertions, deletions))
 }

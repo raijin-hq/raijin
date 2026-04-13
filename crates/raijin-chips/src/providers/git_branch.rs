@@ -30,6 +30,8 @@ impl ChipProvider for GitBranchProvider {
             id: self.id(),
             label: branch.to_string(),
             icon: Some("GitBranch"),
+            tooltip: Some("Switch branch".to_string()),
+            interactive: true,
             ..ChipOutput::default()
         }
     }

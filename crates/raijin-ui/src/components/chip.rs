@@ -42,7 +42,7 @@ impl Chip {
             color: None,
             bg_color: None,
             border_color: None,
-            label_size: LabelSize::XSmall,
+            label_size: LabelSize::Small,
             label_color: Color::Default,
             height: None,
             icon: None,
@@ -159,7 +159,7 @@ impl RenderOnce for Chip {
                 let icon_color = self.icon_color.or(text_color);
                 this.child(
                     Icon::new(icon)
-                        .size(IconSize::XSmall)
+                        .size(IconSize::Small)
                         .when_some(icon_color, |this, c| this.color(Color::Custom(c))),
                 )
             })
@@ -171,7 +171,11 @@ impl RenderOnce for Chip {
                     .truncate(),
             )
             .id(self.label.clone())
-            .when_some(self.tooltip, |this, tooltip| this.tooltip(tooltip))
+            .when_some(self.tooltip, |this, tooltip| {
+                this.tooltip(tooltip)
+                    .tooltip_placement(inazuma::TooltipPlacement::AboveElement)
+                    .tooltip_delay(std::time::Duration::ZERO)
+            })
     }
 }
 
