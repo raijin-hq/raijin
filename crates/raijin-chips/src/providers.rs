@@ -55,7 +55,7 @@ mod meson;
 mod buf;
 
 // Tier 5: Environment & System
-mod battery;
+pub mod battery;
 mod memory_usage;
 mod os_info;
 mod localip;

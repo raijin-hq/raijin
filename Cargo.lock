@@ -7252,9 +7252,9 @@ checksum = "2c4a545a15244c7d945065b5d392b2d2d7f21526fba56ce51467b06ed445e8f7"
 
 [[package]]
 name = "libc"
-version = "0.2.183"
+version = "0.2.185"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5b646652bf6661599e1da8901b3b9522896f01e736bad5f723fe7a3a27f899d"
+checksum = "52ff2c0fe9bc6cb6b14a0592c2ff4fa9ceb83eea9db979b0487cd054946a2b8f"
 
 [[package]]
 name = "libdbus-sys"
@@ -7760,6 +7760,12 @@ checksum = "6a1b95cd5421ec55b445b5ae102f5ea0e768de1f82bd3001e11f426c269c3aea"
 dependencies = [
  "libc",
 ]
+
+[[package]]
+name = "mach2"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dae608c151f68243f2b000364e1f7b186d9c29845f7d2d85bd31b9ad77ad552b"
 
 [[package]]
 name = "macro_rules_attribute"
@@ -9014,7 +9020,11 @@ version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "33fafba39597d6dc1fb709123dfa8289d39406734be322956a69f0931c73bb15"
 dependencies = [
+ "bitflags 2.11.0",
+ "block2",
+ "dispatch2",
  "libc",
+ "objc2",
  "objc2-core-foundation",
 ]
 
@@ -11749,6 +11759,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "raijin-battery"
+version = "0.11.0"
+source = "git+https://github.com/raijin-hq/raijin-battery#460ad6c2323b1a166d2948d491777ffb0d863b2d"
+dependencies = [
+ "cfg-if",
+ "lazycell",
+ "libc",
+ "mach2 0.6.0",
+ "nix 0.31.2",
+ "num-traits",
+ "objc2-core-foundation",
+ "objc2-io-kit",
+ "plist",
+ "uom",
+ "windows-sys 0.61.2",
+]
+
+[[package]]
 name = "raijin-bedrock"
 version = "0.1.0"
 dependencies = [
@@ -11856,6 +11884,7 @@ dependencies = [
  "log",
  "process_control",
  "quick-xml 0.39.2",
+ "raijin-battery",
  "raijin-shell",
  "raijin-theme",
  "raijin-ui",
@@ -11863,6 +11892,7 @@ dependencies = [
  "regex",
  "rust-ini",
  "semver",
+ "serde",
  "serde_json",
  "sha1 0.11.0",
  "tempfile",
@@ -20371,6 +20401,16 @@ name = "untrusted"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
+
+[[package]]
+name = "uom"
+version = "0.38.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a739f83872836c82a4f2527d4e54b37007b3de68cafe7edde95fd695968bf4b9"
+dependencies = [
+ "num-traits",
+ "typenum",
+]
 
 [[package]]
 name = "url"

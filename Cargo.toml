@@ -552,6 +552,7 @@ async-trait = "0.1"
 async-tungstenite = "0.31.0"
 async_zip = { version = "0.0.17", features = ["full"] }
 backtrace = "0.3"
+raijin-battery = { git = "https://github.com/raijin-hq/raijin-battery" }
 base64 = "0.22"
 bytes = "1.0"
 cargo_metadata = "0.19"

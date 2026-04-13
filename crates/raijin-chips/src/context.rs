@@ -221,6 +221,8 @@ pub struct ChipContext {
     pub last_duration_ms: Option<u64>,
     /// Command execution timeout (Default: 500ms).
     pub command_timeout: Duration,
+    /// Battery info provider (cross-platform battery status).
+    pub battery_info_provider: std::sync::Arc<dyn crate::providers::battery::BatteryInfoProvider + Send + Sync>,
 }
 
 impl ChipContext {

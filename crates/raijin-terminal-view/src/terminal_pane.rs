@@ -811,6 +811,9 @@ impl TerminalPane {
             last_exit_code: self.last_exit_code,
             last_duration_ms: self.last_duration_ms,
             command_timeout: chip_settings.command_timeout,
+            battery_info_provider: std::sync::Arc::new(
+                raijin_chips::providers::battery::BatteryInfoProviderImpl,
+            ),
         }
     }
 

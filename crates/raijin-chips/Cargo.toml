@@ -17,6 +17,7 @@ process_control.workspace = true
 dirs.workspace = true
 serde_json.workspace = true
 regex.workspace = true
+raijin-battery.workspace = true
 semver.workspace = true
 serde.workspace = true
 yaml-rust2.workspace = true
