@@ -718,13 +718,6 @@ pub struct ThemeColorsContent {
     #[serde(rename = "pane_group.border")]
     pub pane_group_border: Option<String>,
 
-    /// The deprecated version of `scrollbar.thumb.background`.
-    ///
-    /// Don't use this field.
-    #[serde(rename = "scrollbar_thumb.background", skip_serializing)]
-    #[schemars(skip)]
-    pub deprecated_scrollbar_thumb_background: Option<String>,
-
     /// The color of the scrollbar thumb.
     #[serde(rename = "scrollbar.thumb.background")]
     pub scrollbar_thumb_background: Option<String>,
@@ -997,14 +990,6 @@ pub struct ThemeColorsContent {
     /// Background color for row highlights of "theirs" regions in merge conflicts.
     #[serde(rename = "version_control.conflict_marker.theirs")]
     pub version_control_conflict_marker_theirs: Option<String>,
-
-    /// Deprecated in favor of `version_control_conflict_marker_ours`.
-    #[deprecated]
-    pub version_control_conflict_ours_background: Option<String>,
-
-    /// Deprecated in favor of `version_control_conflict_marker_theirs`.
-    #[deprecated]
-    pub version_control_conflict_theirs_background: Option<String>,
 
     /// Background color for Vim Normal mode indicator.
     #[serde(rename = "vim.normal.background")]

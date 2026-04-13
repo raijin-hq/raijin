@@ -37,20 +37,6 @@ pub struct ThemeContent {
 pub fn deserialize_user_theme(bytes: &[u8]) -> Result<ThemeFamilyContent> {
     let theme_family: ThemeFamilyContent = serde_json_lenient::from_slice(bytes)?;
 
-    for theme in &theme_family.themes {
-        if theme
-            .style
-            .colors
-            .deprecated_scrollbar_thumb_background
-            .is_some()
-        {
-            log::warn!(
-                r#"Theme "{theme_name}" is using a deprecated style property: scrollbar_thumb.background. Use `scrollbar.thumb.background` instead."#,
-                theme_name = theme.name
-            )
-        }
-    }
-
     Ok(theme_family)
 }
 
@@ -239,8 +225,7 @@ pub fn theme_colors_refinement(
             ..Default::default()
         },
         scrollbar: ScrollbarColorsRefinement {
-            thumb_background: c(&colors.scrollbar_thumb_background)
-                .or_else(|| c(&colors.deprecated_scrollbar_thumb_background)),
+            thumb_background: c(&colors.scrollbar_thumb_background),
             thumb_hover_background: c(&colors.scrollbar_thumb_hover_background),
             thumb_border: c(&colors.scrollbar_thumb_border),
             track_background: c(&colors.scrollbar_track_background),

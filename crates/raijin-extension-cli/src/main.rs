@@ -417,19 +417,6 @@ async fn test_themes(
             raijin_theme_settings::deserialize_user_theme(&fs.load_bytes(&theme_path).await?)?;
         log::info!("loaded theme family {}", theme_family.name);
 
-        for theme in &theme_family.themes {
-            if theme
-                .style
-                .colors
-                .deprecated_scrollbar_thumb_background
-                .is_some()
-            {
-                bail!(
-                    r#"Theme "{theme_name}" is using a deprecated style property: scrollbar_thumb.background. Use `scrollbar.thumb.background` instead."#,
-                    theme_name = theme.name
-                )
-            }
-        }
     }
 
     Ok(())
