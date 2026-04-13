@@ -13,7 +13,7 @@ mod c;
 mod cobol;
 mod cpp;
 mod nodejs;
-// mod python; // TODO: cp from starship
+mod python;
 mod rust_lang;
 mod golang;
 mod java;
@@ -37,6 +37,22 @@ mod crystal;
 mod ocaml;
 mod perl;
 mod vlang;
+mod quarto;
+mod raku;
+mod red;
+mod rlang;
+mod solidity;
+mod typst;
+mod xmake;
+mod mojo;
+mod odin;
+mod purescript;
+mod elm;
+mod fennel;
+mod fortran;
+mod gleam;
+mod haxe;
+mod daml;
 
 // Tier 3: DevOps & Cloud
 mod kubernetes;
@@ -49,6 +65,7 @@ mod helm;
 mod pulumi;
 mod vagrant;
 mod openstack;
+mod nats;
 
 // Tier 4: Build Tools & Package Manager
 mod package;
@@ -57,6 +74,9 @@ mod gradle;
 mod maven;
 mod meson;
 mod buf;
+mod mise;
+mod pixi;
+mod opa;
 
 // Tier 5: Environment & System
 pub mod battery;
@@ -68,22 +88,28 @@ mod jobs;
 mod shlvl;
 mod sudo;
 mod status;
+mod os;
+mod netns;
 
 // Tier 6: VCS Beyond Git
 mod git_commit;
 mod git_state;
 mod fossil_branch;
+mod fossil_metrics;
+mod git_metrics;
 mod hg_branch;
+mod hg_state;
 mod pijul_channel;
 
 // Tier 7: Environment Managers
 mod conda;
-// mod nix_shell; // TODO: cp from starship
-// mod guix_shell; // TODO: cp from starship
-// mod direnv; // TODO: cp from starship
+mod nix_shell;
+mod guix_shell;
+mod direnv;
 mod container;
-// mod singularity; // TODO: cp from starship
-// mod spack; // TODO: cp from starship
+mod singularity;
+mod spack;
+mod vcsh;
 
 use crate::registry::ChipRegistry;
 
@@ -103,7 +129,7 @@ pub fn register_all(registry: &mut ChipRegistry) {
     registry.register(cobol::CobolProvider);
     registry.register(cpp::CppProvider);
     registry.register(nodejs::NodejsProvider);
-    // registry.register(python::PythonProvider);
+    registry.register(python::PythonProvider);
     registry.register(rust_lang::RustProvider);
     registry.register(golang::GolangProvider);
     registry.register(java::JavaProvider);
@@ -127,6 +153,22 @@ pub fn register_all(registry: &mut ChipRegistry) {
     registry.register(ocaml::OcamlProvider);
     registry.register(perl::PerlProvider);
     registry.register(vlang::VlangProvider);
+    registry.register(quarto::QuartoProvider);
+    registry.register(raku::RakuProvider);
+    registry.register(red::RedProvider);
+    registry.register(rlang::RlangProvider);
+    registry.register(solidity::SolidityProvider);
+    registry.register(typst::TypstProvider);
+    registry.register(xmake::XmakeProvider);
+    registry.register(mojo::MojoProvider);
+    registry.register(odin::OdinProvider);
+    registry.register(purescript::PurescriptProvider);
+    registry.register(elm::ElmProvider);
+    registry.register(fennel::FennelProvider);
+    registry.register(fortran::FortranProvider);
+    registry.register(gleam::GleamProvider);
+    registry.register(haxe::HaxeProvider);
+    registry.register(daml::DamlProvider);
 
     // Tier 3: DevOps & Cloud
     registry.register(kubernetes::KubernetesProvider);
@@ -139,6 +181,7 @@ pub fn register_all(registry: &mut ChipRegistry) {
     registry.register(pulumi::PulumiProvider);
     registry.register(vagrant::VagrantProvider);
     registry.register(openstack::OpenstackProvider);
+    registry.register(nats::NatsProvider);
 
     // Tier 4: Build Tools
         registry.register(package::PackageProvider);
@@ -147,6 +190,9 @@ pub fn register_all(registry: &mut ChipRegistry) {
     registry.register(maven::MavenProvider);
     registry.register(meson::MesonProvider);
     registry.register(buf::BufProvider);
+    registry.register(mise::MiseProvider);
+    registry.register(pixi::PixiProvider);
+    registry.register(opa::OpaProvider);
 
     // Tier 5: Environment & System
     registry.register(battery::BatteryProvider);
@@ -158,20 +204,26 @@ pub fn register_all(registry: &mut ChipRegistry) {
     registry.register(shlvl::ShlvlProvider);
     registry.register(sudo::SudoProvider);
     registry.register(status::StatusProvider);
+    registry.register(os::OsProvider);
+    registry.register(netns::NetnsProvider);
 
     // Tier 6: VCS Beyond Git
     registry.register(git_commit::GitCommitProvider);
     registry.register(git_state::GitStateProvider);
     registry.register(fossil_branch::FossilBranchProvider);
+    registry.register(fossil_metrics::FossilMetricsProvider);
+    registry.register(git_metrics::GitMetricsProvider);
     registry.register(hg_branch::HgBranchProvider);
+    registry.register(hg_state::HgStateProvider);
     registry.register(pijul_channel::PijulChannelProvider);
 
     // Tier 7: Environment Managers
     registry.register(conda::CondaProvider);
-    // registry.register(nix_shell::NixShellProvider);
-    // registry.register(guix_shell::GuixShellProvider);
-    // registry.register(direnv::DirenvProvider);
+    registry.register(nix_shell::NixShellProvider);
+    registry.register(guix_shell::GuixShellProvider);
+    registry.register(direnv::DirenvProvider);
     registry.register(container::ContainerProvider);
-    // registry.register(singularity::SingularityProvider);
-    // registry.register(spack::SpackProvider);
+    registry.register(singularity::SingularityProvider);
+    registry.register(spack::SpackProvider);
+    registry.register(vcsh::VcshProvider);
 }

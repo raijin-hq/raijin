@@ -282,6 +282,11 @@ pub fn collect_chip_env_vars() -> HashMap<String, String> {
         "APPTAINER_CONTAINER",
         "NIX_SHELL_PACKAGES",
         "SPACK_ENV",
+        "PIXI_ENVIRONMENT_NAME",
+        "NATS_CONTEXT",
+        "PATH",
+        // Language SDKs
+        "DAML_SDK_VERSION",
         // Haskell
         "GHC_VERSION",
         // Rust Toolchain
@@ -296,6 +301,8 @@ pub fn collect_chip_env_vars() -> HashMap<String, String> {
         "JAVA_HOME",
         "RBENV_VERSION",
         "RUBY_VERSION",
+        // VCS
+        "VCSH_REPO_NAME",
         // Shell
         "SHELL",
     ];
