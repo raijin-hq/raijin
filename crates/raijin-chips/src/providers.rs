@@ -8,6 +8,9 @@ mod git_branch;
 mod git_status;
 
 // Tier 2: Languages & Runtimes
+pub(crate) mod cc;
+mod c;
+mod cpp;
 mod nodejs;
 // mod python; // TODO: cp from starship
 mod rust_lang;
@@ -95,6 +98,8 @@ pub fn register_all(registry: &mut ChipRegistry) {
     registry.register(git_status::GitStatusProvider);
 
     // Tier 2: Languages & Runtimes
+    registry.register(c::CProvider);
+    registry.register(cpp::CppProvider);
     registry.register(nodejs::NodejsProvider);
     // registry.register(python::PythonProvider);
     registry.register(rust_lang::RustProvider);
