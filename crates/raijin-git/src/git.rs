@@ -38,14 +38,12 @@ actions!(
         /// Unstages the current hunk and moves to the next one.
         UnstageAndNext,
         /// Restores the selected hunks to their original state.
-        #[action(deprecated_aliases = ["editor::RevertSelectedHunks"])]
         Restore,
         /// Restores the selected hunks to their original state and moves to the
         /// next one.
         RestoreAndNext,
         // per-file
         /// Shows git blame information for the current file.
-        #[action(deprecated_aliases = ["editor::ToggleGitBlame"])]
         Blame,
         /// Shows the git history for the current file.
         FileHistory,
@@ -121,7 +119,7 @@ pub struct RenameBranch {
 
 /// Restores a file to its last committed state, discarding local changes.
 #[derive(Clone, Debug, Default, PartialEq, Deserialize, JsonSchema, Action)]
-#[action(namespace = git, deprecated_aliases = ["editor::RevertFile"])]
+#[action(namespace = git)]
 #[serde(deny_unknown_fields)]
 pub struct RestoreFile {
     #[serde(default)]

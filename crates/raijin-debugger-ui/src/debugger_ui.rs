@@ -74,7 +74,6 @@ actions!(
         /// Toggles the session picker dropdown.
         ToggleSessionPicker,
         /// Reruns the last debugging session.
-        #[action(deprecated_aliases = ["debugger::RerunLastSession"])]
         Rerun,
         /// Toggles expansion of the selected item in the debugger UI.
         ToggleExpandItem,

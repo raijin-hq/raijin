@@ -235,12 +235,9 @@ pub mod workspace {
     actions!(
         workspace,
         [
-            #[action(deprecated_aliases = ["editor::CopyPath", "outline_panel::CopyPath", "project_panel::CopyPath"])]
             CopyPath,
-            #[action(deprecated_aliases = ["editor::CopyRelativePath", "outline_panel::CopyRelativePath", "project_panel::CopyRelativePath"])]
             CopyRelativePath,
             /// Opens the selected file with the system's default application.
-            #[action(deprecated_aliases = ["project_panel::OpenWithSystem"])]
             OpenWithSystem,
         ]
     );
@@ -263,7 +260,6 @@ pub mod git {
             /// Create a git remote.
             CreateRemote,
             /// Opens the git branch selector.
-            #[action(deprecated_aliases = ["branches::OpenRecent"])]
             Branch,
             /// Opens the git stash selector.
             ViewStash,
@@ -441,7 +437,6 @@ pub mod agent {
         agent,
         [
             /// Opens the agent settings panel.
-            #[action(deprecated_aliases = ["agent::OpenConfiguration"])]
             OpenSettings,
             /// Opens the agent onboarding modal.
             OpenOnboardingModal,
@@ -454,12 +449,10 @@ pub mod agent {
             /// Starts a chat conversation with the agent.
             Chat,
             /// Toggles the language model selector dropdown.
-            #[action(deprecated_aliases = ["assistant::ToggleModelSelector", "assistant2::ToggleModelSelector"])]
             ToggleModelSelector,
             /// Triggers re-authentication on Gemini
             ReauthenticateAgent,
             /// Add the current selection as context for threads in the agent panel.
-            #[action(deprecated_aliases = ["assistant::QuoteSelection", "agent::QuoteSelection"])]
             AddSelectionToThread,
             /// Resets the agent panel zoom levels (agent UI and buffer font sizes).
             ResetAgentZoom,
@@ -518,7 +511,6 @@ pub mod assistant {
         [
             /// Toggles the agent panel.
             Toggle,
-            #[action(deprecated_aliases = ["assistant::ToggleFocus"])]
             ToggleFocus
         ]
     );
@@ -533,7 +525,7 @@ pub mod assistant {
 
     /// Opens the rules library for managing agent rules and prompts.
     #[derive(PartialEq, Clone, Default, Debug, Deserialize, JsonSchema, Action)]
-    #[action(namespace = agent, deprecated_aliases = ["assistant::OpenRulesLibrary", "assistant::DeployPromptLibrary"])]
+    #[action(namespace = agent)]
     #[serde(deny_unknown_fields)]
     pub struct OpenRulesLibrary {
         #[serde(skip)]

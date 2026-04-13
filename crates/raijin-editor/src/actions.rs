@@ -395,7 +395,6 @@ actions!(
         /// Accepts the full edit prediction.
         AcceptEditPrediction,
         /// Accepts a partial edit prediction.
-        #[action(deprecated_aliases = ["editor::AcceptPartialCopilotSuggestion"])]
         AcceptNextWordEditPrediction,
         AcceptNextLineEditPrediction,
         /// Applies all diff hunks in the editor.
@@ -487,7 +486,6 @@ actions!(
         /// Duplicates the current selection.
         DuplicateSelection,
         /// Expands all diff hunks in the editor.
-        #[action(deprecated_aliases = ["editor::ExpandAllHunkDiffs"])]
         ExpandAllDiffHunks,
         /// Collapses all diff hunks in the editor.
         CollapseAllDiffHunks,
@@ -669,7 +667,6 @@ actions!(
         /// Opens a permalink to the current line.
         OpenPermalinkToLine,
         /// Opens the file whose name is selected in the editor.
-        #[action(deprecated_aliases = ["editor::OpenFile"])]
         OpenSelectedFilename,
         /// Opens all selections in a multibuffer.
         OpenSelectionsInMultibuffer,
@@ -846,7 +843,6 @@ actions!(
         /// Toggles relative line numbers display.
         ToggleRelativeLineNumbers,
         /// Toggles diff display for selected hunks.
-        #[action(deprecated_aliases = ["editor::ToggleHunkDiff"])]
         ToggleSelectedDiffHunks,
         /// Stores the diff review comment locally (for later batch submission).
         SubmitDiffReviewComment,

@@ -340,12 +340,10 @@ actions!(
         /// Moves cursor left one character.
         Left,
         /// Moves cursor left one character, wrapping to previous line.
-        #[action(deprecated_aliases = ["vim::Backspace"])]
         WrappingLeft,
         /// Moves cursor right one character.
         Right,
         /// Moves cursor right one character, wrapping to next line.
-        #[action(deprecated_aliases = ["vim::Space"])]
         WrappingRight,
         /// Selects the current line.
         CurrentLine,

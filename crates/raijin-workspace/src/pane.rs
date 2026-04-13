@@ -115,7 +115,6 @@ pub struct CloseActiveItem {
 #[derive(Clone, PartialEq, Debug, Deserialize, JsonSchema, Default, Action)]
 #[action(namespace = pane)]
 #[serde(deny_unknown_fields)]
-#[action(deprecated_aliases = ["pane::CloseInactiveItems"])]
 pub struct CloseOtherItems {
     #[serde(default)]
     pub save_intent: Option<SaveIntent>,
