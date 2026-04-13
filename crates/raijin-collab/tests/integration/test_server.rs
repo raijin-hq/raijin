@@ -11,7 +11,7 @@ use raijin_collab::{
     AppState, Config,
     db::{NewUserParams, UserId},
     executor::Executor,
-    rpc::{CLEANUP_TIMEOUT, Principal, RECONNECT_TIMEOUT, Server, ZedVersion},
+    rpc::{CLEANUP_TIMEOUT, Principal, RECONNECT_TIMEOUT, Server, RaijinVersion},
 };
 use raijin_collab_ui::channel_view::ChannelView;
 use inazuma_collections::{HashMap, HashSet};
@@ -106,7 +106,7 @@ impl TestServer {
         let app_state = Self::build_app_state(&test_db, &livekit_server, executor.clone()).await;
         let epoch = app_state
             .db
-            .create_server(&app_state.config.zed_environment)
+            .create_server(&app_state.config.raijin_environment)
             .await
             .unwrap();
         let server = Server::new(epoch, app_state.clone());
@@ -155,7 +155,7 @@ impl TestServer {
         let epoch = self
             .app_state
             .db
-            .create_server(&self.app_state.config.zed_environment)
+            .create_server(&self.app_state.config.raijin_environment)
             .await
             .unwrap();
         self.server.reset(epoch);
@@ -295,7 +295,7 @@ impl TestServer {
                             server_conn,
                             client_name,
                             Principal::User(user),
-                            ZedVersion(semver::Version::new(1, 0, 0)),
+                            RaijinVersion(semver::Version::new(1, 0, 0)),
                             Some("test".to_string()),
                             None,
                             None,
@@ -578,13 +578,13 @@ impl TestServer {
                 livekit_secret: None,
                 rust_log: None,
                 log_json: None,
-                zed_environment: "test".into(),
+                raijin_environment: "test".into(),
                 blob_store_url: None,
                 blob_store_region: None,
                 blob_store_access_key: None,
                 blob_store_secret_key: None,
                 blob_store_bucket: None,
-                zed_client_checksum_seed: None,
+                raijin_client_checksum_seed: None,
                 seed_path: None,
                 kinesis_region: None,
                 kinesis_stream: None,

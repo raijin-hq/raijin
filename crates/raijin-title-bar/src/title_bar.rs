@@ -1169,7 +1169,7 @@ impl TitleBar {
                                     .w_full()
                                     .justify_between()
                                     .child(Label::new(user_login))
-                                    .child(PlanChip::new(plan.unwrap_or(Plan::ZedFree)))
+                                    .child(PlanChip::new(plan.unwrap_or(Plan::RaijinFree)))
                                     .into_any_element()
                             },
                             move |_, cx| {
@@ -1232,7 +1232,7 @@ impl TitleBar {
                                                         )
                                                     }),
                                             )
-                                            .child(PlanChip::new(plan.unwrap_or(Plan::ZedFree)))
+                                            .child(PlanChip::new(plan.unwrap_or(Plan::RaijinFree)))
                                             .into_any_element()
                                     }
                                 },

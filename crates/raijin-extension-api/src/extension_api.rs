@@ -326,8 +326,8 @@ macro_rules! register_extension {
             #[cfg(target_os = "wasi")]
             wasi_ext::init_cwd();
 
-            zed_extension_api::register_extension(|| {
-                Box::new(<$extension_type as zed_extension_api::Extension>::new())
+            raijin_extension_api::register_extension(|| {
+                Box::new(<$extension_type as raijin_extension_api::Extension>::new())
             });
         }
     };

@@ -31,8 +31,8 @@ use schemars::JsonSchema;
 use semver::Version;
 use serde::{Deserialize, Serialize, de::DeserializeOwned};
 use inazuma_settings_framework::SettingsStore;
-pub use inazuma_settings_framework::ZedDotDevAvailableModel as AvailableModel;
-pub use inazuma_settings_framework::ZedDotDevAvailableProvider as AvailableProvider;
+pub use inazuma_settings_framework::RaijinDotDevAvailableModel as AvailableModel;
+pub use inazuma_settings_framework::RaijinDotDevAvailableProvider as AvailableProvider;
 use smol::io::{AsyncReadExt, BufReader};
 use std::collections::VecDeque;
 use std::pin::Pin;
@@ -57,7 +57,7 @@ const PROVIDER_ID: LanguageModelProviderId = raijin_language_model::ZED_CLOUD_PR
 const PROVIDER_NAME: LanguageModelProviderName = raijin_language_model::ZED_CLOUD_PROVIDER_NAME;
 
 #[derive(Default, Clone, Debug, PartialEq)]
-pub struct ZedDotDevSettings {
+pub struct RaijinDotDevSettings {
     pub available_models: Vec<AvailableModel>,
 }
 #[derive(Default, Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
@@ -1082,7 +1082,7 @@ fn response_lines<T: DeserializeOwned>(
 }
 
 #[derive(IntoElement, RegisterComponent)]
-struct ZedAiConfiguration {
+struct RaijinAiConfiguration {
     is_connected: bool,
     plan: Option<Plan>,
     eligible_for_trial: bool,
@@ -1090,26 +1090,26 @@ struct ZedAiConfiguration {
     sign_in_callback: Arc<dyn Fn(&mut Window, &mut App) + Send + Sync>,
 }
 
-impl RenderOnce for ZedAiConfiguration {
+impl RenderOnce for RaijinAiConfiguration {
     fn render(self, _window: &mut Window, _cx: &mut App) -> impl IntoElement {
         let (subscription_text, has_paid_plan) = match self.plan {
-            Some(Plan::ZedPro) => (
+            Some(Plan::RaijinPro) => (
                 "You have access to Raijin's hosted models through your Pro subscription.",
                 true,
             ),
-            Some(Plan::ZedProTrial) => (
+            Some(Plan::RaijinProTrial) => (
                 "You have access to Raijin's hosted models through your Pro trial.",
                 false,
             ),
-            Some(Plan::ZedStudent) => (
+            Some(Plan::RaijinStudent) => (
                 "You have access to Raijin's hosted models through your Student subscription.",
                 true,
             ),
-            Some(Plan::ZedBusiness) => (
+            Some(Plan::RaijinBusiness) => (
                 "You have access to Raijin's hosted models through your Organization.",
                 true,
             ),
-            Some(Plan::ZedFree) | None => (
+            Some(Plan::RaijinFree) | None => (
                 if self.eligible_for_trial {
                     "Subscribe for access to Raijin's hosted models. Start with a 14 day free trial."
                 } else {
@@ -1200,7 +1200,7 @@ impl Render for ConfigurationView {
         let state = self.state.read(cx);
         let user_store = state.user_store.read(cx);
 
-        ZedAiConfiguration {
+        RaijinAiConfiguration {
             is_connected: !state.is_signed_out(cx),
             plan: user_store.plan(),
             eligible_for_trial: user_store.trial_started_at().is_none(),
@@ -1210,7 +1210,7 @@ impl Render for ConfigurationView {
     }
 }
 
-impl Component for ZedAiConfiguration {
+impl Component for RaijinAiConfiguration {
     fn name() -> &'static str {
         "AI Configuration Content"
     }
@@ -1230,7 +1230,7 @@ impl Component for ZedAiConfiguration {
             eligible_for_trial: bool,
             account_too_young: bool,
         ) -> AnyElement {
-            ZedAiConfiguration {
+            RaijinAiConfiguration {
                 is_connected,
                 plan,
                 eligible_for_trial,
@@ -1260,15 +1260,15 @@ impl Component for ZedAiConfiguration {
                     ),
                     single_example(
                         "Free Plan",
-                        configuration(true, Some(Plan::ZedFree), true, false),
+                        configuration(true, Some(Plan::RaijinFree), true, false),
                     ),
                     single_example(
                         "Raijin Pro Trial Plan",
-                        configuration(true, Some(Plan::ZedProTrial), true, false),
+                        configuration(true, Some(Plan::RaijinProTrial), true, false),
                     ),
                     single_example(
                         "Raijin Pro Plan",
-                        configuration(true, Some(Plan::ZedPro), true, false),
+                        configuration(true, Some(Plan::RaijinPro), true, false),
                     ),
                 ])
                 .into_any_element(),

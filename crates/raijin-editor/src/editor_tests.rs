@@ -30728,7 +30728,7 @@ async fn test_markdown_indents(cx: &mut inazuma::TestAppContext) {
 }
 
 #[inazuma::test]
-async fn test_paste_url_from_zed_copy_creates_markdown_link_over_selected_text(
+async fn test_paste_url_from_raijin_copy_creates_markdown_link_over_selected_text(
     cx: &mut inazuma::TestAppContext,
 ) {
     init_test(cx, |_| {});

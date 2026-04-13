@@ -5,13 +5,13 @@ use raijin_cloud_api_types::Plan;
 use inazuma::{Entity, IntoElement, ParentElement};
 use raijin_ui::prelude::*;
 
-use crate::ZedAiOnboarding;
+use crate::RaijinAiOnboarding;
 
 pub struct EditPredictionOnboarding {
     user_store: Entity<UserStore>,
     client: Arc<Client>,
     copilot_is_configured: bool,
-    continue_with_zed_ai: Arc<dyn Fn(&mut Window, &mut App)>,
+    continue_with_raijin_ai: Arc<dyn Fn(&mut Window, &mut App)>,
     continue_with_copilot: Arc<dyn Fn(&mut Window, &mut App)>,
 }
 
@@ -20,7 +20,7 @@ impl EditPredictionOnboarding {
         user_store: Entity<UserStore>,
         client: Arc<Client>,
         copilot_is_configured: bool,
-        continue_with_zed_ai: Arc<dyn Fn(&mut Window, &mut App)>,
+        continue_with_raijin_ai: Arc<dyn Fn(&mut Window, &mut App)>,
         continue_with_copilot: Arc<dyn Fn(&mut Window, &mut App)>,
         _cx: &mut Context<Self>,
     ) -> Self {
@@ -28,7 +28,7 @@ impl EditPredictionOnboarding {
             user_store,
             copilot_is_configured,
             client,
-            continue_with_zed_ai,
+            continue_with_raijin_ai,
             continue_with_copilot,
         }
     }
@@ -40,7 +40,7 @@ impl Render for EditPredictionOnboarding {
             .user_store
             .read(cx)
             .plan()
-            .is_some_and(|plan| plan == Plan::ZedFree);
+            .is_some_and(|plan| plan == Plan::RaijinFree);
 
         let github_copilot = v_flex()
             .gap_1()
@@ -68,10 +68,10 @@ impl Render for EditPredictionOnboarding {
 
         v_flex()
             .gap_2()
-            .child(ZedAiOnboarding::new(
+            .child(RaijinAiOnboarding::new(
                 self.client.clone(),
                 &self.user_store,
-                self.continue_with_zed_ai.clone(),
+                self.continue_with_raijin_ai.clone(),
                 cx,
             ))
             .when(is_free_plan, |this| {

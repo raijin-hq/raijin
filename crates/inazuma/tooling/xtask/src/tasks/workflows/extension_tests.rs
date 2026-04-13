@@ -132,7 +132,7 @@ fn check_rust() -> NamedJob {
 }
 
 pub(crate) fn check_extension() -> NamedJob {
-    let (cache_download, cache_hit) = cache_zed_extension_cli();
+    let (cache_download, cache_hit) = cache_raijin_extension_cli();
     let (check_version_job, version_changed, _) = compare_versions();
 
     let job = Job::default()
@@ -142,7 +142,7 @@ pub(crate) fn check_extension() -> NamedJob {
         .timeout_minutes(6u32)
         .add_step(steps::checkout_repo().with_full_history())
         .add_step(cache_download)
-        .add_step(download_zed_extension_cli(cache_hit))
+        .add_step(download_raijin_extension_cli(cache_hit))
         .add_step(cache_rust_dependencies_namespace()) // Extensions can compile Rust, so provide the cache if needed.
         .add_step(check())
         .add_step(fetch_ts_query_ls())
@@ -153,7 +153,7 @@ pub(crate) fn check_extension() -> NamedJob {
     named::job(job)
 }
 
-pub fn cache_zed_extension_cli() -> (Step<Use>, StepOutput) {
+pub fn cache_raijin_extension_cli() -> (Step<Use>, StepOutput) {
     let step = named::uses(
         "actions",
         "cache",
@@ -169,7 +169,7 @@ pub fn cache_zed_extension_cli() -> (Step<Use>, StepOutput) {
     (step, output)
 }
 
-pub fn download_zed_extension_cli(cache_hit: StepOutput) -> Step<Run> {
+pub fn download_raijin_extension_cli(cache_hit: StepOutput) -> Step<Run> {
     named::bash(
     indoc! {
         r#"

@@ -678,7 +678,7 @@ mod tests {
     }
 
     #[test]
-    fn test_invalid_zed_path() {
+    fn test_invalid_raijin_path() {
         assert!(MentionUri::parse("raijin:///invalid/path", PathStyle::local()).is_err());
         assert!(MentionUri::parse("raijin:///agent/unknown/test", PathStyle::local()).is_err());
     }

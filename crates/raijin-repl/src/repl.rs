@@ -29,13 +29,13 @@ pub use crate::session::Session;
 pub const KERNEL_DOCS_URL: &str = "https://raijin.dev/docs/repl#changing-kernels";
 
 pub fn init(fs: Arc<dyn Fs>, cx: &mut App) {
-    set_dispatcher(zed_dispatcher(cx));
+    set_dispatcher(raijin_dispatcher(cx));
     repl_sessions_ui::init(cx);
     ReplStore::init(fs, cx);
 }
 
-fn zed_dispatcher(cx: &mut App) -> impl Dispatcher {
-    struct ZedDispatcher {
+fn raijin_dispatcher(cx: &mut App) -> impl Dispatcher {
+    struct RaijinDispatcher {
         dispatcher: Arc<dyn PlatformDispatcher>,
     }
 
@@ -43,7 +43,7 @@ fn zed_dispatcher(cx: &mut App) -> impl Dispatcher {
     // async-dispatcher, except for the task label in dispatch. Later we should
     // just make that consistent so we have this dispatcher ready to go for
     // other crates in Raijin.
-    impl Dispatcher for ZedDispatcher {
+    impl Dispatcher for RaijinDispatcher {
         #[track_caller]
         fn dispatch(&self, runnable: Runnable) {
             let location = core::panic::Location::caller();
@@ -71,7 +71,7 @@ fn zed_dispatcher(cx: &mut App) -> impl Dispatcher {
         }
     }
 
-    ZedDispatcher {
+    RaijinDispatcher {
         dispatcher: cx.background_executor().dispatcher().clone(),
     }
 }

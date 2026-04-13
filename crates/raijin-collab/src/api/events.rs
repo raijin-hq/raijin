@@ -119,7 +119,7 @@ pub async fn post_events(
 }
 
 pub fn calculate_json_checksum(app: Arc<AppState>, json: &impl AsRef<[u8]>) -> Option<Vec<u8>> {
-    let checksum_seed = app.config.zed_client_checksum_seed.as_ref()?;
+    let checksum_seed = app.config.raijin_client_checksum_seed.as_ref()?;
 
     let mut summer = Sha256::new();
     summer.update(checksum_seed);

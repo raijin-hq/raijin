@@ -41,20 +41,20 @@ impl From<raijin_client::Status> for SignInStatus {
 }
 
 #[derive(RegisterComponent, IntoElement)]
-pub struct ZedAiOnboarding {
+pub struct RaijinAiOnboarding {
     pub sign_in_status: SignInStatus,
     pub plan: Option<Plan>,
     pub account_too_young: bool,
-    pub continue_with_zed_ai: Arc<dyn Fn(&mut Window, &mut App)>,
+    pub continue_with_raijin_ai: Arc<dyn Fn(&mut Window, &mut App)>,
     pub sign_in: Arc<dyn Fn(&mut Window, &mut App)>,
     pub dismiss_onboarding: Option<Arc<dyn Fn(&mut Window, &mut App)>>,
 }
 
-impl ZedAiOnboarding {
+impl RaijinAiOnboarding {
     pub fn new(
         client: Arc<Client>,
         user_store: &Entity<UserStore>,
-        continue_with_zed_ai: Arc<dyn Fn(&mut Window, &mut App)>,
+        continue_with_raijin_ai: Arc<dyn Fn(&mut Window, &mut App)>,
         cx: &mut App,
     ) -> Self {
         let store = user_store.read(cx);
@@ -64,7 +64,7 @@ impl ZedAiOnboarding {
             sign_in_status: status.into(),
             plan: store.plan(),
             account_too_young: store.account_too_young(),
-            continue_with_zed_ai,
+            continue_with_raijin_ai,
             sign_in: Arc::new(move |_window, cx| {
                 cx.spawn({
                     let client = client.clone();
@@ -295,16 +295,16 @@ impl ZedAiOnboarding {
     }
 }
 
-impl RenderOnce for ZedAiOnboarding {
+impl RenderOnce for RaijinAiOnboarding {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
         if matches!(self.sign_in_status, SignInStatus::SignedIn) {
             match self.plan {
                 None => self.render_free_plan_state(cx),
-                Some(Plan::ZedFree) => self.render_free_plan_state(cx),
-                Some(Plan::ZedProTrial) => self.render_trial_state(cx),
-                Some(Plan::ZedPro) => self.render_pro_plan_state(cx),
-                Some(Plan::ZedBusiness) => self.render_business_plan_state(cx),
-                Some(Plan::ZedStudent) => self.render_student_plan_state(cx),
+                Some(Plan::RaijinFree) => self.render_free_plan_state(cx),
+                Some(Plan::RaijinProTrial) => self.render_trial_state(cx),
+                Some(Plan::RaijinPro) => self.render_pro_plan_state(cx),
+                Some(Plan::RaijinBusiness) => self.render_business_plan_state(cx),
+                Some(Plan::RaijinStudent) => self.render_student_plan_state(cx),
             }
         } else {
             self.render_sign_in_disclaimer(cx)
@@ -312,7 +312,7 @@ impl RenderOnce for ZedAiOnboarding {
     }
 }
 
-impl Component for ZedAiOnboarding {
+impl Component for RaijinAiOnboarding {
     fn scope() -> ComponentScope {
         ComponentScope::Onboarding
     }
@@ -331,11 +331,11 @@ impl Component for ZedAiOnboarding {
             plan: Option<Plan>,
             account_too_young: bool,
         ) -> AnyElement {
-            ZedAiOnboarding {
+            RaijinAiOnboarding {
                 sign_in_status,
                 plan,
                 account_too_young,
-                continue_with_zed_ai: Arc::new(|_, _| {}),
+                continue_with_raijin_ai: Arc::new(|_, _| {}),
                 sign_in: Arc::new(|_, _| {}),
                 dismiss_onboarding: None,
             }
@@ -358,23 +358,23 @@ impl Component for ZedAiOnboarding {
                     ),
                     single_example(
                         "Free Plan",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedFree), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::RaijinFree), false),
                     ),
                     single_example(
                         "Pro Trial",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedProTrial), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::RaijinProTrial), false),
                     ),
                     single_example(
                         "Pro Plan",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedPro), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::RaijinPro), false),
                     ),
                     single_example(
                         "Business Plan",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedBusiness), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::RaijinBusiness), false),
                     ),
                     single_example(
                         "Student Plan",
-                        onboarding(SignInStatus::SignedIn, Some(Plan::ZedStudent), false),
+                        onboarding(SignInStatus::SignedIn, Some(Plan::RaijinStudent), false),
                     ),
                 ])
                 .into_any_element(),

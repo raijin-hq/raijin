@@ -6,20 +6,20 @@ use inazuma::{Entity, IntoElement, ParentElement};
 use raijin_language_model::{LanguageModelRegistry, ZED_CLOUD_PROVIDER_ID};
 use raijin_ui::prelude::*;
 
-use crate::{AgentPanelOnboardingCard, ApiKeysWithoutProviders, ZedAiOnboarding};
+use crate::{AgentPanelOnboardingCard, ApiKeysWithoutProviders, RaijinAiOnboarding};
 
 pub struct AgentPanelOnboarding {
     user_store: Entity<UserStore>,
     client: Arc<Client>,
     has_configured_providers: bool,
-    continue_with_zed_ai: Arc<dyn Fn(&mut Window, &mut App)>,
+    continue_with_raijin_ai: Arc<dyn Fn(&mut Window, &mut App)>,
 }
 
 impl AgentPanelOnboarding {
     pub fn new(
         user_store: Entity<UserStore>,
         client: Arc<Client>,
-        continue_with_zed_ai: impl Fn(&mut Window, &mut App) + 'static,
+        continue_with_raijin_ai: impl Fn(&mut Window, &mut App) + 'static,
         cx: &mut Context<Self>,
     ) -> Self {
         cx.subscribe(
@@ -40,7 +40,7 @@ impl AgentPanelOnboarding {
             user_store,
             client,
             has_configured_providers: Self::has_configured_providers(cx),
-            continue_with_zed_ai: Arc::new(continue_with_zed_ai),
+            continue_with_raijin_ai: Arc::new(continue_with_raijin_ai),
         }
     }
 
@@ -58,23 +58,23 @@ impl Render for AgentPanelOnboarding {
             .user_store
             .read(cx)
             .plan()
-            .is_some_and(|plan| plan == Plan::ZedProTrial);
+            .is_some_and(|plan| plan == Plan::RaijinProTrial);
         let is_pro_user = self
             .user_store
             .read(cx)
             .plan()
-            .is_some_and(|plan| plan == Plan::ZedPro);
+            .is_some_and(|plan| plan == Plan::RaijinPro);
 
         AgentPanelOnboardingCard::new()
             .child(
-                ZedAiOnboarding::new(
+                RaijinAiOnboarding::new(
                     self.client.clone(),
                     &self.user_store,
-                    self.continue_with_zed_ai.clone(),
+                    self.continue_with_raijin_ai.clone(),
                     cx,
                 )
                 .with_dismiss({
-                    let callback = self.continue_with_zed_ai.clone();
+                    let callback = self.continue_with_raijin_ai.clone();
                     move |window, cx| callback(window, cx)
                 }),
             )

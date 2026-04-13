@@ -471,7 +471,7 @@ impl Render for CopilotCodeVerification {
                 window.focus(&this.focus_handle, cx);
             }))
             .child(
-                Vector::new(VectorName::ZedXCopilot, rems(8.), rems(4.))
+                Vector::new(VectorName::RaijinXCopilot, rems(8.), rems(4.))
                     .color(Color::Custom(cx.theme().colors().icon)),
             )
             .child(prompt)

@@ -54,7 +54,7 @@ pub async fn validate_header<B>(mut req: Request<B>, next: Next<B>) -> impl Into
     let http_client = state.http_client.clone().expect("no HTTP client");
 
     let response = http_client
-        .get(format!("{}/client/users/me", state.config.zed_cloud_url()))
+        .get(format!("{}/client/users/me", state.config.raijin_cloud_url()))
         .header("Content-Type", "application/json")
         .header("Authorization", format!("{user_id} {access_token}"))
         .send()

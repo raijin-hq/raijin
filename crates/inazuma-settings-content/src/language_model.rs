@@ -24,7 +24,7 @@ pub struct AllLanguageModelSettingsContent {
     pub vercel_ai_gateway: Option<VercelAiGatewaySettingsContent>,
     pub x_ai: Option<XAiSettingsContent>,
     #[serde(rename = "raijin.dev")]
-    pub zed_dot_dev: Option<ZedDotDevSettingsContent>,
+    pub raijin_dot_dev: Option<RaijinDotDevSettingsContent>,
 }
 
 #[with_fallible_options]
@@ -379,15 +379,15 @@ pub struct XaiAvailableModel {
 
 #[with_fallible_options]
 #[derive(Default, Clone, Debug, Serialize, Deserialize, PartialEq, JsonSchema, MergeFrom)]
-pub struct ZedDotDevSettingsContent {
-    pub available_models: Option<Vec<ZedDotDevAvailableModel>>,
+pub struct RaijinDotDevSettingsContent {
+    pub available_models: Option<Vec<RaijinDotDevAvailableModel>>,
 }
 
 #[with_fallible_options]
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
-pub struct ZedDotDevAvailableModel {
+pub struct RaijinDotDevAvailableModel {
     /// The provider of the language model.
-    pub provider: ZedDotDevAvailableProvider,
+    pub provider: RaijinDotDevAvailableProvider,
     /// The model's name in the provider's API. e.g. claude-3-5-sonnet-20240620
     pub name: String,
     /// The name displayed in the UI, such as in the assistant panel model dropdown menu.
@@ -414,7 +414,7 @@ pub struct ZedDotDevAvailableModel {
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema, MergeFrom)]
 #[serde(rename_all = "lowercase")]
-pub enum ZedDotDevAvailableProvider {
+pub enum RaijinDotDevAvailableProvider {
     Anthropic,
     OpenAi,
     Google,

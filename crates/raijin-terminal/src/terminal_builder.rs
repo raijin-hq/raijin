@@ -96,7 +96,7 @@ impl TerminalBuilder {
 }
 
 /// Inserts environment variables identifying the terminal as running inside Raijin.
-pub fn insert_zed_terminal_env(
+pub fn insert_raijin_terminal_env(
     env: &mut HashMap<String, String>,
     version: &impl std::fmt::Display,
 ) {

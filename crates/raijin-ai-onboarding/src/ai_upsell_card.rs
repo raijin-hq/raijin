@@ -166,7 +166,7 @@ impl RenderOnce for AiUpsellCard {
 
         match self.sign_in_status {
             SignInStatus::SignedIn => match self.user_plan {
-                None | Some(Plan::ZedFree) => card
+                None | Some(Plan::RaijinFree) => card
                     .child(Label::new("Try Raijin AI").size(LabelSize::Large))
                     .map(|this| {
                         if self.account_too_young {
@@ -232,7 +232,7 @@ impl RenderOnce for AiUpsellCard {
                             )
                         }
                     }),
-                Some(Plan::ZedProTrial) => card
+                Some(Plan::RaijinProTrial) => card
                     .child(pro_trial_stamp)
                     .child(Label::new("You're in the Raijin Pro Trial").size(LabelSize::Large))
                     .child(
@@ -241,7 +241,7 @@ impl RenderOnce for AiUpsellCard {
                             .mb_2(),
                     )
                     .child(PlanDefinitions.pro_trial(false)),
-                Some(Plan::ZedPro) => card
+                Some(Plan::RaijinPro) => card
                     .child(certified_user_stamp)
                     .child(Label::new("You're in the Raijin Pro plan").size(LabelSize::Large))
                     .child(
@@ -250,7 +250,7 @@ impl RenderOnce for AiUpsellCard {
                             .mb_2(),
                     )
                     .child(PlanDefinitions.pro_plan()),
-                Some(Plan::ZedBusiness) => card
+                Some(Plan::RaijinBusiness) => card
                     .child(certified_user_stamp)
                     .child(Label::new("You're in the Raijin Business plan").size(LabelSize::Large))
                     .child(
@@ -259,7 +259,7 @@ impl RenderOnce for AiUpsellCard {
                             .mb_2(),
                     )
                     .child(PlanDefinitions.business_plan()),
-                Some(Plan::ZedStudent) => card
+                Some(Plan::RaijinStudent) => card
                     .child(certified_user_stamp)
                     .child(Label::new("You're in the Raijin Student plan").size(LabelSize::Large))
                     .child(
@@ -339,7 +339,7 @@ impl Component for AiUpsellCard {
                                 sign_in_status: SignInStatus::SignedIn,
                                 sign_in: Arc::new(|_, _| {}),
                                 account_too_young: false,
-                                user_plan: Some(Plan::ZedFree),
+                                user_plan: Some(Plan::RaijinFree),
                                 tab_index: Some(1),
                             }
                             .into_any_element(),
@@ -350,7 +350,7 @@ impl Component for AiUpsellCard {
                                 sign_in_status: SignInStatus::SignedIn,
                                 sign_in: Arc::new(|_, _| {}),
                                 account_too_young: true,
-                                user_plan: Some(Plan::ZedFree),
+                                user_plan: Some(Plan::RaijinFree),
                                 tab_index: Some(1),
                             }
                             .into_any_element(),
@@ -361,7 +361,7 @@ impl Component for AiUpsellCard {
                                 sign_in_status: SignInStatus::SignedIn,
                                 sign_in: Arc::new(|_, _| {}),
                                 account_too_young: false,
-                                user_plan: Some(Plan::ZedProTrial),
+                                user_plan: Some(Plan::RaijinProTrial),
                                 tab_index: Some(1),
                             }
                             .into_any_element(),
@@ -372,7 +372,7 @@ impl Component for AiUpsellCard {
                                 sign_in_status: SignInStatus::SignedIn,
                                 sign_in: Arc::new(|_, _| {}),
                                 account_too_young: false,
-                                user_plan: Some(Plan::ZedPro),
+                                user_plan: Some(Plan::RaijinPro),
                                 tab_index: Some(1),
                             }
                             .into_any_element(),
@@ -383,7 +383,7 @@ impl Component for AiUpsellCard {
                                 sign_in_status: SignInStatus::SignedIn,
                                 sign_in: Arc::new(|_, _| {}),
                                 account_too_young: false,
-                                user_plan: Some(Plan::ZedBusiness),
+                                user_plan: Some(Plan::RaijinBusiness),
                                 tab_index: Some(1),
                             }
                             .into_any_element(),
@@ -394,7 +394,7 @@ impl Component for AiUpsellCard {
                                 sign_in_status: SignInStatus::SignedIn,
                                 sign_in: Arc::new(|_, _| {}),
                                 account_too_young: false,
-                                user_plan: Some(Plan::ZedStudent),
+                                user_plan: Some(Plan::RaijinStudent),
                                 tab_index: Some(1),
                             }
                             .into_any_element(),

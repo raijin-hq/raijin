@@ -34,7 +34,7 @@ pub fn run_package_conformity(_args: PackageConformityArgs) -> Result<()> {
         }
 
         // Extensions should not use workspace dependencies.
-        if is_extension || package.name == "zed_extension_api" {
+        if is_extension || package.name == "raijin_extension_api" {
             continue;
         }
 

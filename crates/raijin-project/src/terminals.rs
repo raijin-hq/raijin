@@ -14,7 +14,7 @@ use std::{
 };
 use raijin_task::{Shell, ShellBuilder, ShellKind, SpawnInTerminal};
 use raijin_terminal::{
-    TaskState, TaskStatus, Terminal, TerminalBuilder, insert_zed_terminal_env,
+    TaskState, TaskStatus, Terminal, TerminalBuilder, insert_raijin_terminal_env,
     terminal_settings::TerminalSettings,
 };
 use inazuma_util::{command::new_std_command, get_default_system_shell, maybe, rel_path::RelPath};
@@ -611,7 +611,7 @@ fn create_remote_shell(
     remote_client: Entity<RemoteClient>,
     cx: &mut App,
 ) -> Result<(Shell, HashMap<String, String>)> {
-    insert_zed_terminal_env(&mut env, &raijin_release_channel::AppVersion::global(cx));
+    insert_raijin_terminal_env(&mut env, &raijin_release_channel::AppVersion::global(cx));
 
     let (program, args) = match spawn_command {
         Some((program, args)) => (Some(program.clone()), args),

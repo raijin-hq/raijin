@@ -1197,13 +1197,13 @@ impl SettingsObserver {
                                             .with_context(|| {
                                                 format!("parsing VSCode tasks, file {abs_path:?}")
                                             })?;
-                                    let zed_tasks = TaskTemplates::try_from(vscode_tasks)
+                                    let raijin_tasks = TaskTemplates::try_from(vscode_tasks)
                                         .with_context(|| {
                                             format!(
                                         "converting VSCode tasks into Raijin ones, file {abs_path:?}"
                                     )
                                         })?;
-                                    serde_json::to_string(&zed_tasks).with_context(|| {
+                                    serde_json::to_string(&raijin_tasks).with_context(|| {
                                         format!(
                                             "serializing Raijin tasks into JSON, file {abs_path:?}"
                                         )
@@ -1214,13 +1214,13 @@ impl SettingsObserver {
                                             .with_context(|| {
                                                 format!("parsing VSCode debug tasks, file {abs_path:?}")
                                             })?;
-                                    let zed_tasks = DebugTaskFile::try_from(vscode_tasks)
+                                    let raijin_tasks = DebugTaskFile::try_from(vscode_tasks)
                                         .with_context(|| {
                                             format!(
                                         "converting VSCode debug tasks into Raijin ones, file {abs_path:?}"
                                     )
                                         })?;
-                                    serde_json::to_string(&zed_tasks).with_context(|| {
+                                    serde_json::to_string(&raijin_tasks).with_context(|| {
                                         format!(
                                             "serializing Raijin tasks into JSON, file {abs_path:?}"
                                         )

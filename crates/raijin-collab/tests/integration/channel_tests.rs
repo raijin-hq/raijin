@@ -951,13 +951,13 @@ async fn test_channel_link_notifications(
     let channels = server
         .make_channel_tree(&[("raijin", None)], (&client_a, cx_a))
         .await;
-    let zed_channel = channels[0];
+    let raijin_channel = channels[0];
 
     try_join_all(client_a.channel_store().update(cx_a, |channel_store, cx| {
         [
-            channel_store.set_channel_visibility(zed_channel, proto::ChannelVisibility::Public, cx),
-            channel_store.invite_member(zed_channel, user_b, proto::ChannelRole::Member, cx),
-            channel_store.invite_member(zed_channel, user_c, proto::ChannelRole::Guest, cx),
+            channel_store.set_channel_visibility(raijin_channel, proto::ChannelVisibility::Public, cx),
+            channel_store.invite_member(raijin_channel, user_b, proto::ChannelRole::Member, cx),
+            channel_store.invite_member(raijin_channel, user_c, proto::ChannelRole::Guest, cx),
         ]
     }))
     .await
@@ -968,7 +968,7 @@ async fn test_channel_link_notifications(
     client_b
         .channel_store()
         .update(cx_b, |channel_store, cx| {
-            channel_store.respond_to_channel_invite(zed_channel, true, cx)
+            channel_store.respond_to_channel_invite(raijin_channel, true, cx)
         })
         .await
         .unwrap();
@@ -976,7 +976,7 @@ async fn test_channel_link_notifications(
     client_c
         .channel_store()
         .update(cx_c, |channel_store, cx| {
-            channel_store.respond_to_channel_invite(zed_channel, true, cx)
+            channel_store.respond_to_channel_invite(raijin_channel, true, cx)
         })
         .await
         .unwrap();
@@ -989,7 +989,7 @@ async fn test_channel_link_notifications(
     let active_channel = client_a
         .channel_store()
         .update(cx_a, |channel_store, cx| {
-            channel_store.create_channel("active", Some(zed_channel), cx)
+            channel_store.create_channel("active", Some(raijin_channel), cx)
         })
         .await
         .unwrap();
@@ -1000,19 +1000,19 @@ async fn test_channel_link_notifications(
     assert_channels_list_shape(
         client_a.channel_store(),
         cx_a,
-        &[(zed_channel, 0), (active_channel, 1)],
+        &[(raijin_channel, 0), (active_channel, 1)],
     );
     assert_channels_list_shape(
         client_b.channel_store(),
         cx_b,
-        &[(zed_channel, 0), (active_channel, 1)],
+        &[(raijin_channel, 0), (active_channel, 1)],
     );
-    assert_channels_list_shape(client_c.channel_store(), cx_c, &[(zed_channel, 0)]);
+    assert_channels_list_shape(client_c.channel_store(), cx_c, &[(raijin_channel, 0)]);
 
     let vim_channel = client_a
         .channel_store()
         .update(cx_a, |channel_store, cx| {
-            channel_store.create_channel("vim", Some(zed_channel), cx)
+            channel_store.create_channel("vim", Some(raijin_channel), cx)
         })
         .await
         .unwrap();
@@ -1031,23 +1031,23 @@ async fn test_channel_link_notifications(
     assert_channels_list_shape(
         client_a.channel_store(),
         cx_a,
-        &[(zed_channel, 0), (active_channel, 1), (vim_channel, 1)],
+        &[(raijin_channel, 0), (active_channel, 1), (vim_channel, 1)],
     );
     assert_channels_list_shape(
         client_b.channel_store(),
         cx_b,
-        &[(zed_channel, 0), (active_channel, 1), (vim_channel, 1)],
+        &[(raijin_channel, 0), (active_channel, 1), (vim_channel, 1)],
     );
     assert_channels_list_shape(
         client_c.channel_store(),
         cx_c,
-        &[(zed_channel, 0), (vim_channel, 1)],
+        &[(raijin_channel, 0), (vim_channel, 1)],
     );
 
     let helix_channel = client_a
         .channel_store()
         .update(cx_a, |channel_store, cx| {
-            channel_store.create_channel("helix", Some(zed_channel), cx)
+            channel_store.create_channel("helix", Some(raijin_channel), cx)
         })
         .await
         .unwrap();
@@ -1078,7 +1078,7 @@ async fn test_channel_link_notifications(
         client_b.channel_store(),
         cx_b,
         &[
-            (zed_channel, 0),
+            (raijin_channel, 0),
             (active_channel, 1),
             (vim_channel, 1),
             (helix_channel, 2),
@@ -1087,7 +1087,7 @@ async fn test_channel_link_notifications(
     assert_channels_list_shape(
         client_c.channel_store(),
         cx_c,
-        &[(zed_channel, 0), (vim_channel, 1), (helix_channel, 2)],
+        &[(raijin_channel, 0), (vim_channel, 1), (helix_channel, 2)],
     );
 }
 
@@ -1109,15 +1109,15 @@ async fn test_channel_membership_notifications(
             (&client_a, cx_a),
         )
         .await;
-    let zed_channel = channels[0];
+    let raijin_channel = channels[0];
     let vim_channel = channels[1];
     let opensource_channel = channels[2];
 
     try_join_all(client_a.channel_store().update(cx_a, |channel_store, cx| {
         [
-            channel_store.set_channel_visibility(zed_channel, proto::ChannelVisibility::Public, cx),
+            channel_store.set_channel_visibility(raijin_channel, proto::ChannelVisibility::Public, cx),
             channel_store.set_channel_visibility(vim_channel, proto::ChannelVisibility::Public, cx),
-            channel_store.invite_member(zed_channel, user_b, proto::ChannelRole::Admin, cx),
+            channel_store.invite_member(raijin_channel, user_b, proto::ChannelRole::Admin, cx),
             channel_store.invite_member(opensource_channel, user_b, proto::ChannelRole::Member, cx),
         ]
     }))
@@ -1129,7 +1129,7 @@ async fn test_channel_membership_notifications(
     client_b
         .channel_store()
         .update(cx_b, |channel_store, cx| {
-            channel_store.respond_to_channel_invite(zed_channel, true, cx)
+            channel_store.respond_to_channel_invite(raijin_channel, true, cx)
         })
         .await
         .unwrap();
@@ -1143,7 +1143,7 @@ async fn test_channel_membership_notifications(
         &[
             ExpectedChannel {
                 depth: 0,
-                id: zed_channel,
+                id: raijin_channel,
                 name: "raijin".into(),
             },
             ExpectedChannel {
@@ -1155,7 +1155,7 @@ async fn test_channel_membership_notifications(
     );
 
     client_b.channel_store().update(cx_b, |channel_store, _| {
-        channel_store.is_channel_admin(zed_channel)
+        channel_store.is_channel_admin(raijin_channel)
     });
 
     client_b

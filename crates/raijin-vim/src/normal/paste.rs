@@ -93,8 +93,8 @@ impl Vim {
                 }
 
                 let first_selection_indent_column =
-                    clipboard_selections.as_ref().and_then(|zed_selections| {
-                        zed_selections
+                    clipboard_selections.as_ref().and_then(|raijin_selections| {
+                        raijin_selections
                             .first()
                             .map(|selection| selection.first_line_indent)
                     });

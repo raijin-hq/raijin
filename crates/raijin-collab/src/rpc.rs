@@ -30,7 +30,7 @@ use axum::{
     routing::get,
 };
 use inazuma_collections::{HashMap, HashSet};
-pub use connection_pool::{ConnectionPool, ZedVersion};
+pub use connection_pool::{ConnectionPool, RaijinVersion};
 use core::fmt::{self, Debug, Formatter};
 use futures::TryFutureExt as _;
 use raijin_rpc::proto::split_repository_update;
@@ -471,7 +471,7 @@ impl Server {
                 app_state
                     .db
                     .delete_stale_channel_chat_participants(
-                        &app_state.config.zed_environment,
+                        &app_state.config.raijin_environment,
                         server_id,
                     )
                     .await
@@ -479,7 +479,7 @@ impl Server {
 
                 if let Some((room_ids, channel_ids)) = app_state
                     .db
-                    .stale_server_resource_ids(&app_state.config.zed_environment, server_id)
+                    .stale_server_resource_ids(&app_state.config.raijin_environment, server_id)
                     .await
                     .trace_err()
                 {
@@ -601,7 +601,7 @@ impl Server {
                 app_state
                     .db
                     .delete_stale_channel_chat_participants(
-                        &app_state.config.zed_environment,
+                        &app_state.config.raijin_environment,
                         server_id,
                     )
                     .await
@@ -615,7 +615,7 @@ impl Server {
 
                 app_state
                     .db
-                    .delete_stale_servers(&app_state.config.zed_environment, server_id)
+                    .delete_stale_servers(&app_state.config.raijin_environment, server_id)
                     .await
                     .trace_err();
             }
@@ -741,7 +741,7 @@ impl Server {
         connection: Connection,
         address: String,
         principal: Principal,
-        zed_version: ZedVersion,
+        raijin_version: RaijinVersion,
         release_channel: Option<String>,
         user_agent: Option<String>,
         geoip_country_code: Option<String>,
@@ -802,7 +802,7 @@ impl Server {
             if let Err(error) = this
                 .send_initial_client_update(
                     connection_id,
-                    zed_version,
+                    raijin_version,
                     send_connection_id,
                     &session,
                 )
@@ -910,7 +910,7 @@ impl Server {
     async fn send_initial_client_update(
         &self,
         connection_id: ConnectionId,
-        zed_version: ZedVersion,
+        raijin_version: RaijinVersion,
         mut send_connection_id: Option<oneshot::Sender<ConnectionId>>,
         session: &Session,
     ) -> Result<()> {
@@ -939,14 +939,14 @@ impl Server {
 
                 {
                     let mut pool = self.connection_pool.lock();
-                    pool.add_connection(connection_id, user.id, user.admin, zed_version.clone());
+                    pool.add_connection(connection_id, user.id, user.admin, raijin_version.clone());
                     self.peer.send(
                         connection_id,
                         build_initial_contacts_update(contacts, &pool),
                     )?;
                 }
 
-                if should_auto_subscribe_to_channels(&zed_version) {
+                if should_auto_subscribe_to_channels(&raijin_version) {
                     subscribe_user_to_channels(user.id, session).await?;
                 }
 
@@ -1117,7 +1117,7 @@ pub async fn handle_websocket_request(
             .into_response();
     }
 
-    let Some(version) = app_version_header.map(|header| ZedVersion(header.0.0)) else {
+    let Some(version) = app_version_header.map(|header| RaijinVersion(header.0.0)) else {
         return (
             StatusCode::UPGRADE_REQUIRED,
             "no version header found".to_string(),
@@ -2761,7 +2761,7 @@ async fn remove_contact(
     Ok(())
 }
 
-fn should_auto_subscribe_to_channels(version: &ZedVersion) -> bool {
+fn should_auto_subscribe_to_channels(version: &RaijinVersion) -> bool {
     version.0.minor < 139
 }
 

@@ -334,7 +334,7 @@ async fn test_edit_prediction_invalidation_range(cx: &mut inazuma::TestAppContex
 }
 
 #[inazuma::test]
-async fn test_edit_prediction_jump_disabled_for_non_zed_providers(cx: &mut inazuma::TestAppContext) {
+async fn test_edit_prediction_jump_disabled_for_non_raijin_providers(cx: &mut inazuma::TestAppContext) {
     init_test(cx, |_| {});
 
     let mut cx = EditorTestContext::new(cx).await;

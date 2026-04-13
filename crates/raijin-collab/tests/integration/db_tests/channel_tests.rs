@@ -675,17 +675,17 @@ async fn test_user_is_channel_participant(db: &Arc<Database>) {
     let member = new_test_user(db, "member@example.com").await;
     let guest = new_test_user(db, "guest@example.com").await;
 
-    let zed_channel = db.create_root_channel("raijin", admin).await.unwrap();
+    let raijin_channel = db.create_root_channel("raijin", admin).await.unwrap();
     let internal_channel_id = db
-        .create_sub_channel("active", zed_channel, admin)
+        .create_sub_channel("active", raijin_channel, admin)
         .await
         .unwrap();
     let public_channel_id = db
-        .create_sub_channel("vim", zed_channel, admin)
+        .create_sub_channel("vim", raijin_channel, admin)
         .await
         .unwrap();
 
-    db.set_channel_visibility(zed_channel, collab::db::ChannelVisibility::Public, admin)
+    db.set_channel_visibility(raijin_channel, collab::db::ChannelVisibility::Public, admin)
         .await
         .unwrap();
     db.set_channel_visibility(
@@ -695,14 +695,14 @@ async fn test_user_is_channel_participant(db: &Arc<Database>) {
     )
     .await
     .unwrap();
-    db.invite_channel_member(zed_channel, member, admin, ChannelRole::Member)
+    db.invite_channel_member(raijin_channel, member, admin, ChannelRole::Member)
         .await
         .unwrap();
-    db.invite_channel_member(zed_channel, guest, admin, ChannelRole::Guest)
+    db.invite_channel_member(raijin_channel, guest, admin, ChannelRole::Guest)
         .await
         .unwrap();
 
-    db.respond_to_channel_invite(zed_channel, member, true)
+    db.respond_to_channel_invite(raijin_channel, member, true)
         .await
         .unwrap();
 
@@ -755,7 +755,7 @@ async fn test_user_is_channel_participant(db: &Arc<Database>) {
         ]
     );
 
-    db.respond_to_channel_invite(zed_channel, guest, true)
+    db.respond_to_channel_invite(raijin_channel, guest, true)
         .await
         .unwrap();
 
@@ -773,19 +773,19 @@ async fn test_user_is_channel_participant(db: &Arc<Database>) {
     let channels = db.get_channels_for_user(guest).await.unwrap().channels;
     assert_channel_tree(
         channels,
-        &[(zed_channel, &[]), (public_channel_id, &[zed_channel])],
+        &[(raijin_channel, &[]), (public_channel_id, &[raijin_channel])],
     );
     let channels = db.get_channels_for_user(member).await.unwrap().channels;
     assert_channel_tree(
         channels,
         &[
-            (zed_channel, &[]),
-            (internal_channel_id, &[zed_channel]),
-            (public_channel_id, &[zed_channel]),
+            (raijin_channel, &[]),
+            (internal_channel_id, &[raijin_channel]),
+            (public_channel_id, &[raijin_channel]),
         ],
     );
 
-    db.set_channel_member_role(zed_channel, admin, guest, ChannelRole::Banned)
+    db.set_channel_member_role(raijin_channel, admin, guest, ChannelRole::Banned)
         .await
         .unwrap();
     assert!(
@@ -831,11 +831,11 @@ async fn test_user_is_channel_participant(db: &Arc<Database>) {
         ]
     );
 
-    db.remove_channel_member(zed_channel, guest, admin)
+    db.remove_channel_member(raijin_channel, guest, admin)
         .await
         .unwrap();
 
-    db.invite_channel_member(zed_channel, guest, admin, ChannelRole::Guest)
+    db.invite_channel_member(raijin_channel, guest, admin, ChannelRole::Guest)
         .await
         .unwrap();
 
@@ -868,13 +868,13 @@ async fn test_user_is_channel_participant(db: &Arc<Database>) {
         ]
     );
 
-    db.respond_to_channel_invite(zed_channel, guest, true)
+    db.respond_to_channel_invite(raijin_channel, guest, true)
         .await
         .unwrap();
 
     db.transaction(|tx| async move {
         db.check_user_is_channel_participant(
-            &db.get_channel_internal(zed_channel, &tx).await.unwrap(),
+            &db.get_channel_internal(raijin_channel, &tx).await.unwrap(),
             guest,
             &tx,
         )
@@ -941,7 +941,7 @@ async fn test_user_is_channel_participant(db: &Arc<Database>) {
     let channels = db.get_channels_for_user(guest).await.unwrap().channels;
     assert_channel_tree(
         channels,
-        &[(zed_channel, &[]), (public_channel_id, &[zed_channel])],
+        &[(raijin_channel, &[]), (public_channel_id, &[raijin_channel])],
     )
 }
 

@@ -560,7 +560,7 @@ pub trait LspAdapter: 'static + Send + Sync + DynLspInstaller {
     /// Used to provide dynamic reloading of the JSON schemas used to
     /// provide autocompletion and diagnostics in Raijin setting and keybind
     /// files
-    fn is_primary_zed_json_schema_adapter(&self) -> bool {
+    fn is_primary_raijin_json_schema_adapter(&self) -> bool {
         false
     }
 

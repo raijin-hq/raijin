@@ -141,7 +141,7 @@ fn render_inspector_id(inspector_id: &InspectorElementId, cx: &App) -> Div {
                 .child(source_location_string)
                 .tooltip(Tooltip::text("Click to open by running Raijin CLI"))
                 .on_click(move |_, _window, cx| {
-                    cx.background_spawn(open_zed_source_location(source_location))
+                    cx.background_spawn(open_raijin_source_location(source_location))
                         .detach_and_log_err(cx);
                 }),
         )
@@ -157,7 +157,7 @@ fn render_inspector_id(inspector_id: &InspectorElementId, cx: &App) -> Div {
         )
 }
 
-async fn open_zed_source_location(
+async fn open_raijin_source_location(
     location: &'static std::panic::Location<'static>,
 ) -> anyhow::Result<()> {
     let mut path = Path::new(env!("RAIJIN_REPO_DIR")).to_path_buf();

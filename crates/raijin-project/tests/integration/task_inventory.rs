@@ -561,7 +561,7 @@ async fn test_inventory_static_task_filters(cx: &mut TestAppContext) {
 }
 
 #[inazuma::test]
-async fn test_zed_tasks_take_precedence_over_vscode(cx: &mut TestAppContext) {
+async fn test_raijin_tasks_take_precedence_over_vscode(cx: &mut TestAppContext) {
     init_test(cx);
     let inventory = cx.update(|cx| Inventory::new(cx));
     let worktree_id = WorktreeId::from_usize(0);
@@ -590,17 +590,17 @@ async fn test_zed_tasks_take_precedence_over_vscode(cx: &mut TestAppContext) {
                     worktree_id,
                     path: rel_path(".raijin"),
                 }),
-                Some(&mock_tasks_from_names(["zed_task"])),
+                Some(&mock_tasks_from_names(["raijin_task"])),
             )
             .unwrap();
     });
     assert_eq!(
         task_template_names(&inventory, Some(worktree_id), cx).await,
-        vec!["zed_task"],
+        vec!["raijin_task"],
         "With both .raijin and .vscode tasks, only .raijin tasks should appear"
     );
 
-    register_worktree_task_used(&inventory, worktree_id, "zed_task", cx).await;
+    register_worktree_task_used(&inventory, worktree_id, "raijin_task", cx).await;
     let resolved = resolved_task_names(&inventory, Some(worktree_id), cx).await;
     assert!(
         !resolved.iter().any(|name| name == "vscode_task"),

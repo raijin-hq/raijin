@@ -20,8 +20,8 @@ pub enum VectorName {
     Grid,
     ProTrialStamp,
     ProUserStamp,
-    ZedLogo,
-    ZedXCopilot,
+    RaijinLogo,
+    RaijinXCopilot,
 }
 
 impl VectorName {
@@ -124,7 +124,7 @@ impl Component for Vector {
                         vec![
                             single_example(
                                 "Default",
-                                Vector::square(VectorName::ZedLogo, size).into_any_element(),
+                                Vector::square(VectorName::RaijinLogo, size).into_any_element(),
                             ),
                             single_example(
                                 "Custom Size",
@@ -132,7 +132,7 @@ impl Component for Vector {
                                     .h(rems_from_px(120.))
                                     .justify_center()
                                     .child(Vector::new(
-                                        VectorName::ZedLogo,
+                                        VectorName::RaijinLogo,
                                         rems_from_px(120.),
                                         rems_from_px(200.),
                                     ))
@@ -145,13 +145,13 @@ impl Component for Vector {
                         vec![
                             single_example(
                                 "Accent Color",
-                                Vector::square(VectorName::ZedLogo, size)
+                                Vector::square(VectorName::RaijinLogo, size)
                                     .color(Color::Accent)
                                     .into_any_element(),
                             ),
                             single_example(
                                 "Error Color",
-                                Vector::square(VectorName::ZedLogo, size)
+                                Vector::square(VectorName::RaijinLogo, size)
                                     .color(Color::Error)
                                     .into_any_element(),
                             ),
@@ -161,7 +161,7 @@ impl Component for Vector {
                         "Different Vectors",
                         vec![single_example(
                             "Raijin X Copilot",
-                            Vector::square(VectorName::ZedXCopilot, rems_from_px(100.))
+                            Vector::square(VectorName::RaijinXCopilot, rems_from_px(100.))
                                 .into_any_element(),
                         )],
                     ),
@@ -177,6 +177,6 @@ mod tests {
 
     #[test]
     fn vector_path() {
-        assert_eq!(VectorName::ZedLogo.path().as_ref(), "images/zed_logo.svg");
+        assert_eq!(VectorName::RaijinLogo.path().as_ref(), "images/raijin_logo.svg");
     }
 }

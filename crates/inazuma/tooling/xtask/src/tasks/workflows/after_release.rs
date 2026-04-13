@@ -16,12 +16,12 @@ pub fn after_release() -> Workflow {
     let prerelease = WorkflowInput::bool("prerelease", None);
     let body = WorkflowInput::string("body", Some(String::new()));
 
-    let refresh_zed_dev = rebuild_releases_page();
-    let post_to_discord = post_to_discord(&[&refresh_zed_dev]);
+    let refresh_raijin_dev = rebuild_releases_page();
+    let post_to_discord = post_to_discord(&[&refresh_raijin_dev]);
     let publish_winget = publish_winget();
     let create_sentry_release = create_sentry_release();
     let notify_on_failure = notify_on_failure(&[
-        &refresh_zed_dev,
+        &refresh_raijin_dev,
         &post_to_discord,
         &publish_winget,
         &create_sentry_release,
@@ -36,7 +36,7 @@ pub fn after_release() -> Workflow {
                     .add_input(prerelease.name, prerelease.input())
                     .add_input(body.name, body.input()),
             ))
-        .add_job(refresh_zed_dev.name, refresh_zed_dev.job)
+        .add_job(refresh_raijin_dev.name, refresh_raijin_dev.job)
         .add_job(post_to_discord.name, post_to_discord.job)
         .add_job(publish_winget.name, publish_winget.job)
         .add_job(create_sentry_release.name, create_sentry_release.job)

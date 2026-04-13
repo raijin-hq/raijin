@@ -217,8 +217,8 @@ impl AgentConfiguration {
             .copied()
             .unwrap_or(false);
 
-        let is_zed_provider = provider.id() == ZED_CLOUD_PROVIDER_ID;
-        let current_plan = if is_zed_provider {
+        let is_raijin_provider = provider.id() == ZED_CLOUD_PROVIDER_ID;
+        let current_plan = if is_raijin_provider {
             self.workspace
                 .upgrade()
                 .and_then(|workspace| workspace.read(cx).user_store().read(cx).plan())
@@ -280,9 +280,9 @@ impl AgentConfiguration {
                                             .gap_1()
                                             .child(Label::new(provider_name.clone()))
                                             .map(|this| {
-                                                if is_zed_provider && is_signed_in {
+                                                if is_raijin_provider && is_signed_in {
                                                     this.child(
-                                                        self.render_zed_plan_info(current_plan, cx),
+                                                        self.render_raijin_plan_info(current_plan, cx),
                                                     )
                                                 } else {
                                                     this.when(
@@ -490,7 +490,7 @@ impl AgentConfiguration {
             )
     }
 
-    fn render_zed_plan_info(&self, plan: Option<Plan>, cx: &mut Context<Self>) -> impl IntoElement {
+    fn render_raijin_plan_info(&self, plan: Option<Plan>, cx: &mut Context<Self>) -> impl IntoElement {
         if let Some(plan) = plan {
             let free_chip_bg = cx
                 .theme()
@@ -507,11 +507,11 @@ impl AgentConfiguration {
                 .blend(cx.theme().colors().text_accent.opacity(0.2));
 
             let (plan_name, label_color, bg_color) = match plan {
-                Plan::ZedFree => ("Free", Color::Default, free_chip_bg),
-                Plan::ZedProTrial => ("Pro Trial", Color::Accent, pro_chip_bg),
-                Plan::ZedPro => ("Pro", Color::Accent, pro_chip_bg),
-                Plan::ZedBusiness => ("Business", Color::Accent, pro_chip_bg),
-                Plan::ZedStudent => ("Student", Color::Accent, pro_chip_bg),
+                Plan::RaijinFree => ("Free", Color::Default, free_chip_bg),
+                Plan::RaijinProTrial => ("Pro Trial", Color::Accent, pro_chip_bg),
+                Plan::RaijinPro => ("Pro", Color::Accent, pro_chip_bg),
+                Plan::RaijinBusiness => ("Business", Color::Accent, pro_chip_bg),
+                Plan::RaijinStudent => ("Student", Color::Accent, pro_chip_bg),
             };
 
             Chip::new(plan_name.to_string())

@@ -4227,7 +4227,7 @@ impl AgentPanel {
         let plan = self.user_store.read(cx).plan();
         let has_previous_trial = self.user_store.read(cx).trial_started_at().is_some();
 
-        plan.is_some_and(|plan| plan == Plan::ZedFree) && has_previous_trial
+        plan.is_some_and(|plan| plan == Plan::RaijinFree) && has_previous_trial
     }
 
     fn should_render_onboarding(&self, cx: &mut Context<Self>) -> bool {
@@ -4237,7 +4237,7 @@ impl AgentPanel {
 
         let user_store = self.user_store.read(cx);
 
-        if user_store.plan().is_some_and(|plan| plan == Plan::ZedPro)
+        if user_store.plan().is_some_and(|plan| plan == Plan::RaijinPro)
             && user_store
                 .subscription_period()
                 .and_then(|period| period.0.checked_add_days(chrono::Days::new(1)))
@@ -4249,7 +4249,7 @@ impl AgentPanel {
             return false;
         }
 
-        let has_configured_non_zed_providers = LanguageModelRegistry::read_global(cx)
+        let has_configured_non_raijin_providers = LanguageModelRegistry::read_global(cx)
             .visible_providers()
             .iter()
             .any(|provider| {
@@ -4269,11 +4269,11 @@ impl AgentPanel {
                     .read(cx)
                     .history()
                     .is_none_or(|h| h.read(cx).is_empty());
-                history_is_empty || !has_configured_non_zed_providers
+                history_is_empty || !has_configured_non_raijin_providers
             }
             ActiveView::TextThread { .. } => {
                 let history_is_empty = self.text_thread_history.read(cx).is_empty();
-                history_is_empty || !has_configured_non_zed_providers
+                history_is_empty || !has_configured_non_raijin_providers
             }
         }
     }
@@ -4361,12 +4361,12 @@ impl AgentPanel {
         focus_handle: &FocusHandle,
         cx: &mut App,
     ) -> impl IntoElement {
-        let zed_provider_configured = AgentSettings::get_global(cx)
+        let raijin_provider_configured = AgentSettings::get_global(cx)
             .default_model
             .as_ref()
             .is_some_and(|selection| selection.provider.0.as_str() == "raijin.dev");
 
-        let callout = if zed_provider_configured {
+        let callout = if raijin_provider_configured {
             Callout::new()
                 .icon(IconName::Warning)
                 .severity(Severity::Warning)

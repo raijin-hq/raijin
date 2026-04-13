@@ -54,7 +54,7 @@ pub fn notify_schemas_changed(lsp_store: Entity<LspStore>, uris: &[String], cx: 
             let json_server = match states {
                 super::LanguageServerState::Running {
                     adapter, server, ..
-                } if adapter.adapter.is_primary_zed_json_schema_adapter() => server.clone(),
+                } if adapter.adapter.is_primary_raijin_json_schema_adapter() => server.clone(),
                 _ => continue,
             };
 

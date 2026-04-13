@@ -85,7 +85,7 @@ impl<T: InventoryContents> InventoryFor<T> {
         worktree: WorktreeId,
     ) -> impl '_ + Iterator<Item = (TaskSourceKind, T)> {
         let worktree_dirs = self.worktree.get(&worktree);
-        let has_zed_dir = worktree_dirs
+        let has_raijin_dir = worktree_dirs
             .map(|dirs| {
                 dirs.keys()
                     .any(|dir| dir.file_name().is_some_and(|name| name == ".raijin"))
@@ -96,7 +96,7 @@ impl<T: InventoryContents> InventoryFor<T> {
             .into_iter()
             .flatten()
             .filter(move |(directory, _)| {
-                !(has_zed_dir && directory.file_name().is_some_and(|name| name == ".vscode"))
+                !(has_raijin_dir && directory.file_name().is_some_and(|name| name == ".vscode"))
             })
             .flat_map(|(directory, templates)| {
                 templates.iter().map(move |template| (directory, template))
@@ -448,7 +448,7 @@ impl Inventory {
         });
         let buffer = location.map(|location| location.buffer.clone());
 
-        let worktrees_with_zed_tasks: HashSet<WorktreeId> = self
+        let worktrees_with_raijin_tasks: HashSet<WorktreeId> = self
             .templates_from_settings
             .worktree
             .iter()
@@ -474,7 +474,7 @@ impl Inventory {
                     ..
                 } = task_kind
                 {
-                    !(worktrees_with_zed_tasks.contains(id)
+                    !(worktrees_with_raijin_tasks.contains(id)
                         && dir.file_name().is_some_and(|name| name == ".vscode"))
                 } else {
                     true

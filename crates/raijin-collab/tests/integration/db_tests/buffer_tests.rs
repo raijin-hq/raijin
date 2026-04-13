@@ -146,8 +146,8 @@ async fn test_channel_buffers(db: &Arc<Database>) {
     );
 
     // Ensure that get_channel_buffer_collaborators works
-    let zed_collaborats = db.get_channel_buffer_collaborators(raijin_id).await.unwrap();
-    assert_eq!(zed_collaborats, &[a_id, b_id]);
+    let raijin_collaborats = db.get_channel_buffer_collaborators(raijin_id).await.unwrap();
+    assert_eq!(raijin_collaborats, &[a_id, b_id]);
 
     let left_buffer = db
         .leave_channel_buffer(raijin_id, connection_id_b)
@@ -164,9 +164,9 @@ async fn test_channel_buffers(db: &Arc<Database>) {
 
     db.leave_channel_buffers(connection_id_a).await.unwrap();
 
-    let zed_collaborators = db.get_channel_buffer_collaborators(raijin_id).await.unwrap();
+    let raijin_collaborators = db.get_channel_buffer_collaborators(raijin_id).await.unwrap();
     let cargo_collaborators = db.get_channel_buffer_collaborators(cargo_id).await.unwrap();
-    assert_eq!(zed_collaborators, &[]);
+    assert_eq!(raijin_collaborators, &[]);
     assert_eq!(cargo_collaborators, &[]);
 
     // When everyone has left the channel, the operations are collapsed into
