@@ -5371,7 +5371,7 @@ mod tests {
     use serde_json::json;
     use smol::stream::StreamExt as _;
     use inazuma_util::path;
-    use raijin_workspace::{MultiWorkspace, OpenOptions, OpenVisible, ToolbarItemView};
+    use raijin_workspace::{OpenOptions, OpenVisible, ToolbarItemView, Workspace};
 
     use super::*;
 
@@ -6768,12 +6768,10 @@ outline: struct OutlineEntryExcerpt
     async fn add_outline_panel(
         project: &Entity<Project>,
         cx: &mut TestAppContext,
-    ) -> (WindowHandle<MultiWorkspace>, Entity<Workspace>) {
+    ) -> (WindowHandle<Workspace>, Entity<Workspace>) {
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
 
         let workspace_weak = workspace.downgrade();
         let outline_panel = window
@@ -6787,10 +6785,8 @@ outline: struct OutlineEntryExcerpt
             .expect("Failed to load outline panel");
 
         window
-            .update(cx, |multi_workspace, window, cx| {
-                multi_workspace.workspace().update(cx, |workspace, cx| {
-                    workspace.add_panel(outline_panel, window, cx);
-                });
+            .update(cx, |workspace, window, cx| {
+                workspace.add_panel(outline_panel, window, cx);
             })
             .unwrap();
         (window, workspace)

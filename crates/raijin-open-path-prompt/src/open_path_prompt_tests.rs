@@ -6,7 +6,7 @@ use raijin_project::Project;
 use serde_json::json;
 use raijin_ui::rems;
 use inazuma_util::path;
-use raijin_workspace::{AppState, MultiWorkspace};
+use raijin_workspace::{AppState, Workspace};
 
 use crate::OpenPathDelegate;
 
@@ -426,9 +426,8 @@ fn build_open_path_prompt(
     let (tx, _) = futures::channel::oneshot::channel();
     let lister = raijin_project::DirectoryLister::Project(project.clone());
 
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
     (
         workspace.update_in(cx, |_, window, cx| {
             let delegate = OpenPathDelegate::new(tx, lister.clone(), creating_path, cx);

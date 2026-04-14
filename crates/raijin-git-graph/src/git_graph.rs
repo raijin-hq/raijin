@@ -2856,7 +2856,7 @@ mod tests {
     use smallvec::{SmallVec, smallvec};
     use std::path::Path;
     use std::sync::{Arc, Mutex};
-    use raijin_workspace::MultiWorkspace;
+    use raijin_workspace::Workspace;
 
     fn init_test(cx: &mut TestAppContext) {
         cx.update(|cx| {
@@ -3635,11 +3635,10 @@ mod tests {
         first_repository.update(cx, |repository, cx| repository.set_as_active_repository(cx));
         cx.run_until_parked();
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
-        let workspace_weak =
-            multi_workspace.read_with(&*cx, |multi, _| multi.workspace().downgrade());
+        let workspace_weak = workspace.downgrade();
         let git_graph = cx.new_window_entity(|window, cx| {
             GitGraph::new(project.clone(), workspace_weak, window, cx)
         });

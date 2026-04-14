@@ -2555,7 +2555,7 @@ mod tests {
         use raijin_project::Project;
         use serde_json::json;
         use inazuma_util::{path, rel_path::rel_path};
-        use raijin_workspace::{AppState, MultiWorkspace};
+        use raijin_workspace::{AppState, Workspace};
 
         let app_state = cx.update(|cx| {
             let state = AppState::test(cx);
@@ -2580,9 +2580,8 @@ mod tests {
             .await;
 
         let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
 
         let worktree_id = cx.read(|cx| {
             let worktrees = workspace.read(cx).worktrees(cx).collect::<Vec<_>>();

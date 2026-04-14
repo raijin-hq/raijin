@@ -900,10 +900,8 @@ mod tests {
         let fs = raijin_project::FakeFs::new(cx.background_executor.clone());
         let project = raijin_project::Project::test(fs, [] as [&Path; 0], cx).await;
         let window =
-            cx.add_window(|window, cx| raijin_workspace::MultiWorkspace::test_new(project, window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| raijin_workspace::Workspace::test_new(project, window, cx));
+        let workspace = window.root(cx).unwrap();
         let weak_workspace = workspace.downgrade();
         let visual_cx = inazuma::VisualTestContext::from_window(window.into(), cx);
         (visual_cx, weak_workspace)

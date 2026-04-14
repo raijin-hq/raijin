@@ -970,7 +970,7 @@ mod test {
     use serde_json::json;
     use inazuma_settings_framework::SettingsStore;
     use inazuma_util::path;
-    use raijin_workspace::{DeploySearch, MultiWorkspace};
+    use raijin_workspace::{DeploySearch, Workspace};
 
     use crate::{VimAddon, state::Mode, test::VimTestContext};
 
@@ -2285,10 +2285,8 @@ mod test {
 
         let project = raijin_project::Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
 
         cx.update(|cx| {
             VimTestContext::init_keybindings(true, cx);

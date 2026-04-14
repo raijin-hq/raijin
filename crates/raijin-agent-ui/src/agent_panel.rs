@@ -2792,7 +2792,7 @@ impl AgentPanel {
         let workspace = self.workspace.clone();
         let window_handle = window
             .window_handle()
-            .downcast::<raijin_workspace::MultiWorkspace>();
+            .downcast::<raijin_shell::AppShell>();
 
         let selected_agent = self.selected_agent();
 
@@ -2920,7 +2920,7 @@ impl AgentPanel {
         this: WeakEntity<Self>,
         all_paths: Vec<PathBuf>,
         app_state: Arc<raijin_workspace::AppState>,
-        window_handle: Option<inazuma::WindowHandle<raijin_workspace::MultiWorkspace>>,
+        window_handle: Option<inazuma::WindowHandle<raijin_shell::AppShell>>,
         active_file_path: Option<PathBuf>,
         path_remapping: Vec<(PathBuf, PathBuf)>,
         non_git_paths: Vec<PathBuf>,
@@ -2973,7 +2973,7 @@ impl AgentPanel {
             auto_submit: true,
         };
 
-        new_window_handle.update(cx, |_multi_workspace, window, cx| {
+        new_window_handle.update(cx, |_app_shell, window, cx| {
             new_workspace.update(cx, |workspace, cx| {
                 if has_non_git {
                     let toast_id = raijin_workspace::notifications::NotificationId::unique::<AgentPanel>();
@@ -3058,9 +3058,7 @@ impl AgentPanel {
             });
         })?;
 
-        new_window_handle.update(cx, |multi_workspace, _window, cx| {
-            multi_workspace.activate(new_workspace.clone(), cx);
-        })?;
+        // The new workspace is in its own window; no multi-workspace activation needed.
 
         this.update_in(cx, |this, window, cx| {
             this.worktree_creation_status = None;
@@ -5007,7 +5005,7 @@ mod tests {
     use raijin_project::Project;
     use serde_json::json;
     use std::time::Instant;
-    use raijin_workspace::MultiWorkspace;
+    use raijin_workspace::Workspace;
 
     #[inazuma::test]
     async fn test_active_thread_serialize_and_load_round_trip(cx: &mut TestAppContext) {
@@ -5018,25 +5016,18 @@ mod tests {
             raijin_language_model::LanguageModelRegistry::test(cx);
         });
 
-        // --- Create a MultiWorkspace window with two workspaces ---
+        // --- Create two separate workspace windows ---
         let fs = FakeFs::new(cx.executor());
         let project_a = Project::test(fs.clone(), [], cx).await;
         let project_b = Project::test(fs, [], cx).await;
 
-        let multi_workspace =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project_a.clone(), window, cx));
+        let window_a =
+            cx.add_window(|window, cx| Workspace::test_new(project_a.clone(), window, cx));
+        let workspace_a = window_a.root(cx).unwrap();
 
-        let workspace_a = multi_workspace
-            .read_with(cx, |multi_workspace, _cx| {
-                multi_workspace.workspace().clone()
-            })
-            .unwrap();
-
-        let workspace_b = multi_workspace
-            .update(cx, |multi_workspace, window, cx| {
-                multi_workspace.test_add_workspace(project_b.clone(), window, cx)
-            })
-            .unwrap();
+        let window_b =
+            cx.add_window(|window, cx| Workspace::test_new(project_b.clone(), window, cx));
+        let workspace_b = window_b.root(cx).unwrap();
 
         workspace_a.update(cx, |workspace, _cx| {
             workspace.set_random_database_id();
@@ -5045,7 +5036,7 @@ mod tests {
             workspace.set_random_database_id();
         });
 
-        let cx = &mut VisualTestContext::from_window(multi_workspace.into(), cx);
+        let cx = &mut VisualTestContext::from_window(window_a.into(), cx);
 
         // --- Set up workspace A: with an active thread ---
         let panel_a = workspace_a.update_in(cx, |workspace, window, cx| {
@@ -5153,13 +5144,9 @@ mod tests {
         let project = Project::test(fs.clone(), [], cx).await;
 
         let multi_workspace =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
-        let workspace_a = multi_workspace
-            .read_with(cx, |multi_workspace, _cx| {
-                multi_workspace.workspace().clone()
-            })
-            .unwrap();
+        let workspace_a = multi_workspace.root(cx).unwrap();
 
         let cx = &mut VisualTestContext::from_window(multi_workspace.into(), cx);
 
@@ -5506,11 +5493,9 @@ mod tests {
         let project = Project::test(fs.clone(), [], cx).await;
 
         let multi_workspace =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
-        let workspace = multi_workspace
-            .read_with(cx, |mw, _cx| mw.workspace().clone())
-            .unwrap();
+        let workspace = multi_workspace.root(cx).unwrap();
 
         let mut cx = VisualTestContext::from_window(multi_workspace.into(), cx);
 
@@ -5842,13 +5827,9 @@ mod tests {
         let project = Project::test(fs.clone(), [Path::new("/project")], cx).await;
 
         let multi_workspace =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
-        let workspace = multi_workspace
-            .read_with(cx, |multi_workspace, _cx| {
-                multi_workspace.workspace().clone()
-            })
-            .unwrap();
+        let workspace = multi_workspace.root(cx).unwrap();
 
         workspace.update(cx, |workspace, _cx| {
             workspace.set_random_database_id();
@@ -5889,17 +5870,6 @@ mod tests {
         });
 
         cx.run_until_parked();
-
-        // MultiWorkspace should still have exactly one workspace (no worktree created).
-        multi_workspace
-            .read_with(cx, |multi_workspace, _cx| {
-                assert_eq!(
-                    multi_workspace.workspaces().len(),
-                    1,
-                    "LocalProject should not create a new workspace"
-                );
-            })
-            .unwrap();
 
         // The thread should be active in the panel.
         panel.read_with(cx, |panel, cx| {
@@ -5952,13 +5922,9 @@ mod tests {
         let project = Project::test(fs.clone(), [Path::new("/project")], cx).await;
 
         let multi_workspace =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
-        let workspace = multi_workspace
-            .read_with(cx, |multi_workspace, _cx| {
-                multi_workspace.workspace().clone()
-            })
-            .unwrap();
+        let workspace = multi_workspace.root(cx).unwrap();
 
         workspace.update(cx, |workspace, _cx| {
             workspace.set_random_database_id();
@@ -6044,13 +6010,9 @@ mod tests {
         let project = Project::test(fs.clone(), [Path::new("/project")], cx).await;
 
         let multi_workspace =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
-        let workspace = multi_workspace
-            .read_with(cx, |multi_workspace, _cx| {
-                multi_workspace.workspace().clone()
-            })
-            .unwrap();
+        let workspace = multi_workspace.root(cx).unwrap();
 
         let cx = &mut VisualTestContext::from_window(multi_workspace.into(), cx);
 
@@ -6147,13 +6109,9 @@ mod tests {
         let project = Project::test(app_state.fs.clone(), [Path::new("/project")], cx).await;
 
         let multi_workspace =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
-        let workspace = multi_workspace
-            .read_with(cx, |multi_workspace, _cx| {
-                multi_workspace.workspace().clone()
-            })
-            .unwrap();
+        let workspace = multi_workspace.root(cx).unwrap();
 
         workspace.update(cx, |workspace, _cx| {
             workspace.set_random_database_id();
@@ -6237,27 +6195,20 @@ mod tests {
         // Let the async worktree creation + workspace setup complete.
         cx.run_until_parked();
 
-        // Find the new workspace's AgentPanel and verify it used the Codex agent.
-        let found_codex = multi_workspace
-            .read_with(cx, |multi_workspace, cx| {
-                // There should be more than one workspace now (the original + the new worktree).
-                assert!(
-                    multi_workspace.workspaces().len() > 1,
-                    "expected a new workspace to have been created, found {}",
-                    multi_workspace.workspaces().len(),
-                );
+        // Find the new workspace window's AgentPanel and verify it used the Codex agent.
+        let new_workspace_window = cx
+            .windows()
+            .into_iter()
+            .find(|w| w.window_id() != multi_workspace.into().window_id())
+            .expect("expected a new workspace window to have been created");
 
-                // Check the newest workspace's panel for the correct agent.
-                let new_workspace = multi_workspace
-                    .workspaces()
-                    .iter()
-                    .find(|ws| ws.entity_id() != workspace.entity_id())
-                    .expect("should find the new workspace");
-                let new_panel = new_workspace
-                    .read(cx)
+        let found_codex = new_workspace_window
+            .downcast::<Workspace>()
+            .expect("new window should contain a Workspace")
+            .read_with(cx, |ws, cx| {
+                let new_panel = ws
                     .panel::<AgentPanel>(cx)
                     .expect("new workspace should have an AgentPanel");
-
                 new_panel.read(cx).selected_agent_type.clone()
             })
             .unwrap();

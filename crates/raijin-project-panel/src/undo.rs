@@ -226,7 +226,7 @@ mod test {
     use raijin_project::{FakeFs, Project, ProjectPath};
     use std::sync::Arc;
     use inazuma_util::rel_path::rel_path;
-    use raijin_workspace::MultiWorkspace;
+    use raijin_workspace::Workspace;
 
     struct TestContext {
         project: Entity<Project>,
@@ -239,10 +239,8 @@ mod test {
         let fs = FakeFs::new(cx.executor());
         let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         let panel = workspace.update_in(cx, ProjectPanel::new);
         cx.run_until_parked();

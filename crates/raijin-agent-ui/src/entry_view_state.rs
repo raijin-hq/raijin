@@ -481,7 +481,7 @@ mod tests {
     use serde_json::json;
     use inazuma_settings_framework::SettingsStore;
     use inazuma_util::path;
-    use raijin_workspace::{MultiWorkspace, PathList};
+    use raijin_workspace::{PathList, Workspace};
 
     #[inazuma::test]
     async fn test_diff_sync(cx: &mut TestAppContext) {
@@ -496,9 +496,8 @@ mod tests {
         .await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let tool_call = acp::ToolCall::new("tool", "Tool call")
             .status(acp::ToolCallStatus::InProgress)

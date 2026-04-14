@@ -36,7 +36,7 @@ use inazuma_util::{
     test::{TextRangeMarker, marked_text_ranges_by},
 };
 use uuid::Uuid;
-use raijin_workspace::{AppState, CollaboratorId, MultiWorkspace};
+use raijin_workspace::{AppState, CollaboratorId, Workspace};
 use raijin_zeta_prompt::ZetaPromptInput;
 
 use crate::{
@@ -208,11 +208,9 @@ async fn test_diagnostics_refresh_suppressed_while_following(cx: &mut TestAppCon
         app_state
     });
 
-    let multi_workspace =
-        cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace
-        .read_with(cx, |multi_workspace, _| multi_workspace.workspace().clone())
-        .unwrap();
+    let workspace_window =
+        cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+    let workspace = workspace_window.root(cx).unwrap();
     cx.update(|cx| {
         AppState::set_global(Arc::downgrade(workspace.read(cx).app_state()), cx);
     });
@@ -256,10 +254,8 @@ async fn test_diagnostics_refresh_suppressed_while_following(cx: &mut TestAppCon
         ep_store.reject_current_prediction(EditPredictionRejectReason::Discarded, &project, cx);
     });
 
-    let _ = multi_workspace.update(cx, |multi_workspace, window, cx| {
-        multi_workspace.workspace().update(cx, |workspace, cx| {
-            workspace.start_following(CollaboratorId::Agent, window, cx);
-        });
+    let _ = workspace_window.update(cx, |workspace, window, cx| {
+        workspace.start_following(CollaboratorId::Agent, window, cx);
     });
     cx.run_until_parked();
 

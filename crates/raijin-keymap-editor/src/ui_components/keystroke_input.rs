@@ -675,7 +675,7 @@ mod tests {
     use itertools::Itertools as _;
     use raijin_project::Project;
     use inazuma_settings_framework::SettingsStore;
-    use raijin_workspace::MultiWorkspace;
+    use raijin_workspace::Workspace;
 
     pub struct KeystrokeInputTestHelper {
         input: Entity<KeystrokeInput>,
@@ -1122,7 +1122,7 @@ mod tests {
         let fs = FakeFs::new(cx.executor());
         let project = Project::test(fs, [], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let cx = VisualTestContext::from_window(window_handle.into(), cx);
         KeystrokeInputTestHelper::new(cx)
     }

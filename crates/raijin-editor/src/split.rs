@@ -2100,7 +2100,7 @@ mod tests {
     use inazuma_settings_framework::{DiffViewStyle, SettingsStore};
     use raijin_ui::{VisualContext as _, div, px};
     use inazuma_util::rel_path::rel_path;
-    use raijin_workspace::{Item, MultiWorkspace};
+    use raijin_workspace::{Item, Workspace};
 
     use crate::display_map::{
         BlockPlacement, BlockProperties, BlockStyle, Crease, FoldPlaceholder,
@@ -2122,9 +2122,8 @@ mod tests {
             crate::init(cx);
         });
         let project = Project::test(FakeFs::new(cx.executor()), [], cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let rhs_multibuffer = cx.new(|cx| {
             let mut multibuffer = MultiBuffer::new(Capability::ReadWrite);
             multibuffer.set_all_diff_hunks_expanded(cx);

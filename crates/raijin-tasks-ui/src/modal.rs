@@ -743,7 +743,7 @@ mod tests {
     use serde_json::json;
     use raijin_task::TaskTemplates;
     use inazuma_util::path;
-    use raijin_workspace::{CloseInactiveTabsAndPanes, MultiWorkspace, OpenOptions, OpenVisible};
+    use raijin_workspace::{CloseInactiveTabsAndPanes, OpenOptions, OpenVisible, Workspace};
 
     use crate::{modal::Spawn, tests::init_test};
 
@@ -777,7 +777,7 @@ mod tests {
 
         let project = Project::test(fs, [path!("/dir").as_ref()], cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
 
         let tasks_picker = open_spawn_tasks(&workspace, cx);
@@ -951,7 +951,7 @@ mod tests {
 
         let project = Project::test(fs, [path!("/dir").as_ref()], cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
 
         let tasks_picker = open_spawn_tasks(&workspace, cx);
@@ -1107,7 +1107,7 @@ mod tests {
             ));
         });
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
 
         let _ts_file_1 = workspace

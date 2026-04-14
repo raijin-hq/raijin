@@ -3156,7 +3156,7 @@ mod tests {
     use inazuma_text::OffsetRangeExt;
     use unindent::Unindent;
     use inazuma_util::path;
-    use raijin_workspace::MultiWorkspace;
+    use raijin_workspace::Workspace;
 
     #[inazuma::test]
     async fn test_copy_paste_whole_message(cx: &mut TestAppContext) {
@@ -3327,10 +3327,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [path!("/test").as_ref()], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let mut cx = VisualTestContext::from_window(window_handle.into(), cx);
 
         let weak_workspace = workspace.downgrade();

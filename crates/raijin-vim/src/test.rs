@@ -29,7 +29,7 @@ use raijin_project::FakeFs;
 use raijin_search::BufferSearchBar;
 use raijin_search::{ProjectSearchView, project_search};
 use serde_json::json;
-use raijin_workspace::{DeploySearch, MultiWorkspace};
+use raijin_workspace::{DeploySearch, Workspace};
 
 use crate::{PushSneak, PushSneakBackward, VimAddon, insert::NormalBefore, motion, state::Mode};
 
@@ -2786,10 +2786,8 @@ async fn test_project_search_opens_in_normal_mode(cx: &mut inazuma::TestAppConte
 
     let project = raijin_project::Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
     let window_handle =
-        cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = window_handle
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+    let workspace = window_handle.root(cx).unwrap();
 
     cx.update(|cx| {
         VimTestContext::init_keybindings(true, cx);

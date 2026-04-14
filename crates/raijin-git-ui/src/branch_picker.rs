@@ -1319,8 +1319,6 @@ mod tests {
     use serde_json::json;
     use inazuma_settings_framework::SettingsStore;
     use inazuma_util::path;
-    use raijin_workspace::MultiWorkspace;
-
     fn init_test(cx: &mut TestAppContext) {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
@@ -1373,13 +1371,11 @@ mod tests {
         let project = Project::test(fs, [], cx).await;
 
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let workspace = window_handle.root(cx).unwrap();
 
         let branch_list = window_handle
-            .update(cx, |_multi_workspace, window, cx| {
+            .update(cx, |_workspace, window, cx| {
                 cx.new(|cx| {
                     let mut delegate = BranchListDelegate::new(
                         workspace.downgrade(),
