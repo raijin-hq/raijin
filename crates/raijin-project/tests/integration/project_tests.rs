@@ -967,11 +967,7 @@ async fn test_managing_project_specific_settings(cx: &mut inazuma::TestAppContex
         json!({
             ".raijin": {
                 "settings.json": r#"{ "tab_size": 8 }"#,
-                "tasks.json": r#"[{
-                    "label": "cargo check all",
-                    "command": "cargo",
-                    "args": ["check", "--all"]
-                },]"#,
+                "tasks.toml": "[[tasks]]\nlabel = \"cargo check all\"\ncommand = \"cargo\"\nargs = [\"check\", \"--all\"]\n",
             },
             "a": {
                 "a.rs": "fn a() {\n    A\n}"
@@ -979,11 +975,7 @@ async fn test_managing_project_specific_settings(cx: &mut inazuma::TestAppContex
             "b": {
                 ".raijin": {
                     "settings.json": r#"{ "tab_size": 2 }"#,
-                    "tasks.json": r#"[{
-                        "label": "cargo check",
-                        "command": "cargo",
-                        "args": ["check"]
-                    },]"#,
+                    "tasks.toml": "[[tasks]]\nlabel = \"cargo check\"\ncommand = \"cargo\"\nargs = [\"check\"]\n",
                 },
                 "b.rs": "fn b() {\n  B\n}"
             }
@@ -1142,7 +1134,7 @@ async fn test_managing_project_specific_settings(cx: &mut inazuma::TestAppContex
             (
                 TaskSourceKind::AbsPath {
                     abs_path: raijin_paths::tasks_file().clone(),
-                    id_base: "global tasks.json".into(),
+                    id_base: "global tasks.toml".into(),
                 },
                 "cargo check unstable".to_string(),
                 vec![
@@ -1164,14 +1156,14 @@ async fn test_invalid_local_tasks_shows_toast_with_doc_link(cx: &mut inazuma::Te
     init_test(cx);
     TaskStore::init(None);
 
-    // We need to start with a valid `.raijin/tasks.json` file as otherwise the
+    // We need to start with a valid `.raijin/tasks.toml` file as otherwise the
     // event is emitted before we havd a chance to setup the event subscription.
     let fs = FakeFs::new(cx.executor());
     fs.insert_tree(
         path!("/dir"),
         json!({
             ".raijin": {
-                "tasks.json": r#"[{ "label": "valid task", "command": "echo" }]"#,
+                "tasks.toml": "[[tasks]]\nlabel = \"valid task\"\ncommand = \"echo\"\n",
             },
             "file.rs": ""
         }),
@@ -1181,11 +1173,11 @@ async fn test_invalid_local_tasks_shows_toast_with_doc_link(cx: &mut inazuma::Te
     let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
     let saw_toast = Rc::new(RefCell::new(false));
 
-    // Update the `.raijin/tasks.json` file with an invalid variable, so we can
+    // Update the `.raijin/tasks.toml` file with an invalid variable, so we can
     // later assert that the `Event::Toast` even is emitted.
     fs.save(
-        path!("/dir/.raijin/tasks.json").as_ref(),
-        &r#"[{ "label": "test $ZED_FOO", "command": "echo" }]"#.into(),
+        path!("/dir/.raijin/tasks.toml").as_ref(),
+        &"[[tasks]]\nlabel = \"test $ZED_FOO\"\ncommand = \"echo\"\n".into(),
         Default::default(),
     )
     .await
@@ -1227,10 +1219,7 @@ async fn test_fallback_to_single_worktree_tasks(cx: &mut inazuma::TestAppContext
         path!("/dir"),
         json!({
             ".raijin": {
-                "tasks.json": r#"[{
-                    "label": "test worktree root",
-                    "command": "echo $ZED_WORKTREE_ROOT"
-                }]"#,
+                "tasks.toml": "[[tasks]]\nlabel = \"test worktree root\"\ncommand = \"echo $ZED_WORKTREE_ROOT\"\n",
             },
             "a": {
                 "a.rs": "fn a() {\n    A\n}"
@@ -11824,14 +11813,14 @@ async fn test_initial_scan_complete(cx: &mut inazuma::TestAppContext) {
             "a": {
                 ".git": {},
                 ".raijin": {
-                    "tasks.json": r#"[{"label": "task-a", "command": "echo a"}]"#
+                    "tasks.toml": "[[tasks]]\nlabel = \"task-a\"\ncommand = \"echo a\"\n"
                 },
                 "src": { "main.rs": "" }
             },
             "b": {
                 ".git": {},
                 ".raijin": {
-                    "tasks.json": r#"[{"label": "task-b", "command": "echo b"}]"#
+                    "tasks.toml": "[[tasks]]\nlabel = \"task-b\"\ncommand = \"echo b\"\n"
                 },
                 "src": { "lib.rs": "" }
             },

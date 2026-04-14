@@ -1,0 +1,6 @@
+# Server-specific settings
+#
+# For a full list of overridable settings, and general information on settings,
+# see the documentation: https://raijin.dev/docs/configuring-raijin#settings-files
+
+[lsp]

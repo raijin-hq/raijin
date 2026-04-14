@@ -15485,9 +15485,9 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "serde_json_lenient",
  "sha2",
  "shellexpand",
+ "toml 0.8.23",
 ]
 
 [[package]]

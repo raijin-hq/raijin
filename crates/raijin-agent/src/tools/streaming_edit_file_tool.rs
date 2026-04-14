@@ -2499,7 +2499,7 @@ mod tests {
         let (stream_tx, mut stream_rx) = ToolCallEventStream::test();
         let _auth = cx.update(|cx| {
             tool.authorize(
-                &PathBuf::from("root/.raijin/tasks.json"),
+                &PathBuf::from("root/.raijin/tasks.toml"),
                 "test 4",
                 &stream_tx,
                 cx,

@@ -414,18 +414,16 @@ mod tests {
             path!("/dir"),
             json!({
                 ".raijin": {
-                    "tasks.json": r#"[
-                            {
-                                "label": "example task",
-                                "command": "echo",
-                                "args": ["4"]
-                            },
-                            {
-                                "label": "another one",
-                                "command": "echo",
-                                "args": ["55"]
-                            },
-                        ]"#,
+                    "tasks.toml": r#"[[tasks]]
+label = "example task"
+command = "echo"
+args = ["4"]
+
+[[tasks]]
+label = "another one"
+command = "echo"
+args = ["55"]
+"#,
                 },
                 "a.ts": "function this_is_a_test() { }",
                 "rust": {

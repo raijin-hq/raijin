@@ -249,10 +249,10 @@ pub fn keymap_backup_file() -> &'static PathBuf {
     KEYMAP_FILE.get_or_init(|| config_dir().join("keymap_backup.toml"))
 }
 
-/// Returns the path to the `tasks.json` file.
+/// Returns the path to the `tasks.toml` file.
 pub fn tasks_file() -> &'static PathBuf {
     static TASKS_FILE: OnceLock<PathBuf> = OnceLock::new();
-    TASKS_FILE.get_or_init(|| config_dir().join("tasks.json"))
+    TASKS_FILE.get_or_init(|| config_dir().join("tasks.toml"))
 }
 
 /// Returns the path to the `debug.json` file.
@@ -432,11 +432,6 @@ pub fn local_settings_folder_name() -> &'static str {
     ".raijin"
 }
 
-/// Returns the relative path to a `.vscode` folder within a project.
-pub fn local_vscode_folder_name() -> &'static str {
-    ".vscode"
-}
-
 /// Returns the relative path to a `settings.toml` file within a project.
 pub fn local_settings_file_relative_path() -> &'static RelPath {
     static CACHED: LazyLock<&'static RelPath> =
@@ -444,17 +439,10 @@ pub fn local_settings_file_relative_path() -> &'static RelPath {
     *CACHED
 }
 
-/// Returns the relative path to a `tasks.json` file within a project.
+/// Returns the relative path to a `tasks.toml` file within a project.
 pub fn local_tasks_file_relative_path() -> &'static RelPath {
     static CACHED: LazyLock<&'static RelPath> =
-        LazyLock::new(|| RelPath::unix(".raijin/tasks.json").unwrap());
-    *CACHED
-}
-
-/// Returns the relative path to a `.vscode/tasks.json` file within a project.
-pub fn local_vscode_tasks_file_relative_path() -> &'static RelPath {
-    static CACHED: LazyLock<&'static RelPath> =
-        LazyLock::new(|| RelPath::unix(".vscode/tasks.json").unwrap());
+        LazyLock::new(|| RelPath::unix(".raijin/tasks.toml").unwrap());
     *CACHED
 }
 
@@ -463,7 +451,7 @@ pub fn debug_task_file_name() -> &'static str {
 }
 
 pub fn task_file_name() -> &'static str {
-    "tasks.json"
+    "tasks.toml"
 }
 
 /// Returns the relative path to a `debug.json` file within a project.
@@ -471,13 +459,6 @@ pub fn task_file_name() -> &'static str {
 pub fn local_debug_file_relative_path() -> &'static RelPath {
     static CACHED: LazyLock<&'static RelPath> =
         LazyLock::new(|| RelPath::unix(".raijin/debug.json").unwrap());
-    *CACHED
-}
-
-/// Returns the relative path to a `.vscode/launch.json` file within a project.
-pub fn local_vscode_launch_file_relative_path() -> &'static RelPath {
-    static CACHED: LazyLock<&'static RelPath> =
-        LazyLock::new(|| RelPath::unix(".vscode/launch.json").unwrap());
     *CACHED
 }
 

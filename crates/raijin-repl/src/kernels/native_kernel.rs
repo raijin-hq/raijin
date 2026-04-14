@@ -414,11 +414,11 @@ mod test {
             json!({
                 ".raijin": {
                     "settings.json": r#"{ "tab_size": 8 }"#,
-                    "tasks.json": r#"[{
-                        "label": "cargo check",
-                        "command": "cargo",
-                        "args": ["check", "--all"]
-                    },]"#,
+                    "tasks.toml": r#"[[tasks]]
+label = "cargo check"
+command = "cargo"
+args = ["check", "--all"]
+"#,
                 },
                 "kernels": {
                     "python": {

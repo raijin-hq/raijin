@@ -1196,7 +1196,7 @@ mod tests {
             tool.authorize(
                 &EditFileToolInput {
                     display_description: "test 4".into(),
-                    path: "root/.raijin/tasks.json".into(),
+                    path: "root/.raijin/tasks.toml".into(),
                     mode: EditFileMode::Edit,
                 },
                 &stream_tx,

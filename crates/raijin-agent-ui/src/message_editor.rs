@@ -2200,7 +2200,7 @@ mod tests {
             "/test",
             json!({
                 ".raijin": {
-                    "tasks.json": r#"[{"label": "test", "command": "echo"}]"#
+                    "tasks.toml": "[[tasks]]\nlabel = \"test\"\ncommand = \"echo\"\n"
                 },
                 "src": {
                     "main.rs": "fn main() {}",

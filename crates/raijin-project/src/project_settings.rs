@@ -9,8 +9,7 @@ use inazuma::{AsyncApp, BorrowAppContext, Context, Entity, EventEmitter, Subscri
 use raijin_lsp::{DEFAULT_LSP_REQUEST_TIMEOUT_SECS, LanguageServerName};
 use raijin_paths::{
     EDITORCONFIG_NAME, local_debug_file_relative_path, local_settings_file_relative_path,
-    local_tasks_file_relative_path, local_vscode_launch_file_relative_path,
-    local_vscode_tasks_file_relative_path, task_file_name,
+    local_tasks_file_relative_path, task_file_name,
 };
 use raijin_rpc::{
     AnyProtoClient, TypedEnvelope,
@@ -24,10 +23,10 @@ pub use inazuma_settings_framework::LspSettings;
 use inazuma_settings_framework::{
     DapSettingsContent, EditorconfigEvent, InvalidSettingsError, LocalSettingsKind,
     LocalSettingsPath, RegisterSetting, SemanticTokenRules, Settings, SettingsLocation,
-    SettingsStore, parse_json_with_comments, watch_config_file,
+    SettingsStore, watch_config_file,
 };
 use std::{cell::OnceCell, collections::BTreeMap, path::PathBuf, sync::Arc, time::Duration};
-use raijin_task::{DebugTaskFile, TaskTemplates, VsCodeDebugTaskFile, VsCodeTaskFile};
+
 use inazuma_util::{ResultExt, rel_path::RelPath, serde::default_true};
 use raijin_worktree::{PathChange, UpdatedEntriesSet, Worktree, WorktreeId};
 
@@ -1116,35 +1115,11 @@ impl SettingsObserver {
                     .unwrap()
                     .into();
                 (settings_dir, LocalSettingsKind::Tasks)
-            } else if path.ends_with(local_vscode_tasks_file_relative_path()) {
-                let settings_dir = path
-                    .ancestors()
-                    .nth(
-                        local_vscode_tasks_file_relative_path()
-                            .components()
-                            .count()
-                            .saturating_sub(1),
-                    )
-                    .unwrap()
-                    .into();
-                (settings_dir, LocalSettingsKind::Tasks)
             } else if path.ends_with(local_debug_file_relative_path()) {
                 let settings_dir = path
                     .ancestors()
                     .nth(
                         local_debug_file_relative_path()
-                            .components()
-                            .count()
-                            .saturating_sub(1),
-                    )
-                    .unwrap()
-                    .into();
-                (settings_dir, LocalSettingsKind::Debug)
-            } else if path.ends_with(local_vscode_launch_file_relative_path()) {
-                let settings_dir = path
-                    .ancestors()
-                    .nth(
-                        local_vscode_tasks_file_relative_path()
                             .components()
                             .count()
                             .saturating_sub(1),
@@ -1191,43 +1166,7 @@ impl SettingsObserver {
                         Some(
                             async move {
                                 let content = fs.load(&abs_path).await?;
-                                if abs_path.ends_with(local_vscode_tasks_file_relative_path().as_std_path()) {
-                                    let vscode_tasks =
-                                        parse_json_with_comments::<VsCodeTaskFile>(&content)
-                                            .with_context(|| {
-                                                format!("parsing VSCode tasks, file {abs_path:?}")
-                                            })?;
-                                    let raijin_tasks = TaskTemplates::try_from(vscode_tasks)
-                                        .with_context(|| {
-                                            format!(
-                                        "converting VSCode tasks into Raijin ones, file {abs_path:?}"
-                                    )
-                                        })?;
-                                    serde_json::to_string(&raijin_tasks).with_context(|| {
-                                        format!(
-                                            "serializing Raijin tasks into JSON, file {abs_path:?}"
-                                        )
-                                    })
-                                } else if abs_path.ends_with(local_vscode_launch_file_relative_path().as_std_path()) {
-                                    let vscode_tasks =
-                                        parse_json_with_comments::<VsCodeDebugTaskFile>(&content)
-                                            .with_context(|| {
-                                                format!("parsing VSCode debug tasks, file {abs_path:?}")
-                                            })?;
-                                    let raijin_tasks = DebugTaskFile::try_from(vscode_tasks)
-                                        .with_context(|| {
-                                            format!(
-                                        "converting VSCode debug tasks into Raijin ones, file {abs_path:?}"
-                                    )
-                                        })?;
-                                    serde_json::to_string(&raijin_tasks).with_context(|| {
-                                        format!(
-                                            "serializing Raijin tasks into JSON, file {abs_path:?}"
-                                        )
-                                    })
-                                } else {
-                                    Ok(content)
-                                }
+                                anyhow::Ok(content)
                             }
                             .await,
                         )

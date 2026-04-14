@@ -158,11 +158,11 @@ pub fn initial_user_settings_content() -> Cow<'static, str> {
 }
 
 pub fn initial_server_settings_content() -> Cow<'static, str> {
-    asset_str::<SettingsAssets>("settings/initial_server_settings.json")
+    asset_str::<SettingsAssets>("settings/initial_server_settings.toml")
 }
 
 pub fn initial_project_settings_content() -> Cow<'static, str> {
-    asset_str::<SettingsAssets>("settings/initial_local_settings.json")
+    asset_str::<SettingsAssets>("settings/initial_local_settings.toml")
 }
 
 pub fn initial_keymap_content() -> Cow<'static, str> {
@@ -170,7 +170,7 @@ pub fn initial_keymap_content() -> Cow<'static, str> {
 }
 
 pub fn initial_tasks_content() -> Cow<'static, str> {
-    asset_str::<SettingsAssets>("settings/initial_tasks.json")
+    asset_str::<SettingsAssets>("settings/initial_tasks.toml")
 }
 
 pub fn initial_debug_tasks_content() -> Cow<'static, str> {

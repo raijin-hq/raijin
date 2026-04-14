@@ -63,7 +63,7 @@ trait InventoryContents: Clone {
 }
 
 impl InventoryContents for TaskTemplate {
-    const GLOBAL_SOURCE_FILE: &'static str = "tasks.json";
+    const GLOBAL_SOURCE_FILE: &'static str = "tasks.toml";
     const LABEL: &'static str = "tasks";
 }
 
@@ -84,20 +84,10 @@ impl<T: InventoryContents> InventoryFor<T> {
         &self,
         worktree: WorktreeId,
     ) -> impl '_ + Iterator<Item = (TaskSourceKind, T)> {
-        let worktree_dirs = self.worktree.get(&worktree);
-        let has_raijin_dir = worktree_dirs
-            .map(|dirs| {
-                dirs.keys()
-                    .any(|dir| dir.file_name().is_some_and(|name| name == ".raijin"))
-            })
-            .unwrap_or(false);
-
-        worktree_dirs
+        self.worktree
+            .get(&worktree)
             .into_iter()
             .flatten()
-            .filter(move |(directory, _)| {
-                !(has_raijin_dir && directory.file_name().is_some_and(|name| name == ".vscode"))
-            })
             .flat_map(|(directory, templates)| {
                 templates.iter().map(move |template| (directory, template))
             })
@@ -448,17 +438,6 @@ impl Inventory {
         });
         let buffer = location.map(|location| location.buffer.clone());
 
-        let worktrees_with_raijin_tasks: HashSet<WorktreeId> = self
-            .templates_from_settings
-            .worktree
-            .iter()
-            .filter(|(_, dirs)| {
-                dirs.keys()
-                    .any(|dir| dir.file_name().is_some_and(|name| name == ".raijin"))
-            })
-            .map(|(id, _)| *id)
-            .collect();
-
         let mut task_labels_to_ids = HashMap::<String, HashSet<TaskId>>::default();
         let mut lru_score = 0_u32;
         let previously_spawned_tasks = self
@@ -468,14 +447,6 @@ impl Inventory {
             .filter(|(task_kind, _)| {
                 if matches!(task_kind, TaskSourceKind::Language { .. }) {
                     Some(task_kind) == task_source_kind.as_ref()
-                } else if let TaskSourceKind::Worktree {
-                    id,
-                    directory_in_worktree: dir,
-                    ..
-                } = task_kind
-                {
-                    !(worktrees_with_raijin_tasks.contains(id)
-                        && dir.file_name().is_some_and(|name| name == ".vscode"))
                 } else {
                     true
                 }

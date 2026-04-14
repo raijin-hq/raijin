@@ -757,18 +757,16 @@ mod tests {
             path!("/dir"),
             json!({
                 ".raijin": {
-                    "tasks.json": r#"[
-                        {
-                            "label": "example task",
-                            "command": "echo",
-                            "args": ["4"]
-                        },
-                        {
-                            "label": "another one",
-                            "command": "echo",
-                            "args": ["55"]
-                        },
-                    ]"#,
+                    "tasks.toml": r#"[[tasks]]
+label = "example task"
+command = "echo"
+args = ["4"]
+
+[[tasks]]
+label = "another one"
+command = "echo"
+args = ["55"]
+"#,
                 },
                 "a.ts": "a"
             }),
@@ -930,18 +928,16 @@ mod tests {
             path!("/dir"),
             json!({
                 ".raijin": {
-                    "tasks.json": r#"[
-                        {
-                            "label": "hello from $ZED_FILE:$ZED_ROW:$ZED_COLUMN",
-                            "command": "echo",
-                            "args": ["hello", "from", "$ZED_FILE", ":", "$ZED_ROW", ":", "$ZED_COLUMN"]
-                        },
-                        {
-                            "label": "opened now: $ZED_WORKTREE_ROOT",
-                            "command": "echo",
-                            "args": ["opened", "now:", "$ZED_WORKTREE_ROOT"]
-                        }
-                    ]"#,
+                    "tasks.toml": r#"[[tasks]]
+label = "hello from $ZED_FILE:$ZED_ROW:$ZED_COLUMN"
+command = "echo"
+args = ["hello", "from", "$ZED_FILE", ":", "$ZED_ROW", ":", "$ZED_COLUMN"]
+
+[[tasks]]
+label = "opened now: $ZED_WORKTREE_ROOT"
+command = "echo"
+args = ["opened", "now:", "$ZED_WORKTREE_ROOT"]
+"#,
                 },
                 "file_without_extension": "aaaaaaaaaaaaaaaaaaaa\naaaaaaaaaaaaaaaaaa",
                 "file_with.odd_extension": "b",

@@ -421,21 +421,21 @@ async fn test_inventory_static_task_filters(cx: &mut TestAppContext) {
     let worktree_independent_tasks = vec![
         (
             TaskSourceKind::AbsPath {
-                id_base: "global tasks.json".into(),
+                id_base: "global tasks.toml".into(),
                 abs_path: raijin_paths::tasks_file().clone(),
             },
             common_name.to_string(),
         ),
         (
             TaskSourceKind::AbsPath {
-                id_base: "global tasks.json".into(),
+                id_base: "global tasks.toml".into(),
                 abs_path: raijin_paths::tasks_file().clone(),
             },
             "static_source_1".to_string(),
         ),
         (
             TaskSourceKind::AbsPath {
-                id_base: "global tasks.json".into(),
+                id_base: "global tasks.toml".into(),
                 abs_path: raijin_paths::tasks_file().clone(),
             },
             "static_source_2".to_string(),
@@ -557,54 +557,6 @@ async fn test_inventory_static_task_filters(cx: &mut TestAppContext) {
             .chain(worktree_independent_tasks.iter())
             .cloned()
             .collect::<Vec<_>>(),
-    );
-}
-
-#[inazuma::test]
-async fn test_raijin_tasks_take_precedence_over_vscode(cx: &mut TestAppContext) {
-    init_test(cx);
-    let inventory = cx.update(|cx| Inventory::new(cx));
-    let worktree_id = WorktreeId::from_usize(0);
-
-    inventory.update(cx, |inventory, _| {
-        inventory
-            .update_file_based_tasks(
-                TaskSettingsLocation::Worktree(SettingsLocation {
-                    worktree_id,
-                    path: rel_path(".vscode"),
-                }),
-                Some(&mock_tasks_from_names(["vscode_task"])),
-            )
-            .unwrap();
-    });
-    assert_eq!(
-        task_template_names(&inventory, Some(worktree_id), cx).await,
-        vec!["vscode_task"],
-        "With only .vscode tasks, they should appear"
-    );
-
-    inventory.update(cx, |inventory, _| {
-        inventory
-            .update_file_based_tasks(
-                TaskSettingsLocation::Worktree(SettingsLocation {
-                    worktree_id,
-                    path: rel_path(".raijin"),
-                }),
-                Some(&mock_tasks_from_names(["raijin_task"])),
-            )
-            .unwrap();
-    });
-    assert_eq!(
-        task_template_names(&inventory, Some(worktree_id), cx).await,
-        vec!["raijin_task"],
-        "With both .raijin and .vscode tasks, only .raijin tasks should appear"
-    );
-
-    register_worktree_task_used(&inventory, worktree_id, "raijin_task", cx).await;
-    let resolved = resolved_task_names(&inventory, Some(worktree_id), cx).await;
-    assert!(
-        !resolved.iter().any(|name| name == "vscode_task"),
-        "Previously used .vscode tasks should not appear when .raijin tasks exist, got: {resolved:?}"
     );
 }
 
