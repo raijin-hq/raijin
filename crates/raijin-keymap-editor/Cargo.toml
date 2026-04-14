@@ -33,6 +33,7 @@ raijin-search.workspace = true
 serde_json.workspace = true
 serde.workspace = true
 inazuma-settings-framework.workspace = true
+raijin-shell.workspace = true
 raijin-telemetry.workspace = true
 tempfile.workspace = true
 raijin-theme.workspace = true

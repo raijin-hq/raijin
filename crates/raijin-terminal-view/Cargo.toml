@@ -33,6 +33,7 @@ raijin-project-registry.workspace = true
 raijin-session.workspace = true
 raijin-settings.workspace = true
 raijin-shell.workspace = true
+raijin-shell-integration.workspace = true
 raijin-term = { path = "../raijin-term" }
 raijin-task.workspace = true
 raijin-terminal.workspace = true

@@ -12,7 +12,7 @@ log = { workspace = true }
 raijin-ui.workspace = true
 lsp-types = { version = "0.97", features = ["proposed"] }
 raijin-session.workspace = true
-raijin-shell.workspace = true
+raijin-shell-integration.workspace = true
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true }
 strsim = "0.11"

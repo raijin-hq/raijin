@@ -9,9 +9,9 @@ use inazuma::{
 use raijin_theme::ActiveTheme;
 
 #[cfg(not(target_os = "linux"))]
-pub(crate) const SHADOW_SIZE: Pixels = px(0.0);
+pub const SHADOW_SIZE: Pixels = px(0.0);
 #[cfg(target_os = "linux")]
-pub(crate) const SHADOW_SIZE: Pixels = px(12.0);
+pub const SHADOW_SIZE: Pixels = px(12.0);
 const BORDER_SIZE: Pixels = px(1.0);
 pub(crate) const BORDER_RADIUS: Pixels = px(0.0);
 

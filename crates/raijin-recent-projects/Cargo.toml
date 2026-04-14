@@ -44,6 +44,7 @@ semver.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 inazuma-settings-framework.workspace = true
+raijin-shell.workspace = true
 smol.workspace = true
 raijin-task.workspace = true
 raijin-telemetry.workspace = true

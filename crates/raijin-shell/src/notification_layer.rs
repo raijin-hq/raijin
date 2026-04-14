@@ -1,7 +1,7 @@
 use inazuma::{Context, Window};
 use std::any::TypeId;
 
-use crate::Notification;
+use raijin_ui::Notification;
 use super::shell::AppShell;
 
 impl AppShell {

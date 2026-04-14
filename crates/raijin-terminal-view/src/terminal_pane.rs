@@ -11,7 +11,7 @@ use raijin_ui::{
 use raijin_chips::{
     ChipRegistry, ChipContext, DetectionCache, collect_chip_env_vars,
 };
-use raijin_shell::ShellContext;
+use raijin_shell_integration::ShellContext;
 use raijin_terminal::{Terminal, TerminalEvent};
 use raijin_workspace::{Item, item::ItemEvent, Workspace, WorkspaceId};
 
@@ -22,7 +22,7 @@ use raijin_session::command_history::CommandHistory;
 use raijin_completions::command_correction;
 use raijin_completions::shell_completion::ShellCompletionProvider;
 use crate::input::history_panel::HistoryPanel;
-use raijin_shell::shell_install;
+use raijin_shell_integration::shell_install;
 
 /// A detected shell on the system.
 #[derive(Clone)]
@@ -344,7 +344,7 @@ impl TerminalPane {
     ) {
         // Handle metadata — update context chips before block processing
         if let raijin_terminal::ShellMarker::Metadata(ref json) = marker {
-            match serde_json::from_str::<raijin_shell::ShellMetadataPayload>(json) {
+            match serde_json::from_str::<raijin_shell_integration::ShellMetadataPayload>(json) {
                 Ok(payload) => {
                     let new_cwd = std::path::PathBuf::from(&payload.cwd);
                     self.shell_context.update_from_metadata(&payload);
@@ -745,13 +745,15 @@ impl TerminalPane {
             Ok(t) => t,
             Err(e) => {
                 log::error!("Failed to spawn shell {}: {}", shell_path, e);
-                use raijin_ui::WindowExt as _;
-                window.push_notification(
-                    raijin_ui::Notification::error(
-                        format!("Failed to start {}: {}", shell_name, e),
-                    ),
-                    &mut *cx,
-                );
+                raijin_shell::AppShell::update(window, &mut *cx, |shell, window, cx| {
+                    shell.push_notification(
+                        raijin_ui::Notification::error(
+                            format!("Failed to start {}: {}", shell_name, e),
+                        ),
+                        window,
+                        cx,
+                    );
+                });
                 return;
             }
         };

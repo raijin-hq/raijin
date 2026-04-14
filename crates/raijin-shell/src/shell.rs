@@ -5,8 +5,11 @@ use inazuma::{
 };
 use raijin_theme::ActiveTheme;
 
-use crate::StyledExt as _;
-use crate::utils::window_border::{self, window_border};
+use raijin_ui::StyledExt as _;
+use raijin_ui::utils::window_border::{self, window_border};
+use raijin_ui::input::{InputState, FocusedInputTracker};
+use raijin_ui::NotificationList;
+use raijin_ui::{PendingDialogs, CloseDialog, DeferCloseDialog, CloseAllDialogs, CloseSheet, ClearNotifications};
 
 use super::dialog_layer::ActiveDialog;
 use super::sheet_layer::ActiveSheet;
@@ -15,7 +18,7 @@ actions!(app_shell, [Tab, TabPrev]);
 
 const CONTEXT: &str = "AppShell";
 
-pub(crate) fn init(cx: &mut App) {
+pub fn init(cx: &mut App) {
     cx.bind_keys([
         KeyBinding::new("tab", Tab, Some(CONTEXT)),
         KeyBinding::new("shift-tab", TabPrev, Some(CONTEXT)),
@@ -25,28 +28,49 @@ pub(crate) fn init(cx: &mut App) {
 /// The top-level window shell that orchestrates overlay layers
 /// (dialogs, sheets, notifications) and focus navigation.
 pub struct AppShell {
-    pub(super) style: StyleRefinement,
-    pub(super) view: AnyView,
-    pub(super) active_sheet: Option<ActiveSheet>,
-    pub(super) active_dialogs: Vec<ActiveDialog>,
-    pub(super) focused_input: Option<Entity<crate::input::InputState>>,
-    pub(super) notification: Entity<crate::components::notification::NotificationList>,
-    pub(super) window_shadow_size: Pixels,
-    pub(super) pending_focus_restore: Option<inazuma::WeakFocusHandle>,
+    pub(crate) style: StyleRefinement,
+    pub(crate) view: AnyView,
+    pub(crate) active_sheet: Option<ActiveSheet>,
+    pub(crate) active_dialogs: Vec<ActiveDialog>,
+    pub(crate) focused_input: Option<Entity<InputState>>,
+    pub(crate) notification: Entity<NotificationList>,
+    pub(crate) window_shadow_size: Pixels,
+    pub(crate) pending_focus_restore: Option<inazuma::WeakFocusHandle>,
 }
 
 impl AppShell {
     pub fn new(view: impl Into<AnyView>, window: &mut Window, cx: &mut Context<Self>) -> Self {
-        Self {
+        let this = Self {
             style: StyleRefinement::default(),
             view: view.into(),
             active_sheet: None,
             active_dialogs: Vec::new(),
             focused_input: None,
-            notification: cx.new(|cx| crate::components::notification::NotificationList::new(window, cx)),
+            notification: cx.new(|cx| NotificationList::new(window, cx)),
             window_shadow_size: window_border::SHADOW_SIZE,
             pending_focus_restore: None,
-        }
+        };
+
+        // Observe PendingDialogs queue — drain and promote to active dialogs
+        cx.observe_global_in::<PendingDialogs>(window, |this: &mut Self, window, cx| {
+            let pending: Vec<_> = cx.global_mut::<PendingDialogs>().queue.drain(..).collect();
+            for builder in pending {
+                let mut previous_focused_handle = window.focused(cx).map(|h| h.downgrade());
+                if let Some(pending_handle) = this.pending_focus_restore.take() {
+                    previous_focused_handle = Some(pending_handle);
+                }
+                let focus_handle = cx.focus_handle();
+                focus_handle.focus(window, cx);
+                this.active_dialogs.push(ActiveDialog::new(
+                    focus_handle,
+                    previous_focused_handle,
+                    move |dialog, w, cx| (*builder)(dialog, w, cx),
+                ));
+            }
+            cx.notify();
+        });
+
+        this
     }
 
     pub fn window_shadow_size(mut self, size: impl Into<Pixels>) -> Self {
@@ -73,11 +97,11 @@ impl AppShell {
             .read(cx)
     }
 
-    pub fn focused_input(&self) -> Option<&Entity<crate::components::input::InputState>> {
+    pub fn focused_input(&self) -> Option<&Entity<InputState>> {
         self.focused_input.as_ref()
     }
 
-    pub fn set_focused_input(&mut self, input: Option<Entity<crate::components::input::InputState>>) {
+    pub fn set_focused_input(&mut self, input: Option<Entity<InputState>>) {
         self.focused_input = input;
     }
 
@@ -87,6 +111,32 @@ impl AppShell {
 
     pub fn view(&self) -> &AnyView {
         &self.view
+    }
+
+    /// Get the Workspace entity from the current window's AppShell root.
+    pub fn workspace(window: &Window, cx: &App) -> Option<Entity<raijin_workspace::Workspace>> {
+        window.root::<AppShell>()
+            .flatten()
+            .and_then(|shell| shell.read(cx).view.clone().downcast::<raijin_workspace::Workspace>().ok())
+    }
+}
+
+/// Access the active workspace from any App context.
+///
+/// Finds the active window, gets the AppShell root, extracts the Workspace,
+/// and calls `f` with mutable access. Replaces `with_active_or_new_workspace`.
+pub fn with_active_workspace(
+    cx: &mut App,
+    f: impl FnOnce(&mut raijin_workspace::Workspace, &mut Window, &mut Context<raijin_workspace::Workspace>) + Send + 'static,
+) {
+    if let Some(window) = cx.active_window() {
+        cx.defer(move |cx| {
+            window.update(cx, |_, window, cx| {
+                if let Some(workspace) = AppShell::workspace(window, cx) {
+                    workspace.update(cx, |ws, cx| f(ws, window, cx));
+                }
+            }).ok();
+        });
     }
 }
 
@@ -119,6 +169,22 @@ impl Render for AppShell {
                     .key_context(CONTEXT)
                     .on_action(cx.listener(Self::on_action_tab))
                     .on_action(cx.listener(Self::on_action_tab_prev))
+                    // Action handlers for window_shell actions dispatched from raijin-ui
+                    .on_action(cx.listener(|this, _: &CloseDialog, window, cx| {
+                        this.close_dialog(window, cx);
+                    }))
+                    .on_action(cx.listener(|this, _: &DeferCloseDialog, window, cx| {
+                        this.defer_close_dialog(window, cx);
+                    }))
+                    .on_action(cx.listener(|this, _: &CloseAllDialogs, window, cx| {
+                        this.close_all_dialogs(window, cx);
+                    }))
+                    .on_action(cx.listener(|this, _: &CloseSheet, window, cx| {
+                        this.close_sheet(window, cx);
+                    }))
+                    .on_action(cx.listener(|this, _: &ClearNotifications, window, cx| {
+                        this.clear_notifications(window, cx);
+                    }))
                     .relative()
                     .size_full()
                     .font_family(raijin_theme::theme_settings(cx).ui_font(cx).family.clone())

@@ -9,7 +9,7 @@ use raijin_workspace::{ModalView, Workspace};
 
 pub fn init(cx: &mut App) {
     cx.on_action(|_: &raijin_actions::settings_profile_selector::Toggle, cx| {
-        raijin_workspace::with_active_or_new_workspace(cx, |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, |workspace, window, cx| {
             toggle_settings_profile_selector(workspace, window, cx);
         });
     });

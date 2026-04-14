@@ -1,5 +1,16 @@
 # Phase 30: Task System — JSON → TOML Migration + VS Code Import Removal
 
+> **STATUS: Eigenständiges Projekt, verifiziert April 2026.** Alle Behauptungen unten gegen den Code geprüft:
+> - `crates/raijin-task/src/vscode_format.rs` und `vscode_debug_format.rs` existieren ✓
+> - `crates/raijin-task/test_data/` enthält alle drei genannten JSON-Dateien ✓
+> - `raijin_paths.rs` hat tatsächlich alle genannten Funktionen mit `tasks.json`/`debug.json`-Pfaden ✓
+>
+> **Verhältnis zu Plan 25:** Unabhängig. Nicht Teil der Crate-by-Crate Wiring. Kann parallel oder vor/nach Phase 25 laufen. Berührt aber `raijin-task` und `raijin-tasks-ui`, die Stationen in Plan 25 sind — wenn diese Stationen verdrahtet werden bevor Plan 30 läuft, müssen sie später nochmal angefasst werden für die Migration.
+>
+> **Empfehlung:** Plan 30 vor der raijin-task-Verdrahtung in Plan 25 ausführen, damit die Verdrahtung gleich auf TOML-Basis passiert.
+
+---
+
 ## Context
 
 Raijin nutzt TOML für alle Settings (`config.toml`, `default.toml`, `initial_user_settings.toml`). Das Task-System ist noch ein Überbleibsel aus der Referenz-Codebase das JSON nutzt (`tasks.json`, `debug.json`). Zusätzlich gibt es VS Code Import-Code (`vscode_format.rs`, `vscode_debug_format.rs`) der `.vscode/tasks.json` und `.vscode/launch.json` aus fremden Projekten importiert — ein Editor-Feature das Raijin als Terminal-Emulator nicht braucht.
@@ -28,8 +39,9 @@ Raijin nutzt TOML für alle Settings (`config.toml`, `default.toml`, `initial_us
 
 ### 1.3 VS Code Pfade entfernen
 - `crates/raijin-paths/src/raijin_paths.rs`:
-  - `local_vscode_tasks_file_relative_path()` (Zeile 455-459) — entfernen
-  - `local_vscode_launch_file_relative_path()` (Zeile 478-482) — entfernen
+  - `local_vscode_tasks_file_relative_path()` — entfernen
+  - `local_vscode_launch_file_relative_path()` — entfernen
+  - `local_vscode_folder_name()` — entfernen
 
 ### 1.4 VS Code Import-Logik in project_settings entfernen
 - `crates/raijin-project/src/project_settings.rs`:
@@ -39,7 +51,7 @@ Raijin nutzt TOML für alle Settings (`config.toml`, `default.toml`, `initial_us
 
 ### 1.5 TrackedFile::new_convertible entfernen
 - `crates/raijin-task/src/static_source.rs`:
-  - `new_convertible()` Methode (Zeile 68-111) — entfernen (war nur für VS Code JSON → Raijin Konvertierung)
+  - `new_convertible()` Methode — entfernen (war nur für VS Code JSON → Raijin Konvertierung)
 
 ## Phase 2: Task-Dateien JSON → TOML
 
@@ -95,7 +107,7 @@ Raijin nutzt TOML für alle Settings (`config.toml`, `default.toml`, `initial_us
 
 ### 4.3 Debugger UI
 - `crates/raijin-debugger-ui/src/debugger_panel.rs`:
-  - Zeile 1173: `initial_local_debug_tasks_content()` — schreibt Template in neue Datei, Pfad wird automatisch korrekt wenn Phase 3.3 gemacht ist
+  - `initial_local_debug_tasks_content()` — schreibt Template in neue Datei, Pfad wird automatisch korrekt wenn Phase 3.3 gemacht ist
 
 ## Phase 5: Tests aktualisieren
 
@@ -108,7 +120,7 @@ Raijin nutzt TOML für alle Settings (`config.toml`, `default.toml`, `initial_us
 - `crates/raijin-tasks-ui/src/tasks_ui.rs` und `modal.rs`:
   - Inline JSON task definitions → TOML
 - `crates/raijin-agent-ui/src/message_editor.rs`:
-  - Zeile 2204: `.zed/tasks.json` → `.raijin/tasks.toml`
+  - `.zed/tasks.json` → `.raijin/tasks.toml`
 - `crates/raijin-agent/src/tools/edit_file_tool.rs` und `streaming_edit_file_tool.rs`:
   - `.zed/tasks.json` Pfad-Referenzen aktualisieren
 

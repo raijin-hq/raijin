@@ -1539,30 +1539,8 @@ impl SettingsWindow {
         })
         .detach();
 
-        if let Some(app_state) = AppState::global(cx).upgrade() {
-            let workspaces: Vec<Entity<Workspace>> = app_state
-                .workspace_store
-                .read(cx)
-                .workspaces()
-                .filter_map(|weak| weak.upgrade())
-                .collect();
-
-            for workspace in workspaces {
-                let project = workspace.read(cx).project().clone();
-                cx.observe_release_in(&project, window, |this, _, window, cx| {
-                    this.fetch_files(window, cx)
-                })
-                .detach();
-                cx.subscribe_in(&project, window, Self::handle_project_event)
-                    .detach();
-                cx.observe_release_in(&workspace, window, |this, _, window, cx| {
-                    this.fetch_files(window, cx)
-                })
-                .detach();
-            }
-        } else {
-            log::error!("App state doesn't exist when creating a new settings window");
-        }
+        // Raijin has a single workspace — project observation is handled
+        // via observe_new below, so no workspace_store iteration needed.
 
         let this_weak = cx.weak_entity();
         cx.observe_new::<Project>({
@@ -3365,27 +3343,26 @@ impl SettingsWindow {
             }
             SettingsUiFile::Project((worktree_id, path)) => {
                 let settings_path = path.join(raijin_paths::local_settings_file_relative_path());
-                let Some(app_state) = raijin_workspace::AppState::global(cx).upgrade() else {
-                    return;
-                };
 
-                let Some((workspace_window, worktree, corresponding_workspace)) = app_state
-                    .workspace_store
-                    .read(cx)
-                    .workspaces_with_windows()
-                    .filter_map(|(window_handle, weak)| {
-                        let workspace = weak.upgrade()?;
+                let Some((workspace_window, worktree, corresponding_workspace)) = cx
+                    .windows()
+                    .into_iter()
+                    .filter_map(|window_handle| {
                         let window = window_handle.downcast::<MultiWorkspace>()?;
-                        Some((window, workspace))
+                        let multi = window.read(cx).ok()?;
+                        multi
+                            .workspaces()
+                            .iter()
+                            .find_map(|workspace| {
+                                let worktree = workspace
+                                    .read(cx)
+                                    .project()
+                                    .read(cx)
+                                    .worktree_for_id(*worktree_id, cx)?;
+                                Some((window, worktree, workspace.clone()))
+                            })
                     })
-                    .find_map(|(window, workspace): (_, Entity<Workspace>)| {
-                        workspace
-                            .read(cx)
-                            .project()
-                            .read(cx)
-                            .worktree_for_id(*worktree_id, cx)
-                            .map(|worktree| (window, worktree, workspace))
-                    })
+                    .next()
                 else {
                     log::error!(
                         "No corresponding workspace contains worktree id: {}",
@@ -3748,31 +3725,36 @@ fn all_projects(
     cx: &App,
 ) -> impl Iterator<Item = Entity<Project>> {
     let mut seen_project_ids = std::collections::HashSet::new();
-    raijin_workspace::AppState::global(cx)
-        .upgrade()
-        .map(|app_state| {
-            app_state
-                .workspace_store
-                .read(cx)
-                .workspaces()
-                .filter_map(|weak| weak.upgrade())
-                .map(|workspace: Entity<Workspace>| workspace.read(cx).project().clone())
-                .chain(
-                    window
-                        .and_then(|handle| handle.read(cx).ok())
-                        .into_iter()
-                        .flat_map(|multi_workspace| {
-                            multi_workspace
-                                .workspaces()
-                                .iter()
-                                .map(|workspace| workspace.read(cx).project().clone())
-                                .collect::<Vec<_>>()
-                        }),
-                )
-                .filter(move |project| seen_project_ids.insert(project.entity_id()))
-        })
+    // Collect projects from all MultiWorkspace windows
+    let mut projects: Vec<Entity<Project>> = cx
+        .windows()
         .into_iter()
+        .filter_map(|wh| {
+            let window = wh.downcast::<MultiWorkspace>()?;
+            let multi = window.read(cx).ok()?;
+            Some(
+                multi
+                    .workspaces()
+                    .iter()
+                    .map(|ws| ws.read(cx).project().clone())
+                    .collect::<Vec<_>>(),
+            )
+        })
         .flatten()
+        .collect();
+
+    // Also include projects from the explicitly passed window handle
+    if let Some(handle) = window {
+        if let Ok(multi) = handle.read(cx) {
+            for ws in multi.workspaces() {
+                projects.push(ws.read(cx).project().clone());
+            }
+        }
+    }
+
+    projects
+        .into_iter()
+        .filter(move |project| seen_project_ids.insert(project.entity_id()))
 }
 
 fn open_user_settings_in_workspace(

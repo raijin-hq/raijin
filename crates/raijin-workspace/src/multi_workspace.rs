@@ -15,7 +15,6 @@ use std::path::PathBuf;
 use std::sync::Arc;
 use raijin_ui::prelude::*;
 use inazuma_util::ResultExt;
-use raijin_actions::agents_sidebar::MoveWorkspaceToNewWindow;
 
 use raijin_agent_settings::AgentSettings;
 use inazuma_settings_framework::SidebarDockPosition;
@@ -774,16 +773,6 @@ impl MultiWorkspace {
         });
     }
 
-    fn move_active_workspace_to_new_window(
-        &mut self,
-        _: &MoveWorkspaceToNewWindow,
-        window: &mut Window,
-        cx: &mut Context<Self>,
-    ) {
-        let index = self.active_workspace_index;
-        self.move_workspace_to_new_window(index, window, cx);
-    }
-
     pub fn open_project(
         &mut self,
         paths: Vec<PathBuf>,
@@ -915,7 +904,6 @@ impl Render for MultiWorkspace {
                     ))
                     .on_action(cx.listener(Self::next_workspace))
                     .on_action(cx.listener(Self::previous_workspace))
-                    .on_action(cx.listener(Self::move_active_workspace_to_new_window))
                 })
                 .when(
                     self.sidebar_open() && self.multi_workspace_enabled(cx),

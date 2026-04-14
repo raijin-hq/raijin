@@ -5,7 +5,7 @@ use inazuma::{
 
 use crate::{
     Dialog, DialogButtonProps, DialogDescription, DialogFooter, DialogHeader, DialogTitle,
-    StyledExt as _, WindowExt as _,
+    StyledExt as _,
 };
 
 /// AlertDialog is a modal dialog that interrupts the user with important content
@@ -322,7 +322,7 @@ impl AlertDialog {
                 let style = style.clone();
                 let props = props.clone();
                 let button_props = button_props.clone();
-                window.open_dialog(cx, move |dialog, _, _| {
+                crate::open_dialog(window, cx, move |dialog, _, _| {
                     dialog
                         .refine_style(&style)
                         .button_props(button_props.clone())

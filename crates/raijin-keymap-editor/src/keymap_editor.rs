@@ -41,7 +41,7 @@ use raijin_json_compat::infer_json_indent_size;
 use inazuma_util::ResultExt;
 use raijin_workspace::{
     Item, ModalView, SerializableItem, Workspace, notifications::NotifyTaskExt as _,
-    register_serializable_item, with_active_or_new_workspace,
+    register_serializable_item,
 };
 
 pub use ui_components::*;
@@ -131,7 +131,7 @@ pub fn init(cx: &mut App) {
     }
 
     cx.on_action(|_: &OpenKeymap, cx| {
-        with_active_or_new_workspace(cx, |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, |workspace, window, cx| {
             open_keymap_editor(None, workspace, window, cx);
         });
     });

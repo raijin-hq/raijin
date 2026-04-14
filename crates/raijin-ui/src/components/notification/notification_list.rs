@@ -504,7 +504,7 @@ impl NotificationList {
         cx.notify();
     }
 
-    pub(crate) fn close(
+    pub fn close(
         &mut self,
         id: impl Into<NotificationId>,
         window: &mut Window,

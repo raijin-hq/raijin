@@ -3,7 +3,7 @@ use inazuma::{
 };
 use std::rc::Rc;
 
-use crate::{Dialog, ANIMATION_DURATION};
+use raijin_ui::{Dialog, ANIMATION_DURATION};
 use super::shell::AppShell;
 
 #[derive(Clone)]
@@ -116,6 +116,7 @@ impl AppShell {
                 dialog = (active_dialog.builder)(dialog, window, cx);
                 dialog.focus_handle = active_dialog.focus_handle.clone();
                 dialog.layer_ix = i;
+                dialog.is_topmost = (i + 1) == self.active_dialogs.len();
                 if dialog.has_overlay() {
                     show_overlay_ix = Some(i);
                 }

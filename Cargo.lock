@@ -11522,6 +11522,7 @@ dependencies = [
  "raijin-settings",
  "raijin-settings-ui",
  "raijin-shell",
+ "raijin-shell-integration",
  "raijin-tab-switcher",
  "raijin-term",
  "raijin-terminal",
@@ -11887,7 +11888,7 @@ dependencies = [
  "quick-xml 0.39.2",
  "raijin-battery",
  "raijin-settings",
- "raijin-shell",
+ "raijin-shell-integration",
  "raijin-theme",
  "raijin-ui",
  "rayon",
@@ -12238,7 +12239,7 @@ dependencies = [
  "log",
  "lsp-types 0.97.0",
  "raijin-session",
- "raijin-shell",
+ "raijin-shell-integration",
  "raijin-ui",
  "serde",
  "serde_json",
@@ -12641,6 +12642,7 @@ dependencies = [
  "raijin-node-runtime",
  "raijin-paths",
  "raijin-project",
+ "raijin-shell",
  "raijin-ui",
  "raijin-workspace",
  "raijin-worktree",
@@ -13716,6 +13718,7 @@ dependencies = [
  "raijin-paths",
  "raijin-project",
  "raijin-search",
+ "raijin-shell",
  "raijin-telemetry",
  "raijin-theme",
  "raijin-theme-settings",
@@ -14407,6 +14410,7 @@ dependencies = [
  "raijin-log",
  "raijin-notifications",
  "raijin-project",
+ "raijin-shell",
  "raijin-telemetry",
  "raijin-theme",
  "raijin-theme-settings",
@@ -14852,6 +14856,7 @@ dependencies = [
  "raijin-remote",
  "raijin-remote-connection",
  "raijin-remote-server",
+ "raijin-shell",
  "raijin-task",
  "raijin-telemetry",
  "raijin-ui",
@@ -15178,6 +15183,7 @@ dependencies = [
  "raijin-actions",
  "raijin-editor",
  "raijin-project",
+ "raijin-shell",
  "raijin-theme",
  "raijin-theme-settings",
  "raijin-ui",
@@ -15240,10 +15246,11 @@ dependencies = [
 name = "raijin-shell"
 version = "0.1.0"
 dependencies = [
- "anyhow",
- "hostname",
- "serde",
- "serde_json",
+ "inazuma",
+ "log",
+ "raijin-theme",
+ "raijin-ui",
+ "raijin-workspace",
 ]
 
 [[package]]
@@ -15251,6 +15258,16 @@ name = "raijin-shell-command-parser"
 version = "0.1.0"
 dependencies = [
  "brush-parser",
+]
+
+[[package]]
+name = "raijin-shell-integration"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "hostname",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -15609,6 +15626,7 @@ dependencies = [
  "raijin-session",
  "raijin-settings",
  "raijin-shell",
+ "raijin-shell-integration",
  "raijin-task",
  "raijin-term",
  "raijin-terminal",

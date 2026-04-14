@@ -31,7 +31,8 @@ use crate::input::{
     popovers::{ContextMenu, DiagnosticPopover, HoverPopover, MouseContextMenu},
     search::{self, SearchPanel},
 };
-use crate::{AppShell, utils::history::History};
+use crate::utils::history::History;
+use super::focus_tracker::FocusedInputTracker;
 
 #[derive(Action, Clone, PartialEq, Eq, Deserialize)]
 #[action(namespace = input, no_json)]
@@ -227,6 +228,7 @@ pub(crate) fn init(cx: &mut App) {
 
     search::init(cx);
     number_input::init(cx);
+    cx.set_global(super::focus_tracker::FocusedInputTracker::default());
 }
 
 /// Whitespace indicators for rendering spaces and tabs.
@@ -1112,9 +1114,7 @@ impl InputState {
         self.blink_cursor.update(cx, |cursor, cx| {
             cursor.stop(cx);
         });
-        AppShell::update(window, cx, |root, _, _| {
-            root.set_focused_input(None);
-        });
+        cx.global_mut::<FocusedInputTracker>().focused = None;
         cx.emit(InputEvent::Blur);
         cx.notify();
     }

@@ -4,7 +4,7 @@ use std::sync::mpsc;
 use std::time::{Duration, Instant};
 use std::collections::HashMap;
 
-use raijin_shell::ShellContext;
+use raijin_shell_integration::ShellContext;
 
 use crate::command::{self, CommandOutput};
 

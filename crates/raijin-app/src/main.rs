@@ -7,7 +7,7 @@ use futures::StreamExt;
 use inazuma::{App, AppContext, Application, Bounds, WindowBounds, WindowOptions, actions, px, size};
 use inazuma_settings_framework::{SettingsStore, watch_config_file};
 use raijin_settings::AppearanceSettings;
-use raijin_ui::AppShell;
+use raijin_shell::AppShell;
 use raijin_ui::TitleBar;
 use raijin_actions::Quit;
 
@@ -89,7 +89,7 @@ fn main() {
         let app_db = raijin_db::AppDatabase::new();
         cx.set_global(app_db);
 
-        // 4. Build AppState (Client, Session, UserStore, WorkspaceStore, FS, Languages)
+        // 4. Build AppState (Client, Session, UserStore, FS, Languages)
         let app_state = app_bootstrap::build_app_state(cx);
 
         // 4. Watch settings.toml + keymap.toml via Fs::watch
@@ -140,6 +140,7 @@ fn main() {
 
         // Initialize UI components (keybindings, global state)
         raijin_ui::init(cx);
+        raijin_shell::init(cx);
 
         // Initialize workspace system + feature crates
         raijin_workspace::init(app_state.clone(), cx);

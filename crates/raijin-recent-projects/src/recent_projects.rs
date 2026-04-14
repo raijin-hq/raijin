@@ -48,7 +48,7 @@ use inazuma_util::{ResultExt, paths::PathExt};
 use raijin_workspace::{
     HistoryManager, ModalView, MultiWorkspace, OpenOptions, OpenVisible, PathList,
     SerializedWorkspaceLocation, Workspace, WorkspaceDb, WorkspaceId,
-    notifications::DetachAndPromptErr, with_active_or_new_workspace,
+    notifications::DetachAndPromptErr,
 };
 use raijin_actions::{OpenDevContainer, OpenRecent, OpenRemote};
 
@@ -221,7 +221,7 @@ pub fn init(cx: &mut App) {
     #[cfg(target_os = "windows")]
     cx.on_action(|open_wsl: &raijin_actions::wsl_actions::OpenFolderInWsl, cx| {
         let create_new_window = open_wsl.create_new_window;
-        with_active_or_new_workspace(cx, move |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
             use inazuma::PathPromptOptions;
             use raijin_project::DirectoryLister;
 
@@ -305,7 +305,7 @@ pub fn init(cx: &mut App) {
     #[cfg(target_os = "windows")]
     cx.on_action(|open_wsl: &raijin_actions::wsl_actions::OpenWsl, cx| {
         let create_new_window = open_wsl.create_new_window;
-        with_active_or_new_workspace(cx, move |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
             let handle = cx.entity().downgrade();
             let fs = workspace.project().read(cx).fs().clone();
             workspace.toggle_modal(window, cx, |window, cx| {
@@ -317,7 +317,7 @@ pub fn init(cx: &mut App) {
     #[cfg(target_os = "windows")]
     cx.on_action(|open_wsl: &raijin_remote::OpenWslPath, cx| {
         let open_wsl = open_wsl.clone();
-        with_active_or_new_workspace(cx, move |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
             let fs = workspace.project().read(cx).fs().clone();
             add_wsl_distro(fs, &open_wsl.distro, cx);
             let open_options = OpenOptions {
@@ -386,7 +386,7 @@ pub fn init(cx: &mut App) {
                 });
             }
             None => {
-                with_active_or_new_workspace(cx, move |workspace, window, cx| {
+                raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
                     let Some(recent_projects) = workspace.active_modal::<RecentProjects>(cx) else {
                         let focus_handle = workspace.focus_handle(cx);
                         RecentProjects::open(
@@ -412,7 +412,7 @@ pub fn init(cx: &mut App) {
     cx.on_action(|open_remote: &OpenRemote, cx| {
         let from_existing_connection = open_remote.from_existing_connection;
         let create_new_window = open_remote.create_new_window;
-        with_active_or_new_workspace(cx, move |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
             if from_existing_connection {
                 cx.propagate();
                 return;
@@ -428,7 +428,7 @@ pub fn init(cx: &mut App) {
     cx.observe_new(DisconnectedOverlay::register).detach();
 
     cx.on_action(|_: &OpenDevContainer, cx| {
-        with_active_or_new_workspace(cx, move |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
             if !workspace.project().read(cx).is_local() {
                 cx.spawn_in(window, async move |_, cx| {
                     cx.prompt(
@@ -2089,7 +2089,7 @@ mod tests {
 
         cx.run_until_parked();
 
-        // This dispatch triggers with_active_or_new_workspace -> MultiWorkspace::update
+        // This dispatch triggers raijin_shell::with_active_workspace -> MultiWorkspace::update
         // -> Workspace::update -> toggle_modal -> new_dev_container.
         // Before the fix, this panicked with "cannot read raijin_workspace::Workspace while
         // it is already being updated" because new_dev_container and open_dev_container

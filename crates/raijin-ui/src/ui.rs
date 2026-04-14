@@ -36,7 +36,7 @@ pub use inazuma::{Anchor, Placement, Side, AxisExt};
 // Re-export utils submodules used by IC components
 pub use utils::actions;
 pub use utils::history::{History, HistoryItem};
-pub use utils::window_ext::WindowExt;
+// WindowExt removed — overlay API now in raijin-shell
 pub use utils::focus_trap::{FocusTrapContainer, FocusTrapElement};
 pub use utils::capitalize;
 

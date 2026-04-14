@@ -19,7 +19,7 @@ use raijin_workspace::{
     dock::DockPosition,
     item::{Item, ItemEvent},
     notifications::NotifyResultExt as _,
-    open_new, register_serializable_item, with_active_or_new_workspace,
+    open_new, register_serializable_item,
 };
 use raijin_actions::OpenOnboarding;
 
@@ -53,7 +53,7 @@ pub fn init(cx: &mut App) {
     .detach();
 
     cx.on_action(|_: &OpenOnboarding, cx| {
-        with_active_or_new_workspace(cx, |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, |workspace, window, cx| {
             workspace
                 .with_local_workspace(window, cx, |workspace, window, cx| {
                     let existing = workspace
@@ -80,7 +80,7 @@ pub fn init(cx: &mut App) {
     });
 
     cx.on_action(|_: &ShowWelcome, cx| {
-        with_active_or_new_workspace(cx, |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, |workspace, window, cx| {
             workspace
                 .with_local_workspace(window, cx, |workspace, window, cx| {
                     let existing = workspace
@@ -337,7 +337,7 @@ impl Item for Onboarding {
 }
 
 fn go_to_welcome_page(cx: &mut App) {
-    with_active_or_new_workspace(cx, |workspace, window, cx| {
+    raijin_shell::with_active_workspace(cx, |workspace, window, cx| {
         let Some((onboarding_id, onboarding_idx)) = workspace
             .active_pane()
             .read(cx)

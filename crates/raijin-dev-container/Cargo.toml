@@ -18,6 +18,7 @@ inazuma-menu.workspace = true
 raijin-paths.workspace = true
 inazuma-picker.workspace = true
 inazuma-settings-framework.workspace = true
+raijin-shell.workspace = true
 smol.workspace = true
 raijin-ui.workspace = true
 inazuma-util.workspace = true

@@ -10,9 +10,10 @@ use ropey::Rope;
 use smallvec::SmallVec;
 
 use crate::{
-    ActiveTheme as _, AppShell,
+    ActiveTheme as _,
     input::RopeExt as _,
 };
+use super::focus_tracker::FocusedInputTracker;
 
 use super::{InputState, LastLayout};
 
@@ -549,26 +550,20 @@ impl Element for TextElement {
             cx,
         );
 
-        // Set AppShell focused_input when self is focused
+        // Track focused input globally via FocusedInputTracker
         if focused {
             let state = self.state.clone();
-            if AppShell::read(window, cx).focused_input() != Some(&state) {
-                AppShell::update(window, cx, |root, _, cx| {
-                    root.set_focused_input(Some(state));
-                    cx.notify();
-                });
+            if cx.global::<FocusedInputTracker>().focused.as_ref() != Some(&state) {
+                cx.global_mut::<FocusedInputTracker>().focused = Some(state);
             }
         }
 
-        // And reset focused_input when next_frame start
+        // Reset focused_input when next_frame start
         window.on_next_frame({
             let state = self.state.clone();
-            move |window, cx| {
-                if !focused && AppShell::read(window, cx).focused_input() == Some(&state) {
-                    AppShell::update(window, cx, |root, _, cx| {
-                        root.set_focused_input(None);
-                        cx.notify();
-                    });
+            move |_window, cx| {
+                if !focused && cx.global::<FocusedInputTracker>().focused.as_ref() == Some(&state) {
+                    cx.global_mut::<FocusedInputTracker>().focused = None;
                 }
             }
         });
