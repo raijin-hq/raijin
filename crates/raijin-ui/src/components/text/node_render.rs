@@ -143,11 +143,11 @@ impl Paragraph {
                         });
                     }
                     if style.code {
-                        highlight.background_color = Some(cx.theme().colors().accent.into());
+                        highlight.background_color = Some(cx.theme().colors().accent);
                     }
 
                     if let Some(mut link_mark) = style.link.clone() {
-                        highlight.color = Some(cx.theme().colors().accent.into());
+                        highlight.color = Some(cx.theme().colors().accent);
                         highlight.underline = Some(inazuma::UnderlineStyle {
                             thickness: inazuma::px(1.),
                             ..Default::default()

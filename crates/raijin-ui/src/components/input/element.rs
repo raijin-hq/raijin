@@ -249,15 +249,15 @@ impl Element for TextElement {
         let (display_text, text_color): (_, inazuma::Oklch) = if is_empty {
             (
                 &Rope::from(placeholder.as_str()),
-                cx.theme().colors().muted_foreground.into(),
+                cx.theme().colors().muted_foreground,
             )
         } else if state.masked {
             (
                 &Rope::from("*".repeat(text.chars().count())),
-                cx.theme().colors().foreground.into(),
+                cx.theme().colors().foreground,
             )
         } else {
-            (&text, cx.theme().colors().foreground.into())
+            (&text, cx.theme().colors().foreground)
         };
 
         let text_style = window.text_style();
@@ -456,7 +456,7 @@ impl Element for TextElement {
             let other_line_runs = vec![TextRun {
                 len: line_number_len,
                 font: style.font(),
-                color: cx.theme().colors().muted_foreground.into(),
+                color: cx.theme().colors().muted_foreground,
                 background_color: None,
                 underline: None,
                 strikethrough: None,
@@ -464,7 +464,7 @@ impl Element for TextElement {
             let current_line_runs = vec![TextRun {
                 len: line_number_len,
                 font: style.font(),
-                color: cx.theme().colors().foreground.into(),
+                color: cx.theme().colors().foreground,
                 background_color: None,
                 underline: None,
                 strikethrough: None,

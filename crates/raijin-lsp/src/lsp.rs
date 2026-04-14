@@ -1030,6 +1030,7 @@ impl LanguageServer {
                     }),
                     ..WindowClientCapabilities::default()
                 }),
+                offset_encoding: None,
             },
             trace: None,
             workspace_folders: Some(workspace_folders),

@@ -662,7 +662,7 @@ impl TextElement {
         }
 
         let completion_text = &completion_item.insert_text;
-        let completion_color: inazuma::Oklch = inazuma::Oklch::from(cx.theme().colors().muted_foreground).opacity(0.5);
+        let completion_color: inazuma::Oklch = cx.theme().colors().muted_foreground.opacity(0.5);
 
         let text_style = window.text_style();
         let font = text_style.font();

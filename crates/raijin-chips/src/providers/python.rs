@@ -88,10 +88,10 @@ fn get_python_version(ctx: &ChipContext) -> Option<String> {
     ];
 
     for (cmd, args) in binaries {
-        if let Some(output) = ctx.exec_cmd(cmd, args) {
-            if let Some(version) = parse_python_version(&output.stdout) {
-                return Some(version);
-            }
+        if let Some(output) = ctx.exec_cmd(cmd, args)
+            && let Some(version) = parse_python_version(&output.stdout)
+        {
+            return Some(version);
         }
     }
 

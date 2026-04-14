@@ -70,10 +70,10 @@ fn read_wrapper_version(ctx: &ChipContext) -> Option<String> {
     let mut dir = ctx.cwd.as_path();
     loop {
         let props_path = dir.join(".mvn/wrapper/maven-wrapper.properties");
-        if let Ok(content) = std::fs::read_to_string(&props_path) {
-            if let Some(version) = parse_wrapper_distribution_url(&content) {
-                return Some(version);
-            }
+        if let Ok(content) = std::fs::read_to_string(&props_path)
+            && let Some(version) = parse_wrapper_distribution_url(&content)
+        {
+            return Some(version);
         }
         dir = dir.parent()?;
     }
@@ -110,7 +110,7 @@ fn parse_mvn_version(output: &str) -> String {
     if let Some(after) = first_line.strip_prefix("Apache Maven ") {
         // "3.9.6 (hash...)" → take until space or paren
         let version = after
-            .split_once(|c: char| c == ' ' || c == '(')
+            .split_once([' ', '('])
             .map(|(v, _)| v.trim())
             .unwrap_or(after.trim());
 

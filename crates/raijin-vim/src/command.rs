@@ -337,7 +337,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
     });
 
     Vim::action(editor, cx, |_, _: &ArgumentRequired, window, cx| {
-        let _ = window.prompt(
+        let _prompt = window.prompt(
             inazuma::PromptLevel::Critical,
             "Argument required",
             None,
@@ -383,7 +383,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                         .as_singleton()
                         .and_then(|buffer| buffer.read(cx).file())
                     else {
-                        let _ = window.prompt(
+                        let _prompt = window.prompt(
                             inazuma::PromptLevel::Warning,
                             "No file name",
                             Some("Partial buffer write requires file name."),
@@ -413,7 +413,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
                         return;
                     }
                     if Some(SaveIntent::Overwrite) != action.save_intent {
-                        let _ = window.prompt(
+                        let _prompt = window.prompt(
                             inazuma::PromptLevel::Warning,
                             "Use ! to write partial buffer",
                             Some("Overwriting the current file with selected buffer content requires '!'."),
@@ -582,7 +582,7 @@ pub fn register(editor: &mut Editor, cx: &mut Context<Vim>) {
 
     Vim::action(editor, cx, |vim, action: &DeleteMarks, window, cx| {
         fn err(s: String, window: &mut Window, cx: &mut Context<Editor>) {
-            let _ = window.prompt(
+            let _prompt = window.prompt(
                 inazuma::PromptLevel::Critical,
                 &format!("Invalid argument: {}", s),
                 None,
@@ -2187,7 +2187,7 @@ impl OnMatchingLines {
                 {
                     search_bar.update(cx, |search_bar, cx| {
                         if search_bar.show(window, cx) {
-                            let _ = search_bar.search(
+                            let _receiver = search_bar.search(
                                 &last_pattern,
                                 Some(SearchOptions::REGEX | SearchOptions::CASE_SENSITIVE),
                                 false,

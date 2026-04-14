@@ -515,7 +515,7 @@ impl RenderOnce for Slider {
             .style
             .text
             .color
-            .unwrap_or_else(|| cx.theme().colors().accent.into());
+            .unwrap_or_else(|| cx.theme().colors().accent);
         let corner_radii = self.style.corner_radii.clone();
         let default_radius = px(999.);
         let mut radius = Corners {

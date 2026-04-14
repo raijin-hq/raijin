@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use crate::context::ChipContext;
 use crate::provider::{ChipId, ChipOutput, ChipProvider};
@@ -59,8 +59,7 @@ fn gather_docker_context(ctx: &ChipContext) -> Option<String> {
     // Priority 1: Environment variables (same order as Docker CLI)
     let env_context = ["DOCKER_MACHINE_NAME", "DOCKER_HOST", "DOCKER_CONTEXT"]
         .iter()
-        .find_map(|key| ctx.get_env(key))
-        .map(String::from);
+        .find_map(|key| ctx.get_env(key));
 
     let docker_ctx = if let Some(val) = env_context {
         val
@@ -96,7 +95,7 @@ fn docker_config_path(ctx: &ChipContext) -> Option<PathBuf> {
 /// Parse `currentContext` from Docker's config.json without serde.
 ///
 /// The file is small JSON. We scan line-by-line for the key.
-fn parse_docker_config(path: &PathBuf) -> Option<String> {
+fn parse_docker_config(path: &Path) -> Option<String> {
     let content = std::fs::read_to_string(path).ok()?;
     for line in content.lines() {
         let trimmed = line.trim();
@@ -106,7 +105,7 @@ fn parse_docker_config(path: &PathBuf) -> Option<String> {
             let value = after_colon
                 .trim()
                 .trim_start_matches('"')
-                .trim_end_matches(|c: char| c == '"' || c == ',');
+                .trim_end_matches(['"', ',']);
             if !value.is_empty() {
                 return Some(value.to_string());
             }

@@ -5,8 +5,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 ///
 /// Detection: `v.mod`, `vpkg.json`, `.vpkg-lock.json`, `.v` files.
 /// Version: `v version` -> `V 0.4.4 abcdef12` -> `0.4.4`.
-///
-
 pub struct VlangProvider;
 
 impl ChipProvider for VlangProvider {
@@ -52,7 +50,7 @@ impl ChipProvider for VlangProvider {
 /// Output: `Some("0.4.4")`
 fn parse_v_version(stdout: &str) -> Option<String> {
     let version = stdout.split_whitespace().nth(1)?;
-    if version.chars().next().map_or(false, |c| c.is_ascii_digit()) {
+    if version.chars().next().is_some_and(|c| c.is_ascii_digit()) {
         Some(version.to_string())
     } else {
         None

@@ -1,6 +1,6 @@
-/// Shell installation detection and platform-specific install commands.
-///
-/// Pure data + logic — no UI rendering. The modal UI lives in raijin-terminal-view.
+// Shell installation detection and platform-specific install commands.
+//
+// Pure data + logic — no UI rendering. The modal UI lives in raijin-terminal-view.
 
 /// Target platform for install commands.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

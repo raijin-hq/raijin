@@ -54,20 +54,11 @@ pub struct AudioOutput {
     mixer_controller: std::sync::Arc<dynamic_mixer::DynamicMixerController<f32>>,
 }
 
+#[derive(Default)]
 pub struct Audio {
     output: Option<AudioOutput>,
     pub echo_canceller: EchoCanceller,
     source_cache: HashMap<Sound, Buffered<SamplesConverter<Decoder<Cursor<Vec<u8>>>, f32>>>,
-}
-
-impl Default for Audio {
-    fn default() -> Self {
-        Self {
-            output: None,
-            echo_canceller: EchoCanceller::default(),
-            source_cache: HashMap::default(),
-        }
-    }
 }
 
 impl Global for Audio {}

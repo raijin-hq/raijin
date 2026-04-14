@@ -477,10 +477,9 @@ impl SearchData {
         let context_offset_range = context_anchor_range.to_offset(multi_buffer_snapshot);
         let match_offset_range = match_range.to_offset(multi_buffer_snapshot);
 
-        let mut search_match_indices = vec![
-            match_offset_range.start - context_offset_range.start
-                ..match_offset_range.end - context_offset_range.start,
-        ];
+        let match_index_range = match_offset_range.start - context_offset_range.start
+            ..match_offset_range.end - context_offset_range.start;
+        let mut search_match_indices = vec![match_index_range];
 
         let entire_context_text = multi_buffer_snapshot
             .text_for_range(context_offset_range.clone())

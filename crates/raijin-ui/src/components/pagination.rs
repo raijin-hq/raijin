@@ -126,7 +126,7 @@ impl Pagination {
             .with_size(self.size)
             .disabled(self.disabled || disabled)
             .tooltip(Tooltip::text(label.clone()))
-            .when(self.compact, |this: Button| this.icon(icon.clone()))
+            .when(self.compact, |this: Button| this.icon(icon))
             .when(!self.compact, |this: Button| {
                 this.child(
                     h_flex()

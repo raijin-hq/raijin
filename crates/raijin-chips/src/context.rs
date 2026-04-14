@@ -89,17 +89,17 @@ impl DirContents {
                         folders.insert(name);
                     } else {
                         // Extract extensions: foo.tar.gz → ["tar.gz", "gz"]
-                        if !name.starts_with('.') {
-                            if let Some(dot_pos) = name.find('.') {
-                                let ext = &name[dot_pos + 1..];
-                                if !ext.is_empty() {
-                                    extensions.insert(ext.to_string());
-                                    // Also add the last extension for compound types
-                                    if let Some(last_dot) = ext.rfind('.') {
-                                        let last_ext = &ext[last_dot + 1..];
-                                        if !last_ext.is_empty() {
-                                            extensions.insert(last_ext.to_string());
-                                        }
+                        if !name.starts_with('.')
+                            && let Some(dot_pos) = name.find('.')
+                        {
+                            let ext = &name[dot_pos + 1..];
+                            if !ext.is_empty() {
+                                extensions.insert(ext.to_string());
+                                // Also add the last extension for compound types
+                                if let Some(last_dot) = ext.rfind('.') {
+                                    let last_ext = &ext[last_dot + 1..];
+                                    if !last_ext.is_empty() {
+                                        extensions.insert(last_ext.to_string());
                                     }
                                 }
                             }
@@ -165,12 +165,18 @@ pub struct DetectionCache {
     contents: DirContents,
 }
 
-impl DetectionCache {
-    pub fn new() -> Self {
+impl Default for DetectionCache {
+    fn default() -> Self {
         Self {
             cached_cwd: None,
             contents: DirContents::empty(),
         }
+    }
+}
+
+impl DetectionCache {
+    pub fn new() -> Self {
+        Self::default()
     }
 
     /// Returns DirContents for the given CWD, re-scanning if CWD changed.
@@ -230,6 +236,7 @@ pub struct ChipContext {
     pub directory_config: raijin_settings::DirectoryChipConfig,
     pub git_status_config: raijin_settings::GitStatusChipConfig,
     pub python_config: raijin_settings::PythonChipConfig,
+    pub package_config: raijin_settings::PackageChipConfig,
 }
 
 impl ChipContext {

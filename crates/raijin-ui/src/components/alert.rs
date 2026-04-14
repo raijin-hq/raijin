@@ -36,20 +36,20 @@ impl AlertVariant {
     fn bg(&self, cx: &App) -> Oklch {
         match self {
             Self::Default => cx.theme().colors().background,
-            Self::Info => cx.theme().status().info.color.mix_oklab(Oklch::from(transparent_white()), 0.04),
-            Self::Success => cx.theme().status().success.color.mix_oklab(Oklch::from(transparent_white()), 0.04),
-            Self::Warning => cx.theme().status().warning.color.mix_oklab(Oklch::from(transparent_white()), 0.04),
-            Self::Error => cx.theme().status().error.color.mix_oklab(Oklch::from(transparent_white()), 0.04),
+            Self::Info => cx.theme().status().info.color.mix_oklab(transparent_white(), 0.04),
+            Self::Success => cx.theme().status().success.color.mix_oklab(transparent_white(), 0.04),
+            Self::Warning => cx.theme().status().warning.color.mix_oklab(transparent_white(), 0.04),
+            Self::Error => cx.theme().status().error.color.mix_oklab(transparent_white(), 0.04),
         }
     }
 
     fn border_color(&self, cx: &App) -> Oklch {
         match self {
             Self::Default => cx.theme().colors().border,
-            Self::Info => cx.theme().status().info.color.mix_oklab(Oklch::from(transparent_white()), 0.3),
-            Self::Success => cx.theme().status().success.color.mix_oklab(Oklch::from(transparent_white()), 0.3),
-            Self::Warning => cx.theme().status().warning.color.mix_oklab(Oklch::from(transparent_white()), 0.3),
-            Self::Error => cx.theme().status().error.color.mix_oklab(Oklch::from(transparent_white()), 0.3),
+            Self::Info => cx.theme().status().info.color.mix_oklab(transparent_white(), 0.3),
+            Self::Success => cx.theme().status().success.color.mix_oklab(transparent_white(), 0.3),
+            Self::Warning => cx.theme().status().warning.color.mix_oklab(transparent_white(), 0.3),
+            Self::Error => cx.theme().status().error.color.mix_oklab(transparent_white(), 0.3),
         }
     }
 }

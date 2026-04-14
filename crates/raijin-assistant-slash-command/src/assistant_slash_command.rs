@@ -313,7 +313,8 @@ impl SlashCommandLine {
                 // The command name ends at the first whitespace character.
                 else if !call.name.is_empty() {
                     if c.is_whitespace() {
-                        call.arguments = vec![next_ix..next_ix];
+                        let range = next_ix..next_ix;
+                        call.arguments = vec![range];
                     } else {
                         call.name.end = next_ix;
                     }

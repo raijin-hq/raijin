@@ -159,12 +159,8 @@ impl InputState {
         location: &lsp_types::LocationLink,
         cx: &mut Context<Self>,
     ) {
-        if location
-            .target_uri
-            .scheme()
-            .map(|s| s.as_str() == "https" || s.as_str() == "http")
-            == Some(true)
-        {
+        let scheme = location.target_uri.scheme();
+        if scheme == "https" || scheme == "http" {
             cx.open_url(&location.target_uri.to_string());
         } else {
             // Move to the location.

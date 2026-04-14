@@ -243,28 +243,25 @@ fn gather_kube_info(ctx: &ChipContext) -> Option<String> {
     // Build label based on show_* toggles from config
     let mut parts = vec![display_context];
 
-    if config.show_namespace {
-        if let Some(ref ns) = ctx_components.namespace {
-            if !ns.is_empty() {
-                parts.push(format!("({ns})"));
-            }
-        }
+    if config.show_namespace
+        && let Some(ref ns) = ctx_components.namespace
+        && !ns.is_empty()
+    {
+        parts.push(format!("({ns})"));
     }
 
-    if config.show_user {
-        if let Some(ref user) = display_user {
-            if !user.is_empty() {
-                parts.push(format!("[{user}]"));
-            }
-        }
+    if config.show_user
+        && let Some(ref user) = display_user
+        && !user.is_empty()
+    {
+        parts.push(format!("[{user}]"));
     }
 
-    if config.show_cluster {
-        if let Some(ref cluster) = ctx_components.cluster {
-            if !cluster.is_empty() {
-                parts.push(format!("@{cluster}"));
-            }
-        }
+    if config.show_cluster
+        && let Some(ref cluster) = ctx_components.cluster
+        && !cluster.is_empty()
+    {
+        parts.push(format!("@{cluster}"));
     }
 
     Some(parts.join(" "))

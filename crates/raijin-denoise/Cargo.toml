@@ -9,13 +9,14 @@ license = "GPL-3.0-or-later"
 workspace = true
 
 [dependencies]
-candle-core = "0.10"
-candle-onnx = "0.10"
+candle-core.workspace = true
+candle-onnx.workspace = true
 log.workspace = true
+# Version mismatch: workspace has 0.9, raijin-denoise needs 0.14
 prost = "0.14"
 
 rodio = { workspace = true, features = ["wav"] }
 
-rustfft = { version = "6.2.0", features = ["avx"] }
-realfft = "3.4.0"
+rustfft.workspace = true
+realfft.workspace = true
 thiserror.workspace = true

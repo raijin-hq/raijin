@@ -46,7 +46,7 @@ inazuma-text.workspace = true
 raijin-theme.workspace = true
 raijin-theme-settings.workspace = true
 inazuma-menu.workspace = true
-tokio = { version = "1.15", features = ["full"], optional = true }
+tokio = { workspace = true, optional = true }
 raijin-ui.workspace = true
 inazuma-util.workspace = true
 inazuma-util-macros.workspace = true

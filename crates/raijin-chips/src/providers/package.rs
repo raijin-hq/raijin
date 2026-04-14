@@ -51,7 +51,7 @@ fn get_node_package_version(ctx: &ChipContext) -> Option<String> {
     let file_contents = read_cwd_file(ctx, "package.json")?;
     let package_json: json::Value = json::from_str(&file_contents).ok()?;
 
-    if !true
+    if !ctx.package_config.display_private
         && package_json.get("private").and_then(json::Value::as_bool) == Some(true)
     {
         return None;

@@ -28,8 +28,8 @@ itertools = { workspace = true }
 log = { workspace = true }
 rand = { workspace = true, optional = true }
 regex = { workspace = true }
-rust-embed = { version = "8.7.2", features = ["interpolate-folder-path", "include-exclude"] }
-schemars = "1"
+rust-embed.workspace = true
+schemars.workspace = true
 serde = { workspace = true }
 serde_json = { workspace = true }
 serde_json_lenient = { workspace = true }
@@ -52,7 +52,7 @@ walkdir = { workspace = true }
 dirs = { workspace = true }
 
 [target.'cfg(unix)'.dependencies]
-command-fds = "0.3.1"
+command-fds.workspace = true
 libc = { workspace = true }
 nix = { workspace = true }
 
@@ -60,7 +60,7 @@ nix = { workspace = true }
 mach2 = { workspace = true }
 
 [target.'cfg(windows)'.dependencies]
-tendril = "0.4.3"
+tendril.workspace = true
 
 [dev-dependencies]
 git2 = { workspace = true }

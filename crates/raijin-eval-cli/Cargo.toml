@@ -20,7 +20,7 @@ raijin-agent-ui.workspace = true
 anyhow.workspace = true
 clap.workspace = true
 raijin-client.workspace = true
-ctrlc = { version = "3.5", features = ["termination"] }
+ctrlc.workspace = true
 raijin-db.workspace = true
 raijin-debug-adapter-extension.workspace = true
 env_logger.workspace = true

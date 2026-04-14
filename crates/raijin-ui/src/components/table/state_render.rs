@@ -741,7 +741,7 @@ where
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> impl IntoElement {
-        if !false {
+        if true {
             return self.delegate.render_td(row_ix, col_ix, window, cx).into_any_element();
         }
 
@@ -752,7 +752,7 @@ where
     }
 
     pub(super) fn measure(&mut self, _window: &mut Window, _cx: &mut Context<Self>) {
-        if !false {
+        if true {
             return;
         }
 

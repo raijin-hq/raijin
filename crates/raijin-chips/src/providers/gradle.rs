@@ -12,8 +12,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider, parse_version_number};
 ///
 /// Activates when `build.gradle`, `build.gradle.kts`, or `settings.gradle` is present,
 /// or when a `gradle` directory exists.
-///
-
 pub struct GradleProvider;
 
 impl ChipProvider for GradleProvider {
@@ -80,10 +78,10 @@ fn read_wrapper_version(ctx: &ChipContext) -> Option<String> {
     let mut dir = ctx.cwd.as_path();
     loop {
         let props_path = dir.join("gradle/wrapper/gradle-wrapper.properties");
-        if let Ok(content) = std::fs::read_to_string(&props_path) {
-            if let Some(version) = parse_distribution_url_version(&content) {
-                return Some(version);
-            }
+        if let Ok(content) = std::fs::read_to_string(&props_path)
+            && let Some(version) = parse_distribution_url_version(&content)
+        {
+            return Some(version);
         }
         dir = dir.parent()?;
     }

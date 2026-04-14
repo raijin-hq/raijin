@@ -52,36 +52,36 @@ futures.workspace = true
 
 # Text / Parsing
 anyhow.workspace = true
-ropey = { version = "2.0.0-beta.1", features = ["metric_lines_lf", "metric_utf16"] }
-markdown = { version = "1.0.0", features = ["serde"] }
-aho-corasick = "1.1.3"
-lsp-types = { version = "0.97", features = ["proposed"] }
+ropey.workspace = true
+markdown.workspace = true
+aho-corasick.workspace = true
+lsp-types = { workspace = true, features = ["proposed"] }
 regex.workspace = true
-unicode-segmentation = "1.12.0"
+unicode-segmentation.workspace = true
 
 # Misc
-enum-iterator = "2.1.0"
+enum-iterator.workspace = true
 notify.workspace = true
-num-traits = "0.2"
+num-traits.workspace = true
 once_cell.workspace = true
-paste = "1"
+paste.workspace = true
 raijin-i18n.workspace = true
 uuid.workspace = true
-instant = { version = "0.1", features = ["wasm-bindgen"] }
+instant.workspace = true
 
 # Optional
 inazuma-story = { workspace = true, optional = true }
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 smol.workspace = true
-tree-sitter = "0.26"
+tree-sitter.workspace = true
 
 [target.'cfg(target_os = "macos")'.dependencies]
-core-text = "=21.0.0"
+core-text.workspace = true
 
 [target.'cfg(windows)'.dependencies]
 windows.workspace = true
 
 [dev-dependencies]
 inazuma = { workspace = true, features = ["test-support"] }
-indoc = "2"
+indoc.workspace = true

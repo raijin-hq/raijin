@@ -6,8 +6,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 /// Detection: `Project.toml`, `Manifest.toml`, `JuliaProject.toml`, `.jl` files.
 /// Version: `julia --version` -> `julia version 1.10.0` -> `1.10.0`.
 /// Also reads `Project.toml` `[compat]` section for the required Julia version range.
-///
-
 pub struct JuliaProvider;
 
 impl ChipProvider for JuliaProvider {
@@ -82,14 +80,14 @@ fn read_project_toml_compat(cwd: &std::path::Path) -> Option<String> {
             in_compat = false;
             continue;
         }
-        if in_compat {
-            if let Some(rest) = trimmed.strip_prefix("julia") {
-                let rest = rest.trim();
-                if let Some(rest) = rest.strip_prefix('=') {
-                    let value = rest.trim().trim_matches('"').trim();
-                    if !value.is_empty() {
-                        return Some(value.to_string());
-                    }
+        if in_compat
+            && let Some(rest) = trimmed.strip_prefix("julia")
+        {
+            let rest = rest.trim();
+            if let Some(rest) = rest.strip_prefix('=') {
+                let value = rest.trim().trim_matches('"').trim();
+                if !value.is_empty() {
+                    return Some(value.to_string());
                 }
             }
         }

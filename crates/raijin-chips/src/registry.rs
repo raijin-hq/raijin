@@ -16,6 +16,7 @@ use crate::render::render_standard_chip;
 /// (opening modals, dispatching actions, etc.).
 ///
 /// Extensible — new fields can be added without breaking existing renderers.
+#[derive(Default)]
 pub struct ChipRenderContext {
     /// Workspace handle for opening modals, panels, etc.
     pub workspace: Option<Box<dyn std::any::Any>>,
@@ -23,12 +24,9 @@ pub struct ChipRenderContext {
     pub cwd: String,
 }
 
-impl Default for ChipRenderContext {
+impl Default for ChipRegistry {
     fn default() -> Self {
-        Self {
-            workspace: None,
-            cwd: String::new(),
-        }
+        Self::new()
     }
 }
 

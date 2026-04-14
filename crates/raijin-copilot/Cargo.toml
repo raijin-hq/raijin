@@ -49,7 +49,7 @@ inazuma-util.workspace = true
 raijin-workspace.workspace = true
 
 [target.'cfg(windows)'.dependencies]
-async-std = { version = "1.12.0", features = ["unstable"] }
+async-std.workspace = true
 
 [dev-dependencies]
 inazuma-collections = { workspace = true, features = ["test-support"] }

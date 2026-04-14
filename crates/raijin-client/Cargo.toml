@@ -34,7 +34,7 @@ inazuma.workspace = true
 inazuma-tokio.workspace = true
 raijin-http-client.workspace = true
 raijin-http-client-tls.workspace = true
-httparse = "1.10"
+httparse.workspace = true
 log.workspace = true
 parking_lot.workspace = true
 raijin-paths.workspace = true
@@ -79,8 +79,8 @@ windows.workspace = true
 objc2-foundation.workspace = true
 
 [target.'cfg(any(target_os = "windows", target_os = "macos"))'.dependencies]
-tokio-native-tls = "0.3"
+tokio-native-tls.workspace = true
 
 [target.'cfg(not(any(target_os = "windows", target_os = "macos")))'.dependencies]
-rustls-pki-types = "1.12"
-tokio-rustls = { version = "0.26", features = ["tls12", "ring"], default-features = false }
+rustls-pki-types.workspace = true
+tokio-rustls.workspace = true

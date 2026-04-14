@@ -139,7 +139,7 @@ impl DiagnosticSeverity {
 
         let mut style = HighlightStyle::default();
         style.underline = Some(UnderlineStyle {
-            color: color.map(Into::into),
+            color,
             thickness: px(1.),
             wavy: true,
         });

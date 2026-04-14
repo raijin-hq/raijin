@@ -78,10 +78,10 @@ fn get_java_version(ctx: &ChipContext) -> Option<String> {
         let java_bin = PathBuf::from(java_home)
             .join("bin")
             .join("java");
-        if let Some(path_str) = java_bin.to_str() {
-            if let Some(ver) = exec_java_version(ctx, path_str) {
-                return Some(ver);
-            }
+        if let Some(path_str) = java_bin.to_str()
+            && let Some(ver) = exec_java_version(ctx, path_str)
+        {
+            return Some(ver);
         }
     }
 

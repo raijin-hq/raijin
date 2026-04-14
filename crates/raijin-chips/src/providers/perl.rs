@@ -7,8 +7,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 ///   `META.json`, `META.yml`, `.perl-version`, `.pl`, `.pm`, `.pod` files.
 /// Version: Uses `perl -e 'printf q#%vd#,$^V;'` which outputs
 ///   the version directly like `5.38.0`. Falls back to parsing `perl --version`.
-///
-
 pub struct PerlProvider;
 
 impl ChipProvider for PerlProvider {
@@ -41,7 +39,7 @@ impl ChipProvider for PerlProvider {
         let version = ctx
             .exec_cmd("perl", &["-e", "printf q#%vd#,$^V;"])
             .map(|o| o.stdout.trim().to_string())
-            .filter(|v| !v.is_empty() && v.chars().next().map_or(false, |c| c.is_ascii_digit()))
+            .filter(|v| !v.is_empty() && v.chars().next().is_some_and(|c| c.is_ascii_digit()))
             .or_else(|| {
                 // Fallback: parse `perl --version` output
                 ctx.exec_cmd("perl", &["--version"])
@@ -73,14 +71,13 @@ fn parse_perl_version(output: &str) -> Option<String> {
     // Look for (vX.Y.Z) pattern
     for word in output.split_whitespace() {
         let trimmed = word.trim_matches(|c: char| c == '(' || c == ')');
-        if let Some(version) = trimmed.strip_prefix('v') {
-            if version.contains('.')
-                && version
-                    .chars()
-                    .all(|c| c.is_ascii_digit() || c == '.')
-            {
-                return Some(version.to_string());
-            }
+        if let Some(version) = trimmed.strip_prefix('v')
+            && version.contains('.')
+            && version
+                .chars()
+                .all(|c| c.is_ascii_digit() || c == '.')
+        {
+            return Some(version.to_string());
         }
     }
     None

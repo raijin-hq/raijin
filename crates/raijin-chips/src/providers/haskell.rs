@@ -10,8 +10,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 ///   3. `ghc --numeric-version` (direct GHC)
 ///
 /// For Stack projects, also reads `stack.yaml` for the resolver/snapshot.
-///
-
 pub struct HaskellProvider;
 
 impl ChipProvider for HaskellProvider {
@@ -76,12 +74,12 @@ fn get_ghc_version(ctx: &ChipContext, is_stack: bool) -> Option<String> {
     }
 
     // 2. Stack-managed GHC
-    if is_stack {
-        if let Some(output) = ctx.exec_cmd("stack", &["ghc", "--", "--numeric-version"]) {
-            let v = output.stdout.trim();
-            if !v.is_empty() {
-                return Some(v.to_string());
-            }
+    if is_stack
+        && let Some(output) = ctx.exec_cmd("stack", &["ghc", "--", "--numeric-version"])
+    {
+        let v = output.stdout.trim();
+        if !v.is_empty() {
+            return Some(v.to_string());
         }
     }
 

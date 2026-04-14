@@ -7,8 +7,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 /// Version: Uses `erl -noshell -eval` to read the OTP_VERSION file,
 ///   which gives the full version like `26.2.1`. Falls back to `erl +V` which prints
 ///   to stderr: `Erlang (SES) 26.0` -> `26.0`.
-///
-
 pub struct ErlangProvider;
 
 impl ChipProvider for ErlangProvider {
@@ -57,7 +55,7 @@ fn get_erlang_version(ctx: &ChipContext) -> Option<String> {
         ],
     ) {
         let v = output.stdout.trim();
-        if !v.is_empty() && v.chars().next().map_or(false, |c| c.is_ascii_digit()) {
+        if !v.is_empty() && v.chars().next().is_some_and(|c| c.is_ascii_digit()) {
             return Some(v.to_string());
         }
     }
@@ -72,7 +70,7 @@ fn get_erlang_version(ctx: &ChipContext) -> Option<String> {
         ],
     ) {
         let v = output.stdout.trim();
-        if !v.is_empty() && v.chars().next().map_or(false, |c| c.is_ascii_digit()) {
+        if !v.is_empty() && v.chars().next().is_some_and(|c| c.is_ascii_digit()) {
             return Some(v.to_string());
         }
     }
@@ -96,7 +94,7 @@ fn get_erlang_version(ctx: &ChipContext) -> Option<String> {
 /// Output: `Some("26.0")` or `Some("26")`
 fn parse_erl_version(output: &str) -> Option<String> {
     for word in output.split_whitespace() {
-        if word.chars().next().map_or(false, |c| c.is_ascii_digit())
+        if word.chars().next().is_some_and(|c| c.is_ascii_digit())
             && word.chars().all(|c| c.is_ascii_digit() || c == '.')
         {
             return Some(word.to_string());

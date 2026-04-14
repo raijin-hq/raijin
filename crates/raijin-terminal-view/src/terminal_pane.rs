@@ -600,7 +600,7 @@ impl TerminalPane {
                 state.overlay_highlights.push((
                     cmd_start..cmd_start + cmd_end,
                     inazuma::HighlightStyle {
-                        color: Some(inazuma::oklcha(0.75, 0.12, 220.0, 1.0).into()),
+                        color: Some(inazuma::oklcha(0.75, 0.12, 220.0, 1.0)),
                         ..Default::default()
                     },
                 ));
@@ -612,7 +612,7 @@ impl TerminalPane {
                     state.overlay_highlights.push((
                         range.start..clamped_end,
                         inazuma::HighlightStyle {
-                            color: Some(inazuma::oklcha(0.75, 0.12, 220.0, 0.6).into()),
+                            color: Some(inazuma::oklcha(0.75, 0.12, 220.0, 0.6)),
                             ..Default::default()
                         },
                     ));
@@ -837,6 +837,7 @@ impl TerminalPane {
             directory_config: chip_settings.directory.clone(),
             git_status_config: chip_settings.git_status.clone(),
             python_config: chip_settings.python.clone(),
+            package_config: chip_settings.package.clone(),
         }
     }
 

@@ -10,8 +10,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 ///   130 → INT, 137 → KILL, 139 → SEGV, 143 → TERM
 /// - Special exit codes: 126 → NOPERM, 127 → NOTFOUND
 /// - All others show the numeric code with a failure indicator.
-///
-
 pub struct StatusProvider;
 
 impl ChipProvider for StatusProvider {

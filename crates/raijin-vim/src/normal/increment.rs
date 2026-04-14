@@ -321,7 +321,7 @@ fn find_target(
                 begin = Some(offset);
             }
             target.push(ch);
-        } else if begin.is_some() && (is_num || !is_num && is_toggle_word(&target)) {
+        } else if (is_toggle_word(&target) || is_num) && begin.is_some() {
             // End of matching
             end = Some(offset);
             break;
@@ -338,7 +338,7 @@ fn find_target(
     }
 
     if let Some(begin) = begin
-        && (is_num || !is_num && is_toggle_word(&target))
+        && (is_toggle_word(&target) || is_num)
     {
         if !is_num {
             radix = 0;

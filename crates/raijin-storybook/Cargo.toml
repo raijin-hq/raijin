@@ -15,8 +15,8 @@ path = "src/storybook.rs"
 [dependencies]
 anyhow.workspace = true
 clap = { workspace = true, features = ["derive", "string"] }
-ctrlc = "3.4"
-dialoguer = { version = "0.11.0", features = ["fuzzy-select"] }
+ctrlc.workspace = true
+dialoguer.workspace = true
 raijin-editor.workspace = true
 inazuma-fuzzy.workspace = true
 inazuma = { workspace = true, default-features = true }

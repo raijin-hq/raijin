@@ -23,7 +23,7 @@ inazuma-fuzzy.workspace = true
 inazuma-picker.workspace = true
 inazuma-util.workspace = true
 log.workspace = true
-lsp-types = { version = "0.97", features = ["proposed"] }
+lsp-types = { workspace = true, features = ["proposed"] }
 parking_lot.workspace = true
 inazuma-settings-framework.workspace = true
 raijin-chips.workspace = true
@@ -42,7 +42,7 @@ raijin-ui.workspace = true
 raijin-ui-input.workspace = true
 raijin-workspace.workspace = true
 serde_json.workspace = true
-strsim = "0.11"
+strsim.workspace = true
 time.workspace = true
 
 [dev-dependencies]

@@ -47,14 +47,15 @@ raijin-workspace = { workspace = true }
 anyhow = { workspace = true }
 futures.workspace = true
 log = { workspace = true }
-env_logger = "0.11"
+env_logger.workspace = true
 parking_lot = { workspace = true }
-time = { version = "0.3", features = ["local-offset", "formatting", "macros"] }
+time = { workspace = true, features = ["local-offset", "formatting", "macros"] }
 semver.workspace = true
 serde_json = { workspace = true }
 dirs.workspace = true
-strsim = "0.11"
-lsp-types = { version = "0.97", features = ["proposed"] }
+strsim.workspace = true
+lsp-types = { workspace = true, features = ["proposed"] }
+# Version mismatch: workspace has 2.0.0-beta.1, raijin-app needs 1
 ropey = "1"
 uuid = { workspace = true }
 

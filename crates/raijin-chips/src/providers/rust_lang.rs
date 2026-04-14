@@ -14,8 +14,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider, parse_version_number};
 /// 3. `~/.rustup/settings.toml` — override list, then default toolchain
 /// 4. Direct rustc binary at `~/.rustup/toolchains/{toolchain}/bin/rustc`
 /// 5. Fallback to `rustc --version` (may trigger proxy download)
-///
-
 pub struct RustProvider;
 
 impl ChipProvider for RustProvider {
@@ -58,24 +56,24 @@ impl ChipProvider for RustProvider {
 /// before falling back to `rustc --version` through the cargo proxy.
 fn resolve_rust_version(ctx: &ChipContext) -> String {
     // Strategy 1: Check $RUSTUP_TOOLCHAIN env var
-    if let Some(toolchain) = env_rustup_toolchain(ctx) {
-        if let Some(version) = version_from_toolchain(ctx, &toolchain) {
-            return version;
-        }
+    if let Some(toolchain) = env_rustup_toolchain(ctx)
+        && let Some(version) = version_from_toolchain(ctx, &toolchain)
+    {
+        return version;
     }
 
     // Strategy 2: Check rust-toolchain / rust-toolchain.toml files
-    if let Some(toolchain) = find_toolchain_file(&ctx.cwd) {
-        if let Some(version) = version_from_toolchain(ctx, &toolchain) {
-            return version;
-        }
+    if let Some(toolchain) = find_toolchain_file(&ctx.cwd)
+        && let Some(version) = version_from_toolchain(ctx, &toolchain)
+    {
+        return version;
     }
 
     // Strategy 3: Check ~/.rustup/settings.toml for overrides and default
-    if let Some(toolchain) = rustup_settings_toolchain(ctx) {
-        if let Some(version) = version_from_toolchain(ctx, &toolchain) {
-            return version;
-        }
+    if let Some(toolchain) = rustup_settings_toolchain(ctx)
+        && let Some(version) = version_from_toolchain(ctx, &toolchain)
+    {
+        return version;
     }
 
     // Strategy 4: Fall back to `rustc --version` (may trigger proxy download)
@@ -170,18 +168,18 @@ fn find_toolchain_file(start: &Path) -> Option<String> {
     loop {
         // Check `rust-toolchain` (plain text or TOML)
         let plain_path = dir.join("rust-toolchain");
-        if plain_path.is_file() {
-            if let Some(channel) = read_toolchain_channel(&plain_path, false) {
-                return Some(channel);
-            }
+        if plain_path.is_file()
+            && let Some(channel) = read_toolchain_channel(&plain_path, false)
+        {
+            return Some(channel);
         }
 
         // Check `rust-toolchain.toml` (TOML only)
         let toml_path = dir.join("rust-toolchain.toml");
-        if toml_path.is_file() {
-            if let Some(channel) = read_toolchain_channel(&toml_path, true) {
-                return Some(channel);
-            }
+        if toml_path.is_file()
+            && let Some(channel) = read_toolchain_channel(&toml_path, true)
+        {
+            return Some(channel);
         }
 
         dir = match dir.parent() {
@@ -337,21 +335,21 @@ fn find_settings_default_toolchain(contents: &str) -> Option<String> {
             continue;
         }
 
-        if in_top_level && line.starts_with("default_toolchain") {
-            if let Some((_key, value)) = line.split_once('=') {
-                let value = value.trim();
-                let value = value
-                    .strip_prefix('"')
-                    .and_then(|v| v.strip_suffix('"'))
-                    .or_else(|| {
-                        value.strip_prefix('\'').and_then(|v| v.strip_suffix('\''))
-                    })
-                    .unwrap_or(value);
+        if in_top_level && line.starts_with("default_toolchain")
+            && let Some((_key, value)) = line.split_once('=')
+        {
+            let value = value.trim();
+            let value = value
+                .strip_prefix('"')
+                .and_then(|v| v.strip_suffix('"'))
+                .or_else(|| {
+                    value.strip_prefix('\'').and_then(|v| v.strip_suffix('\''))
+                })
+                .unwrap_or(value);
 
-                let value = value.trim();
-                if !value.is_empty() && value != "none" {
-                    return Some(value.to_owned());
-                }
+            let value = value.trim();
+            if !value.is_empty() && value != "none" {
+                return Some(value.to_owned());
             }
         }
     }

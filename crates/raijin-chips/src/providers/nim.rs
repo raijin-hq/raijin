@@ -6,8 +6,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 /// Detection: `.nim`, `.nimble`, `.nims`, `.nimf`, `nim.cfg` files.
 /// Version: `nim --version` -> `Nim Compiler Version 2.0.0 [Linux: amd64]` -> `2.0.0`.
 /// Also checks `choosenim` for version manager awareness.
-///
-
 pub struct NimProvider;
 
 impl ChipProvider for NimProvider {

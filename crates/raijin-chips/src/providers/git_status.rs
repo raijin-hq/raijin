@@ -87,10 +87,10 @@ fn parse_shortstat(output: &str) -> Option<(u32, u32, u32)> {
             if let Some(n) = part.split_whitespace().next().and_then(|s| s.parse().ok()) {
                 insertions = n;
             }
-        } else if part.contains("deletion") {
-            if let Some(n) = part.split_whitespace().next().and_then(|s| s.parse().ok()) {
-                deletions = n;
-            }
+        } else if part.contains("deletion")
+            && let Some(n) = part.split_whitespace().next().and_then(|s| s.parse().ok())
+        {
+            deletions = n;
         }
     }
 

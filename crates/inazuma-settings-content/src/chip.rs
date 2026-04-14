@@ -56,6 +56,9 @@ pub struct ChipSettingsContent {
 
     /// Python provider configuration.
     pub python: Option<PythonChipContent>,
+
+    /// Package provider configuration.
+    pub package: Option<PackageChipContent>,
 }
 
 /// Per-chip configuration override.
@@ -212,4 +215,19 @@ pub struct PythonChipContent {
     ///
     /// Default: false
     pub pyenv_version_name: Option<bool>,
+}
+
+/// Package chip configuration.
+///
+/// ```toml
+/// [chip.package]
+/// display_private = false
+/// ```
+#[with_fallible_options]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema, MergeFrom)]
+pub struct PackageChipContent {
+    /// Show version for private packages (package.json `"private": true`).
+    ///
+    /// Default: false
+    pub display_private: Option<bool>,
 }

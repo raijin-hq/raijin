@@ -17,7 +17,7 @@ pub struct ChipSegment {
 ///
 /// The rendering layer (in `raijin-terminal-view`) maps `ChipOutput` to
 /// Inazuma `Chip` elements, reading colors from theme tokens.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Default)]
 pub struct ChipOutput {
     /// Provider ID (used for theme color lookup and settings overrides).
     pub id: ChipId,
@@ -32,19 +32,6 @@ pub struct ChipOutput {
     /// Multi-segment content (overrides `label` if present).
     /// Used for git stats and other multi-colored chips.
     pub segments: Option<Vec<ChipSegment>>,
-}
-
-impl Default for ChipOutput {
-    fn default() -> Self {
-        Self {
-            id: "",
-            label: String::new(),
-            icon: None,
-            tooltip: None,
-            interactive: false,
-            segments: None,
-        }
-    }
 }
 
 /// Trait for chip data providers.

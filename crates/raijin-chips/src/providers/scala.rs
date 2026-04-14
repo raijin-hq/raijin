@@ -6,8 +6,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 /// Detection: `build.sbt`, `.scalafix.conf`, `.scalaenv`, `.sbtenv`, `.metals/`, `.scala`/`.sc` files.
 /// Version: Tries `scala-cli version --scala` first (fast, returns just the version),
 ///   then falls back to `scalac -version` (`Scala compiler version 3.4.1 -- ...` -> `3.4.1`).
-///
-
 pub struct ScalaProvider;
 
 impl ChipProvider for ScalaProvider {

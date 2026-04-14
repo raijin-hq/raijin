@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use crate::context::ChipContext;
 use crate::provider::{ChipId, ChipOutput, ChipProvider};
@@ -82,7 +82,7 @@ fn get_config_dir(ctx: &ChipContext) -> Option<PathBuf> {
     }
 }
 
-fn get_active_config(ctx: &ChipContext, config_dir: &PathBuf) -> Option<String> {
+fn get_active_config(ctx: &ChipContext, config_dir: &Path) -> Option<String> {
     // Priority 1: Environment variable
     if let Some(name) = ctx.get_env("CLOUDSDK_ACTIVE_CONFIG_NAME") {
         return Some(name.to_string());
@@ -107,14 +107,14 @@ fn parse_ini_value(content: &str, section: &str, key: &str) -> Option<String> {
             continue;
         }
 
-        if in_section {
-            if let Some(rest) = trimmed.strip_prefix(key) {
-                let rest = rest.trim();
-                if let Some(value) = rest.strip_prefix('=') {
-                    let val = value.trim();
-                    if !val.is_empty() {
-                        return Some(val.to_string());
-                    }
+        if in_section
+            && let Some(rest) = trimmed.strip_prefix(key)
+        {
+            let rest = rest.trim();
+            if let Some(value) = rest.strip_prefix('=') {
+                let val = value.trim();
+                if !val.is_empty() {
+                    return Some(val.to_string());
                 }
             }
         }

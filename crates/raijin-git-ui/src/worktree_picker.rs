@@ -703,9 +703,9 @@ impl PickerDelegate for WorktreeListDelegate {
             picker
                 .update(cx, |picker, _| {
                     if !query.is_empty()
-                        && !matches
+                        && matches
                             .first()
-                            .is_some_and(|entry| entry.worktree.display_name() == query)
+                            .is_none_or(|entry| entry.worktree.display_name() != query)
                     {
                         let query = query.replace(' ', "-");
                         matches.push(WorktreeEntry {

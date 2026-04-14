@@ -9,8 +9,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 ///   - LuaJIT: `LuaJIT 2.1.0-beta3 -- Copyright ...` -> `2.1.0-beta3`
 ///
 /// Shows which runtime is active (Lua vs LuaJIT) in the tooltip.
-///
-
 pub struct LuaProvider;
 
 impl ChipProvider for LuaProvider {
@@ -90,7 +88,7 @@ fn get_lua_version(ctx: &ChipContext) -> (String, Option<&'static str>) {
 /// Takes the second whitespace-delimited word.
 fn parse_lua_version(output: &str) -> Option<String> {
     let version = output.split_whitespace().nth(1)?;
-    if version.chars().next().map_or(false, |c| c.is_ascii_digit()) {
+    if version.chars().next().is_some_and(|c| c.is_ascii_digit()) {
         Some(version.to_string())
     } else {
         None

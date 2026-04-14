@@ -34,11 +34,11 @@ impl Default for TabStyle {
     fn default() -> Self {
         TabStyle {
             borders: Edges::all(px(0.)),
-            border_color: Oklch::from(inazuma::transparent_white()),
-            bg: Oklch::from(inazuma::transparent_white()),
-            fg: Oklch::from(inazuma::transparent_white()),
+            border_color: inazuma::transparent_white(),
+            bg: inazuma::transparent_white(),
+            fg: inazuma::transparent_white(),
             shadow: false,
-            inner_bg: Oklch::from(inazuma::transparent_white()),
+            inner_bg: inazuma::transparent_white(),
         }
     }
 }
@@ -124,7 +124,7 @@ impl TabVariant {
 
     pub(super) fn normal(&self, cx: &App) -> TabStyle {
         let colors = cx.theme().colors();
-        let transparent = Oklch::from(inazuma::transparent_white());
+        let transparent = inazuma::transparent_white();
         match self {
             TabVariant::Tab | TabVariant::Workspace => TabStyle {
                 fg: colors.tab.inactive_foreground,
@@ -163,7 +163,7 @@ impl TabVariant {
 
     pub(super) fn hovered(&self, selected: bool, cx: &App) -> TabStyle {
         let colors = cx.theme().colors();
-        let transparent = Oklch::from(inazuma::transparent_white());
+        let transparent = inazuma::transparent_white();
         match self {
             TabVariant::Tab | TabVariant::Workspace => TabStyle {
                 fg: colors.tab.inactive_foreground,
@@ -203,7 +203,7 @@ impl TabVariant {
 
     pub(super) fn selected(&self, cx: &App) -> TabStyle {
         let colors = cx.theme().colors();
-        let transparent = Oklch::from(inazuma::transparent_white());
+        let transparent = inazuma::transparent_white();
         match self {
             TabVariant::Tab | TabVariant::Workspace => TabStyle {
                 fg: colors.tab.active_foreground,
@@ -243,7 +243,7 @@ impl TabVariant {
 
     pub(super) fn disabled(&self, selected: bool, cx: &App) -> TabStyle {
         let colors = cx.theme().colors();
-        let transparent = Oklch::from(inazuma::transparent_white());
+        let transparent = inazuma::transparent_white();
         match self {
             TabVariant::Tab | TabVariant::Workspace => TabStyle {
                 fg: colors.text_muted,

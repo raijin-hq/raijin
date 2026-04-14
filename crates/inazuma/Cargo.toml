@@ -55,16 +55,16 @@ doctest = false
 
 [dependencies]
 anyhow.workspace = true
-async-channel = "2"
-async-task = "4.7"
+async-channel.workspace = true
+async-task.workspace = true
 backtrace = { workspace = true, optional = true }
 chrono.workspace = true
 circular-buffer.workspace = true
 ctor.workspace = true
 derive_more.workspace = true
-etagere = "0.2"
+etagere.workspace = true
 futures.workspace = true
-futures-concurrency = "7"
+futures-concurrency.workspace = true
 image.workspace = true
 inazuma-collections.workspace = true
 inazuma-macros = { path = "./tooling/macros", features = ["inspector"] }
@@ -74,126 +74,93 @@ inazuma-util-macros.workspace = true
 inventory.workspace = true
 itertools.workspace = true
 libc.workspace = true
-log = { version = "0.4.16", features = ["kv_unstable_serde", "serde"] }
-lyon = "1.0"
-num_cpus = "1.13"
-parking = "2.0.0"
+log = { workspace = true, features = ["kv_unstable_serde", "serde"] }
+lyon.workspace = true
+num_cpus.workspace = true
+parking.workspace = true
 parking_lot.workspace = true
-pin-project = "1.1.10"
-pollster = "0.4"
-postage = { version = "0.5", features = ["futures-traits"] }
-profiling = "1"
+pin-project.workspace = true
+pollster.workspace = true
+postage = { workspace = true, features = ["futures-traits"] }
+profiling.workspace = true
 proptest.workspace = true
 raijin-http-client.workspace = true
 rand.workspace = true
-raw-window-handle = "0.6"
-refineable = { package = "gpui_refineable", version = "0.2.2" }
-resvg = { version = "0.45.0", default-features = false, features = [
-    "text",
-    "system-fonts",
-    "memmap-fonts",
-] }
-schemars = { version = "1.0", features = ["indexmap2"] }
-seahash = "4.1"
-semver = { version = "1.0", features = ["serde"] }
-serde = { version = "1.0.221", features = ["derive", "rc"] }
-serde_json = { version = "1.0.144", features = ["preserve_order", "raw_value"] }
+raw-window-handle.workspace = true
+refineable.workspace = true
+resvg.workspace = true
+schemars = { workspace = true, features = ["indexmap2"] }
+seahash.workspace = true
+semver = { workspace = true, features = ["serde"] }
+serde.workspace = true
+serde_json = { workspace = true, features = ["preserve_order", "raw_value"] }
 slotmap.workspace = true
 smallvec.workspace = true
 smol.workspace = true
-spin = "0.10.0"
+spin.workspace = true
 stacksafe.workspace = true
-strum = { version = "0.27.2", features = ["derive"] }
-taffy = "=0.9.0"
-thiserror = "2.0.12"
+strum.workspace = true
+taffy.workspace = true
+thiserror.workspace = true
 url.workspace = true
-usvg = { version = "0.45.0", default-features = false }
-uuid = { version = "1.1.2", features = ["v4", "v5", "v7", "serde"] }
-waker-fn = "1.2.0"
-web-time = "1"
+usvg.workspace = true
+uuid.workspace = true
+waker-fn.workspace = true
+web-time.workspace = true
 
 [target.'cfg(target_os = "macos")'.dependencies]
-dispatch2 = "0.3.1"
-flume = "0.11"
-fontique = { version = "0.8", features = ["std", "system"] }
-skrifa = "0.40"
-swash = "0.2"
-mach2 = "0.5"
-objc2 = "0.6"
-objc2-foundation = "0.3"
-objc2-app-kit = "0.3"
-objc2-metal = "0.3"
-objc2-quartz-core = { version = "0.3", features = ["objc2-core-graphics"] }
-objc2-core-video = { version = "0.3", features = ["CVBase", "CVReturn", "CVDisplayLink", "CVMetalTexture", "CVMetalTextureCache", "CVPixelBuffer", "CVImageBuffer", "objc2-core-graphics", "objc2-metal"] }
-objc2-core-foundation = { version = "0.3", features = ["CFArray", "CFAttributedString", "CFCGTypes", "CFData", "CFDictionary", "CFLocale", "CFNumber", "CFRunLoop", "CFString", "CFUUID", "CFURL"] }
-objc2-core-graphics = { version = "0.3", features = ["CGColorSpace", "CGContext", "CGDataProvider", "CGDirectDisplay", "CGFont", "CGImage", "CGRemoteOperation"] }
-objc2-core-text = { version = "0.3", features = ["CTFont", "CTFontCollection", "CTFontDescriptor", "CTFontTraits", "CTLine", "CTRun", "CTStringAttributes", "objc2-core-graphics"] }
-block2 = "0.6"
-objc2-core-media = { version = "0.3", optional = true }
-objc2-screen-capture-kit = { version = "0.3", optional = true }
+dispatch2.workspace = true
+flume.workspace = true
+fontique.workspace = true
+skrifa.workspace = true
+swash.workspace = true
+mach2.workspace = true
+objc2.workspace = true
+objc2-foundation.workspace = true
+objc2-app-kit.workspace = true
+objc2-metal.workspace = true
+objc2-quartz-core.workspace = true
+objc2-core-video.workspace = true
+objc2-core-foundation.workspace = true
+objc2-core-graphics.workspace = true
+objc2-core-text.workspace = true
+block2.workspace = true
+objc2-core-media = { workspace = true, optional = true }
+objc2-screen-capture-kit = { workspace = true, optional = true }
 
 [target.'cfg(any(target_os = "linux", target_os = "freebsd"))'.dependencies]
-flume = "0.11"
-oo7 = { version = "0.6", default-features = false, features = [
-    "async-std",
-    "native_crypto",
-] }
-wgpu = "24"
-cosmic-text = "0.17.0"
-swash = "0.2.6"
-bytemuck = "1"
+flume.workspace = true
+oo7.workspace = true
+wgpu.workspace = true
+cosmic-text.workspace = true
+swash.workspace = true
+bytemuck.workspace = true
 
-ashpd = { version = "0.11", default-features = false, features = ["async-std"], optional = true }
+ashpd = { workspace = true, optional = true }
 
-calloop = "0.14.3"
-filedescriptor = { version = "0.8.2", optional = true }
-open = { version = "5.2.0", optional = true }
+calloop.workspace = true
+filedescriptor = { workspace = true, optional = true }
+open = { workspace = true, optional = true }
 
-calloop-wayland-source = { version = "0.4.1", optional = true }
-wayland-backend = { version = "0.3.3", features = [
-    "client_system",
-    "dlopen",
-], optional = true }
-wayland-client = { version = "0.31.11", optional = true }
-wayland-cursor = { version = "0.31.11", optional = true }
-wayland-protocols = { version = "0.32.9", features = [
-    "client",
-    "staging",
-    "unstable",
-], optional = true }
-wayland-protocols-plasma = { version = "0.3.9", features = [
-    "client",
-], optional = true }
-wayland-protocols-wlr = { version = "0.3.9", features = [
-    "client",
-], optional = true }
+calloop-wayland-source = { workspace = true, optional = true }
+wayland-backend = { workspace = true, optional = true }
+wayland-client = { workspace = true, optional = true }
+wayland-cursor = { workspace = true, optional = true }
+wayland-protocols = { workspace = true, optional = true }
+wayland-protocols-plasma = { workspace = true, optional = true }
+wayland-protocols-wlr = { workspace = true, optional = true }
 
-as-raw-xcb-connection = { version = "1", optional = true }
-x11rb = { version = "0.13.1", features = [
-    "allow-unsafe-code",
-    "xkb",
-    "randr",
-    "xinput",
-    "cursor",
-    "resource_manager",
-    "sync",
-    "dri3",
-], optional = true }
-xkbcommon = { version = "0.8.0", features = [
-    "wayland",
-    "x11",
-], optional = true }
-xim = { git = "https://github.com/raijin-hq/xim-rs.git", rev = "16f35a2c881b815a2b6cdfd6687988e84f8447d8", features = [
-    "x11rb-xcb",
-    "x11rb-client",
-], package = "zed-xim", version = "0.4.0-zed", optional = true }
-x11-clipboard = { version = "0.9.3", optional = true }
-bitflags = { version = "2.6.0", optional = true }
+as-raw-xcb-connection = { workspace = true, optional = true }
+x11rb = { workspace = true, optional = true }
+xkbcommon = { workspace = true, optional = true }
+xim = { workspace = true, optional = true }
+x11-clipboard = { workspace = true, optional = true }
+bitflags = { workspace = true, optional = true }
 
 [target.'cfg(target_os = "windows")'.dependencies]
-flume = "0.11"
-rand = "0.9"
-windows = { version = "0.61", features = [
+flume.workspace = true
+rand.workspace = true
+windows = { workspace = true, features = [
     "Foundation_Numerics",
     "Storage_Search",
     "Storage_Streams",
@@ -241,16 +208,16 @@ windows = { version = "0.61", features = [
     "Win32_UI_Shell_PropertiesSystem",
     "Win32_UI_WindowsAndMessaging",
 ] }
-windows-core = "0.61"
-windows-numerics = "0.2"
-windows-registry = "0.5"
+windows-core.workspace = true
+windows-numerics.workspace = true
+windows-registry.workspace = true
 
 [dev-dependencies]
 backtrace.workspace = true
 env_logger.workspace = true
 inazuma-collections = { workspace = true, features = ["test-support"] }
 inazuma-util = { workspace = true, features = ["test-support"] }
-lyon = { version = "1.0", features = ["extra"] }
+lyon = { workspace = true, features = ["extra"] }
 pretty_assertions.workspace = true
 proptest.workspace = true
 raijin-http-client = { workspace = true, features = ["test-support"] }
@@ -258,14 +225,14 @@ rand.workspace = true
 unicode-segmentation.workspace = true
 
 [target.'cfg(target_os = "windows")'.build-dependencies]
-embed-resource = "3.0"
-windows-registry = "0.5"
+embed-resource.workspace = true
+windows-registry.workspace = true
 
 [target.'cfg(target_os = "macos")'.build-dependencies]
-cbindgen = { version = "0.28.0", default-features = false }
+cbindgen.workspace = true
 
 [target.'cfg(any(target_os = "linux", target_os = "freebsd"))'.build-dependencies]
-naga = { version = "29.0", features = ["wgsl-in"] }
+naga.workspace = true
 
 # ============================================================================
 # Learn Examples - Educational examples for learning GPUI

@@ -89,7 +89,7 @@ impl PlotLabel {
             let text_run = TextRun {
                 len: text.len(),
                 font: window.text_style().highlight(*font_weight).font(),
-                color: (*color).into(),
+                color: *color,
                 background_color: None,
                 underline: None,
                 strikethrough: None,

@@ -290,7 +290,7 @@ impl Vim {
                     // bracket and not a quote (pair.start != pair.end) and if
                     // the bracket used is the opening bracket.
                     let add_space =
-                        !(pair.start == pair.end) && (pair.end != surround_alias((*text).as_ref()));
+                        pair.start != pair.end && pair.end != surround_alias((*text).as_ref());
 
                     // Space should be preserved if either the surrounding
                     // characters being updated are quotes

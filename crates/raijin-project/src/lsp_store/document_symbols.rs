@@ -264,7 +264,8 @@ fn flatten_document_symbols(
             enriched_symbol_text(&name, start, selection_start, selection_end, snapshot)
                 .unwrap_or_else(|| {
                     let name_len = name.len();
-                    (name.clone(), vec![0..name_len], selection_range.clone())
+                    let range = 0..name_len;
+                    (name.clone(), vec![range], selection_range.clone())
                 });
 
         output.push(OutlineItem {
@@ -315,10 +316,11 @@ fn enriched_symbol_text(
     let name_start = trimmed.len() - name.len();
     let leading_ws = raw.len() - trimmed.len();
     let adjusted_start = start_offset + leading_ws;
+    let name_range = name_start..trimmed.len();
 
     Some((
         trimmed.to_string(),
-        vec![name_start..trimmed.len()],
+        vec![name_range],
         snapshot.anchor_after(adjusted_start)..snapshot.anchor_before(end_offset),
     ))
 }

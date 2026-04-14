@@ -50,7 +50,7 @@ pub fn initiate_sign_out(copilot: Entity<Copilot>, window: &mut Window, cx: &mut
 }
 
 pub fn reinstall_and_sign_in(copilot: Entity<Copilot>, window: &mut Window, cx: &mut App) {
-    let _ = copilot.update(cx, |copilot, cx| copilot.reinstall(cx));
+    let _task = copilot.update(cx, |copilot, cx| copilot.reinstall(cx));
     let is_reinstall = true;
     initiate_sign_in_impl(copilot, is_reinstall, window, cx);
 }

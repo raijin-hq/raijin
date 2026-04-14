@@ -166,7 +166,6 @@ pub fn theme_colors_refinement(
             document_highlight_read_background: c(&colors.editor_document_highlight_read_background),
             document_highlight_write_background: c(&colors.editor_document_highlight_write_background),
             document_highlight_bracket_background: c(&colors.editor_document_highlight_bracket_background),
-            ..Default::default()
         },
         terminal: TerminalColorsRefinement {
             background: c(&colors.terminal_background),
@@ -199,7 +198,6 @@ pub fn theme_colors_refinement(
                 white: c(&colors.terminal_ansi_white),
                 bright_white: c(&colors.terminal_ansi_bright_white),
                 dim_white: c(&colors.terminal_ansi_dim_white),
-                ..Default::default()
             },
             ..Default::default()
         },
@@ -211,12 +209,10 @@ pub fn theme_colors_refinement(
             indent_guide_active: c(&colors.panel_indent_guide_active),
             overlay_background: c(&colors.panel_overlay_background),
             overlay_hover: c(&colors.panel_overlay_hover),
-            ..Default::default()
         },
         pane: PaneColorsRefinement {
             focused_border: c(&colors.pane_focused_border),
             group_border: c(&colors.pane_group_border),
-            ..Default::default()
         },
         tab: TabColorsRefinement {
             bar_background: c(&colors.tab_bar_background),
@@ -237,25 +233,20 @@ pub fn theme_colors_refinement(
             thumb_hover_background: c(&colors.minimap_thumb_hover_background),
             thumb_active_background: c(&colors.minimap_thumb_active_background),
             thumb_border: c(&colors.minimap_thumb_border),
-            ..Default::default()
         },
         status_bar: StatusBarColorsRefinement {
             background: c(&colors.status_bar_background),
-            ..Default::default()
         },
         title_bar: TitleBarColorsRefinement {
             background: c(&colors.title_bar_background),
             inactive_background: c(&colors.title_bar_inactive_background),
-            ..Default::default()
         },
         toolbar: ToolbarColorsRefinement {
             background: c(&colors.toolbar_background),
-            ..Default::default()
         },
         search: SearchColorsRefinement {
             match_background: c(&colors.search_match_background),
             active_match_background: c(&colors.search_active_match_background),
-            ..Default::default()
         },
         vim: VimColorsRefinement {
             normal_background: c(&colors.vim_normal_background),
@@ -275,7 +266,6 @@ pub fn theme_colors_refinement(
             visual_block_foreground: c(&colors.vim_visual_block_foreground),
             helix_normal_foreground: c(&colors.vim_helix_normal_foreground),
             helix_select_foreground: c(&colors.vim_helix_select_foreground),
-            ..Default::default()
         },
         version_control: VersionControlColorsRefinement {
             added: c(&colors.version_control_added),
@@ -288,7 +278,6 @@ pub fn theme_colors_refinement(
             word_deleted: c(&colors.version_control_word_deleted),
             conflict_marker_ours: c(&colors.version_control_conflict_marker_ours),
             conflict_marker_theirs: c(&colors.version_control_conflict_marker_theirs),
-            ..Default::default()
         },
         ..Default::default()
     }

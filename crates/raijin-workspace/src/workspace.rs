@@ -2940,7 +2940,7 @@ impl Workspace {
                     .clone()
             })
             .collect();
-        let _ = self.send_keystrokes_impl(keystrokes, window, cx);
+        let _task = self.send_keystrokes_impl(keystrokes, window, cx);
     }
 
     pub fn send_keystrokes_impl(

@@ -6,8 +6,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 /// Detection: `go.mod`, `go.sum`, `.go` files.
 /// Version: Parsed from `go version` output (`go version go1.22.0 darwin/arm64` → `1.22.0`).
 /// Reads `go.mod` for the required Go version (shown in tooltip).
-///
-
 pub struct GolangProvider;
 
 impl ChipProvider for GolangProvider {
@@ -71,7 +69,7 @@ fn read_go_mod_version(cwd: &std::path::Path) -> Option<String> {
         let trimmed = line.trim();
         if let Some(rest) = trimmed.strip_prefix("go ") {
             let version = rest.trim();
-            if !version.is_empty() && version.chars().next().map_or(false, |c| c.is_ascii_digit()) {
+            if !version.is_empty() && version.chars().next().is_some_and(|c| c.is_ascii_digit()) {
                 return Some(version.to_string());
             }
         }

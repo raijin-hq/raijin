@@ -28,8 +28,9 @@ impl Snippet {
         if let Some(final_tabstop) = final_tabstop {
             tabstops.push(final_tabstop);
         } else {
+            let range = len..len;
             let end_tabstop = TabStop {
-                ranges: [len..len].into_iter().collect(),
+                ranges: [range].into_iter().collect(),
                 choices: None,
             };
 

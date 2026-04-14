@@ -320,7 +320,7 @@ impl Element for Scrollbar {
                                     left: px(0.),
                                 }
                             },
-                            border_colors: Edges { top: state.border.into(), right: state.border.into(), bottom: state.border.into(), left: state.border.into() },
+                            border_colors: Edges { top: state.border, right: state.border, bottom: state.border, left: state.border },
                             border_style: BorderStyle::default(),
                         });
 

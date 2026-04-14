@@ -924,7 +924,7 @@ impl PathInclusionMatcher {
         is_included
     }
     fn path_is_definitely_excluded(&self, path: &RelPath, snapshot: &Snapshot) -> bool {
-        if !self.query.files_to_exclude().sources().next().is_none() {
+        if self.query.files_to_exclude().sources().next().is_some() {
             let mut path = if self.query.match_full_paths() {
                 let mut full_path = snapshot.root_name().to_owned();
                 full_path.push(path);

@@ -150,9 +150,7 @@ impl Vim {
                     // If the file ends with a newline (which is common) we don't do this.
                     // so that if you go to the end of such a file you can use "up" to go
                     // to the previous line and have it work somewhat as expected.
-                    if !selection.reversed
-                        && !selection.is_empty()
-                        && !(selection.end.column() == 0 && selection.end == map.max_point())
+                    if !(selection.reversed || selection.is_empty() || selection.end.column() == 0 && selection.end == map.max_point())
                     {
                         current_head = movement::left(map, selection.end)
                     }

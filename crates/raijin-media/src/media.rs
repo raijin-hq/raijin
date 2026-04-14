@@ -43,7 +43,7 @@ pub mod core_media {
         }
 
         pub fn image_buffer_ref(&self) -> *const c_void {
-            unsafe { CMSampleBufferGetImageBuffer(self as *const _ as _) as *const c_void }
+            unsafe { CMSampleBufferGetImageBuffer(self as *const _ as _) }
         }
 
         pub fn sample_timing_info(&self, index: usize) -> Result<CMSampleTimingInfo> {

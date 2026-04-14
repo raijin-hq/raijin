@@ -204,7 +204,7 @@ impl Label {
             highlights.push((
                 ranges[1].clone(),
                 HighlightStyle {
-                    color: Some(cx.theme().colors().text_muted.into()),
+                    color: Some(cx.theme().colors().text_muted),
                     ..Default::default()
                 },
             ));
@@ -215,7 +215,7 @@ impl Label {
             highlights.push((
                 range.clone(),
                 HighlightStyle {
-                    color: Some(cx.theme().colors().text_accent.into()),
+                    color: Some(cx.theme().colors().text_accent),
                     ..Default::default()
                 },
             ));

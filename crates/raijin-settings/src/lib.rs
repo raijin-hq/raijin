@@ -161,6 +161,7 @@ pub struct ChipSettings {
     pub directory: DirectoryChipConfig,
     pub git_status: GitStatusChipConfig,
     pub python: PythonChipConfig,
+    pub package: PackageChipConfig,
 }
 
 impl Settings for ChipSettings {
@@ -218,6 +219,12 @@ impl Settings for ChipSettings {
                 show_virtualenv: py.show_virtualenv.unwrap_or(true),
                 pyenv_version_name: py.pyenv_version_name.unwrap_or(false),
             },
+            package: {
+                let pkg = chip.package.unwrap_or_default();
+                PackageChipConfig {
+                    display_private: pkg.display_private.unwrap_or(false),
+                }
+            },
         }
     }
 }
@@ -268,4 +275,9 @@ pub struct GitStatusChipConfig {
 pub struct PythonChipConfig {
     pub show_virtualenv: bool,
     pub pyenv_version_name: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct PackageChipConfig {
+    pub display_private: bool,
 }

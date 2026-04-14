@@ -13,6 +13,7 @@ const MAX_MENU_HEIGHT: Pixels = px(260.);
 const POPOVER_GAP: Pixels = px(6.);
 /// Dark gray popover background matching Warp's completion menu.
 const POPOVER_BG: inazuma::Oklch = inazuma::Oklch { l: 0.248, c: 0.0, h: 0.0, a: 1.0 };
+#[allow(clippy::approx_constant)]
 const POPOVER_BORDER: inazuma::Oklch = inazuma::Oklch { l: 0.318, c: 0.0, h: 0.0, a: 1.0 };
 
 use crate::{
@@ -110,7 +111,7 @@ impl RenderOnce for CompletionMenuItem {
         let highlights = vec![(
             0..matched_len,
             HighlightStyle {
-                color: Some(cx.theme().colors().terminal.ansi.blue.into()),
+                color: Some(cx.theme().colors().terminal.ansi.blue),
                 ..Default::default()
             },
         )];

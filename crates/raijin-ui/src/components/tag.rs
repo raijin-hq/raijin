@@ -234,7 +234,7 @@ impl Styled for Tag {
 impl RenderOnce for Tag {
     fn render(self, _window: &mut Window, cx: &mut App) -> impl IntoElement {
         let bg = if self.outline {
-            Oklch::from(transparent_white())
+            transparent_white()
         } else {
             self.variant.bg(cx)
         };

@@ -6,8 +6,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 /// Detection: `build.zig`, `build.zig.zon`, `.zig` files.
 /// Version: `zig version` outputs a clean version string like `0.13.0` or `0.14.0-dev.1234+abcdef`.
 /// Also reads `build.zig.zon` for minimum Zig version if present.
-///
-
 pub struct ZigProvider;
 
 impl ChipProvider for ZigProvider {

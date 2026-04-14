@@ -96,15 +96,15 @@ pub fn render_standard_chip(
             .text_xs();
 
         // Add icon if present
-        if let Some(icon_str) = output.icon {
-            if let Some(icon) = icon_name_from_str(icon_str) {
-                let icon_color = segment_color(colors, segments.first().and_then(|s| s.color_key));
-                container = container.child(
-                    Icon::new(icon)
-                        .size(IconSize::Small)
-                        .color(Color::Custom(icon_color)),
-                );
-            }
+        if let Some(icon_str) = output.icon
+            && let Some(icon) = icon_name_from_str(icon_str)
+        {
+            let icon_color = segment_color(colors, segments.first().and_then(|s| s.color_key));
+            container = container.child(
+                Icon::new(icon)
+                    .size(IconSize::Small)
+                    .color(Color::Custom(icon_color)),
+            );
         }
 
         // Add each segment with its own color
@@ -132,10 +132,10 @@ pub fn render_standard_chip(
 
     let mut chip = Chip::new(output.label.clone()).color(color);
 
-    if let Some(icon_str) = output.icon {
-        if let Some(icon) = icon_name_from_str(icon_str) {
-            chip = chip.icon(icon);
-        }
+    if let Some(icon_str) = output.icon
+        && let Some(icon) = icon_name_from_str(icon_str)
+    {
+        chip = chip.icon(icon);
     }
 
     if output.interactive {

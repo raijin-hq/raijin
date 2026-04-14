@@ -23,7 +23,6 @@ impl ChipProvider for OpenstackProvider {
     fn gather(&self, ctx: &ChipContext) -> ChipOutput {
         let cloud = ctx
             .get_env("OS_CLOUD")
-            .map(String::from)
             .unwrap_or_default();
 
         ChipOutput {

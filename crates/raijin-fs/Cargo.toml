@@ -39,13 +39,13 @@ tempfile.workspace = true
 inazuma-text.workspace = true
 time.workspace = true
 inazuma-util.workspace = true
-is_executable = "1.0.5"
-notify = "8.2.0"
+is_executable.workspace = true
+notify.workspace = true
 
 [target.'cfg(target_os = "macos")'.dependencies]
-objc2 = "0.6"
-objc2-foundation = { version = "0.3", features = ["NSString", "NSURL", "NSArray"] }
-objc2-app-kit = { version = "0.3", features = ["NSWorkspace"] }
+objc2.workspace = true
+objc2-foundation = { workspace = true, features = ["NSString", "NSURL", "NSArray"] }
+objc2-app-kit = { workspace = true, features = ["NSWorkspace"] }
 
 [target.'cfg(target_os = "windows")'.dependencies]
 windows.workspace = true

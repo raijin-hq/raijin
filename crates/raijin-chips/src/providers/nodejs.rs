@@ -234,27 +234,24 @@ fn version_satisfies(installed: &str, expected: &str) -> bool {
             return installed_major == range_major;
         }
         // For >= constraints, installed major should be >= range major
-        if expected_trimmed.starts_with(">=") {
-            if let (Ok(inst), Ok(req)) =
+        if expected_trimmed.starts_with(">=")
+            && let (Ok(inst), Ok(req)) =
                 (installed_major.parse::<u32>(), range_major.parse::<u32>())
-            {
-                return inst >= req;
-            }
+        {
+            return inst >= req;
         }
         // For < constraints, installed major should be < range major
-        if expected_trimmed.starts_with('<') && !expected_trimmed.starts_with("<=") {
-            if let (Ok(inst), Ok(req)) =
+        if expected_trimmed.starts_with('<') && !expected_trimmed.starts_with("<=")
+            && let (Ok(inst), Ok(req)) =
                 (installed_major.parse::<u32>(), range_major.parse::<u32>())
-            {
-                return inst < req;
-            }
+        {
+            return inst < req;
         }
-        if expected_trimmed.starts_with("<=") {
-            if let (Ok(inst), Ok(req)) =
+        if expected_trimmed.starts_with("<=")
+            && let (Ok(inst), Ok(req)) =
                 (installed_major.parse::<u32>(), range_major.parse::<u32>())
-            {
-                return inst <= req;
-            }
+        {
+            return inst <= req;
         }
     }
 

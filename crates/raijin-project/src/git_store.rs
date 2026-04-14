@@ -1033,7 +1033,7 @@ impl GitStore {
             let buffer_snapshot = buffer.read(cx).text_snapshot();
 
             git_state.update(cx, |state, cx| {
-                let _ = state.reparse_conflict_markers(buffer_snapshot, cx);
+                let _receiver = state.reparse_conflict_markers(buffer_snapshot, cx);
             });
 
             return conflict_set;
@@ -1057,7 +1057,7 @@ impl GitStore {
         buffer_git_state.update(cx, |state, cx| {
             state.conflict_set = Some(conflict_set.downgrade());
             let buffer_snapshot = buffer.read(cx).text_snapshot();
-            let _ = state.reparse_conflict_markers(buffer_snapshot, cx);
+            let _receiver = state.reparse_conflict_markers(buffer_snapshot, cx);
         });
 
         conflict_set
@@ -1467,7 +1467,7 @@ impl GitStore {
                         if conflict_status_changed {
                             let buffer_store = self.buffer_store.read(cx);
                             if let Some(buffer) = buffer_store.get(*buffer_id) {
-                                let _ = diff
+                                let _receiver = diff
                                     .reparse_conflict_markers(buffer.read(cx).text_snapshot(), cx);
                             }
                         }
@@ -4005,7 +4005,7 @@ impl Repository {
     fn reload_buffer_diff_bases(&mut self, cx: &mut Context<Self>) {
         let this = cx.weak_entity();
         let git_store = self.git_store.clone();
-        let _ = self.send_keyed_job(
+        let _receiver = self.send_keyed_job(
             Some(GitJobKey::ReloadBufferDiffBases),
             None,
             |state, mut cx| async move {
@@ -6376,7 +6376,7 @@ impl Repository {
         cx: &mut Context<Self>,
     ) {
         let this = cx.weak_entity();
-        let _ = self.send_keyed_job(
+        let _receiver = self.send_keyed_job(
             Some(GitJobKey::ReloadGitState),
             None,
             |state, mut cx| async move {
@@ -6588,7 +6588,7 @@ impl Repository {
         }
 
         let this = cx.weak_entity();
-        let _ = self.send_keyed_job(
+        let _receiver = self.send_keyed_job(
             Some(GitJobKey::RefreshStatuses),
             None,
             |state, mut cx| async move {

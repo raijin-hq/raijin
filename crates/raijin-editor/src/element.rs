@@ -2781,7 +2781,7 @@ impl EditorElement {
         window: &mut Window,
         cx: &mut App,
     ) {
-        if !self.editor.read(cx).inline_blame_popover.is_some() {
+        if self.editor.read(cx).inline_blame_popover.is_none() {
             return;
         }
 
@@ -3486,8 +3486,7 @@ impl EditorElement {
                 row_info.buffer_row? + 1
             };
             let relative_number = relative_rows.get(&display_row);
-            if !(relative_line_numbers_enabled && relative_number.is_some())
-                && !snapshot.number_deleted_lines
+            if !(snapshot.number_deleted_lines || relative_line_numbers_enabled && relative_number.is_some())
                 && row_info
                     .diff_status
                     .is_some_and(|status| status.is_deleted())

@@ -3383,7 +3383,6 @@ impl SettingsWindow {
                 // TODO: move raijin::open_local_file() APIs to this crate, and
                 // re-implement the "initial_contents" behavior
                 let workspace_weak = corresponding_workspace.downgrade();
-                let workspace_window = workspace_window;
                 cx.spawn(async move |_this, cx| {
                     if let Some(create_task) = create_task {
                         create_task.await.ok();

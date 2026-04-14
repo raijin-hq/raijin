@@ -795,7 +795,8 @@ impl SyntaxSnapshot {
                                 continue;
                             }
                         };
-                        changed_ranges = vec![step_start_byte..step_end_byte];
+                        let range = step_start_byte..step_end_byte;
+                        changed_ranges = vec![range];
                     }
 
                     if let (Some((config, registry)), false) = (

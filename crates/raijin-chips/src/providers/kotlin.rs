@@ -7,8 +7,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 /// Version: Parsed from `kotlin -version` or `kotlinc -version`.
 ///   - `kotlin -version`: `Kotlin version 2.0.0-release-341 (JRE 21.0.3+9)` -> `2.0.0`
 ///   - `kotlinc -version`: `info: kotlinc-jvm 2.0.0 (JRE 21.0.3+9)` -> `2.0.0`
-///
-
 pub struct KotlinProvider;
 
 impl ChipProvider for KotlinProvider {
@@ -74,7 +72,7 @@ fn parse_kotlin_version(output: &str) -> Option<String> {
         // Strip release suffixes like "2.0.0-release-341"
         let base = word.split('-').next().unwrap_or(word);
         if !base.is_empty()
-            && base.chars().next().map_or(false, |c| c.is_ascii_digit())
+            && base.chars().next().is_some_and(|c| c.is_ascii_digit())
             && base.contains('.')
             && base.chars().all(|c| c.is_ascii_digit() || c == '.')
         {

@@ -1311,8 +1311,9 @@ impl Buffer {
             return;
         };
 
+        let full_range = 0..usize::MAX;
         let mut ranges = if ranges.is_empty() {
-            &[0..usize::MAX]
+            core::slice::from_ref(&full_range)
         } else {
             ranges.as_slice()
         }

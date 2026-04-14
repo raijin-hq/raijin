@@ -2281,7 +2281,7 @@ impl ProjectPanel {
                             {
                                 if let Some(buffer) = project.buffer_for_id(*buffer_id, cx) {
                                     buffer.update(cx, |buffer, cx| {
-                                        let _ = buffer.reload(cx);
+                                        let _receiver = buffer.reload(cx);
                                     });
                                 }
                             }

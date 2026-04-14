@@ -262,7 +262,7 @@ impl Element for TerminalGridElement {
                 if !skip {
                     // Built-in box-drawing / block elements
                     if let Some(bc) = builtin_font::builtin_char(cell.c) {
-                        builtins.push(BuiltinGlyph { bc, x, y: current_y, color: cell.fg.into() });
+                        builtins.push(BuiltinGlyph { bc, x, y: current_y, color: cell.fg });
                     } else {
                         // Regular character — resolve font and glyph, position at grid cell
                         let font_id = if cell.font_family_override.is_some() || cell.bold || cell.italic {
@@ -311,7 +311,7 @@ impl Element for TerminalGridElement {
                                 origin: point(x, baseline_y),
                                 font_id,
                                 glyph_id,
-                                color: cell.fg.into(),
+                                color: cell.fg,
                                 is_emoji,
                             });
                         } else {
@@ -336,7 +336,7 @@ impl Element for TerminalGridElement {
                                     style: if cell.italic { inazuma::FontStyle::Italic } else { inazuma::FontStyle::Normal },
                                     ..Font::default()
                                 },
-                                color: cell.fg.into(),
+                                color: cell.fg,
                                 background_color: None,
                                 underline: None,
                                 strikethrough: None,
@@ -349,7 +349,7 @@ impl Element for TerminalGridElement {
                                         origin: point(x, baseline_y),
                                         font_id: run.font_id,
                                         glyph_id: glyph.id,
-                                        color: cell.fg.into(),
+                                        color: cell.fg,
                                         is_emoji: window.text_system().is_emoji(run.font_id),
                                     });
                                 }

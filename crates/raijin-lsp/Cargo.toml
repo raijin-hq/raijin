@@ -23,7 +23,7 @@ inazuma-gpui-util = { workspace = true, optional = true }
 futures.workspace = true
 inazuma.workspace = true
 log.workspace = true
-lsp-types.workspace = true
+lsp-types = { workspace = true, features = ["proposed"] }
 parking_lot.workspace = true
 postage.workspace = true
 serde.workspace = true

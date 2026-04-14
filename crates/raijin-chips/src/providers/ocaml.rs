@@ -7,8 +7,6 @@ use crate::provider::{ChipId, ChipOutput, ChipProvider};
 ///   `_opam/`, `esy.lock/`, `.ml`, `.mli`, `.re`, `.rei` files.
 /// Version: `ocaml -vnum` -> `5.1.0` (or `esy ocaml -vnum` for esy projects).
 /// Also shows the active opam switch name via `opam switch show --safe`.
-///
-
 pub struct OcamlProvider;
 
 impl ChipProvider for OcamlProvider {
@@ -52,10 +50,10 @@ impl ChipProvider for OcamlProvider {
         let tooltip = build_tooltip(&version, &switch);
 
         let mut label = version;
-        if let Some((indicator, name)) = &switch {
-            if !label.is_empty() {
-                label = format!("{label} ({indicator}{name})");
-            }
+        if let Some((indicator, name)) = &switch
+            && !label.is_empty()
+        {
+            label = format!("{label} ({indicator}{name})");
         }
 
         ChipOutput {

@@ -1348,8 +1348,7 @@ fn should_merge<T: Ord + Copy>(a_start: T, a_end: T, b_start: T, b_end: T, sorte
     // starts or ends at X.
     let is_cursor_a = a_start == a_end;
     let is_cursor_b = b_start == b_end;
-    let cursor_at_boundary = (is_cursor_a && (a_start == b_start || a_end == b_end))
-        || (is_cursor_b && (b_start == a_start || b_end == a_end));
+    let cursor_at_boundary = (is_cursor_b || is_cursor_a) && (a_end == b_end || a_start == b_start);
 
     is_overlapping || same_start || cursor_at_boundary
 }

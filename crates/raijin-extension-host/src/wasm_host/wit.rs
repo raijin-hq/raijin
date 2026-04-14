@@ -321,7 +321,7 @@ impl Extension {
             )
             .await?;
 
-        Ok(result.map(TryInto::try_into).transpose()?)
+        result.map(TryInto::try_into).transpose()
     }
 
     pub async fn call_run_dap_locator(

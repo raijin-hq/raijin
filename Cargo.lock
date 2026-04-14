@@ -4551,15 +4551,6 @@ checksum = "8bf7cc16383c4b8d58b9905a8509f02926ce3058053c056376248d958c9df1e8"
 
 [[package]]
 name = "fluent-uri"
-version = "0.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17c704e9dbe1ddd863da1e6ff3567795087b1eb201ce80d8fa81162e1516500d"
-dependencies = [
- "bitflags 1.3.2",
-]
-
-[[package]]
-name = "fluent-uri"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bc74ac4d8359ae70623506d512209619e5cf8f347124910440dbc221714b328e"
@@ -6003,19 +5994,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "hyper-tls"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d6183ddfa99b85da61a140bea0efc93fdf56ceaa041b37d553518030827f9905"
-dependencies = [
- "bytes 1.11.1",
- "hyper 0.14.32",
- "native-tls",
- "tokio",
- "tokio-native-tls",
-]
-
-[[package]]
 name = "hyper-util"
 version = "0.1.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6382,7 +6360,7 @@ dependencies = [
  "inventory",
  "parking_lot",
  "raijin-theme",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -6416,7 +6394,7 @@ name = "inazuma-icons"
 version = "0.1.0"
 dependencies = [
  "serde",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -6514,7 +6492,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_json_lenient",
- "strum 0.26.3",
+ "strum 0.27.2",
  "toml 0.8.23",
 ]
 
@@ -6634,7 +6612,7 @@ dependencies = [
  "itertools 0.14.0",
  "libc",
  "log",
- "mach2 0.4.3",
+ "mach2 0.5.0",
  "nix 0.29.0",
  "percent-encoding",
  "pretty_assertions",
@@ -7097,7 +7075,7 @@ dependencies = [
  "referencing",
  "regex",
  "regex-syntax",
- "reqwest 0.12.28",
+ "reqwest",
  "serde",
  "serde_json",
  "unicode-general-category",
@@ -7523,7 +7501,7 @@ dependencies = [
  "pbjson-types",
  "prost 0.12.6",
  "rand 0.9.2",
- "reqwest 0.12.28",
+ "reqwest",
  "rustls-native-certs 0.6.3",
  "scopeguard",
  "serde",
@@ -7659,19 +7637,6 @@ dependencies = [
  "serde",
  "serde_json",
  "url",
-]
-
-[[package]]
-name = "lsp-types"
-version = "0.97.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "53353550a17c04ac46c585feb189c2db82154fc84b79c7a66c96c2c644f66071"
-dependencies = [
- "bitflags 1.3.2",
- "fluent-uri 0.1.4",
- "serde",
- "serde_json",
- "serde_repr",
 ]
 
 [[package]]
@@ -11482,7 +11447,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
  "thiserror 2.0.18",
 ]
 
@@ -11499,7 +11464,7 @@ dependencies = [
  "inazuma-settings-framework",
  "inazuma-util",
  "log",
- "lsp-types 0.97.0",
+ "lsp-types",
  "parking_lot",
  "raijin-actions",
  "raijin-assets",
@@ -11788,7 +11753,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
  "thiserror 2.0.18",
 ]
 
@@ -12014,7 +11979,7 @@ dependencies = [
  "raijin-cloud-llm-client",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -12025,7 +11990,7 @@ dependencies = [
  "raijin-zeta-prompt",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
  "uuid",
 ]
 
@@ -12128,7 +12093,7 @@ dependencies = [
  "raijin-workspace",
  "raijin-worktree",
  "rand 0.9.2",
- "reqwest 0.11.27",
+ "reqwest",
  "sea-orm",
  "sea-orm-macros",
  "semver",
@@ -12137,7 +12102,7 @@ dependencies = [
  "sha2",
  "smol",
  "sqlx",
- "strum 0.26.3",
+ "strum 0.27.2",
  "time",
  "tokio",
  "toml 0.8.23",
@@ -12238,7 +12203,7 @@ dependencies = [
  "dirs",
  "inazuma",
  "log",
- "lsp-types 0.97.0",
+ "lsp-types",
  "raijin-session",
  "raijin-shell-integration",
  "raijin-ui",
@@ -12388,7 +12353,7 @@ dependencies = [
  "crash-handler",
  "futures 0.3.32",
  "log",
- "mach2 0.4.3",
+ "mach2 0.5.0",
  "minidumper",
  "parking_lot",
  "raijin-paths",
@@ -12595,7 +12560,7 @@ dependencies = [
  "serde_json_lenient",
  "sysinfo 0.37.2",
  "tree-sitter",
- "tree-sitter-go 0.25.0",
+ "tree-sitter-go",
  "tree-sitter-json",
  "unindent",
 ]
@@ -12756,7 +12721,7 @@ dependencies = [
  "semver",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
  "thiserror 2.0.18",
  "time",
  "toml 0.8.23",
@@ -12819,7 +12784,7 @@ dependencies = [
  "shellexpand",
  "similar",
  "smol",
- "strum 0.26.3",
+ "strum 0.27.2",
  "tempfile",
  "toml 0.8.23",
  "wasmtime",
@@ -12976,14 +12941,14 @@ dependencies = [
  "smol",
  "time",
  "tracing",
- "tree-sitter-bash 0.25.1",
+ "tree-sitter-bash",
  "tree-sitter-c",
  "tree-sitter-html",
- "tree-sitter-md 0.3.2",
- "tree-sitter-python 0.25.0",
+ "tree-sitter-md",
+ "tree-sitter-python",
  "tree-sitter-rust",
- "tree-sitter-typescript 0.23.2 (git+https://github.com/raijin-hq/tree-sitter-typescript?rev=e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899)",
- "tree-sitter-yaml 0.6.1",
+ "tree-sitter-typescript",
+ "tree-sitter-yaml",
  "unicode-script",
  "unicode-segmentation",
  "unicode-width 0.1.14",
@@ -13206,7 +13171,7 @@ dependencies = [
  "semver",
  "serde",
  "smallvec",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -13463,7 +13428,7 @@ dependencies = [
  "serde_json",
  "smallvec",
  "smol",
- "strum 0.26.3",
+ "strum 0.27.2",
  "time",
  "tracing",
  "unindent",
@@ -13504,7 +13469,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -13517,23 +13482,23 @@ dependencies = [
  "rust-embed",
  "toml 0.8.23",
  "tree-sitter",
- "tree-sitter-bash 0.25.1",
+ "tree-sitter-bash",
  "tree-sitter-c",
- "tree-sitter-cpp 0.23.4 (git+https://github.com/tree-sitter/tree-sitter-cpp?rev=5cb9b693cfd7bfacab1d9ff4acac1a4150700609)",
+ "tree-sitter-cpp",
  "tree-sitter-css",
  "tree-sitter-diff",
  "tree-sitter-gitcommit",
- "tree-sitter-go 0.25.0",
+ "tree-sitter-go",
  "tree-sitter-gomod",
  "tree-sitter-gowork",
  "tree-sitter-jsdoc",
  "tree-sitter-json",
- "tree-sitter-md 0.3.2",
- "tree-sitter-python 0.25.0",
+ "tree-sitter-md",
+ "tree-sitter-python",
  "tree-sitter-regex",
  "tree-sitter-rust",
- "tree-sitter-typescript 0.23.2 (git+https://github.com/raijin-hq/tree-sitter-typescript?rev=e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899)",
- "tree-sitter-yaml 0.6.1",
+ "tree-sitter-typescript",
+ "tree-sitter-yaml",
 ]
 
 [[package]]
@@ -13792,11 +13757,11 @@ dependencies = [
  "tree-sitter-heex",
  "tree-sitter-html",
  "tree-sitter-json",
- "tree-sitter-md 0.3.2",
- "tree-sitter-python 0.25.0",
+ "tree-sitter-md",
+ "tree-sitter-python",
  "tree-sitter-ruby",
  "tree-sitter-rust",
- "tree-sitter-typescript 0.23.2 (git+https://github.com/raijin-hq/tree-sitter-typescript?rev=e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899)",
+ "tree-sitter-typescript",
  "unicase",
  "unindent",
 ]
@@ -13930,7 +13895,7 @@ dependencies = [
  "serde",
  "serde_json",
  "smol",
- "strum 0.26.3",
+ "strum 0.27.2",
  "thiserror 2.0.18",
  "tiktoken-rs",
  "tokio",
@@ -14050,15 +14015,15 @@ dependencies = [
  "smallvec",
  "smol",
  "tree-sitter",
- "tree-sitter-bash 0.25.1",
+ "tree-sitter-bash",
  "tree-sitter-c",
- "tree-sitter-cpp 0.23.4 (git+https://github.com/tree-sitter/tree-sitter-cpp?rev=5cb9b693cfd7bfacab1d9ff4acac1a4150700609)",
+ "tree-sitter-cpp",
  "tree-sitter-css",
  "tree-sitter-gitcommit",
- "tree-sitter-go 0.25.0",
- "tree-sitter-python 0.25.0",
+ "tree-sitter-go",
+ "tree-sitter-python",
  "tree-sitter-rust",
- "tree-sitter-typescript 0.23.2 (git+https://github.com/raijin-hq/tree-sitter-typescript?rev=e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899)",
+ "tree-sitter-typescript",
  "unindent",
  "url",
 ]
@@ -14088,7 +14053,7 @@ dependencies = [
  "prost 0.9.0",
  "prost-build 0.9.0",
  "prost-types 0.9.0",
- "reqwest 0.12.28",
+ "reqwest",
  "serde",
 ]
 
@@ -14181,7 +14146,7 @@ dependencies = [
  "inazuma-gpui-util",
  "inazuma-util",
  "log",
- "lsp-types 0.95.1",
+ "lsp-types",
  "parking_lot",
  "postage",
  "raijin-log",
@@ -14282,7 +14247,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -14437,7 +14402,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
  "thiserror 2.0.18",
 ]
 
@@ -14474,7 +14439,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
  "thiserror 2.0.18",
 ]
 
@@ -14489,7 +14454,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -14810,7 +14775,7 @@ dependencies = [
  "raijin-language",
  "raijin-paths",
  "serde",
- "strum 0.26.3",
+ "strum 0.27.2",
  "tempfile",
  "uuid",
 ]
@@ -15020,7 +14985,7 @@ dependencies = [
  "raijin-http-client",
  "raijin-http-client-tls",
  "regex",
- "reqwest 0.12.28",
+ "reqwest",
  "serde",
  "tokio",
 ]
@@ -15044,7 +15009,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
- "strum 0.26.3",
+ "strum 0.27.2",
  "tracing",
  "zstd 0.13.3",
 ]
@@ -15242,7 +15207,7 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -15381,7 +15346,7 @@ dependencies = [
  "raijin-ui",
  "rust-embed",
  "simplelog",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -15416,7 +15381,7 @@ dependencies = [
  "inazuma",
  "inazuma-sum_tree",
  "log",
- "lsp-types 0.97.0",
+ "lsp-types",
  "once_cell",
  "raijin-theme",
  "ropey 2.0.0-beta.1",
@@ -15427,16 +15392,16 @@ dependencies = [
  "tracing",
  "tree-sitter",
  "tree-sitter-astro-next",
- "tree-sitter-bash 0.23.3",
+ "tree-sitter-bash",
  "tree-sitter-c",
  "tree-sitter-c-sharp",
  "tree-sitter-cmake",
- "tree-sitter-cpp 0.23.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "tree-sitter-cpp",
  "tree-sitter-css",
  "tree-sitter-diff",
  "tree-sitter-elixir",
  "tree-sitter-embedded-template",
- "tree-sitter-go 0.23.4",
+ "tree-sitter-go",
  "tree-sitter-graphql",
  "tree-sitter-html",
  "tree-sitter-java",
@@ -15446,10 +15411,10 @@ dependencies = [
  "tree-sitter-kotlin-sg",
  "tree-sitter-lua",
  "tree-sitter-make",
- "tree-sitter-md 0.5.3",
+ "tree-sitter-md",
  "tree-sitter-php",
  "tree-sitter-proto",
- "tree-sitter-python 0.23.6",
+ "tree-sitter-python",
  "tree-sitter-ruby",
  "tree-sitter-rust",
  "tree-sitter-scala",
@@ -15457,8 +15422,8 @@ dependencies = [
  "tree-sitter-svelte-next",
  "tree-sitter-swift",
  "tree-sitter-toml-ng",
- "tree-sitter-typescript 0.23.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "tree-sitter-yaml 0.7.2",
+ "tree-sitter-typescript",
+ "tree-sitter-yaml",
  "tree-sitter-zig",
 ]
 
@@ -15548,7 +15513,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tree-sitter-rust",
- "tree-sitter-typescript 0.23.2 (git+https://github.com/raijin-hq/tree-sitter-typescript?rev=e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899)",
+ "tree-sitter-typescript",
 ]
 
 [[package]]
@@ -15629,7 +15594,7 @@ dependencies = [
  "inazuma-settings-framework",
  "inazuma-util",
  "log",
- "lsp-types 0.97.0",
+ "lsp-types",
  "parking_lot",
  "raijin-chips",
  "raijin-completions",
@@ -15667,7 +15632,7 @@ dependencies = [
  "serde_json",
  "serde_json_lenient",
  "smallvec",
- "strum 0.26.3",
+ "strum 0.27.2",
  "thiserror 2.0.18",
  "toml 0.8.23",
  "uuid",
@@ -15828,9 +15793,9 @@ dependencies = [
  "instant",
  "itertools 0.14.0",
  "log",
- "lsp-types 0.97.0",
+ "lsp-types",
  "markdown",
- "notify 7.0.0",
+ "notify 8.2.0",
  "num-traits",
  "once_cell",
  "paste",
@@ -15846,7 +15811,7 @@ dependencies = [
  "serde_repr",
  "smallvec",
  "smol",
- "strum 0.26.3",
+ "strum 0.27.2",
  "tracing",
  "tree-sitter",
  "unicode-segmentation",
@@ -15894,7 +15859,7 @@ dependencies = [
  "anyhow",
  "schemars",
  "serde",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -16059,7 +16024,7 @@ dependencies = [
  "serde",
  "serde_json",
  "smallvec",
- "strum 0.26.3",
+ "strum 0.27.2",
  "tempfile",
  "uuid",
  "windows 0.61.3",
@@ -16120,7 +16085,7 @@ dependencies = [
  "anyhow",
  "schemars",
  "serde",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -16130,7 +16095,7 @@ dependencies = [
  "anyhow",
  "indoc",
  "serde",
- "strum 0.26.3",
+ "strum 0.27.2",
 ]
 
 [[package]]
@@ -16494,7 +16459,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4283168a506f0dcbdce31c9f9cce3129c924da4c6bca46e46707fcb746d2d70c"
 dependencies = [
  "ahash 0.8.12",
- "fluent-uri 0.4.1",
+ "fluent-uri",
  "getrandom 0.3.4",
  "hashbrown 0.16.1",
  "parking_lot",
@@ -16566,46 +16531,6 @@ name = "renderdoc-sys"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19b30a45b0cd0bcca8037f3d0dc3421eaf95327a17cad11964fb8179b4fc4832"
-
-[[package]]
-name = "reqwest"
-version = "0.11.27"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd67538700a17451e7cba03ac727fb961abb7607553461627b97de0b89cf4a62"
-dependencies = [
- "base64 0.21.7",
- "bytes 1.11.1",
- "encoding_rs",
- "futures-core",
- "futures-util",
- "h2 0.3.27",
- "http 0.2.12",
- "http-body 0.4.6",
- "hyper 0.14.32",
- "hyper-tls",
- "ipnet",
- "js-sys",
- "log",
- "mime",
- "native-tls",
- "once_cell",
- "percent-encoding",
- "pin-project-lite",
- "rustls-pemfile",
- "serde",
- "serde_json",
- "serde_urlencoded",
- "sync_wrapper 0.1.2",
- "system-configuration",
- "tokio",
- "tokio-native-tls",
- "tower-service",
- "url",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
- "winreg 0.50.0",
-]
 
 [[package]]
 name = "reqwest"
@@ -18824,27 +18749,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "system-configuration"
-version = "0.5.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba3a3adc5c275d719af8cb4272ea1c4a6d668a777f37e115f6d11ddbc1c8e0e7"
-dependencies = [
- "bitflags 1.3.2",
- "core-foundation 0.9.4",
- "system-configuration-sys",
-]
-
-[[package]]
-name = "system-configuration-sys"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a75fb188eb626b924683e3b95e3a48e63551fcfb51949de2f06a9d91dbee93c9"
-dependencies = [
- "core-foundation-sys",
- "libc",
-]
-
-[[package]]
 name = "system-deps"
 version = "6.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -19718,16 +19622,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tree-sitter-bash"
-version = "0.25.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9e5ec769279cc91b561d3df0d8a5deb26b0ad40d183127f409494d6d8fc53062"
-dependencies = [
- "cc",
- "tree-sitter-language",
-]
-
-[[package]]
 name = "tree-sitter-c"
 version = "0.24.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -19762,15 +19656,6 @@ name = "tree-sitter-cpp"
 version = "0.23.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df2196ea9d47b4ab4a31b9297eaa5a5d19a0b121dceb9f118f6790ad0ab94743"
-dependencies = [
- "cc",
- "tree-sitter-language",
-]
-
-[[package]]
-name = "tree-sitter-cpp"
-version = "0.23.4"
-source = "git+https://github.com/tree-sitter/tree-sitter-cpp?rev=5cb9b693cfd7bfacab1d9ff4acac1a4150700609#5cb9b693cfd7bfacab1d9ff4acac1a4150700609"
 dependencies = [
  "cc",
  "tree-sitter-language",
@@ -19830,16 +19715,6 @@ name = "tree-sitter-go"
 version = "0.23.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b13d476345220dbe600147dd444165c5791bf85ef53e28acbedd46112ee18431"
-dependencies = [
- "cc",
- "tree-sitter-language",
-]
-
-[[package]]
-name = "tree-sitter-go"
-version = "0.25.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c8560a4d2f835cc0d4d2c2e03cbd0dde2f6114b43bc491164238d333e28b16ea"
 dependencies = [
  "cc",
  "tree-sitter-language",
@@ -19970,15 +19845,6 @@ dependencies = [
 
 [[package]]
 name = "tree-sitter-md"
-version = "0.3.2"
-source = "git+https://github.com/tree-sitter-grammars/tree-sitter-markdown?rev=9a23c1a96c0513d8fc6520972beedd419a973539#9a23c1a96c0513d8fc6520972beedd419a973539"
-dependencies = [
- "cc",
- "tree-sitter-language",
-]
-
-[[package]]
-name = "tree-sitter-md"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2efd398be546456c814598ee56c0f51769a77241511b4a58077815d120afa882"
@@ -20012,16 +19878,6 @@ name = "tree-sitter-python"
 version = "0.23.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d065aaa27f3aaceaf60c1f0e0ac09e1cb9eb8ed28e7bcdaa52129cffc7f4b04"
-dependencies = [
- "cc",
- "tree-sitter-language",
-]
-
-[[package]]
-name = "tree-sitter-python"
-version = "0.25.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6bf85fd39652e740bf60f46f4cda9492c3a9ad75880575bf14960f775cb74a1c"
 dependencies = [
  "cc",
  "tree-sitter-language",
@@ -20112,24 +19968,6 @@ name = "tree-sitter-typescript"
 version = "0.23.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6c5f76ed8d947a75cc446d5fccd8b602ebf0cde64ccf2ffa434d873d7a575eff"
-dependencies = [
- "cc",
- "tree-sitter-language",
-]
-
-[[package]]
-name = "tree-sitter-typescript"
-version = "0.23.2"
-source = "git+https://github.com/raijin-hq/tree-sitter-typescript?rev=e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899#e2c53597d6a5d9cf7bbe8dccde576fe1e46c5899"
-dependencies = [
- "cc",
- "tree-sitter-language",
-]
-
-[[package]]
-name = "tree-sitter-yaml"
-version = "0.6.1"
-source = "git+https://github.com/raijin-hq/tree-sitter-yaml?rev=baff0b51c64ef6a1fb1f8390f3ad6015b83ec13a#baff0b51c64ef6a1fb1f8390f3ad6015b83ec13a"
 dependencies = [
  "cc",
  "tree-sitter-language",
@@ -21479,7 +21317,7 @@ dependencies = [
  "anyhow",
  "fs2",
  "regex",
- "reqwest 0.12.28",
+ "reqwest",
  "scratch",
  "semver",
  "zip 0.6.6",
@@ -22405,16 +22243,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "80d0f4e272c85def139476380b12f9ac60926689dd2e01d4923222f40580869d"
 dependencies = [
  "winapi",
-]
-
-[[package]]
-name = "winreg"
-version = "0.50.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "524e57b2c537c0f9b1e69f1965311ec12182b4122e45035b1508cd24d2adadb1"
-dependencies = [
- "cfg-if",
- "windows-sys 0.48.0",
 ]
 
 [[package]]

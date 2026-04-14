@@ -16,7 +16,7 @@ impl ChipProvider for ContainerProvider {
     fn gather(&self, ctx: &ChipContext) -> ChipOutput {
         let name = ctx.get_env("container")
             .filter(|v| !v.is_empty())
-            .or_else(|| detect_container_name())
+            .or_else(detect_container_name)
             .unwrap_or_default();
 
         ChipOutput {
@@ -38,7 +38,7 @@ fn detect_container_name() -> Option<String> {
         if Path::new("/.dockerenv").exists() {
             return Some("Docker".into());
         }
-        return None;
+        None
     }
 
     #[cfg(target_os = "linux")]

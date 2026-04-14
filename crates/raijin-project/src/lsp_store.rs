@@ -12238,7 +12238,7 @@ impl LspStore {
             return;
         };
         for server_id in languages_servers {
-            let _ = self.pull_document_diagnostics_for_server(server_id, Some(buffer_id), cx);
+            let _task = self.pull_document_diagnostics_for_server(server_id, Some(buffer_id), cx);
         }
     }
 
@@ -12682,7 +12682,7 @@ impl LspStore {
 
                         notify_server_capabilities_updated(&server, cx);
 
-                        let _ = self.pull_document_diagnostics_for_server(server_id, None, cx);
+                        let _task = self.pull_document_diagnostics_for_server(server_id, None, cx);
                     }
                 }
                 "textDocument/documentColor" => {

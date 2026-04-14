@@ -742,7 +742,7 @@ impl PickerDelegate for BranchListDelegate {
                     }
 
                     if !query.is_empty()
-                        && !matches.first().is_some_and(|entry| entry.name() == query)
+                        && matches.first().is_none_or(|entry| entry.name() != query)
                     {
                         let query = query.replace(' ', "-");
                         let is_url = query.trim_start_matches("git@").parse::<Url>().is_ok();

@@ -494,7 +494,7 @@ fn paint_rounded_corner_quad(
         corner_radii,
         background: inazuma::transparent_black().into(),
         border_widths,
-        border_colors: border_color.into(),
+        border_colors: border_color,
         border_style: inazuma::BorderStyle::Solid,
     });
 }

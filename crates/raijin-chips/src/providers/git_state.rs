@@ -129,15 +129,14 @@ fn resolve_git_dir(ctx: &ChipContext) -> Option<std::path::PathBuf> {
     }
 
     // Worktree: .git is a file containing "gitdir: /path/to/actual/.git/worktrees/name"
-    if dot_git.is_file() {
-        if let Ok(content) = std::fs::read_to_string(&dot_git) {
-            if let Some(path) = content.strip_prefix("gitdir: ") {
-                let path = path.trim();
-                let git_path = std::path::PathBuf::from(path);
-                if git_path.is_dir() {
-                    return Some(git_path);
-                }
-            }
+    if dot_git.is_file()
+        && let Ok(content) = std::fs::read_to_string(&dot_git)
+        && let Some(path) = content.strip_prefix("gitdir: ")
+    {
+        let path = path.trim();
+        let git_path = std::path::PathBuf::from(path);
+        if git_path.is_dir() {
+            return Some(git_path);
         }
     }
 
