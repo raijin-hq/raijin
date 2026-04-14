@@ -116,12 +116,19 @@ impl AppShell {
 
         // Register workspace in the global WorkspaceRegistry so Workspace::for_window() works
         if let Ok(workspace) = view.clone().downcast::<raijin_workspace::Workspace>() {
+            let window_id = window.window_handle().window_id();
             raijin_workspace::register_workspace_for_window(
-                window.window_handle().window_id(),
+                window_id,
                 workspace.downgrade(),
                 cx,
             );
         }
+
+        // Unregister on release so WorkspaceRegistry doesn't accumulate stale entries
+        let release_window_id = window.window_handle().window_id();
+        subscriptions.push(cx.on_release(move |_this: &mut Self, cx| {
+            raijin_workspace::unregister_workspace_for_window(release_window_id, cx);
+        }));
 
         Self {
             style: StyleRefinement::default(),
