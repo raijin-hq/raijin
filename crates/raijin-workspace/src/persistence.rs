@@ -100,7 +100,7 @@ impl raijin_sqlez::bindable::Column for SerializedAxis {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Default)]
-pub(crate) struct SerializedWindowBounds(pub(crate) WindowBounds);
+pub struct SerializedWindowBounds(pub WindowBounds);
 
 impl StaticColumnCount for SerializedWindowBounds {
     fn column_count() -> usize {
@@ -987,7 +987,7 @@ impl WorkspaceDb {
     /// Returns a serialized workspace for the given worktree_roots. If the passed array
     /// is empty, the most recent workspace is returned instead. If no workspace for the
     /// passed roots is stored, returns none.
-    pub(crate) fn workspace_for_roots<P: AsRef<Path>>(
+    pub fn workspace_for_roots<P: AsRef<Path>>(
         &self,
         worktree_roots: &[P],
     ) -> Option<SerializedWorkspace> {
@@ -1112,7 +1112,7 @@ impl WorkspaceDb {
     }
 
     /// Returns the workspace with the given ID, loading all associated data.
-    pub(crate) fn workspace_for_id(
+    pub fn workspace_for_id(
         &self,
         workspace_id: WorkspaceId,
     ) -> Option<SerializedWorkspace> {
@@ -2170,7 +2170,7 @@ impl WorkspaceDb {
         }
     }
 
-    pub(crate) async fn toolchains(
+    pub async fn toolchains(
         &self,
         workspace_id: WorkspaceId,
     ) -> Result<Vec<(Toolchain, Arc<Path>, Arc<RelPath>)>> {

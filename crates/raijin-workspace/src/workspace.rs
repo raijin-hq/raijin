@@ -11,7 +11,7 @@ pub mod pane_group;
 pub mod path_list {
     pub use inazuma_util::path_list::{PathList, SerializedPathList};
 }
-mod persistence;
+pub mod persistence;
 pub mod searchable;
 mod security_modal;
 pub mod shared_screen;
@@ -77,12 +77,12 @@ pub use pane_group::{
     ActivePaneDecorator, HANDLE_HITBOX_SIZE, Member, PaneAxis, PaneGroup, PaneRenderContext,
     SplitDirection,
 };
-use persistence::{SerializedWindowBounds, model::SerializedWorkspace};
+use persistence::SerializedWindowBounds;
 pub use persistence::{
-    WorkspaceDb, delete_unloaded_items,
+    WorkspaceDb, delete_unloaded_items, read_default_window_bounds, read_default_dock_state,
     model::{
-        DockStructure, ItemId, SerializedMultiWorkspace, SerializedWorkspaceLocation,
-        SessionWorkspace,
+        DockStructure, ItemId, SerializedMultiWorkspace, SerializedWorkspace,
+        SerializedWorkspaceLocation, SessionWorkspace,
     },
     read_serialized_multi_workspaces, resolve_worktree_workspaces,
 };
@@ -1234,7 +1234,7 @@ pub enum OpenVisible {
     OnlyDirectories,
 }
 
-enum WorkspaceLocation {
+pub enum WorkspaceLocation {
     // Valid local paths or SSH project to serialize
     Location(SerializedWorkspaceLocation, PathList),
     // No valid location found hence clear session id
@@ -6293,7 +6293,7 @@ impl Workspace {
         cx.notify();
     }
 
-    fn serialize_workspace(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+    pub fn serialize_workspace(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if self._schedule_serialize_workspace.is_none() {
             self._schedule_serialize_workspace =
                 Some(cx.spawn_in(window, async move |this, cx| {
@@ -6453,7 +6453,7 @@ impl Workspace {
         self.panes.iter().any(|pane| pane.read(cx).items_len() > 0)
     }
 
-    fn workspace_location(&self, cx: &App) -> WorkspaceLocation {
+    pub fn workspace_location(&self, cx: &App) -> WorkspaceLocation {
         let paths = PathList::new(&self.root_paths(cx));
         if let Some(connection) = self.project.read(cx).remote_connection_options(cx) {
             WorkspaceLocation::Location(SerializedWorkspaceLocation::Remote(connection), paths)
@@ -6468,7 +6468,7 @@ impl Workspace {
         }
     }
 
-    fn update_history(&self, cx: &mut App) {
+    pub fn update_history(&self, cx: &mut App) {
         let Some(id) = self.database_id() else {
             return;
         };
@@ -7536,11 +7536,11 @@ pub struct GlobalAnyActiveCall(pub Arc<dyn AnyActiveCall>);
 impl Global for GlobalAnyActiveCall {}
 
 impl GlobalAnyActiveCall {
-    pub(crate) fn try_global(cx: &App) -> Option<&Self> {
+    pub fn try_global(cx: &App) -> Option<&Self> {
         cx.try_global()
     }
 
-    pub(crate) fn global(cx: &App) -> &Self {
+    pub fn global(cx: &App) -> &Self {
         cx.global()
     }
 }
@@ -7628,7 +7628,7 @@ fn leader_border_for_pane(
     )
 }
 
-fn window_bounds_env_override() -> Option<Bounds<Pixels>> {
+pub fn window_bounds_env_override() -> Option<Bounds<Pixels>> {
     ZED_WINDOW_POSITION
         .zip(*ZED_WINDOW_SIZE)
         .map(|(position, size)| Bounds {
@@ -7637,7 +7637,7 @@ fn window_bounds_env_override() -> Option<Bounds<Pixels>> {
         })
 }
 
-fn open_items(
+pub fn open_items(
     serialized_workspace: Option<SerializedWorkspace>,
     mut project_paths_to_open: Vec<(PathBuf, Option<ProjectPath>)>,
     window: &mut Window,

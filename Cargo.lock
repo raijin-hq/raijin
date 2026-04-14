@@ -15246,8 +15246,17 @@ dependencies = [
 name = "raijin-shell"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "futures 0.3.32",
  "inazuma",
+ "inazuma-collections",
+ "inazuma-settings-framework",
+ "inazuma-util",
  "log",
+ "raijin-actions",
+ "raijin-db",
+ "raijin-project",
+ "raijin-remote",
  "raijin-theme",
  "raijin-ui",
  "raijin-workspace",

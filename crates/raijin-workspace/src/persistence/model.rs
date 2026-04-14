@@ -76,19 +76,19 @@ pub struct SerializedMultiWorkspace {
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub(crate) struct SerializedWorkspace {
-    pub(crate) id: WorkspaceId,
-    pub(crate) location: SerializedWorkspaceLocation,
-    pub(crate) paths: PathList,
-    pub(crate) center_group: SerializedPaneGroup,
-    pub(crate) window_bounds: Option<SerializedWindowBounds>,
-    pub(crate) centered_layout: bool,
-    pub(crate) display: Option<Uuid>,
-    pub(crate) docks: DockStructure,
-    pub(crate) session_id: Option<String>,
-    pub(crate) breakpoints: BTreeMap<Arc<Path>, Vec<SourceBreakpoint>>,
-    pub(crate) user_toolchains: BTreeMap<ToolchainScope, IndexSet<Toolchain>>,
-    pub(crate) window_id: Option<u64>,
+pub struct SerializedWorkspace {
+    pub id: WorkspaceId,
+    pub location: SerializedWorkspaceLocation,
+    pub paths: PathList,
+    pub center_group: SerializedPaneGroup,
+    pub window_bounds: Option<SerializedWindowBounds>,
+    pub centered_layout: bool,
+    pub display: Option<Uuid>,
+    pub docks: DockStructure,
+    pub session_id: Option<String>,
+    pub breakpoints: BTreeMap<Arc<Path>, Vec<SourceBreakpoint>>,
+    pub user_toolchains: BTreeMap<ToolchainScope, IndexSet<Toolchain>>,
+    pub window_id: Option<u64>,
 }
 
 #[derive(Debug, PartialEq, Clone, Default, Serialize, Deserialize)]

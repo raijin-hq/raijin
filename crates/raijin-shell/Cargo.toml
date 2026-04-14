@@ -8,8 +8,17 @@ publish.workspace = true
 workspace = true
 
 [dependencies]
+anyhow.workspace = true
+futures.workspace = true
 inazuma.workspace = true
+inazuma-collections.workspace = true
+inazuma-settings-framework.workspace = true
+inazuma-util.workspace = true
+log.workspace = true
+raijin-actions.workspace = true
+raijin-db.workspace = true
+raijin-project.workspace = true
+raijin-remote.workspace = true
+raijin-theme.workspace = true
 raijin-ui.workspace = true
 raijin-workspace.workspace = true
-raijin-theme.workspace = true
-log.workspace = true
