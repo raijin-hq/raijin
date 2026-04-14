@@ -17,7 +17,7 @@ use raijin_ui::{KeyBinding, ListItem, ListItemSpacing, Tooltip, prelude::*};
 use raijin_ui_input::ErasedEditor;
 use inazuma_util::{ResultExt, paths::PathExt};
 use raijin_workspace::{
-    MultiWorkspace, OpenOptions, PathList, SerializedWorkspaceLocation, Workspace, WorkspaceDb,
+    PathList, SerializedWorkspaceLocation, Workspace, WorkspaceDb,
     WorkspaceId, notifications::DetachAndPromptErr,
 };
 
@@ -267,26 +267,24 @@ impl PickerDelegate for SidebarRecentProjectsDelegate {
 
         match location {
             SerializedWorkspaceLocation::Local => {
-                if let Some(handle) = window.window_handle().downcast::<MultiWorkspace>() {
-                    let paths = candidate_workspace_paths.paths().to_vec();
-                    cx.defer(move |cx| {
-                        if let Some(task) = handle
-                            .update(cx, |multi_workspace, window, cx| {
-                                multi_workspace.open_project(paths, window, cx)
-                            })
-                            .log_err()
-                        {
-                            task.detach_and_log_err(cx);
-                        }
-                    });
-                }
+                let paths = candidate_workspace_paths.paths().to_vec();
+                workspace.update(cx, |workspace, cx| {
+                    workspace
+                        .open_workspace_for_paths(true, paths, window, cx)
+                        .detach_and_prompt_err(
+                            "Failed to open project",
+                            window,
+                            cx,
+                            |_, _, _| None,
+                        );
+                });
             }
             SerializedWorkspaceLocation::Remote(connection) => {
                 let mut connection = connection.clone();
                 workspace.update(cx, |workspace, cx| {
                     let app_state = workspace.app_state().clone();
-                    let replace_window = window.window_handle().downcast::<MultiWorkspace>();
-                    let open_options = OpenOptions {
+                    let replace_window = window.window_handle().downcast::<raijin_shell::AppShell>();
+                    let open_options = raijin_shell::OpenOptions {
                         replace_window,
                         ..Default::default()
                     };

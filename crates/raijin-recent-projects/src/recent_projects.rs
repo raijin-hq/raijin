@@ -46,7 +46,7 @@ use raijin_ui::{
 };
 use inazuma_util::{ResultExt, paths::PathExt};
 use raijin_workspace::{
-    HistoryManager, ModalView, MultiWorkspace, OpenOptions, OpenVisible, PathList,
+    HistoryManager, ModalView, OpenOptions, OpenVisible, PathList,
     SerializedWorkspaceLocation, Workspace, WorkspaceDb, WorkspaceId,
     notifications::DetachAndPromptErr,
 };
@@ -241,7 +241,7 @@ pub fn init(cx: &mut App) {
             );
 
             let app_state = workspace.app_state().clone();
-            let window_handle = window.window_handle().downcast::<MultiWorkspace>();
+            let window_handle = window.window_handle().downcast::<raijin_shell::AppShell>();
 
             cx.spawn_in(window, async move |workspace, cx| {
                 use inazuma_util::paths::SanitizedPath;
@@ -267,7 +267,7 @@ pub fn init(cx: &mut App) {
                         true => None,
                     };
 
-                    let open_options = raijin_workspace::OpenOptions {
+                    let open_options = raijin_shell::OpenOptions {
                         replace_window,
                         ..Default::default()
                     };
@@ -320,8 +320,8 @@ pub fn init(cx: &mut App) {
         raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
             let fs = workspace.project().read(cx).fs().clone();
             add_wsl_distro(fs, &open_wsl.distro, cx);
-            let open_options = OpenOptions {
-                replace_window: window.window_handle().downcast::<MultiWorkspace>(),
+            let open_options = raijin_shell::OpenOptions {
+                replace_window: window.window_handle().downcast::<raijin_shell::AppShell>(),
                 ..Default::default()
             };
 
@@ -344,70 +344,26 @@ pub fn init(cx: &mut App) {
     cx.on_action(|open_recent: &OpenRecent, cx| {
         let create_new_window = open_recent.create_new_window;
 
-        match cx
-            .active_window()
-            .and_then(|w| w.downcast::<MultiWorkspace>())
-        {
-            Some(multi_workspace) => {
-                cx.defer(move |cx| {
-                    multi_workspace
-                        .update(cx, |multi_workspace, window, cx| {
-                            let sibling_workspace_ids: HashSet<WorkspaceId> = multi_workspace
-                                .workspaces()
-                                .iter()
-                                .filter_map(|ws| ws.read(cx).database_id())
-                                .collect();
+        raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
+            let Some(recent_projects) = workspace.active_modal::<RecentProjects>(cx) else {
+                let focus_handle = workspace.focus_handle(cx);
+                RecentProjects::open(
+                    workspace,
+                    create_new_window,
+                    HashSet::new(),
+                    window,
+                    focus_handle,
+                    cx,
+                );
+                return;
+            };
 
-                            let workspace = multi_workspace.workspace().clone();
-                            workspace.update(cx, |workspace, cx| {
-                                let Some(recent_projects) =
-                                    workspace.active_modal::<RecentProjects>(cx)
-                                else {
-                                    let focus_handle = workspace.focus_handle(cx);
-                                    RecentProjects::open(
-                                        workspace,
-                                        create_new_window,
-                                        sibling_workspace_ids,
-                                        window,
-                                        focus_handle,
-                                        cx,
-                                    );
-                                    return;
-                                };
-
-                                recent_projects.update(cx, |recent_projects, cx| {
-                                    recent_projects
-                                        .picker
-                                        .update(cx, |picker, cx| picker.cycle_selection(window, cx))
-                                });
-                            });
-                        })
-                        .log_err();
-                });
-            }
-            None => {
-                raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
-                    let Some(recent_projects) = workspace.active_modal::<RecentProjects>(cx) else {
-                        let focus_handle = workspace.focus_handle(cx);
-                        RecentProjects::open(
-                            workspace,
-                            create_new_window,
-                            HashSet::new(),
-                            window,
-                            focus_handle,
-                            cx,
-                        );
-                        return;
-                    };
-
-                    recent_projects.update(cx, |recent_projects, cx| {
-                        recent_projects
-                            .picker
-                            .update(cx, |picker, cx| picker.cycle_selection(window, cx))
-                    });
-                });
-            }
-        }
+            recent_projects.update(cx, |recent_projects, cx| {
+                recent_projects
+                    .picker
+                    .update(cx, |picker, cx| picker.cycle_selection(window, cx))
+            });
+        });
     });
     cx.on_action(|open_remote: &OpenRemote, cx| {
         let from_existing_connection = open_remote.from_existing_connection;
@@ -1020,30 +976,9 @@ impl PickerDelegate for RecentProjectsDelegate {
                 }
                 cx.emit(DismissEvent);
             }
-            Some(ProjectPickerEntry::OpenProject(selected_match)) => {
-                let Some((workspace_id, _, _, _)) =
-                    self.workspaces.get(selected_match.candidate_id)
-                else {
-                    return;
-                };
-                let workspace_id = *workspace_id;
-
-                if let Some(handle) = window.window_handle().downcast::<MultiWorkspace>() {
-                    cx.defer(move |cx| {
-                        handle
-                            .update(cx, |multi_workspace, _window, cx| {
-                                let workspace = multi_workspace
-                                    .workspaces()
-                                    .iter()
-                                    .find(|ws| ws.read(cx).database_id() == Some(workspace_id))
-                                    .cloned();
-                                if let Some(workspace) = workspace {
-                                    multi_workspace.activate(workspace, cx);
-                                }
-                            })
-                            .log_err();
-                    });
-                }
+            Some(ProjectPickerEntry::OpenProject(_)) => {
+                // With single workspace per window, "open project" entries
+                // (formerly multi-workspace siblings) are no longer actionable.
                 cx.emit(DismissEvent);
             }
             Some(ProjectPickerEntry::RecentProject(selected_match)) => {
@@ -1073,20 +1008,14 @@ impl PickerDelegate for RecentProjectsDelegate {
                         SerializedWorkspaceLocation::Local => {
                             let paths = candidate_workspace_paths.paths().to_vec();
                             if replace_current_window {
-                                if let Some(handle) =
-                                    window.window_handle().downcast::<MultiWorkspace>()
-                                {
-                                    cx.defer(move |cx| {
-                                        if let Some(task) = handle
-                                            .update(cx, |multi_workspace, window, cx| {
-                                                multi_workspace.open_project(paths, window, cx)
-                                            })
-                                            .log_err()
-                                        {
-                                            task.detach_and_log_err(cx);
-                                        }
-                                    });
-                                }
+                                workspace
+                                    .open_workspace_for_paths(true, paths, window, cx)
+                                    .detach_and_prompt_err(
+                                        "Failed to open project",
+                                        window,
+                                        cx,
+                                        |_, _, _| None,
+                                    );
                                 return;
                             } else {
                                 workspace
@@ -1102,11 +1031,11 @@ impl PickerDelegate for RecentProjectsDelegate {
                         SerializedWorkspaceLocation::Remote(mut connection) => {
                             let app_state = workspace.app_state().clone();
                             let replace_window = if replace_current_window {
-                                window.window_handle().downcast::<MultiWorkspace>()
+                                window.window_handle().downcast::<raijin_shell::AppShell>()
                             } else {
                                 None
                             };
-                            let open_options = OpenOptions {
+                            let open_options = raijin_shell::OpenOptions {
                                 replace_window,
                                 ..Default::default()
                             };
@@ -1797,25 +1726,10 @@ impl RecentProjectsDelegate {
     fn remove_sibling_workspace(
         &mut self,
         workspace_id: WorkspaceId,
-        window: &mut Window,
-        cx: &mut Context<Picker<Self>>,
+        _window: &mut Window,
+        _cx: &mut Context<Picker<Self>>,
     ) {
-        if let Some(handle) = window.window_handle().downcast::<MultiWorkspace>() {
-            cx.defer(move |cx| {
-                handle
-                    .update(cx, |multi_workspace, window, cx| {
-                        let index = multi_workspace
-                            .workspaces()
-                            .iter()
-                            .position(|ws| ws.read(cx).database_id() == Some(workspace_id));
-                        if let Some(index) = index {
-                            multi_workspace.remove_workspace(index, window, cx);
-                        }
-                    })
-                    .log_err();
-            });
-        }
-
+        // With single workspace per window, sibling removal is a no-op.
         self.sibling_workspace_ids.remove(&workspace_id);
     }
 
@@ -1881,168 +1795,25 @@ mod tests {
     use serde_json::json;
     use inazuma_settings_framework::SettingsStore;
     use inazuma_util::path;
-    use raijin_workspace::{AppState, open_paths};
+    use raijin_shell::AppShell;
+    use raijin_workspace::AppState;
 
     use super::*;
 
-    #[inazuma::test]
-    async fn test_dirty_workspace_survives_when_opening_recent_project(cx: &mut TestAppContext) {
-        let app_state = init_test(cx);
-
-        cx.update(|cx| {
-            SettingsStore::update_global(cx, |store, cx| {
-                store.update_user_settings(cx, |settings| {
-                    settings
-                        .session
-                        .get_or_insert_default()
-                        .restore_unsaved_buffers = Some(false)
-                });
-            });
-        });
-
-        app_state
-            .fs
-            .as_fake()
-            .insert_tree(
-                path!("/dir"),
-                json!({
-                    "main.ts": "a"
-                }),
-            )
-            .await;
-        app_state
-            .fs
-            .as_fake()
-            .insert_tree(path!("/test/path"), json!({}))
-            .await;
-        cx.update(|cx| {
-            open_paths(
-                &[PathBuf::from(path!("/dir/main.ts"))],
-                app_state,
-                raijin_workspace::OpenOptions::default(),
-                cx,
-            )
-        })
-        .await
-        .unwrap();
-        assert_eq!(cx.update(|cx| cx.windows().len()), 1);
-
-        let multi_workspace = cx.update(|cx| cx.windows()[0].downcast::<MultiWorkspace>().unwrap());
-        multi_workspace
-            .update(cx, |multi_workspace, _, cx| {
-                assert!(!multi_workspace.workspace().read(cx).is_edited())
-            })
-            .unwrap();
-
-        let editor = multi_workspace
-            .read_with(cx, |multi_workspace, cx| {
-                multi_workspace
-                    .workspace()
-                    .read(cx)
-                    .active_item(cx)
-                    .unwrap()
-                    .downcast::<Editor>()
-                    .unwrap()
-            })
-            .unwrap();
-        multi_workspace
-            .update(cx, |_, window, cx| {
-                editor.update(cx, |editor, cx| editor.insert("EDIT", window, cx));
-            })
-            .unwrap();
-        multi_workspace
-            .update(cx, |multi_workspace, _, cx| {
-                assert!(
-                    multi_workspace.workspace().read(cx).is_edited(),
-                    "After inserting more text into the editor without saving, we should have a dirty project"
-                )
-            })
-            .unwrap();
-
-        let recent_projects_picker = open_recent_projects(&multi_workspace, cx);
-        multi_workspace
-            .update(cx, |_, _, cx| {
-                recent_projects_picker.update(cx, |picker, cx| {
-                    assert_eq!(picker.query(cx), "");
-                    let delegate = &mut picker.delegate;
-                    delegate.set_workspaces(vec![(
-                        WorkspaceId::default(),
-                        SerializedWorkspaceLocation::Local,
-                        PathList::new(&[path!("/test/path")]),
-                        Utc::now(),
-                    )]);
-                    delegate.filtered_entries =
-                        vec![ProjectPickerEntry::RecentProject(StringMatch {
-                            candidate_id: 0,
-                            score: 1.0,
-                            positions: Vec::new(),
-                            string: "fake candidate".to_string(),
-                        })];
-                });
-            })
-            .unwrap();
-
-        assert!(
-            !cx.has_pending_prompt(),
-            "Should have no pending prompt on dirty project before opening the new recent project"
-        );
-        let dirty_workspace = multi_workspace
-            .read_with(cx, |multi_workspace, _cx| {
-                multi_workspace.workspace().clone()
-            })
-            .unwrap();
-
-        cx.dispatch_action(*multi_workspace, inazuma_menu::Confirm);
-        cx.run_until_parked();
-
-        multi_workspace
-            .update(cx, |multi_workspace, _, cx| {
-                assert!(
-                    multi_workspace
-                        .workspace()
-                        .read(cx)
-                        .active_modal::<RecentProjects>(cx)
-                        .is_none(),
-                    "Should remove the modal after selecting new recent project"
-                );
-
-                assert!(
-                    multi_workspace.workspaces().len() >= 2,
-                    "Should have at least 2 workspaces: the dirty one and the newly opened one"
-                );
-
-                assert!(
-                    multi_workspace.workspaces().contains(&dirty_workspace),
-                    "The original dirty workspace should still be present"
-                );
-
-                assert!(
-                    dirty_workspace.read(cx).is_edited(),
-                    "The original workspace should still be dirty"
-                );
-            })
-            .unwrap();
-
-        assert!(
-            !cx.has_pending_prompt(),
-            "No save prompt in multi-workspace mode — dirty workspace survives in background"
-        );
-    }
-
     fn open_recent_projects(
-        multi_workspace: &WindowHandle<MultiWorkspace>,
+        shell: &WindowHandle<AppShell>,
         cx: &mut TestAppContext,
     ) -> Entity<Picker<RecentProjectsDelegate>> {
         cx.dispatch_action(
-            (*multi_workspace).into(),
+            (*shell).into(),
             OpenRecent {
                 create_new_window: false,
             },
         );
-        multi_workspace
-            .update(cx, |multi_workspace, _, cx| {
-                multi_workspace
-                    .workspace()
+        shell
+            .update(cx, |_shell, window, cx| {
+                let workspace = Workspace::for_window(window, cx).unwrap();
+                workspace
                     .read(cx)
                     .active_modal::<RecentProjects>(cx)
                     .unwrap()
@@ -2074,10 +1845,10 @@ mod tests {
             .await;
 
         cx.update(|cx| {
-            open_paths(
+            raijin_shell::open_paths(
                 &[PathBuf::from(path!("/project"))],
                 app_state,
-                raijin_workspace::OpenOptions::default(),
+                raijin_shell::OpenOptions::default(),
                 cx,
             )
         })
@@ -2085,22 +1856,16 @@ mod tests {
         .unwrap();
 
         assert_eq!(cx.update(|cx| cx.windows().len()), 1);
-        let multi_workspace = cx.update(|cx| cx.windows()[0].downcast::<MultiWorkspace>().unwrap());
+        let shell = cx.update(|cx| cx.windows()[0].downcast::<AppShell>().unwrap());
 
         cx.run_until_parked();
 
-        // This dispatch triggers raijin_shell::with_active_workspace -> MultiWorkspace::update
-        // -> Workspace::update -> toggle_modal -> new_dev_container.
-        // Before the fix, this panicked with "cannot read raijin_workspace::Workspace while
-        // it is already being updated" because new_dev_container and open_dev_container
-        // tried to read the Workspace entity through a WeakEntity handle while it was
-        // already leased by the outer update.
-        cx.dispatch_action(*multi_workspace, OpenDevContainer);
+        cx.dispatch_action(*shell, OpenDevContainer);
 
-        multi_workspace
-            .update(cx, |multi_workspace, _, cx| {
-                let modal = multi_workspace
-                    .workspace()
+        shell
+            .update(cx, |_shell, window, cx| {
+                let workspace = Workspace::for_window(window, cx).unwrap();
+                let modal = workspace
                     .read(cx)
                     .active_modal::<RemoteServerProjects>(cx);
                 assert!(
@@ -2137,10 +1902,10 @@ mod tests {
             .await;
 
         cx.update(|cx| {
-            open_paths(
+            raijin_shell::open_paths(
                 &[PathBuf::from(path!("/project"))],
                 app_state,
-                raijin_workspace::OpenOptions::default(),
+                raijin_shell::OpenOptions::default(),
                 cx,
             )
         })
@@ -2148,16 +1913,16 @@ mod tests {
         .unwrap();
 
         assert_eq!(cx.update(|cx| cx.windows().len()), 1);
-        let multi_workspace = cx.update(|cx| cx.windows()[0].downcast::<MultiWorkspace>().unwrap());
+        let shell = cx.update(|cx| cx.windows()[0].downcast::<AppShell>().unwrap());
 
         cx.run_until_parked();
 
-        cx.dispatch_action(*multi_workspace, OpenDevContainer);
+        cx.dispatch_action(*shell, OpenDevContainer);
 
-        multi_workspace
-            .update(cx, |multi_workspace, _, cx| {
-                let modal = multi_workspace
-                    .workspace()
+        shell
+            .update(cx, |_shell, window, cx| {
+                let workspace = Workspace::for_window(window, cx).unwrap();
+                let modal = workspace
                     .read(cx)
                     .active_modal::<RemoteServerProjects>(cx);
                 assert!(

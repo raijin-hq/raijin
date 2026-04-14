@@ -4,7 +4,7 @@ use raijin_remote::RemoteConnectionOptions;
 use inazuma_settings_framework::Settings;
 use raijin_ui::{ElevationIndex, Modal, ModalFooter, ModalHeader, Section, prelude::*};
 use raijin_workspace::{
-    ModalView, MultiWorkspace, OpenOptions, Workspace, notifications::DetachAndPromptErr,
+    ModalView, Workspace, notifications::DetachAndPromptErr,
 };
 
 use crate::open_remote_project;
@@ -107,7 +107,7 @@ impl DisconnectedOverlay {
             return;
         };
 
-        let Some(window_handle) = window.window_handle().downcast::<MultiWorkspace>() else {
+        let Some(window_handle) = window.window_handle().downcast::<raijin_shell::AppShell>() else {
             return;
         };
 
@@ -124,7 +124,7 @@ impl DisconnectedOverlay {
                 connection_options,
                 paths,
                 app_state,
-                OpenOptions {
+                raijin_shell::OpenOptions {
                     replace_window: Some(window_handle),
                     ..Default::default()
                 },

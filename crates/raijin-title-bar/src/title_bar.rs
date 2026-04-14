@@ -57,7 +57,7 @@ fn platform_title_bar_height(_window: &Window) -> inazuma::Pixels {
 use update_version::UpdateVersion;
 use inazuma_util::ResultExt;
 use raijin_workspace::{
-    MultiWorkspace, ToggleWorktreeSecurity, Workspace, WorkspaceId, notifications::NotifyResultExt,
+    ToggleWorktreeSecurity, Workspace, WorkspaceId, notifications::NotifyResultExt,
 };
 use raijin_actions::OpenRemote;
 
@@ -91,8 +91,7 @@ pub fn init(cx: &mut App) {
         let Some(window) = window else {
             return;
         };
-        let multi_workspace = workspace.multi_workspace().cloned();
-        let item = cx.new(|cx| TitleBar::new("title-bar", workspace, multi_workspace, window, cx));
+        let item = cx.new(|cx| TitleBar::new("title-bar", workspace, window, cx));
         workspace.set_titlebar_item(item.into(), window, cx);
 
         workspace.register_action(|workspace, _: &SimulateUpdateAvailable, _window, cx| {
@@ -161,7 +160,6 @@ pub struct TitleBar {
     user_store: Entity<UserStore>,
     client: Arc<Client>,
     workspace: WeakEntity<Workspace>,
-    multi_workspace: Option<WeakEntity<MultiWorkspace>>,
     application_menu: Option<Entity<ApplicationMenu>>,
     _subscriptions: Vec<Subscription>,
     banner: Entity<OnboardingBanner>,
@@ -172,19 +170,6 @@ pub struct TitleBar {
 
 impl Render for TitleBar {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        if self.multi_workspace.is_none() {
-            if let Some(mw) = self
-                .workspace
-                .upgrade()
-                .and_then(|ws| ws.read(cx).multi_workspace().cloned())
-            {
-                self.multi_workspace = Some(mw.clone());
-                self.platform_titlebar.update(cx, |titlebar, _cx| {
-                    titlebar.set_multi_workspace(mw);
-                });
-            }
-        }
-
         let title_bar_settings = *TitleBarSettings::get_global(cx);
         let button_layout = title_bar_settings.button_layout;
 
@@ -330,7 +315,6 @@ impl TitleBar {
     pub fn new(
         id: impl Into<ElementId>,
         workspace: &Workspace,
-        multi_workspace: Option<WeakEntity<MultiWorkspace>>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
@@ -409,18 +393,13 @@ impl TitleBar {
 
         let update_version = cx.new(|cx| UpdateVersion::new(cx));
         let platform_titlebar = cx.new(|cx| {
-            let mut titlebar = PlatformTitleBar::new(id, cx);
-            if let Some(mw) = multi_workspace.clone() {
-                titlebar = titlebar.with_multi_workspace(mw);
-            }
-            titlebar
+            PlatformTitleBar::new(id, cx)
         });
 
         let mut this = Self {
             platform_titlebar,
             application_menu,
             workspace: workspace.weak_handle(),
-            multi_workspace,
             project,
             user_store,
             client,
@@ -727,20 +706,8 @@ impl TitleBar {
             "Open Recent Project".to_string()
         };
 
-        let is_sidebar_open = self
-            .multi_workspace
-            .as_ref()
-            .and_then(|mw| mw.upgrade())
-            .map(|mw| mw.read(cx).sidebar_open())
-            .unwrap_or(false)
-            && PlatformTitleBar::is_multi_workspace_enabled(cx);
-
-        let is_threads_list_view_active = self
-            .multi_workspace
-            .as_ref()
-            .and_then(|mw| mw.upgrade())
-            .map(|mw| mw.read(cx).is_threads_list_view_active(cx))
-            .unwrap_or(false);
+        let is_sidebar_open = false;
+        let is_threads_list_view_active = false;
 
         if is_sidebar_open && is_threads_list_view_active {
             return self
@@ -753,18 +720,7 @@ impl TitleBar {
             .map(|w| w.read(cx).focus_handle(cx))
             .unwrap_or_else(|| cx.focus_handle());
 
-        let sibling_workspace_ids: HashSet<WorkspaceId> = self
-            .multi_workspace
-            .as_ref()
-            .and_then(|mw| mw.upgrade())
-            .map(|mw| {
-                mw.read(cx)
-                    .workspaces()
-                    .iter()
-                    .filter_map(|ws| ws.read(cx).database_id())
-                    .collect()
-            })
-            .unwrap_or_default();
+        let sibling_workspace_ids: HashSet<WorkspaceId> = HashSet::new();
 
         PopoverMenu::new("recent-projects-menu")
             .menu(move |window, cx| {
@@ -816,18 +772,7 @@ impl TitleBar {
             .map(|w| w.read(cx).focus_handle(cx))
             .unwrap_or_else(|| cx.focus_handle());
 
-        let sibling_workspace_ids: HashSet<WorkspaceId> = self
-            .multi_workspace
-            .as_ref()
-            .and_then(|mw| mw.upgrade())
-            .map(|mw| {
-                mw.read(cx)
-                    .workspaces()
-                    .iter()
-                    .filter_map(|ws| ws.read(cx).database_id())
-                    .collect()
-            })
-            .unwrap_or_default();
+        let sibling_workspace_ids: HashSet<WorkspaceId> = HashSet::new();
 
         PopoverMenu::new("sidebar-title-recent-projects-menu")
             .menu(move |window, cx| {
@@ -1056,7 +1001,7 @@ impl TitleBar {
                             if let Some(auto_updater) = raijin_auto_update::AutoUpdater::get(cx)
                                 && auto_updater.read(cx).status().is_updated()
                             {
-                                raijin_workspace::reload(cx);
+                                raijin_shell::reload(cx);
                                 return;
                             }
                             raijin_auto_update::check(&Default::default(), window, cx);
@@ -1194,7 +1139,7 @@ impl TitleBar {
                                     .into_any_element()
                             },
                             move |_, cx| {
-                                raijin_workspace::reload(cx);
+                                raijin_shell::reload(cx);
                             },
                         )
                         .separator()

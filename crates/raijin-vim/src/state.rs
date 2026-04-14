@@ -37,7 +37,7 @@ use raijin_ui::{
 use inazuma_util::ResultExt;
 use inazuma_util::rel_path::RelPath;
 use raijin_workspace::searchable::Direction;
-use raijin_workspace::{MultiWorkspace, Workspace, WorkspaceDb, WorkspaceId};
+use raijin_workspace::{Workspace, WorkspaceDb, WorkspaceId};
 
 #[derive(Clone, Copy, Default, Debug, PartialEq, Serialize, Deserialize)]
 pub enum Mode {
@@ -748,19 +748,17 @@ impl VimGlobals {
                 });
                 GlobalCommandPaletteInterceptor::set(cx, command_interceptor);
                 for window in cx.windows() {
-                    if let Some(multi_workspace) = window.downcast::<MultiWorkspace>() {
-                        multi_workspace
-                            .update(cx, |multi_workspace, _, cx| {
-                                for workspace in multi_workspace.workspaces() {
-                                    workspace.update(cx, |workspace, cx| {
-                                        Vim::update_globals(cx, |globals, cx| {
-                                            globals.register_workspace(workspace, cx)
-                                        });
+                    window
+                        .update(cx, |_, window, cx| {
+                            if let Some(workspace) = Workspace::for_window(window, cx) {
+                                workspace.update(cx, |workspace, cx| {
+                                    Vim::update_globals(cx, |globals, cx| {
+                                        globals.register_workspace(workspace, cx)
                                     });
-                                }
-                            })
-                            .ok();
-                    }
+                                });
+                            }
+                        })
+                        .ok();
                 }
             } else {
                 KeyBinding::set_vim_mode(cx, false);

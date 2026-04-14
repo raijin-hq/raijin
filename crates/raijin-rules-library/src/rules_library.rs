@@ -24,7 +24,7 @@ use raijin_theme_settings::ThemeSettings;
 use raijin_ui::{Divider, ListItem, ListItemSpacing, ListSubHeader, Tooltip, prelude::*};
 use raijin_ui_input::ErasedEditor;
 use inazuma_util::{ResultExt, TryFutureExt};
-use raijin_workspace::{MultiWorkspace, Workspace, WorkspaceSettings, client_side_decorations};
+use raijin_workspace::{Workspace, WorkspaceSettings, client_side_decorations};
 use raijin_actions::assistant::InlineAssist;
 
 use raijin_prompt_store::*;
@@ -968,19 +968,21 @@ impl RulesLibrary {
                 .assist(rule_editor, initial_prompt, window, cx);
         } else {
             for window in cx.windows() {
-                if let Some(multi_workspace) = window.downcast::<MultiWorkspace>() {
-                    let panel = multi_workspace
-                        .update(cx, |multi_workspace, window, cx| {
+                let panel = window
+                    .update(cx, |_, window, cx| {
+                        if let Some(ws) = Workspace::for_window(window, cx) {
                             window.activate_window();
-                            multi_workspace.workspace().update(cx, |workspace, cx| {
+                            ws.update(cx, |workspace, cx| {
                                 self.inline_assist_delegate
                                     .focus_agent_panel(workspace, window, cx)
                             })
-                        })
-                        .ok();
-                    if panel == Some(true) {
-                        return;
-                    }
+                        } else {
+                            false
+                        }
+                    })
+                    .ok();
+                if panel == Some(true) {
+                    return;
                 }
             }
         }

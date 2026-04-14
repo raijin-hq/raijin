@@ -357,30 +357,56 @@ pub fn init(cx: &mut App) {
     cx.on_action(move |_: &raijin_workspace::NewFile, cx| {
         let app_state = raijin_workspace::AppState::global(cx);
         if let Some(app_state) = app_state.upgrade() {
-            raijin_workspace::open_new(
-                Default::default(),
-                app_state,
-                cx,
-                |workspace, window, cx| {
-                    Editor::new_file(workspace, &Default::default(), window, cx)
-                },
-            )
-            .detach_and_log_err(cx);
+            if let Some(opener) = raijin_workspace::workspace_opener(cx) {
+                let task = opener.open_paths(&[], app_state, None, cx);
+                cx.spawn(async move |cx| {
+                    let workspace = task.await?;
+                    let entity_id = workspace.entity_id();
+                    cx.update(|cx| {
+                        for window in cx.windows() {
+                            let _ = window.update(cx, |_, window, cx| {
+                                if let Some(ws) = raijin_workspace::Workspace::for_window(window, cx) {
+                                    if ws.entity_id() == entity_id {
+                                        ws.update(cx, |workspace, cx| {
+                                            Editor::new_file(workspace, &Default::default(), window, cx)
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    anyhow::Ok(())
+                })
+                .detach_and_log_err(cx);
+            }
         }
     })
     .on_action(move |_: &raijin_workspace::NewWindow, cx| {
         let app_state = raijin_workspace::AppState::global(cx);
         if let Some(app_state) = app_state.upgrade() {
-            raijin_workspace::open_new(
-                Default::default(),
-                app_state,
-                cx,
-                |workspace, window, cx| {
-                    cx.activate(true);
-                    Editor::new_file(workspace, &Default::default(), window, cx)
-                },
-            )
-            .detach_and_log_err(cx);
+            if let Some(opener) = raijin_workspace::workspace_opener(cx) {
+                let task = opener.open_paths(&[], app_state, None, cx);
+                cx.spawn(async move |cx| {
+                    let workspace = task.await?;
+                    let entity_id = workspace.entity_id();
+                    cx.update(|cx| {
+                        cx.activate(true);
+                        for window in cx.windows() {
+                            let _ = window.update(cx, |_, window, cx| {
+                                if let Some(ws) = raijin_workspace::Workspace::for_window(window, cx) {
+                                    if ws.entity_id() == entity_id {
+                                        ws.update(cx, |workspace, cx| {
+                                            Editor::new_file(workspace, &Default::default(), window, cx)
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    anyhow::Ok(())
+                })
+                .detach_and_log_err(cx);
+            }
         }
     });
     _ = raijin_ui_input::ERASED_EDITOR_FACTORY.set(|window, cx| {

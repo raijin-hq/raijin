@@ -10,7 +10,7 @@ use inazuma::{
     Action, App, AsyncApp, ClipboardItem, DEFAULT_ADDITIONAL_WINDOW_SIZE, Div, Entity, FocusHandle,
     Focusable, Global, KeyContext, ListState, ReadGlobal as _, ScrollHandle, Stateful,
     Subscription, Task, Tiling, TitlebarOptions, UniformListScrollHandle, WeakEntity, Window,
-    WindowBounds, WindowHandle, WindowOptions, actions, div, list, point, prelude::*, px,
+    WindowBounds, WindowOptions, actions, div, list, point, prelude::*, px,
     uniform_list,
 };
 
@@ -42,7 +42,7 @@ use raijin_ui::{
 
 use inazuma_util::{ResultExt as _, paths::PathStyle, rel_path::RelPath};
 use raijin_workspace::{
-    AppState, MultiWorkspace, OpenOptions, OpenVisible, Workspace, client_side_decorations,
+    OpenOptions, OpenVisible, Workspace, client_side_decorations,
 };
 use raijin_actions::{OpenProjectSettings, OpenSettings, OpenSettingsAt};
 
@@ -399,15 +399,15 @@ pub fn init(cx: &mut App) {
     cx.observe_new(|workspace: &mut raijin_workspace::Workspace, _, _| {
         workspace
             .register_action(|_, OpenSettingsAt { path }: &OpenSettingsAt, window, cx| {
-                let window_handle = window.window_handle().downcast::<MultiWorkspace>();
-                open_settings_editor(Some(&path), None, window_handle, cx);
+                let window_handle = window.window_handle();
+                open_settings_editor(Some(&path), None, Some(window_handle), cx);
             })
             .register_action(|_, _: &OpenSettings, window, cx| {
-                let window_handle = window.window_handle().downcast::<MultiWorkspace>();
-                open_settings_editor(None, None, window_handle, cx);
+                let window_handle = window.window_handle();
+                open_settings_editor(None, None, Some(window_handle), cx);
             })
             .register_action(|workspace, _: &OpenProjectSettings, window, cx| {
-                let window_handle = window.window_handle().downcast::<MultiWorkspace>();
+                let window_handle = window.window_handle();
                 let target_worktree_id = workspace
                     .project()
                     .read(cx)
@@ -418,7 +418,7 @@ pub fn init(cx: &mut App) {
                             .is_dir()
                             .then_some(tree.read(cx).id())
                     });
-                open_settings_editor(None, target_worktree_id, window_handle, cx);
+                open_settings_editor(None, target_worktree_id, Some(window_handle), cx);
             });
     })
     .detach();
@@ -561,7 +561,7 @@ fn init_renderers(cx: &mut App) {
 pub fn open_settings_editor(
     path: Option<&str>,
     target_worktree_id: Option<WorktreeId>,
-    workspace_handle: Option<WindowHandle<MultiWorkspace>>,
+    workspace_handle: Option<inazuma::AnyWindowHandle>,
     cx: &mut App,
 ) {
     raijin_telemetry::event!("Settings Viewed");
@@ -725,7 +725,7 @@ fn active_language_mut() -> Option<std::sync::RwLockWriteGuard<'static, Option<S
 
 pub struct SettingsWindow {
     title_bar: Option<Entity<PlatformTitleBar>>,
-    original_window: Option<WindowHandle<MultiWorkspace>>,
+    original_window: Option<inazuma::AnyWindowHandle>,
     files: Vec<(SettingsUiFile, FocusHandle)>,
     worktree_root_dirs: HashMap<WorktreeId, String>,
     current_file: SettingsUiFile,
@@ -1469,7 +1469,7 @@ impl SettingsUiFile {
 
 impl SettingsWindow {
     fn new(
-        original_window: Option<WindowHandle<MultiWorkspace>>,
+        original_window: Option<inazuma::AnyWindowHandle>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
@@ -3323,11 +3323,9 @@ impl SettingsWindow {
                     return;
                 };
                 original_window
-                    .update(cx, |multi_workspace, window, cx| {
-                        multi_workspace
-                            .workspace()
-                            .clone()
-                            .update(cx, |workspace, cx| {
+                    .update(cx, |_root_view, window, cx| {
+                        if let Some(workspace) = Workspace::for_window(window, cx) {
+                            workspace.update(cx, |workspace, cx| {
                                 workspace
                                     .with_local_or_wsl_workspace(
                                         window,
@@ -3336,6 +3334,7 @@ impl SettingsWindow {
                                     )
                                     .detach();
                             });
+                        }
                     })
                     .ok();
 
@@ -3348,19 +3347,13 @@ impl SettingsWindow {
                     .windows()
                     .into_iter()
                     .filter_map(|window_handle| {
-                        let window = window_handle.downcast::<MultiWorkspace>()?;
-                        let multi = window.read(cx).ok()?;
-                        multi
-                            .workspaces()
-                            .iter()
-                            .find_map(|workspace| {
-                                let worktree = workspace
-                                    .read(cx)
-                                    .project()
-                                    .read(cx)
-                                    .worktree_for_id(*worktree_id, cx)?;
-                                Some((window, worktree, workspace.clone()))
-                            })
+                        let workspace = raijin_workspace::workspace_for_window(window_handle, cx)?;
+                        let worktree = workspace
+                            .read(cx)
+                            .project()
+                            .read(cx)
+                            .worktree_for_id(*worktree_id, cx)?;
+                        Some((window_handle, worktree, workspace))
                     })
                     .next()
                 else {
@@ -3390,15 +3383,16 @@ impl SettingsWindow {
                 // TODO: move raijin::open_local_file() APIs to this crate, and
                 // re-implement the "initial_contents" behavior
                 let workspace_weak = corresponding_workspace.downgrade();
-                workspace_window
-                    .update(cx, |_, window, cx| {
-                        cx.spawn_in(window, async move |_, cx| {
-                            if let Some(create_task) = create_task {
-                                create_task.await.ok()?;
-                            };
+                let workspace_window = workspace_window;
+                cx.spawn(async move |_this, cx| {
+                    if let Some(create_task) = create_task {
+                        create_task.await.ok();
+                    };
 
-                            workspace_weak
-                                .update_in(cx, |workspace, window, cx| {
+                    if let Some(open_task) = cx
+                        .update_window(workspace_window, |_root, window, cx| {
+                            workspace_weak.upgrade().map(|ws| {
+                                ws.update(cx, |workspace, cx| {
                                     workspace.open_path(
                                         (worktree_id, settings_path.clone()),
                                         None,
@@ -3407,22 +3401,20 @@ impl SettingsWindow {
                                         cx,
                                     )
                                 })
-                                .ok()?
-                                .await
-                                .log_err()?;
-
-                            workspace_weak
-                                .update_in(cx, |_, window, cx| {
-                                    window.activate_window();
-                                    cx.notify();
-                                })
-                                .ok();
-
-                            Some(())
+                            })
                         })
-                        .detach();
+                        .ok()
+                        .flatten()
+                    {
+                        open_task.await.log_err();
+                    }
+
+                    cx.update_window(workspace_window, |_root, window, _cx| {
+                        window.activate_window();
                     })
                     .ok();
+                })
+                .detach();
 
                 window.remove_window();
             }
@@ -3721,36 +3713,19 @@ impl Render for SettingsWindow {
 }
 
 fn all_projects(
-    window: Option<&WindowHandle<MultiWorkspace>>,
+    _window: Option<&inazuma::AnyWindowHandle>,
     cx: &App,
 ) -> impl Iterator<Item = Entity<Project>> {
     let mut seen_project_ids = std::collections::HashSet::new();
-    // Collect projects from all MultiWorkspace windows
-    let mut projects: Vec<Entity<Project>> = cx
+    // Collect projects from all workspace windows via the WorkspaceRegistry
+    let projects: Vec<Entity<Project>> = cx
         .windows()
         .into_iter()
         .filter_map(|wh| {
-            let window = wh.downcast::<MultiWorkspace>()?;
-            let multi = window.read(cx).ok()?;
-            Some(
-                multi
-                    .workspaces()
-                    .iter()
-                    .map(|ws| ws.read(cx).project().clone())
-                    .collect::<Vec<_>>(),
-            )
+            let workspace = raijin_workspace::workspace_for_window(wh, cx)?;
+            Some(workspace.read(cx).project().clone())
         })
-        .flatten()
         .collect();
-
-    // Also include projects from the explicitly passed window handle
-    if let Some(handle) = window {
-        if let Ok(multi) = handle.read(cx) {
-            for ws in multi.workspaces() {
-                projects.push(ws.read(cx).project().clone());
-            }
-        }
-    }
 
     projects
         .into_iter()
@@ -4796,7 +4771,14 @@ pub mod test {
                     cx,
                 )
             });
-            MultiWorkspace::new(workspace, window, cx)
+            {
+                raijin_workspace::register_workspace_for_window(
+                    window.window_handle().window_id(),
+                    workspace.downgrade(),
+                    cx,
+                );
+                workspace
+            }
         });
 
         let (_multi_workspace2, cx) = cx.add_window_view(|window, cx| {
@@ -4809,10 +4791,17 @@ pub mod test {
                     cx,
                 )
             });
-            MultiWorkspace::new(workspace, window, cx)
+            {
+                raijin_workspace::register_workspace_for_window(
+                    window.window_handle().window_id(),
+                    workspace.downgrade(),
+                    cx,
+                );
+                workspace
+            }
         });
 
-        let workspace2_handle = cx.window_handle().downcast::<MultiWorkspace>().unwrap();
+        let workspace2_handle = cx.window_handle();
 
         cx.run_until_parked();
 
@@ -4941,10 +4930,17 @@ pub mod test {
                     cx,
                 )
             });
-            MultiWorkspace::new(workspace, window, cx)
+            {
+                raijin_workspace::register_workspace_for_window(
+                    window.window_handle().window_id(),
+                    workspace.downgrade(),
+                    cx,
+                );
+                workspace
+            }
         });
 
-        let workspace1_handle = cx.window_handle().downcast::<MultiWorkspace>().unwrap();
+        let workspace1_handle = cx.window_handle();
 
         cx.run_until_parked();
 
@@ -4991,7 +4987,14 @@ pub mod test {
                     cx,
                 )
             });
-            MultiWorkspace::new(workspace, window, cx)
+            {
+                raijin_workspace::register_workspace_for_window(
+                    window.window_handle().window_id(),
+                    workspace.downgrade(),
+                    cx,
+                );
+                workspace
+            }
         });
 
         cx.run_until_parked();

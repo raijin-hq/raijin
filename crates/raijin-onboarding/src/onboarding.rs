@@ -19,7 +19,7 @@ use raijin_workspace::{
     dock::DockPosition,
     item::{Item, ItemEvent},
     notifications::NotifyResultExt as _,
-    open_new, register_serializable_item,
+    register_serializable_item, workspace_opener,
 };
 use raijin_actions::OpenOnboarding;
 
@@ -115,27 +115,41 @@ pub fn init(cx: &mut App) {
 
 pub fn show_onboarding_view(app_state: Arc<AppState>, cx: &mut App) -> Task<anyhow::Result<()>> {
     raijin_telemetry::event!("Onboarding Page Opened");
-    open_new(
-        Default::default(),
-        app_state,
-        cx,
-        |workspace, window, cx| {
-            {
-                workspace.toggle_dock(DockPosition::Left, window, cx);
-                let onboarding_page = Onboarding::new(workspace, cx);
-                workspace.add_item_to_center(Box::new(onboarding_page.clone()), window, cx);
+    if let Some(opener) = workspace_opener(cx) {
+        let task = opener.open_paths(&[], app_state, None, cx);
+        cx.spawn(async move |cx| {
+            let workspace = task.await?;
+            let entity_id = workspace.entity_id();
+            cx.update(|cx| {
+                for window in cx.windows() {
+                    let _ = window.update(cx, |_, window, cx| {
+                        if let Some(ws) = Workspace::for_window(window, cx) {
+                            if ws.entity_id() == entity_id {
+                                ws.update(cx, |workspace, cx| {
+                                    workspace.toggle_dock(DockPosition::Left, window, cx);
+                                    let onboarding_page = Onboarding::new(workspace, cx);
+                                    workspace.add_item_to_center(Box::new(onboarding_page.clone()), window, cx);
 
-                window.focus(&onboarding_page.focus_handle(cx), cx);
+                                    window.focus(&onboarding_page.focus_handle(cx), cx);
 
-                cx.notify();
-            };
-            let kvp = KeyValueStore::global(cx);
-            raijin_db::write_and_log(cx, move || async move {
-                kvp.write_kvp(FIRST_OPEN.to_string(), "false".to_string())
-                    .await
+                                    cx.notify();
+
+                                    let kvp = KeyValueStore::global(cx);
+                                    raijin_db::write_and_log(cx, move || async move {
+                                        kvp.write_kvp(FIRST_OPEN.to_string(), "false".to_string())
+                                            .await
+                                    });
+                                });
+                            }
+                        }
+                    });
+                }
             });
-        },
-    )
+            anyhow::Ok(())
+        })
+    } else {
+        Task::ready(Err(anyhow::anyhow!("No workspace opener registered")))
+    }
 }
 
 struct Onboarding {
