@@ -7,6 +7,7 @@ mod display_map;
 mod element;
 mod element_layout;
 mod element_paint;
+pub mod erased_editor_impl;
 mod indent;
 mod input;
 mod lsp;

@@ -1,3 +1,11 @@
+> **STATUS: Audit-Wahrheitsquelle.** Diese Datei ist die zentrale Übersicht über den realen Code-Stand aller Features. Plan 25 (Crate-by-Crate Wiring) orientiert sich an den "Status / Audit / Phase"-Spalten unten.
+>
+> **Pflege:** Wird Station für Station aus Plan 25 aktualisiert. Wenn ein Crate verdrahtet wird, wandert das zugehörige Feature von "Code da, nicht verdrahtet" auf "funktioniert".
+>
+> **Bekannte Korrektur:** `raijin-streaming-diff` ist ~1k LOC (eine Datei, 35 KB), nicht 36k wie unten in der Editor-Tabelle steht.
+
+---
+
 # Phase 28: Feature-Roadmap & Extension-Capabilities
 
 ## Übersicht

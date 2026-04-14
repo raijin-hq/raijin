@@ -137,6 +137,9 @@ pub struct TerminalPane {
 
     // Workspace reference (for modal access via action dispatch)
     workspace: Option<inazuma::WeakEntity<Workspace>>,
+
+    // Subscriptions (focus, terminal events, etc.)
+    _subscriptions: Vec<inazuma::Subscription>,
 }
 
 impl TerminalPane {
@@ -226,6 +229,12 @@ impl TerminalPane {
             state.lsp.completion_provider = Some(shell_completion.clone());
         });
 
+        let focus_in = cx.on_focus_in(&focus_handle, window, |this, window, cx| {
+            this.input_state.update(cx, |state, cx| {
+                state.focus(window, cx);
+            });
+        });
+
         Self {
             terminal,
             terminal_title: "~ zsh".to_string(),
@@ -265,6 +274,7 @@ impl TerminalPane {
             last_duration_ms: None,
             current_git_root: None,
             workspace: None,
+            _subscriptions: vec![focus_in],
         }
     }
 
@@ -1246,6 +1256,17 @@ impl Item for TerminalPane {
             last_duration_ms: None,
             current_git_root: None,
             workspace: ws,
+            _subscriptions: Vec::new(),
+        });
+
+        // Register focus-forward subscription after entity creation
+        new_entity.update(cx, |pane, cx| {
+            let focus_in = cx.on_focus_in(&pane.focus_handle, window, |this, window, cx| {
+                this.input_state.update(cx, |state, cx| {
+                    state.focus(window, cx);
+                });
+            });
+            pane._subscriptions.push(focus_in);
         });
 
         inazuma::Task::ready(Some(new_entity))
@@ -1487,28 +1508,31 @@ fn render_git_branch_chip(
             ws.downcast_ref::<inazuma::WeakEntity<Workspace>>().cloned()
         });
 
-    div()
-        .id("git-branch-chip")
-        .cursor_pointer()
-        .child(
-            Chip::new(current_branch.clone())
-                .icon_colored(raijin_ui::IconName::GitBranch, icon_color)
-                .color(text_color)
-                .interactive()
-                .tooltip(raijin_ui::ChipTooltip::text("Switch branch")),
-        )
+    Chip::new(current_branch.clone())
+        .icon_colored(raijin_ui::IconName::GitBranch, icon_color)
+        .color(text_color)
+        .interactive()
+        .tooltip(raijin_ui::ChipTooltip::text("Switch branch"))
         .on_click({
             move |_, window, cx| {
-                let Some(ws) = workspace_handle.as_ref().and_then(|w| w.upgrade()) else {
+                let Some(ws) = workspace_handle.clone() else {
                     return;
                 };
                 let branches = crate::branch_picker::list_git_branches(&cwd);
                 let current = current_branch.clone();
-                ws.update(cx, |workspace, cx| {
-                    workspace.toggle_modal(window, cx, |window, cx| {
-                        crate::branch_picker::BranchPicker::new(branches, current, window, cx)
-                    });
-                });
+                window.spawn(cx, async move |cx| {
+                    cx.update(|window, cx| {
+                        if let Some(ws) = ws.upgrade() {
+                            ws.update(cx, |workspace, cx| {
+                                workspace.toggle_modal(window, cx, |window, cx| {
+                                    crate::branch_picker::BranchPicker::new(
+                                        branches, current, window, cx,
+                                    )
+                                });
+                            });
+                        }
+                    }).ok();
+                }).detach();
             }
         })
         .into_any_element()

@@ -616,7 +616,7 @@ impl Element for TextElement {
         // Paint blinking cursor
         if focused && show_cursor {
             if let Some(cursor_bounds) = prepaint.cursor_bounds_with_scroll() {
-                window.paint_quad(fill(cursor_bounds, cx.theme().colors().accent));
+                window.paint_quad(fill(cursor_bounds, cx.theme().colors().primary));
             }
         }
 

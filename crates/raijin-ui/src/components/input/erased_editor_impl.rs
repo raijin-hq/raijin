@@ -1,14 +1,13 @@
 use std::any::Any;
 use std::sync::Arc;
 
-use inazuma::{
-    AnyElement, App, Entity, EventEmitter, FocusHandle, IntoElement, Subscription, Window,
-};
+use inazuma::{AnyElement, App, AppContext, Entity, FocusHandle, IntoElement, Subscription, Window};
 
-use crate::erased_editor::{ErasedEditor, ErasedEditorEvent, ERASED_EDITOR_FACTORY};
+use crate::{ErasedEditor, ErasedEditorEvent, ERASED_EDITOR_FACTORY};
 use crate::input::{Input, InputEvent, InputState};
 
 /// Wrapper that implements `ErasedEditor` for `Entity<InputState>`.
+#[derive(Clone)]
 struct InputEditor(Entity<InputState>);
 
 impl ErasedEditor for InputEditor {
@@ -16,21 +15,23 @@ impl ErasedEditor for InputEditor {
         self.0.read(cx).value().to_string()
     }
 
-    fn set_text(&self, text: &str, _window: &mut Window, cx: &mut App) {
+    fn set_text(&self, text: &str, window: &mut Window, cx: &mut App) {
+        let text = text.to_string();
         self.0.update(cx, |state, cx| {
-            state.set_value(text, cx);
+            state.set_value(text, window, cx);
         });
     }
 
-    fn clear(&self, _window: &mut Window, cx: &mut App) {
+    fn clear(&self, window: &mut Window, cx: &mut App) {
         self.0.update(cx, |state, cx| {
-            state.set_value("", cx);
+            state.set_value("", window, cx);
         });
     }
 
-    fn set_placeholder_text(&self, text: &str, _window: &mut Window, cx: &mut App) {
+    fn set_placeholder_text(&self, text: &str, window: &mut Window, cx: &mut App) {
+        let text = text.to_string();
         self.0.update(cx, |state, cx| {
-            state.set_placeholder(text, cx);
+            state.set_placeholder(text, window, cx);
         });
     }
 
@@ -49,15 +50,16 @@ impl ErasedEditor for InputEditor {
     fn subscribe(
         &self,
         mut callback: Box<dyn FnMut(ErasedEditorEvent, &mut Window, &mut App) + 'static>,
-        _window: &mut Window,
+        window: &mut Window,
         cx: &mut App,
     ) -> Subscription {
-        cx.subscribe(&self.0, move |event: &InputEvent, cx| {
-            match event {
-                InputEvent::Change => callback(ErasedEditorEvent::BufferEdited, /* need window */ todo!()),
-                InputEvent::Blur => callback(ErasedEditorEvent::Blurred, todo!()),
-                _ => {}
-            }
+        window.subscribe(&self.0, cx, move |_, event: &InputEvent, window, cx| {
+            let event = match event {
+                InputEvent::Change => ErasedEditorEvent::BufferEdited,
+                InputEvent::Blur => ErasedEditorEvent::Blurred,
+                _ => return,
+            };
+            (callback)(event, window, cx);
         })
     }
 
@@ -70,10 +72,15 @@ impl ErasedEditor for InputEditor {
     }
 }
 
-/// Register the `InputState`-based editor factory as the default `ErasedEditor` implementation.
-pub fn register_input_editor_factory() {
-    let _ = ERASED_EDITOR_FACTORY.set(|window: &mut Window, cx: &mut App| -> Arc<dyn ErasedEditor> {
+/// The factory function that creates an InputState-based ErasedEditor.
+pub fn input_editor_factory() -> fn(&mut Window, &mut App) -> Arc<dyn ErasedEditor> {
+    |window: &mut Window, cx: &mut App| -> Arc<dyn ErasedEditor> {
         let state = cx.new(|cx| InputState::new(window, cx));
         Arc::new(InputEditor(state))
-    });
+    }
+}
+
+/// Register the `InputState`-based editor factory on the raijin-ui ERASED_EDITOR_FACTORY.
+pub fn register_input_editor_factory() {
+    let _ = ERASED_EDITOR_FACTORY.set(input_editor_factory());
 }

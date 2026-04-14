@@ -1,3 +1,9 @@
+> **STATUS: Vision-Dokument** — wird durch **Station 13** in `25-TERMINAL-EDITOR-FUSION.md` umgesetzt. Verschoben nach `done/` wenn Station 13 fertig ist.
+>
+> Wer Station 13 implementiert, liest dieses Dokument als Anforderungs-Spec. Pre-Work für Station 13: `outputs/plain.rs` reparieren (TerminalElement-Import → `to_grid_snapshot()`). raijin-repl ist heute nicht in `raijin-app/Cargo.toml` geladen.
+
+---
+
 # Phase 29: Hybrid Terminal-Notebook — REPL Revolution
 
 ## Vision

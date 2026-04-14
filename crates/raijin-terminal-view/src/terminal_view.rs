@@ -129,6 +129,7 @@ impl Render for TerminalView {
 /// Registers action handlers on every new Workspace:
 /// - `workspace::NewTerminal` → creates a new TerminalPane tab
 pub fn init(cx: &mut App) {
+    raijin_ui::input::erased_editor_impl::register_input_editor_factory();
     cx.observe_new(
         |workspace: &mut Workspace, _window, _cx: &mut inazuma::Context<Workspace>| {
             workspace.register_action(|workspace, _action: &raijin_workspace::NewTerminal, window, cx| {

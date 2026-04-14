@@ -32,6 +32,7 @@ pub struct Chip {
     selected: bool,
     interactive: bool,
     tooltip: Option<Box<dyn Fn(&mut Window, &mut App) -> AnyView + 'static>>,
+    on_click: Option<Box<dyn Fn(&inazuma::ClickEvent, &mut Window, &mut App) + 'static>>,
 }
 
 impl Chip {
@@ -50,6 +51,7 @@ impl Chip {
             selected: false,
             interactive: false,
             tooltip: None,
+            on_click: None,
         }
     }
 
@@ -119,6 +121,12 @@ impl Chip {
         self.tooltip = Some(Box::new(tooltip));
         self
     }
+
+    /// Sets a click handler on the chip.
+    pub fn on_click(mut self, handler: impl Fn(&inazuma::ClickEvent, &mut Window, &mut App) + 'static) -> Self {
+        self.on_click = Some(Box::new(handler));
+        self
+    }
 }
 
 impl RenderOnce for Chip {
@@ -175,6 +183,9 @@ impl RenderOnce for Chip {
                 this.tooltip(tooltip)
                     .tooltip_placement(inazuma::TooltipPlacement::AboveElement)
                     .tooltip_delay(std::time::Duration::ZERO)
+            })
+            .when_some(self.on_click, |this, handler| {
+                this.on_click(handler)
             })
     }
 }

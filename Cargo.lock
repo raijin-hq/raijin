@@ -15614,6 +15614,7 @@ dependencies = [
  "raijin-terminal",
  "raijin-theme",
  "raijin-ui",
+ "raijin-ui-input",
  "raijin-workspace",
  "serde_json",
  "strsim 0.11.1",

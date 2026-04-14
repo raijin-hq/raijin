@@ -37,7 +37,7 @@ fn get_battery_status(ctx: &ChipContext) -> Option<BatteryStatus> {
             percentage: battery_info.energy / battery_info.energy_full * 100.0,
             state: battery_info.state,
         };
-        log::debug!("Battery status: {battery:?}");
+        log::trace!("Battery status: {battery:?}");
         Some(battery)
     }
 }
@@ -90,7 +90,7 @@ impl BatteryInfoProvider for BatteryInfoProviderImpl {
             batteries
                 .filter_map(|battery| match battery {
                     Ok(battery) => {
-                        log::debug!("Battery found: {battery:?}");
+                        log::trace!("Battery found: {battery:?}");
 
                         let charge_rate = battery.state_of_charge().value;
                         let energy_full = battery.energy_full().value;

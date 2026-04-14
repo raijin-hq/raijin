@@ -1,5 +1,16 @@
 # Phase 26: Agentic Development Environment — Warp-Style Agent System
 
+> **STATUS: Vision-Dokument** — wird durch **Station 11** in `25-TERMINAL-EDITOR-FUSION.md` umgesetzt. Verschoben nach `done/` wenn Station 11 fertig ist.
+>
+> Wer Station 11 implementiert, liest dieses Dokument als Anforderungs-Spec. Die hier beschriebenen Features (Zwei-Modi-System, Block-Context, Full Terminal Use, /plan, Code Review, Conversation Management, Cloud Agents) sind das **Ziel** von Station 11 — die konkrete Reihenfolge und Vorbedingungen stehen aber in Plan 25.
+>
+> **Wichtige Korrektur zur Inventur unten:** Die LOC-Zahlen sind aus der ursprünglichen Schätzung. Verifiziert gegen den Code (April 2026):
+> - `raijin-streaming-diff` ist tatsächlich nur ~1k LOC (eine Datei, 35 KB) — die Tabelle unten stimmt
+> - Alle gelisteten Crates existieren als Source-Code, **keines** ist heute in `raijin-app/Cargo.toml` geladen
+> - Die Verdrahtung in die App ist Hauptarbeit von Station 11, nicht das Trait-Design
+
+---
+
 ## Vision
 
 Raijin's Agent System vereint Warp's ADE-Konzept (Terminal-native, Full Terminal Use, Conversation Management) mit unserer existierenden AI-Infrastruktur (231k Zeilen AI/Agent-Code von der Referenz-Codebase). Das Ergebnis: Ein Terminal-first Agent das sowohl interaktive Conversations als auch autonome Cloud Agents unterstützt.

@@ -38,6 +38,7 @@ raijin-task.workspace = true
 raijin-terminal.workspace = true
 raijin-theme.workspace = true
 raijin-ui.workspace = true
+raijin-ui-input.workspace = true
 raijin-workspace.workspace = true
 serde_json.workspace = true
 strsim = "0.11"
