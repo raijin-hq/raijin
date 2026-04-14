@@ -21,6 +21,7 @@ log.workspace = true
 serde.workspace = true
 inazuma-settings-framework.workspace = true
 shellexpand.workspace = true
+raijin-shell.workspace = true
 raijin-workspace.workspace = true
 
 [dev-dependencies]

@@ -1995,7 +1995,7 @@ mod tests {
     use inazuma_text::Point;
     use raijin_ui::{App, Context, IntoElement, Render, SharedString, Window};
     use inazuma_util::{path, inazuma_util::paths::PathStyle, rel_path::rel_path};
-    use raijin_workspace::{AppState, Item, MultiWorkspace};
+    use raijin_workspace::{AppState, Item, Workspace};
 
     use crate::completion_provider::PromptContextType;
     use crate::{
@@ -2103,9 +2103,8 @@ mod tests {
         fs.insert_tree("/project", json!({"file": ""})).await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = None;
 
@@ -2217,9 +2216,8 @@ mod tests {
             vec![],
         )));
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace_handle = workspace.downgrade();
         let message_editor = workspace.update_in(cx, |_, window, cx| {
             cx.new(|cx| {
@@ -2367,10 +2365,8 @@ mod tests {
 
         let project = Project::test(app_state.fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
 
         let mut cx = VisualTestContext::from_window(window.into(), cx);
 
@@ -2561,10 +2557,8 @@ mod tests {
 
         let project = Project::test(app_state.fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
 
         let worktree = project.update(cx, |project, cx| {
             let mut worktrees = project.worktrees(cx).collect::<Vec<_>>();
@@ -3102,9 +3096,8 @@ mod tests {
 
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = Some(cx.new(|cx| ThreadStore::new(cx)));
 
@@ -3201,9 +3194,8 @@ mod tests {
         fs.insert_tree("/project", json!({"file": ""})).await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = Some(cx.new(|cx| ThreadStore::new(cx)));
 
@@ -3274,9 +3266,8 @@ mod tests {
         fs.insert_tree("/project", json!({"file": ""})).await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = None;
 
@@ -3328,9 +3319,8 @@ mod tests {
         fs.insert_tree("/project", json!({"file": ""})).await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = None;
 
@@ -3386,9 +3376,8 @@ mod tests {
         fs.insert_tree("/project", json!({"file": ""})).await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = Some(cx.new(|cx| ThreadStore::new(cx)));
 
@@ -3445,9 +3434,8 @@ mod tests {
             .await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = Some(cx.new(|cx| ThreadStore::new(cx)));
 
@@ -3507,9 +3495,8 @@ mod tests {
 
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = Some(cx.new(|cx| ThreadStore::new(cx)));
 
@@ -3628,10 +3615,8 @@ mod tests {
 
         let project = Project::test(app_state.fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
 
         let worktree = project.update(cx, |project, cx| {
             let mut worktrees = project.worktrees(cx).collect::<Vec<_>>();
@@ -3780,10 +3765,8 @@ mod tests {
 
         let project = Project::test(app_state.fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
 
         let mut cx = VisualTestContext::from_window(window.into(), cx);
 
@@ -3860,10 +3843,8 @@ mod tests {
 
         let project = Project::test(app_state.fs.clone(), [path!("/project").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
 
         let mut cx = VisualTestContext::from_window(window.into(), cx);
 
@@ -3959,10 +3940,8 @@ mod tests {
 
         let project = Project::test(app_state.fs.clone(), [path!("/project").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
 
         let mut cx = VisualTestContext::from_window(window.into(), cx);
 
@@ -4206,10 +4185,8 @@ mod tests {
 
         let project = Project::test(app_state.fs.clone(), [path!("/project").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
 
         let mut cx = VisualTestContext::from_window(window.into(), cx);
 
@@ -4306,9 +4283,8 @@ mod tests {
         fs.insert_tree("/project", json!({"file.txt": ""})).await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let message_editor = cx.update(|window, cx| {
             cx.new(|cx| {
@@ -4456,9 +4432,8 @@ mod tests {
             .await;
         let project = Project::test(fs, [Path::new(path!("/project"))], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let message_editor = cx.update(|window, cx| {
             cx.new(|cx| {

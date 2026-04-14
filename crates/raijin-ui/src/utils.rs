@@ -17,7 +17,7 @@ pub mod text_global_state;
 pub mod virtual_list;
 pub mod with_rem_size;
 pub mod window_border;
-pub mod window_ext;
+// window_ext removed — AppShell overlay API now in raijin-shell
 
 pub use color_contrast::calculate_contrast_ratio;
 pub use index_path::IndexPath;

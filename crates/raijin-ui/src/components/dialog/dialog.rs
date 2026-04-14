@@ -10,8 +10,8 @@ use raijin_i18n::t;
 
 use crate::{
     ActiveTheme as _, Button, ButtonVariant, ButtonVariants as _, DialogContent, DialogTitle,
-    FocusTrapElement as _, IconName, AppShell, ScrollableElement as _, Sizable as _, StyledExt,
-    TITLE_BAR_HEIGHT, WindowExt as _, v_flex,
+    FocusTrapElement as _, IconName, ScrollableElement as _, Sizable as _, StyledExt,
+    TITLE_BAR_HEIGHT, v_flex,
 };
 
 pub static ANIMATION_DURATION: LazyLock<Duration> = LazyLock::new(|| Duration::from_secs_f64(0.25));
@@ -19,11 +19,22 @@ const CONTEXT: &str = "Dialog";
 
 actions!(dialog, [CancelDialog, ConfirmDialog]);
 
+// Window-shell actions — dispatched upward to AppShell via the element tree.
+// AppShell registers handlers for these in its render() method.
+actions!(window_shell, [
+    DeferCloseDialog,
+    CloseDialog,
+    CloseAllDialogs,
+    CloseSheet,
+    ClearNotifications,
+]);
+
 pub(crate) fn init(cx: &mut App) {
     cx.bind_keys([
         KeyBinding::new("escape", CancelDialog, Some(CONTEXT)),
         KeyBinding::new("enter", ConfirmDialog, Some(CONTEXT)),
     ]);
+    cx.set_global(super::pending::PendingDialogs::default());
 }
 
 /// Dialog button props.
@@ -126,7 +137,7 @@ impl DialogButtonProps {
 
                 move |_, window, cx| {
                     if on_ok(&ClickEvent::default(), window, cx) {
-                        window.close_dialog(cx);
+                        window.dispatch_action(Box::new(CloseDialog), cx);
                         on_close(&ClickEvent::default(), window, cx);
                     }
                 }
@@ -154,7 +165,7 @@ impl DialogButtonProps {
                         return;
                     }
 
-                    window.close_dialog(cx);
+                    window.dispatch_action(Box::new(CloseDialog), cx);
                     on_close(&ClickEvent::default(), window, cx);
                 }
             })
@@ -165,7 +176,7 @@ impl DialogButtonProps {
 type ContentBuilderFn = Rc<dyn Fn(DialogContent, &mut Window, &mut App) -> DialogContent + 'static>;
 
 #[derive(Clone)]
-pub(crate) struct DialogProps {
+pub struct DialogProps {
     width: Pixels,
     max_width: Option<Pixels>,
     margin_top: Option<Pixels>,
@@ -173,7 +184,7 @@ pub(crate) struct DialogProps {
 
     overlay: bool,
     overlay_closable: bool,
-    pub(crate) overlay_visible: bool,
+    pub overlay_visible: bool,
     keyboard: bool,
 }
 
@@ -202,13 +213,14 @@ pub struct Dialog {
     pub(crate) header: Option<AnyElement>,
     pub(crate) footer: Option<AnyElement>,
     pub(crate) content_builder: Option<ContentBuilderFn>,
-    pub(crate) props: DialogProps,
+    pub props: DialogProps,
 
     button_props: DialogButtonProps,
 
     /// This will be change when open the dialog, the focus handle is create when open the dialog.
-    pub(crate) focus_handle: FocusHandle,
-    pub(crate) layer_ix: usize,
+    pub focus_handle: FocusHandle,
+    pub layer_ix: usize,
+    pub is_topmost: bool,
 }
 
 pub(crate) fn overlay_color(overlay: bool, cx: &App) -> Oklch {
@@ -238,6 +250,7 @@ impl Dialog {
             props: DialogProps::default(),
             children: Vec::new(),
             layer_ix: 0,
+            is_topmost: false,
             button_props: DialogButtonProps::default(),
         }
     }
@@ -372,7 +385,7 @@ impl Dialog {
         self
     }
 
-    pub(crate) fn has_overlay(&self) -> bool {
+    pub fn has_overlay(&self) -> bool {
         self.props.overlay
     }
 
@@ -382,9 +395,7 @@ impl Dialog {
     }
 
     fn defer_close_dialog(window: &mut Window, cx: &mut App) {
-        AppShell::update(window, cx, |root, window, cx| {
-            root.defer_close_dialog(window, cx);
-        });
+        window.dispatch_action(Box::new(DeferCloseDialog), cx);
     }
 }
 
@@ -413,7 +424,7 @@ impl Dialog {
                 let style = style.clone();
                 let props = props.clone();
                 let button_props = button_props.clone();
-                window.open_dialog(cx, move |dialog, _, _| {
+                crate::open_dialog(window, cx, move |dialog, _, _| {
                     dialog
                         .refine_style(&style)
                         .button_props(button_props.clone())
@@ -494,8 +505,8 @@ impl RenderOnce for Dialog {
                         this.bg(overlay_color(self.props.overlay, cx))
                     })
                     .when(self.props.overlay, |this| {
-                        // Only the last dialog owns the `mouse down - close dialog` event.
-                        if (self.layer_ix + 1) != AppShell::read(window, cx).active_dialog_count() {
+                        // Only the topmost dialog owns the `mouse down - close dialog` event.
+                        if !self.is_topmost {
                             return this;
                         }
 
@@ -514,7 +525,7 @@ impl RenderOnce for Dialog {
                                     {
                                         if on_cancel(&ClickEvent::default(), window, cx) {
                                             on_close(&ClickEvent::default(), window, cx);
-                                            window.close_dialog(cx);
+                                            window.dispatch_action(Box::new(CloseDialog), cx);
                                         }
                                     }
                                 }
@@ -547,7 +558,7 @@ impl RenderOnce for Dialog {
                                         // But by now, we `cx.close_dialog()` going to close the last active model,
                                         // so the Escape is unexpected to work.
                                         if on_cancel(&ClickEvent::default(), window, cx) {
-                                            window.close_dialog(cx);
+                                            window.dispatch_action(Box::new(CloseDialog), cx);
                                             on_close(&ClickEvent::default(), window, cx);
                                         }
                                     }
@@ -634,7 +645,7 @@ impl RenderOnce for Dialog {
                                         let on_cancel = self.button_props.on_cancel.clone();
                                         let on_close = self.button_props.on_close.clone();
                                         move |_, window, cx| {
-                                            window.close_dialog(cx);
+                                            window.dispatch_action(Box::new(CloseDialog), cx);
                                             on_cancel(&ClickEvent::default(), window, cx);
                                             on_close(&ClickEvent::default(), window, cx);
                                         }

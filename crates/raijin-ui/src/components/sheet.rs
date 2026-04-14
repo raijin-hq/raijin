@@ -15,7 +15,7 @@ use crate::{
 };
 use crate::utils::actions::Cancel;
 use crate::utils::focus_trap::FocusTrapElement as _;
-use crate::utils::window_ext::WindowExt as _;
+use super::dialog::CloseSheet;
 use super::dialog::overlay_color;
 
 const CONTEXT: &str = "Sheet";
@@ -41,8 +41,8 @@ impl Default for SheetSettings {
 /// Sheet component that slides in from the side of the window.
 #[derive(IntoElement)]
 pub struct Sheet {
-    pub(crate) focus_handle: FocusHandle,
-    pub(crate) placement: Placement,
+    pub focus_handle: FocusHandle,
+    pub placement: Placement,
     pub(crate) size: DefiniteLength,
     resizable: bool,
     on_close: Rc<dyn Fn(&ClickEvent, &mut Window, &mut App) + 'static>,
@@ -178,7 +178,7 @@ impl RenderOnce for Sheet {
 
                                     cx.stop_propagation();
                                     if self.overlay_closable && event.button == MouseButton::Left {
-                                        window.close_sheet(cx);
+                                        window.dispatch_action(Box::new(CloseSheet), cx);
                                         on_close(&ClickEvent::default(), window, cx);
                                     }
                                 }
@@ -195,7 +195,7 @@ impl RenderOnce for Sheet {
                                 move |_: &Cancel, window, cx| {
                                     cx.propagate();
 
-                                    window.close_sheet(cx);
+                                    window.dispatch_action(Box::new(CloseSheet), cx);
                                     on_close(&ClickEvent::default(), window, cx);
                                 }
                             })
@@ -237,7 +237,7 @@ impl RenderOnce for Sheet {
                                             .ghost()
                                             .icon(IconName::Close)
                                             .on_click(move |_, window, cx| {
-                                                window.close_sheet(cx);
+                                                window.dispatch_action(Box::new(CloseSheet), cx);
                                                 on_close(&ClickEvent::default(), window, cx);
                                             }),
                                     ),

@@ -67,7 +67,7 @@ impl NotificationType {
 }
 
 #[derive(Debug, PartialEq, Clone, Hash, Eq)]
-pub(crate) enum NotificationId {
+pub enum NotificationId {
     Id(TypeId),
     IdAndElementId(TypeId, ElementId),
 }
@@ -504,7 +504,7 @@ impl NotificationList {
         cx.notify();
     }
 
-    pub(crate) fn close(
+    pub fn close(
         &mut self,
         id: impl Into<NotificationId>,
         window: &mut Window,

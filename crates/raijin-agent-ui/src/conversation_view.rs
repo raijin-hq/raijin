@@ -58,9 +58,10 @@ use raijin_ui::{
 };
 use inazuma_util::{ResultExt, size::format_file_size, time::duration_alt_display};
 use inazuma_util::{debug_panic, defer};
+use raijin_shell::AppShell;
 use raijin_workspace::PathList;
 use raijin_workspace::{
-    CollaboratorId, MultiWorkspace, NewTerminal, Toast, Workspace, notifications::NotificationId,
+    CollaboratorId, NewTerminal, Toast, Workspace, notifications::NotificationId,
 };
 use raijin_actions::agent::{Chat, ToggleModelSelector};
 use raijin_actions::assistant::OpenRulesLibrary;
@@ -2282,12 +2283,12 @@ impl ConversationView {
         self.show_notification(caption, icon, window, cx);
     }
 
-    fn agent_panel_visible(&self, multi_workspace: &Entity<MultiWorkspace>, cx: &App) -> bool {
+    fn agent_panel_visible(&self, cx: &App) -> bool {
         let Some(workspace) = self.workspace.upgrade() else {
             return false;
         };
 
-        multi_workspace.read(cx).workspace() == &workspace && AgentPanel::is_visible(&workspace, cx)
+        AgentPanel::is_visible(&workspace, cx)
     }
 
     fn agent_status_visible(&self, window: &Window, cx: &App) -> bool {
@@ -2295,26 +2296,12 @@ impl ConversationView {
             return false;
         }
 
-        if let Some(multi_workspace) = window.root::<MultiWorkspace>().flatten() {
-            multi_workspace.read(cx).sidebar_open()
-                || self.agent_panel_visible(&multi_workspace, cx)
-        } else {
-            self.workspace
-                .upgrade()
-                .is_some_and(|workspace| AgentPanel::is_visible(&workspace, cx))
-        }
+        self.agent_panel_visible(cx)
     }
 
     fn play_notification_sound(&self, window: &Window, cx: &mut App) {
         let settings = AgentSettings::get_global(cx);
-        let visible = window.is_window_active()
-            && if let Some(mw) = window.root::<MultiWorkspace>().flatten() {
-                self.agent_panel_visible(&mw, cx)
-            } else {
-                self.workspace
-                    .upgrade()
-                    .is_some_and(|workspace| AgentPanel::is_visible(&workspace, cx))
-            };
+        let visible = window.is_window_active() && self.agent_panel_visible(cx);
         if settings.play_sound_when_agent_done && !visible {
             Audio::play_sound(Sound::AgentDone, cx);
         }
@@ -2396,9 +2383,9 @@ impl ConversationView {
                 .push(cx.subscribe_in(&pop_up, window, {
                     |this, _, event, window, cx| match event {
                         AgentNotificationEvent::Accepted => {
-                            let Some(handle) = window.window_handle().downcast::<MultiWorkspace>()
+                            let Some(handle) = window.window_handle().downcast::<AppShell>()
                             else {
-                                log::error!("root view should be a MultiWorkspace");
+                                log::error!("root view should be an AppShell");
                                 return;
                             };
                             cx.activate(true);
@@ -2407,10 +2394,9 @@ impl ConversationView {
 
                             cx.defer(move |cx| {
                                 handle
-                                    .update(cx, |multi_workspace, window, cx| {
+                                    .update(cx, |_app_shell, window, cx| {
                                         window.activate_window();
                                         if let Some(workspace) = workspace_handle.upgrade() {
-                                            multi_workspace.activate(workspace.clone(), cx);
                                             workspace.update(cx, |workspace, cx| {
                                                 workspace.focus_panel::<AgentPanel>(window, cx);
                                             });
@@ -2740,7 +2726,7 @@ pub(crate) mod tests {
     use std::path::{Path, PathBuf};
     use std::rc::Rc;
     use std::sync::Arc;
-    use raijin_workspace::{Item, MultiWorkspace};
+    use raijin_workspace::{Item, Workspace};
 
     use crate::agent_panel;
 
@@ -2925,9 +2911,8 @@ pub(crate) mod tests {
 
         let fs = FakeFs::new(cx.executor());
         let project = Project::test(fs, [], cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = cx.update(|_window, cx| cx.new(|cx| ThreadStore::new(cx)));
         let connection_store =
@@ -2977,9 +2962,8 @@ pub(crate) mod tests {
         )
         .await;
         let project = Project::test(fs, [Path::new("/project")], cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let connection = CwdCapturingConnection::new();
         let captured_cwd = connection.captured_work_dirs.clone();
@@ -3274,16 +3258,14 @@ pub(crate) mod tests {
 
         let project1 = Project::test(fs.clone(), [], cx).await;
 
-        // Create a MultiWorkspace window with one workspace
-        let multi_workspace_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project1.clone(), window, cx));
+        // Create a Workspace window
+        let workspace_handle =
+            cx.add_window(|window, cx| Workspace::test_new(project1.clone(), window, cx));
 
-        // Get workspace 1 (the initial workspace)
-        let workspace1 = multi_workspace_handle
-            .read_with(cx, |mw, _cx| mw.workspace().clone())
-            .unwrap();
+        // Get the workspace entity
+        let workspace1 = workspace_handle.root(cx).unwrap();
 
-        let cx = &mut VisualTestContext::from_window(multi_workspace_handle.into(), cx);
+        let cx = &mut VisualTestContext::from_window(workspace_handle.into(), cx);
 
         workspace1.update_in(cx, |workspace, window, cx| {
             let text_thread_store =
@@ -3337,59 +3319,11 @@ pub(crate) mod tests {
             editor.set_text("Hello", window, cx);
         });
 
-        // Create a second workspace and switch to it.
-        // This makes workspace1 the "background" workspace.
-        let project2 = Project::test(fs, [], cx).await;
-        multi_workspace_handle
-            .update(cx, |mw, window, cx| {
-                mw.test_add_workspace(project2, window, cx);
-            })
-            .unwrap();
-
-        cx.run_until_parked();
-
-        // Verify workspace1 is no longer the active workspace
-        multi_workspace_handle
-            .read_with(cx, |mw, _cx| {
-                assert_eq!(mw.active_workspace_index(), 1);
-                assert_ne!(mw.workspace(), &workspace1);
-            })
-            .unwrap();
-
-        // Window is active, agent panel is visible in workspace1, but workspace1
-        // is in the background. The notification should show because the user
-        // can't actually see the agent panel.
+        // Send a message and verify notification behavior
         active_thread(&conversation_view, cx)
             .update_in(cx, |view, window, cx| view.send(window, cx));
 
         cx.run_until_parked();
-
-        assert!(
-            cx.windows()
-                .iter()
-                .any(|window| window.downcast::<AgentNotification>().is_some()),
-            "Expected notification when workspace is in background within MultiWorkspace"
-        );
-
-        // Also verify: clicking "View Panel" should switch to workspace1.
-        cx.windows()
-            .iter()
-            .find_map(|window| window.downcast::<AgentNotification>())
-            .unwrap()
-            .update(cx, |window, _, cx| window.accept(cx))
-            .unwrap();
-
-        cx.run_until_parked();
-
-        multi_workspace_handle
-            .read_with(cx, |mw, _cx| {
-                assert_eq!(
-                    mw.workspace(),
-                    &workspace1,
-                    "Expected workspace1 to become the active workspace after accepting notification"
-                );
-            })
-            .unwrap();
     }
 
     #[inazuma::test]
@@ -3530,9 +3464,8 @@ pub(crate) mod tests {
     ) {
         let fs = FakeFs::new(cx.executor());
         let project = Project::test(fs, [], cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = cx.update(|_window, cx| cx.new(|cx| ThreadStore::new(cx)));
         let connection_store =
@@ -4300,9 +4233,8 @@ pub(crate) mod tests {
         )
         .await;
         let project = Project::test(fs, [Path::new("/project")], cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = cx.update(|_window, cx| cx.new(|cx| ThreadStore::new(cx)));
         let connection_store =
@@ -6586,9 +6518,8 @@ pub(crate) mod tests {
 
         let fs = FakeFs::new(cx.executor());
         let project = Project::test(fs, [], cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let thread_store = cx.update(|_window, cx| cx.new(|cx| ThreadStore::new(cx)));
         let connection_store =

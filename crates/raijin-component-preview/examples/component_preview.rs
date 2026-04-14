@@ -12,7 +12,7 @@ use raijin_reqwest_client::ReqwestClient;
 use raijin_session::{AppSession, Session};
 use std::sync::Arc;
 use raijin_ui::{App, px};
-use raijin_workspace::{AppState, Workspace, WorkspaceStore};
+use raijin_workspace::{AppState, Workspace};
 
 use raijin_component_preview::{ComponentPreview, init};
 
@@ -46,7 +46,6 @@ fn main() {
         raijin_client::init(&client, cx);
 
         let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
-        let workspace_store = cx.new(|cx| WorkspaceStore::new(client.clone(), cx));
         let session_id = uuid::Uuid::new_v4().to_string();
         let kvp = raijin_db::kvp::KeyValueStore::global(cx);
         let session = cx
@@ -59,7 +58,6 @@ fn main() {
             languages,
             client,
             user_store,
-            workspace_store,
             fs,
             build_window_options: |_, _| Default::default(),
             node_runtime,

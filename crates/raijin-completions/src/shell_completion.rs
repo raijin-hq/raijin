@@ -18,7 +18,7 @@ use lsp_types::{
 
 use raijin_session::command_history::CommandHistory;
 use crate::nu_lsp_client::NuLspClient;
-use raijin_shell::shell_install;
+use raijin_shell_integration::shell_install;
 
 /// Convert a byte offset into (line, character) for LSP position.
 fn offset_to_position(text: &str, offset: usize) -> (u32, u32) {

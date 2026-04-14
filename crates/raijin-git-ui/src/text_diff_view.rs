@@ -488,8 +488,6 @@ mod tests {
     use inazuma_settings_framework::{DiffViewStyle, SettingsStore};
     use unindent::unindent;
     use inazuma_util::{path, test::marked_text_ranges};
-    use raijin_workspace::MultiWorkspace;
-
     fn init_test(cx: &mut TestAppContext) {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
@@ -719,9 +717,8 @@ mod tests {
             .await
             .unwrap();
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let editor = cx.new_window_entity(|window, cx| {
             let multibuffer = cx.new(|cx| {
@@ -808,9 +805,8 @@ mod tests {
             .await
             .unwrap();
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let editor = cx.new_window_entity(|window, cx| {
             let multibuffer = cx.new(|cx| {
@@ -898,9 +894,8 @@ mod tests {
 
         let project = Project::test(fs, [project_root.as_ref()], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let buffer = project
             .update(cx, |project, cx| project.open_local_buffer(file_path, cx))

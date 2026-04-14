@@ -30,6 +30,7 @@ raijin-project.workspace = true
 schemars.workspace = true
 serde.workspace = true
 inazuma-settings-framework.workspace = true
+raijin-shell.workspace = true
 raijin-telemetry.workspace = true
 raijin-theme.workspace = true
 raijin-theme-settings.workspace = true

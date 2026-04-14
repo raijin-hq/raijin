@@ -53,7 +53,7 @@ use std::{
 use inazuma_text::Point;
 use inazuma_util::{path, rel_path::rel_path, uri};
 use raijin_workspace::item::Item as _;
-use raijin_workspace::{CloseIntent, MultiWorkspace, Workspace};
+use raijin_workspace::{CloseIntent, Workspace};
 
 #[inazuma::test(iterations = 10)]
 async fn test_host_disconnect(
@@ -98,24 +98,16 @@ async fn test_host_disconnect(
     assert!(worktree_a.read_with(cx_a, |tree, _| tree.has_update_observer()));
 
     let window_b = cx_b.add_window(|window, cx| {
-        let workspace = cx.new(|cx| {
-            Workspace::new(
-                None,
-                project_b.clone(),
-                client_b.app_state.clone(),
-                window,
-                cx,
-            )
-        });
-        MultiWorkspace::new(workspace, window, cx)
+        Workspace::new(
+            None,
+            project_b.clone(),
+            client_b.app_state.clone(),
+            window,
+            cx,
+        )
     });
     let cx_b = &mut VisualTestContext::from_window(*window_b, cx_b);
-    let workspace_b = window_b
-        .root(cx_b)
-        .unwrap()
-        .read_with(cx_b, |multi_workspace, _| {
-            multi_workspace.workspace().clone()
-        });
+    let workspace_b = window_b.root(cx_b).unwrap();
 
     let editor_b: Entity<Editor> = workspace_b
         .update_in(cx_b, |workspace, window, cx| {

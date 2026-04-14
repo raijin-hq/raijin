@@ -45,7 +45,7 @@ use std::{
     },
 };
 use inazuma_util::path;
-use raijin_workspace::{MultiWorkspace, Workspace, WorkspaceStore};
+use raijin_workspace::Workspace;
 
 use raijin_livekit_client::test::TestServer as LivekitTestServer;
 
@@ -324,13 +324,11 @@ impl TestServer {
             .register_hosting_provider(Arc::new(git_hosting_providers::Github::public_instance()));
 
         let user_store = cx.new(|cx| UserStore::new(client.clone(), cx));
-        let workspace_store = cx.new(|cx| WorkspaceStore::new(client.clone(), cx));
         let language_registry = Arc::new(LanguageRegistry::test(cx.executor()));
         let session = cx.new(|cx| AppSession::new(Session::test(), cx));
         let app_state = Arc::new(workspace::AppState {
             client: client.clone(),
             user_store: user_store.clone(),
-            workspace_store,
             languages: language_registry,
             fs: fs.clone(),
             build_window_options: |_, _| Default::default(),
@@ -885,14 +883,11 @@ impl TestClient {
         let project = project.clone();
         let window = cx.add_window(|window, cx| {
             window.activate_window();
-            let workspace = cx.new(|cx| Workspace::new(None, project, app_state, window, cx));
-            MultiWorkspace::new(workspace, window, cx)
+            Workspace::new(None, project, app_state, window, cx)
         });
         let cx = VisualTestContext::from_window(*window, cx).into_mut();
         cx.run_until_parked();
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let workspace = window.root(cx).unwrap();
         (workspace, cx)
     }
 
@@ -904,13 +899,10 @@ impl TestClient {
         let app_state = self.app_state.clone();
         let window = cx.add_window(|window, cx| {
             window.activate_window();
-            let workspace = cx.new(|cx| Workspace::new(None, project, app_state, window, cx));
-            MultiWorkspace::new(workspace, window, cx)
+            Workspace::new(None, project, app_state, window, cx)
         });
         let cx = VisualTestContext::from_window(*window, cx).into_mut();
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let workspace = window.root(cx).unwrap();
         (workspace, cx)
     }
 
@@ -921,13 +913,11 @@ impl TestClient {
         let window = cx.update(|cx| {
             cx.active_window()
                 .unwrap()
-                .downcast::<MultiWorkspace>()
+                .downcast::<Workspace>()
                 .unwrap()
         });
 
-        let entity = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let entity = window.root(cx).unwrap();
         let cx = VisualTestContext::from_window(*window.deref(), cx).into_mut();
         // it might be nice to try and cleanup these at the end of each test.
         (entity, cx)
@@ -941,12 +931,10 @@ pub fn open_channel_notes(
     let window = cx.update(|_, cx| {
         cx.active_window()
             .unwrap()
-            .downcast::<MultiWorkspace>()
+            .downcast::<Workspace>()
             .unwrap()
     });
-    let entity = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+    let entity = window.root(cx).unwrap();
 
     cx.update(|window, cx| ChannelView::open(channel_id, None, entity.clone(), window, cx))
 }

@@ -5,7 +5,7 @@ use inazuma_menu::SelectPrevious;
 use raijin_project::{Project, ProjectPath};
 use serde_json::json;
 use inazuma_util::{path, rel_path::rel_path};
-use raijin_workspace::{ActivatePreviousItem, AppState, MultiWorkspace, Workspace, item::test::TestItem};
+use raijin_workspace::{ActivatePreviousItem, AppState, Workspace, item::test::TestItem};
 
 #[ctor::ctor]
 fn init_logger() {
@@ -33,9 +33,8 @@ async fn test_open_with_prev_tab_selected_and_cycle_on_toggle_action(
         .await;
 
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     let tab_1 = open_buffer("1.txt", &workspace, cx).await;
     let tab_2 = open_buffer("2.txt", &workspace, cx).await;
@@ -90,9 +89,8 @@ async fn test_open_with_last_tab_selected(cx: &mut inazuma::TestAppContext) {
         .await;
 
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     let tab_1 = open_buffer("1.txt", &workspace, cx).await;
     let tab_2 = open_buffer("2.txt", &workspace, cx).await;
@@ -125,9 +123,8 @@ async fn test_open_item_on_modifiers_release(cx: &mut inazuma::TestAppContext) {
         .await;
 
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     let tab_1 = open_buffer("1.txt", &workspace, cx).await;
     let tab_2 = open_buffer("2.txt", &workspace, cx).await;
@@ -154,9 +151,8 @@ async fn test_open_on_empty_pane(cx: &mut inazuma::TestAppContext) {
     app_state.fs.as_fake().insert_tree("/root", json!({})).await;
 
     let project = Project::test(app_state.fs.clone(), ["/root".as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     cx.simulate_modifiers_change(Modifiers::control());
     let tab_switcher = open_tab_switcher(false, &workspace, cx);
@@ -178,9 +174,8 @@ async fn test_open_with_single_item(cx: &mut inazuma::TestAppContext) {
         .await;
 
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     let tab = open_buffer("1.txt", &workspace, cx).await;
 
@@ -209,9 +204,8 @@ async fn test_close_selected_item(cx: &mut inazuma::TestAppContext) {
         .await;
 
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     let tab_1 = open_buffer("1.txt", &workspace, cx).await;
     let tab_3 = open_buffer("3.txt", &workspace, cx).await;
@@ -375,9 +369,8 @@ async fn test_open_in_active_pane_deduplicates_files_by_path(cx: &mut inazuma::T
         .await;
 
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     open_buffer("1.txt", &workspace, cx).await;
     open_buffer("2.txt", &workspace, cx).await;
@@ -413,9 +406,8 @@ async fn test_open_in_active_pane_clones_files_to_current_pane(cx: &mut inazuma:
         .await;
 
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     open_buffer("1.txt", &workspace, cx).await;
 
@@ -461,9 +453,8 @@ async fn test_open_in_active_pane_clones_files_to_current_pane(cx: &mut inazuma:
 async fn test_open_in_active_pane_moves_terminals_to_current_pane(cx: &mut inazuma::TestAppContext) {
     let app_state = init_test(cx);
     let project = Project::test(app_state.fs.clone(), [], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     let test_item = cx.new(|cx| TestItem::new(cx).with_label("terminal"));
     workspace.update_in(cx, |workspace, window, cx| {
@@ -515,9 +506,8 @@ async fn test_open_in_active_pane_closes_file_in_all_panes(cx: &mut inazuma::Tes
         .await;
 
     let project = Project::test(app_state.fs.clone(), [path!("/root").as_ref()], cx).await;
-    let (multi_workspace, cx) =
-        cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-    let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+    let (workspace, cx) =
+        cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
     open_buffer("1.txt", &workspace, cx).await;
 

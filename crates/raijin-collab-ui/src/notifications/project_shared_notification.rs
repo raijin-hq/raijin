@@ -102,7 +102,7 @@ impl ProjectSharedNotification {
 
     fn join(&mut self, cx: &mut Context<Self>) {
         if let Some(app_state) = self.app_state.upgrade() {
-            raijin_workspace::join_in_room_project(self.project_id, self.owner.id, app_state, cx)
+            raijin_shell::join_in_room_project(self.project_id, self.owner.id, app_state, cx)
                 .detach_and_log_err(cx);
         }
     }

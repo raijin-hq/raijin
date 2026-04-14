@@ -50,7 +50,7 @@ impl SerializedWorkspaceLocation {
 }
 
 /// A workspace entry from a previous session, containing all the info needed
-/// to restore it including which window it belonged to (for MultiWorkspace grouping).
+/// to restore it.
 #[derive(Debug, PartialEq, Clone)]
 pub struct SessionWorkspace {
     pub workspace_id: WorkspaceId,
@@ -59,36 +59,20 @@ pub struct SessionWorkspace {
     pub window_id: Option<WindowId>,
 }
 
-/// Per-window state for a MultiWorkspace, persisted to KVP.
-#[derive(Debug, Clone, Default, serde::Serialize, serde::Deserialize)]
-pub struct MultiWorkspaceState {
-    pub active_workspace_id: Option<WorkspaceId>,
-    pub sidebar_open: bool,
-}
-
-/// The serialized state of a single MultiWorkspace window from a previous session:
-/// all workspaces that shared the window, which one was active, and whether the
-/// sidebar was open.
-#[derive(Debug, Clone)]
-pub struct SerializedMultiWorkspace {
-    pub workspaces: Vec<SessionWorkspace>,
-    pub state: MultiWorkspaceState,
-}
-
 #[derive(Debug, PartialEq, Clone)]
-pub(crate) struct SerializedWorkspace {
-    pub(crate) id: WorkspaceId,
-    pub(crate) location: SerializedWorkspaceLocation,
-    pub(crate) paths: PathList,
-    pub(crate) center_group: SerializedPaneGroup,
-    pub(crate) window_bounds: Option<SerializedWindowBounds>,
-    pub(crate) centered_layout: bool,
-    pub(crate) display: Option<Uuid>,
-    pub(crate) docks: DockStructure,
-    pub(crate) session_id: Option<String>,
-    pub(crate) breakpoints: BTreeMap<Arc<Path>, Vec<SourceBreakpoint>>,
-    pub(crate) user_toolchains: BTreeMap<ToolchainScope, IndexSet<Toolchain>>,
-    pub(crate) window_id: Option<u64>,
+pub struct SerializedWorkspace {
+    pub id: WorkspaceId,
+    pub location: SerializedWorkspaceLocation,
+    pub paths: PathList,
+    pub center_group: SerializedPaneGroup,
+    pub window_bounds: Option<SerializedWindowBounds>,
+    pub centered_layout: bool,
+    pub display: Option<Uuid>,
+    pub docks: DockStructure,
+    pub session_id: Option<String>,
+    pub breakpoints: BTreeMap<Arc<Path>, Vec<SourceBreakpoint>>,
+    pub user_toolchains: BTreeMap<ToolchainScope, IndexSet<Toolchain>>,
+    pub window_id: Option<u64>,
 }
 
 #[derive(Debug, PartialEq, Clone, Default, Serialize, Deserialize)]
@@ -173,7 +157,7 @@ impl Bind for DockData {
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub(crate) enum SerializedPaneGroup {
+pub enum SerializedPaneGroup {
     Group {
         axis: SerializedAxis,
         flexes: Option<Vec<f32>>,

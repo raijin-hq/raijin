@@ -625,8 +625,6 @@ mod tests {
     use inazuma_picker::PickerDelegate;
     use raijin_project::{FakeFs, Project};
     use inazuma_settings_framework::SettingsStore;
-    use raijin_workspace::MultiWorkspace;
-
     fn init_test(cx: &mut TestAppContext) {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
@@ -657,12 +655,10 @@ mod tests {
 
         let fs = FakeFs::new(cx.executor());
         let project = Project::test(fs, [], cx).await;
-        let multi_workspace =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let cx = &mut VisualTestContext::from_window(*multi_workspace, cx);
-        let workspace = multi_workspace
-            .update(cx, |workspace, _, _| workspace.workspace().clone())
-            .unwrap();
+        let window_handle =
+            cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let cx = &mut VisualTestContext::from_window(*window_handle, cx);
+        let workspace = window_handle.root(cx).unwrap();
         let stash_entries = vec![
             stash_entry(0, "stash #0", Some("main")),
             stash_entry(1, "stash #1", Some("develop")),

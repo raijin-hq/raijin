@@ -113,7 +113,7 @@ pub fn clone_and_open(
                             let destination_path = destination_dir.clone();
                             let on_success = on_success.clone();
 
-                            raijin_workspace::open_new(
+                            raijin_shell::open_new(
                                 Default::default(),
                                 app_state,
                                 cx,

@@ -473,7 +473,7 @@ mod tests {
     use inazuma_rope::Point;
     use serde_json::json;
     use inazuma_settings_framework::{LanguageSettingsContent, SemanticTokenRules, SemanticTokens, SettingsStore};
-    use raijin_workspace::{MultiWorkspace, WorkspaceHandle as _};
+    use raijin_workspace::{Workspace, WorkspaceHandle as _};
 
     use crate::{
         Capability,
@@ -893,9 +893,8 @@ mod tests {
             )
             .await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         project
             .update(cx, |project, cx| {
                 project.find_or_create_worktree(EditorLspTestContext::root_path(), true, cx)
@@ -1112,9 +1111,8 @@ mod tests {
             )
             .await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         project
             .update(cx, |project, cx| {
                 project.find_or_create_worktree(EditorLspTestContext::root_path(), true, cx)

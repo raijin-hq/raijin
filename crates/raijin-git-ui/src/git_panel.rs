@@ -6484,8 +6484,6 @@ mod tests {
     use inazuma_util::path;
     use inazuma_util::rel_path::rel_path;
 
-    use raijin_workspace::MultiWorkspace;
-
     use super::*;
 
     fn init_test(cx: &mut inazuma::TestAppContext) {
@@ -6574,10 +6572,8 @@ mod tests {
         let project =
             Project::test(fs.clone(), [path!("/root/raijin/crates/gpui").as_ref()], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
 
         cx.read(|cx| {
@@ -6714,10 +6710,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/root/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
 
         cx.read(|cx| {
@@ -6909,10 +6903,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/root/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
 
         cx.read(|cx| {
@@ -7123,10 +7115,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/root/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
 
         let panel = workspace.update_in(cx, GitPanel::new);
@@ -7195,10 +7185,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/root/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
 
         // Wait for the project scanning to finish so that `head_commit(cx)` is
@@ -7284,10 +7272,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
         let panel = workspace.update_in(cx, GitPanel::new);
 
@@ -7360,10 +7346,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
 
         cx.read(|cx| {
@@ -7489,10 +7473,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
 
         cx.read(|cx| {
@@ -7688,10 +7670,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
         let panel = workspace.update_in(cx, GitPanel::new);
 
@@ -7883,10 +7863,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [Path::new(path!("/project"))], cx).await;
         let window_handle =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window_handle
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window_handle.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window_handle.into(), cx);
         let panel = workspace.update_in(cx, GitPanel::new);
 

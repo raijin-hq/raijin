@@ -17,7 +17,7 @@ use room::Event;
 use inazuma_settings_framework::Settings;
 use std::sync::Arc;
 use raijin_workspace::{
-    ActiveCallEvent, AnyActiveCall, GlobalAnyActiveCall, MultiWorkspace, MultiWorkspaceEvent, Pane,
+    ActiveCallEvent, AnyActiveCall, Event as WorkspaceEvent, GlobalAnyActiveCall, Pane,
     RemoteCollaborator, SharedScreen, Workspace,
 };
 
@@ -30,7 +30,7 @@ pub fn init(client: Arc<Client>, user_store: Entity<UserStore>, cx: &mut App) {
     let active_call = cx.new(|cx| ActiveCall::new(client, user_store, cx));
     let active_call_handle = active_call.downgrade();
 
-    cx.observe_new(move |_multi_workspace: &mut MultiWorkspace, window, cx| {
+    cx.observe_new(move |_: &mut Workspace, window, cx| {
         let Some(window) = window else {
             return;
         };
@@ -39,14 +39,12 @@ pub fn init(client: Arc<Client>, user_store: Entity<UserStore>, cx: &mut App) {
         cx.subscribe_in(
             &cx.entity(),
             window,
-            move |multi_workspace, _, event: &MultiWorkspaceEvent, window, cx| {
-                if !matches!(event, MultiWorkspaceEvent::ActiveWorkspaceChanged)
-                    && window.is_window_active()
-                {
+            move |workspace, _, event: &WorkspaceEvent, _window, cx| {
+                if !matches!(event, WorkspaceEvent::Activate) {
                     return;
                 }
 
-                let project = multi_workspace.workspace().read(cx).project().clone();
+                let project = workspace.project().clone();
                 if let Ok(task) = active_call_handle.update(cx, |active_call, cx| {
                     active_call.set_location(Some(&project), cx)
                 }) {

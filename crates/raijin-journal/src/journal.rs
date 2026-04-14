@@ -9,7 +9,7 @@ use std::{
     path::{Path, PathBuf},
     sync::Arc,
 };
-use raijin_workspace::{AppState, OpenResult, OpenVisible, Workspace};
+use raijin_workspace::{AppState, OpenVisible, Workspace};
 
 actions!(
     journal,
@@ -107,34 +107,28 @@ pub fn new_journal_entry(workspace: &Workspace, window: &mut Window, cx: &mut Ap
         .spawn(cx, async move |cx| {
             let (journal_dir, entry_path) = create_entry.await?;
             let opened = if open_new_workspace {
-                let OpenResult {
-                    window: new_workspace,
-                    ..
-                } = cx
+                let result = cx
                     .update(|_window, cx| {
-                        raijin_workspace::open_paths(
+                        raijin_shell::open_paths(
                             &[journal_dir],
                             app_state,
-                            raijin_workspace::OpenOptions::default(),
+                            raijin_shell::OpenOptions::default(),
                             cx,
                         )
                     })?
                     .await?;
-                new_workspace
-                    .update(cx, |multi_workspace, window, cx| {
-                        let workspace = multi_workspace.workspace().clone();
-                        workspace.update(cx, |workspace, cx| {
-                            workspace.open_paths(
-                                vec![entry_path],
-                                raijin_workspace::OpenOptions {
-                                    visible: Some(OpenVisible::All),
-                                    ..Default::default()
-                                },
-                                None,
-                                window,
-                                cx,
-                            )
-                        })
+                result.workspace
+                    .update_in(cx, |workspace: &mut Workspace, window, cx| {
+                        workspace.open_paths(
+                            vec![entry_path],
+                            raijin_workspace::OpenOptions {
+                                visible: Some(OpenVisible::All),
+                                ..Default::default()
+                            },
+                            None,
+                            window,
+                            cx,
+                        )
                     })?
                     .await
             } else {

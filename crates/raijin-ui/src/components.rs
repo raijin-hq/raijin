@@ -1,6 +1,6 @@
 // ── Existing raijin-ui components ─────────────────────────────────────────────
 mod ai;
-pub mod app_shell;
+// app_shell moved to raijin-shell crate
 mod avatar;
 mod banner;
 mod button;
@@ -87,7 +87,6 @@ mod stories;
 
 /// Initialize all component keybindings and global state.
 pub(crate) fn init(cx: &mut inazuma::App) {
-    app_shell::init(cx);
     color_picker::init(cx);
     dialog::init(cx);
     dock::init(cx);
@@ -105,7 +104,7 @@ pub(crate) fn init(cx: &mut inazuma::App) {
 
 // ── Re-exports: existing raijin-ui ───────────────────────────────────────────
 pub use ai::*;
-pub use app_shell::*;
+// AppShell re-exported from raijin-shell crate
 pub use avatar::*;
 pub use banner::*;
 pub use button::*;

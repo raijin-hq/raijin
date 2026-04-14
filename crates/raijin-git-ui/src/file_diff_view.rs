@@ -373,8 +373,6 @@ mod tests {
     use std::path::PathBuf;
     use unindent::unindent;
     use inazuma_util::path;
-    use raijin_workspace::MultiWorkspace;
-
     fn init_test(cx: &mut TestAppContext) {
         cx.update(|cx| {
             let settings_store = SettingsStore::test(cx);
@@ -399,9 +397,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), [path!("/test").as_ref()], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let diff_view = workspace
             .update_in(cx, |workspace, window, cx| {
@@ -534,9 +531,8 @@ mod tests {
 
         let project = Project::test(fs.clone(), ["/test".as_ref()], cx).await;
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let diff_view = workspace
             .update_in(cx, |workspace, window, cx| {

@@ -20,7 +20,8 @@ use inazuma_settings_framework::Settings;
 use std::{path::PathBuf, sync::Arc};
 use raijin_ui::{HighlightedLabel, KeyBinding, ListItem, ListItemSpacing, Tooltip, prelude::*};
 use inazuma_util::{ResultExt, debug_panic};
-use raijin_workspace::{ModalView, MultiWorkspace, Workspace, notifications::DetachAndPromptErr};
+use raijin_shell::AppShell;
+use raijin_workspace::{ModalView, Workspace, notifications::DetachAndPromptErr};
 
 use crate::git_panel::show_error_toast;
 
@@ -537,8 +538,8 @@ async fn open_remote_worktree(
 ) -> anyhow::Result<()> {
     let workspace_window = cx
         .window_handle()
-        .downcast::<MultiWorkspace>()
-        .ok_or_else(|| anyhow::anyhow!("Window is not a Workspace window"))?;
+        .downcast::<AppShell>()
+        .ok_or_else(|| anyhow::anyhow!("Window is not an AppShell window"))?;
 
     let connect_task = workspace.update_in(cx, |workspace, window, cx| {
         workspace.toggle_modal(window, cx, |window, cx| {
@@ -610,7 +611,7 @@ async fn open_remote_worktree(
                 workspace.centered_layout = workspace_position.centered_layout;
                 workspace
             });
-            cx.new(|cx| MultiWorkspace::new(workspace, window, cx))
+            cx.new(|cx| AppShell::new(workspace, window, cx))
         })?
     };
 
@@ -619,7 +620,7 @@ async fn open_remote_worktree(
         new_project,
         paths,
         app_state,
-        window_to_use,
+        window_to_use.into(),
         cx,
     )
     .await?;

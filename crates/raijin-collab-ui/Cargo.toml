@@ -60,6 +60,7 @@ raijin-time-format.workspace = true
 raijin-title-bar.workspace = true
 raijin-ui.workspace = true
 inazuma-util.workspace = true
+raijin-shell.workspace = true
 raijin-workspace.workspace = true
 raijin-actions.workspace = true
 

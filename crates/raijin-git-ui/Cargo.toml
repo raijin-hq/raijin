@@ -62,6 +62,7 @@ raijin-ui.workspace = true
 raijin-ui-input.workspace = true
 inazuma-util.workspace = true
 raijin-watch.workspace = true
+raijin-shell.workspace = true
 raijin-workspace.workspace = true
 raijin-actions.workspace = true
 zeroize.workspace = true

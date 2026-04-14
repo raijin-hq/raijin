@@ -7,12 +7,12 @@ use raijin_fs::RealFs;
 use raijin_language::LanguageRegistry;
 use raijin_node_runtime::NodeRuntime;
 use raijin_session::{AppSession, Session};
-use raijin_workspace::{AppState, WorkspaceStore};
+use raijin_workspace::AppState;
 
 /// Build the full `AppState` needed by `raijin_workspace::Workspace::new()`.
 ///
 /// This follows the same pattern as the reference production init, but without an active
-/// collaboration server connection. All subsystems (Client, UserStore, WorkspaceStore,
+/// collaboration server connection. All subsystems (Client, UserStore,
 /// LanguageRegistry, Fs, Session) are created with real implementations — they're
 /// just not connected to any remote server.
 ///
@@ -36,7 +36,6 @@ pub fn build_app_state(cx: &mut App) -> Arc<AppState> {
     let session = cx.new(|cx| AppSession::new(session, cx));
 
     let user_store = cx.new(|cx| raijin_client::UserStore::new(client.clone(), cx));
-    let workspace_store = cx.new(|cx| WorkspaceStore::new(client.clone(), cx));
 
     let languages = Arc::new(LanguageRegistry::new(cx.background_executor().clone()));
     let fs: Arc<dyn raijin_fs::Fs> = Arc::new(RealFs::new(None, cx.background_executor().clone()));
@@ -48,7 +47,6 @@ pub fn build_app_state(cx: &mut App) -> Arc<AppState> {
         fs,
         languages,
         user_store,
-        workspace_store,
         node_runtime: NodeRuntime::unavailable(),
         build_window_options: |_, _| Default::default(),
         session,

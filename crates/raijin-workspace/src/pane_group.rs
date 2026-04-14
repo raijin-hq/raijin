@@ -439,13 +439,15 @@ impl PaneLeaderDecorator for PaneRenderContext<'_> {
                                 this.cursor_pointer().on_mouse_down(
                                     MouseButton::Left,
                                     move |_, _, cx| {
-                                        crate::join_in_room_project(
-                                            leader_project_id,
-                                            leader_user_id,
-                                            app_state.clone(),
-                                            cx,
-                                        )
-                                        .detach_and_log_err(cx);
+                                        if let Some(opener) = crate::workspace_opener(cx) {
+                                            opener.join_in_room_project(
+                                                leader_project_id,
+                                                leader_user_id,
+                                                app_state.clone(),
+                                                cx,
+                                            )
+                                            .detach_and_log_err(cx);
+                                        }
                                     },
                                 )
                             },

@@ -1,12 +1,12 @@
 /// Shell installation modal — themed UI for installing missing shells.
 ///
-/// Uses raijin_shell::shell_install for platform detection and install commands.
+/// Uses raijin_shell_integration::shell_install for platform detection and install commands.
 /// Uses raijin-ui Modal components and theme tokens — no hardcoded colors.
 use inazuma::{
     App, DismissEvent, EventEmitter, Focusable, FocusHandle, InteractiveElement,
     Window,
 };
-use raijin_shell::shell_install::{ShellInstallInfo, detect_available_installer};
+use raijin_shell_integration::shell_install::{ShellInstallInfo, detect_available_installer};
 use raijin_ui::{
     Button, ButtonVariants, Context, IntoElement,
     Modal, ModalFooter, ModalHeader, ParentElement, Render, Styled, StyledExt,

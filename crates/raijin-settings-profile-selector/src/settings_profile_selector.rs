@@ -9,7 +9,7 @@ use raijin_workspace::{ModalView, Workspace};
 
 pub fn init(cx: &mut App) {
     cx.on_action(|_: &raijin_actions::settings_profile_selector::Toggle, cx| {
-        raijin_workspace::with_active_or_new_workspace(cx, |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, |workspace, window, cx| {
             toggle_settings_profile_selector(workspace, window, cx);
         });
     });
@@ -287,7 +287,7 @@ mod tests {
     use serde_json::json;
     use inazuma_settings_framework::Settings;
     use raijin_theme_settings::ThemeSettings;
-    use raijin_workspace::{self, AppState, MultiWorkspace};
+    use raijin_workspace::{self, AppState, Workspace};
     use raijin_actions::settings_profile_selector;
 
     async fn init_test(
@@ -320,11 +320,9 @@ mod tests {
 
         let fs = FakeFs::new(cx.executor());
         let project = Project::test(fs, ["/test".as_ref()], cx).await;
-        let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
+        let window = cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
         let cx = VisualTestContext::from_window(*window, cx).into_mut();
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let workspace = window.root(cx).unwrap();
 
         cx.update(|_, cx| {
             assert!(!cx.has_global::<ActiveSettingsProfileName>());

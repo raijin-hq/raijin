@@ -17,6 +17,7 @@ inazuma-fuzzy.workspace = true
 inazuma.workspace = true
 inazuma-picker.workspace = true
 inazuma-settings-framework.workspace = true
+raijin-shell.workspace = true
 raijin-ui.workspace = true
 raijin-workspace.workspace = true
 raijin-actions.workspace = true

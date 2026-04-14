@@ -11522,6 +11522,7 @@ dependencies = [
  "raijin-settings",
  "raijin-settings-ui",
  "raijin-shell",
+ "raijin-shell-integration",
  "raijin-tab-switcher",
  "raijin-term",
  "raijin-terminal",
@@ -11887,7 +11888,7 @@ dependencies = [
  "quick-xml 0.39.2",
  "raijin-battery",
  "raijin-settings",
- "raijin-shell",
+ "raijin-shell-integration",
  "raijin-theme",
  "raijin-ui",
  "rayon",
@@ -12174,6 +12175,7 @@ dependencies = [
  "raijin-project",
  "raijin-release-channel",
  "raijin-rpc",
+ "raijin-shell",
  "raijin-telemetry",
  "raijin-theme",
  "raijin-theme-settings",
@@ -12238,7 +12240,7 @@ dependencies = [
  "log",
  "lsp-types 0.97.0",
  "raijin-session",
- "raijin-shell",
+ "raijin-shell-integration",
  "raijin-ui",
  "serde",
  "serde_json",
@@ -12641,6 +12643,7 @@ dependencies = [
  "raijin-node-runtime",
  "raijin-paths",
  "raijin-project",
+ "raijin-shell",
  "raijin-ui",
  "raijin-workspace",
  "raijin-worktree",
@@ -13444,6 +13447,7 @@ dependencies = [
  "raijin-proto",
  "raijin-remote",
  "raijin-remote-connection",
+ "raijin-shell",
  "raijin-telemetry",
  "raijin-theme",
  "raijin-theme-settings",
@@ -13647,6 +13651,7 @@ dependencies = [
  "inazuma-settings-framework",
  "log",
  "raijin-editor",
+ "raijin-shell",
  "raijin-workspace",
  "serde",
  "shellexpand",
@@ -13716,6 +13721,7 @@ dependencies = [
  "raijin-paths",
  "raijin-project",
  "raijin-search",
+ "raijin-shell",
  "raijin-telemetry",
  "raijin-theme",
  "raijin-theme-settings",
@@ -14407,6 +14413,7 @@ dependencies = [
  "raijin-log",
  "raijin-notifications",
  "raijin-project",
+ "raijin-shell",
  "raijin-telemetry",
  "raijin-theme",
  "raijin-theme-settings",
@@ -14852,6 +14859,7 @@ dependencies = [
  "raijin-remote",
  "raijin-remote-connection",
  "raijin-remote-server",
+ "raijin-shell",
  "raijin-task",
  "raijin-telemetry",
  "raijin-ui",
@@ -15178,6 +15186,7 @@ dependencies = [
  "raijin-actions",
  "raijin-editor",
  "raijin-project",
+ "raijin-shell",
  "raijin-theme",
  "raijin-theme-settings",
  "raijin-ui",
@@ -15241,9 +15250,19 @@ name = "raijin-shell"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "hostname",
- "serde",
- "serde_json",
+ "futures 0.3.32",
+ "inazuma",
+ "inazuma-collections",
+ "inazuma-settings-framework",
+ "inazuma-util",
+ "log",
+ "raijin-actions",
+ "raijin-db",
+ "raijin-project",
+ "raijin-remote",
+ "raijin-theme",
+ "raijin-ui",
+ "raijin-workspace",
 ]
 
 [[package]]
@@ -15251,6 +15270,16 @@ name = "raijin-shell-command-parser"
 version = "0.1.0"
 dependencies = [
  "brush-parser",
+]
+
+[[package]]
+name = "raijin-shell-integration"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "hostname",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -15609,6 +15638,7 @@ dependencies = [
  "raijin-session",
  "raijin-settings",
  "raijin-shell",
+ "raijin-shell-integration",
  "raijin-task",
  "raijin-term",
  "raijin-terminal",
@@ -15725,6 +15755,7 @@ dependencies = [
  "raijin-remote",
  "raijin-remote-connection",
  "raijin-rpc",
+ "raijin-shell",
  "raijin-telemetry",
  "raijin-theme",
  "raijin-ui",

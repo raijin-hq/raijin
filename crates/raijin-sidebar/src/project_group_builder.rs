@@ -16,7 +16,7 @@ use std::{
 
 use inazuma::{App, Entity};
 use raijin_ui::SharedString;
-use raijin_workspace::{MultiWorkspace, PathList, Workspace};
+use raijin_workspace::{PathList, Workspace};
 
 /// Identifies a project group by a set of paths the workspaces in this group
 /// have.
@@ -89,19 +89,19 @@ impl ProjectGroupBuilder {
         }
     }
 
-    pub fn from_multiworkspace(mw: &MultiWorkspace, cx: &App) -> Self {
+    pub fn from_workspaces(workspaces: &[Entity<Workspace>], cx: &App) -> Self {
         let mut builder = Self::new();
 
         // First pass: collect all directory mappings from every workspace
         // so we know how to canonicalize any path (including linked
         // worktree paths discovered by the main repo's workspace).
-        for workspace in mw.workspaces() {
+        for workspace in workspaces {
             builder.add_workspace_mappings(workspace.read(cx), cx);
         }
 
         // Second pass: group each workspace using canonical paths derived
         // from the full set of mappings.
-        for workspace in mw.workspaces() {
+        for workspace in workspaces {
             let group_name = builder.canonical_workspace_paths(workspace, cx);
             builder
                 .project_group_entry(&group_name)
@@ -262,15 +262,13 @@ mod tests {
             .update(cx, |project, cx| project.git_scans_complete(cx))
             .await;
 
-        let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            raijin_workspace::MultiWorkspace::test_new(project.clone(), window, cx)
+        let (_workspace_view, cx) = cx.add_window_view(|window, cx| {
+            raijin_workspace::Workspace::test_new(project.clone(), window, cx)
         });
 
-        multi_workspace.read_with(cx, |mw, cx| {
+        _workspace_view.read_with(cx, |workspace, cx| {
             let mut canonicalizer = ProjectGroupBuilder::new();
-            for workspace in mw.workspaces() {
-                canonicalizer.add_workspace_mappings(workspace.read(cx), cx);
-            }
+            canonicalizer.add_workspace_mappings(workspace, cx);
 
             // The main repo path should canonicalize to itself.
             assert_eq!(
@@ -298,15 +296,13 @@ mod tests {
             .update(cx, |project, cx| project.git_scans_complete(cx))
             .await;
 
-        let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            raijin_workspace::MultiWorkspace::test_new(project.clone(), window, cx)
+        let (_workspace_view, cx) = cx.add_window_view(|window, cx| {
+            raijin_workspace::Workspace::test_new(project.clone(), window, cx)
         });
 
-        multi_workspace.read_with(cx, |mw, cx| {
+        _workspace_view.read_with(cx, |workspace, cx| {
             let mut canonicalizer = ProjectGroupBuilder::new();
-            for workspace in mw.workspaces() {
-                canonicalizer.add_workspace_mappings(workspace.read(cx), cx);
-            }
+            canonicalizer.add_workspace_mappings(workspace, cx);
 
             // The worktree checkout path should canonicalize to the main repo.
             assert_eq!(

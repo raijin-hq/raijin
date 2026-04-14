@@ -317,7 +317,7 @@ mod tests {
     use inazuma_settings_framework::SettingsStore;
     use std::{path::Path, sync::Arc};
     use inazuma_util::path;
-    use raijin_workspace::MultiWorkspace;
+    use raijin_workspace::Workspace;
 
     #[inazuma::test]
     async fn test_project_symbols(cx: &mut TestAppContext) {
@@ -409,9 +409,8 @@ mod tests {
             },
         );
 
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         // Create the project symbols view.
         let symbols = cx.new_window_entity(|window, cx| {

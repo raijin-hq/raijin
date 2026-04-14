@@ -4,7 +4,7 @@ use inazuma::{
 };
 use std::rc::Rc;
 
-use crate::Sheet;
+use raijin_ui::Sheet;
 use super::shell::AppShell;
 
 #[derive(Clone)]

@@ -402,7 +402,7 @@ mod tests {
     use raijin_task::{TaskContext, TaskVariables, VariableName};
     use raijin_ui::VisualContext;
     use inazuma_util::{path, rel_path::rel_path};
-    use raijin_workspace::{AppState, MultiWorkspace};
+    use raijin_workspace::{AppState, Workspace};
 
     use crate::task_contexts;
 
@@ -483,7 +483,7 @@ mod tests {
             project.worktrees(cx).next().unwrap().read(cx).id()
         });
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
 
         let buffer1 = workspace

@@ -1848,16 +1848,14 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
 
     // Open main.rs in pane A (the initial pane)
     let pane_a = workspace
-        .update(cx, |multi, _window, cx| {
-            multi.workspace().read(cx).active_pane().clone()
+        .update(cx, |workspace, _window, cx| {
+            workspace.active_pane().clone()
         })
         .unwrap();
 
     let open_main = workspace
-        .update(cx, |multi, window, cx| {
-            multi.workspace().update(cx, |workspace, cx| {
-                workspace.open_path((worktree_id, rel_path("main.rs")), None, true, window, cx)
-            })
+        .update(cx, |workspace, window, cx| {
+            workspace.open_path((worktree_id, rel_path("main.rs")), None, true, window, cx)
         })
         .unwrap();
     open_main.await.unwrap();
@@ -1866,10 +1864,8 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
 
     // Split pane A to the right, creating pane B
     let pane_b = workspace
-        .update(cx, |multi, window, cx| {
-            multi.workspace().update(cx, |workspace, cx| {
-                workspace.split_pane(pane_a.clone(), SplitDirection::Right, window, cx)
-            })
+        .update(cx, |workspace, window, cx| {
+            workspace.split_pane(pane_a.clone(), SplitDirection::Right, window, cx)
         })
         .unwrap();
 
@@ -1878,16 +1874,14 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     // Open main.rs in pane B
     let weak_pane_b = pane_b.downgrade();
     let open_main_in_b = workspace
-        .update(cx, |multi, window, cx| {
-            multi.workspace().update(cx, |workspace, cx| {
-                workspace.open_path(
-                    (worktree_id, rel_path("main.rs")),
-                    Some(weak_pane_b),
-                    true,
-                    window,
-                    cx,
-                )
-            })
+        .update(cx, |workspace, window, cx| {
+            workspace.open_path(
+                (worktree_id, rel_path("main.rs")),
+                Some(weak_pane_b),
+                true,
+                window,
+                cx,
+            )
         })
         .unwrap();
     open_main_in_b.await.unwrap();
@@ -1897,16 +1891,14 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     // Also open second.rs in pane B as an inactive tab
     let weak_pane_b = pane_b.downgrade();
     let open_second_in_b = workspace
-        .update(cx, |multi, window, cx| {
-            multi.workspace().update(cx, |workspace, cx| {
-                workspace.open_path(
-                    (worktree_id, rel_path("second.rs")),
-                    Some(weak_pane_b),
-                    true,
-                    window,
-                    cx,
-                )
-            })
+        .update(cx, |workspace, window, cx| {
+            workspace.open_path(
+                (worktree_id, rel_path("second.rs")),
+                Some(weak_pane_b),
+                true,
+                window,
+                cx,
+            )
         })
         .unwrap();
     open_second_in_b.await.unwrap();
@@ -1916,16 +1908,14 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     // Switch pane B back to main.rs so second.rs is inactive there
     let weak_pane_b = pane_b.downgrade();
     let reactivate_main_in_b = workspace
-        .update(cx, |multi, window, cx| {
-            multi.workspace().update(cx, |workspace, cx| {
-                workspace.open_path(
-                    (worktree_id, rel_path("main.rs")),
-                    Some(weak_pane_b),
-                    true,
-                    window,
-                    cx,
-                )
-            })
+        .update(cx, |workspace, window, cx| {
+            workspace.open_path(
+                (worktree_id, rel_path("main.rs")),
+                Some(weak_pane_b),
+                true,
+                window,
+                cx,
+            )
         })
         .unwrap();
     reactivate_main_in_b.await.unwrap();
@@ -1935,16 +1925,14 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
     // Now open second.rs in pane A, making main.rs an inactive tab there
     let weak_pane_a = pane_a.downgrade();
     let open_second = workspace
-        .update(cx, |multi, window, cx| {
-            multi.workspace().update(cx, |workspace, cx| {
-                workspace.open_path(
-                    (worktree_id, rel_path("second.rs")),
-                    Some(weak_pane_a),
-                    true,
-                    window,
-                    cx,
-                )
-            })
+        .update(cx, |workspace, window, cx| {
+            workspace.open_path(
+                (worktree_id, rel_path("second.rs")),
+                Some(weak_pane_a),
+                true,
+                window,
+                cx,
+            )
         })
         .unwrap();
     open_second.await.unwrap();
@@ -2207,10 +2195,8 @@ async fn test_breakpoint_jumps_only_in_proper_split_view(
 
     // Split pane B to create pane C
     let pane_c = workspace
-        .update(cx, |multi, window, cx| {
-            multi.workspace().update(cx, |workspace, cx| {
-                workspace.split_pane(pane_b.clone(), SplitDirection::Right, window, cx)
-            })
+        .update(cx, |workspace, window, cx| {
+            workspace.split_pane(pane_b.clone(), SplitDirection::Right, window, cx)
         })
         .unwrap();
 

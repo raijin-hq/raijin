@@ -2623,7 +2623,7 @@ pub mod tests {
     };
     use inazuma_util::{path, paths::PathStyle, rel_path::rel_path};
     use inazuma_util_macros::perf;
-    use raijin_workspace::{DeploySearch, MultiWorkspace};
+    use raijin_workspace::{DeploySearch, Workspace};
 
     #[test]
     fn test_split_glob_patterns() {
@@ -2763,10 +2763,8 @@ pub mod tests {
         .await;
         let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
         let search = cx.new(|cx| ProjectSearch::new(project.clone(), cx));
         let search_view = cx.add_window(|window, cx| {
             ProjectSearchView::new(workspace.downgrade(), search.clone(), window, cx, None)
@@ -2936,10 +2934,8 @@ pub mod tests {
         .await;
         let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
         let search = cx.new(|cx| ProjectSearch::new(project.clone(), cx));
         let search_view = cx.add_window(|window, cx| {
             ProjectSearchView::new(workspace.downgrade(), search.clone(), window, cx, None)
@@ -3075,10 +3071,8 @@ pub mod tests {
         )
         .await;
         let project = Project::test(fs.clone(), ["/dir".as_ref()], cx).await;
-        let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let window = cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         let search_bar = window.build_entity(cx, |_, _| ProjectSearchBar::new());
 
@@ -3313,10 +3307,8 @@ pub mod tests {
         )
         .await;
         let project = Project::test(fs.clone(), ["/dir".as_ref()], cx).await;
-        let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let window = cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         let search_bar = window.build_entity(cx, |_, _| ProjectSearchBar::new());
 
@@ -3434,10 +3426,8 @@ pub mod tests {
         )
         .await;
         let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
-        let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let window = cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         let search_bar = window.build_entity(cx, |_, _| ProjectSearchBar::new());
 
@@ -3733,10 +3723,8 @@ pub mod tests {
         let worktree_id = project.read_with(cx, |project, cx| {
             project.worktrees(cx).next().unwrap().read(cx).id()
         });
-        let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let window = cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         let search_bar = window.build_entity(cx, |_, _| ProjectSearchBar::new());
 
@@ -3852,10 +3840,8 @@ pub mod tests {
         )
         .await;
         let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
-        let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let window = cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         let search_bar = window.build_entity(cx, |_, _| ProjectSearchBar::new());
 
@@ -4255,10 +4241,8 @@ pub mod tests {
             this.worktrees(cx).next().unwrap().read(cx).id()
         });
 
-        let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let window = cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
         let panes: Vec<_> = workspace.update_in(cx, |this, _, _| this.panes().to_owned());
@@ -4475,10 +4459,8 @@ pub mod tests {
         let worktree_id = project.update(cx, |this, cx| {
             this.worktrees(cx).next().unwrap().read(cx).id()
         });
-        let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+        let window = cx.add_window(|window, cx| Workspace::test_new(project, window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         let panes: Vec<_> = workspace.update_in(cx, |this, _, _| this.panes().to_owned());
         assert_eq!(panes.len(), 1);
@@ -4643,10 +4625,8 @@ pub mod tests {
         .await;
         let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
         let search = cx.new(|cx| ProjectSearch::new(project, cx));
         let search_view = cx.add_window(|window, cx| {
             ProjectSearchView::new(workspace.downgrade(), search.clone(), window, cx, None)
@@ -4710,10 +4690,8 @@ pub mod tests {
             this.worktrees(cx).next().unwrap().read(cx).id()
         });
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
         let mut cx = VisualTestContext::from_window(window.into(), cx);
 
         let editor = workspace
@@ -4787,10 +4765,8 @@ pub mod tests {
         .await;
         let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
         struct EmptyModalView {
@@ -4898,10 +4874,8 @@ pub mod tests {
         );
 
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         let search = cx.new(|cx| ProjectSearch::new(project.clone(), cx));
         let search_view = cx.add_window(|window, cx| {
@@ -5070,10 +5044,8 @@ pub mod tests {
 
         let project = Project::test(fs.clone(), [path!("/dir").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
+        let workspace = window.root(cx).unwrap();
         let search = cx.new(|cx| ProjectSearch::new(project.clone(), cx));
         let search_view = cx.add_window(|window, cx| {
             ProjectSearchView::new(workspace.downgrade(), search.clone(), window, cx, None)

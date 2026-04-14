@@ -1,14 +1,11 @@
 mod platforms;
 mod system_window_tabs;
 
-use raijin_feature_flags::{AgentV2FeatureFlag, FeatureFlagAppExt};
 use inazuma::{
     Action, AnyElement, App, Context, Decorations, Entity, Oklch, InteractiveElement, IntoElement,
-    MouseButton, ParentElement, StatefulInteractiveElement, Styled, WeakEntity, Window,
+    MouseButton, ParentElement, StatefulInteractiveElement, Styled, Window,
     WindowButtonLayout, WindowControlArea, div, px,
 };
-use raijin_project::DisableAiSettings;
-use inazuma_settings_framework::Settings;
 use smallvec::SmallVec;
 use std::mem;
 use raijin_ui::prelude::*;
@@ -34,7 +31,6 @@ fn platform_title_bar_height(window: &Window) -> inazuma::Pixels {
 fn platform_title_bar_height(_window: &Window) -> inazuma::Pixels {
     px(32.)
 }
-use raijin_workspace::{MultiWorkspace, SidebarRenderState, SidebarSide};
 
 use crate::{
     platforms::{platform_linux, platform_windows},
@@ -52,7 +48,6 @@ pub struct PlatformTitleBar {
     should_move: bool,
     system_window_tabs: Entity<SystemWindowTabs>,
     button_layout: Option<WindowButtonLayout>,
-    multi_workspace: Option<WeakEntity<MultiWorkspace>>,
 }
 
 impl PlatformTitleBar {
@@ -67,17 +62,7 @@ impl PlatformTitleBar {
             should_move: false,
             system_window_tabs,
             button_layout: None,
-            multi_workspace: None,
         }
-    }
-
-    pub fn with_multi_workspace(mut self, multi_workspace: WeakEntity<MultiWorkspace>) -> Self {
-        self.multi_workspace = Some(multi_workspace);
-        self
-    }
-
-    pub fn set_multi_workspace(&mut self, multi_workspace: WeakEntity<MultiWorkspace>) {
-        self.multi_workspace = Some(multi_workspace);
     }
 
     pub fn title_bar_color(&self, window: &mut Window, cx: &mut Context<Self>) -> Oklch {
@@ -121,16 +106,8 @@ impl PlatformTitleBar {
         SystemWindowTabs::init(cx);
     }
 
-    fn sidebar_render_state(&self, cx: &App) -> SidebarRenderState {
-        self.multi_workspace
-            .as_ref()
-            .and_then(|mw| mw.upgrade())
-            .map(|mw| mw.read(cx).sidebar_render_state(cx))
-            .unwrap_or_default()
-    }
-
-    pub fn is_multi_workspace_enabled(cx: &App) -> bool {
-        cx.has_flag::<AgentV2FeatureFlag>() && !DisableAiSettings::get_global(cx).disable_ai
+    pub fn is_multi_workspace_enabled(_cx: &App) -> bool {
+        false
     }
 }
 
@@ -144,7 +121,6 @@ impl Render for PlatformTitleBar {
         let children = mem::take(&mut self.children);
 
         let button_layout = self.effective_button_layout(&decorations, cx);
-        let sidebar = self.sidebar_render_state(cx);
 
         let title_bar = h_flex()
             .window_control_area(WindowControlArea::Drag)
@@ -195,7 +171,6 @@ impl Render for PlatformTitleBar {
                 if window.is_fullscreen() {
                     this.pl_2()
                 } else if self.platform_style == PlatformStyle::Mac
-                    && !(sidebar.open && sidebar.side == SidebarSide::Left)
                 {
                     this.pl(px(TRAFFIC_LIGHT_PADDING))
                 } else if let Some(button_layout) =
@@ -215,12 +190,11 @@ impl Render for PlatformTitleBar {
                 Decorations::Client { tiling, .. } => el
                     .when(
                         !(tiling.top || tiling.right)
-                            && !(sidebar.open && sidebar.side == SidebarSide::Right),
+                            ,
                         |el| el.rounded_tr(raijin_theme::CLIENT_SIDE_DECORATION_ROUNDING),
                     )
                     .when(
-                        !(tiling.top || tiling.left)
-                            && !(sidebar.open && sidebar.side == SidebarSide::Left),
+                        !(tiling.top || tiling.left),
                         |el| el.rounded_tl(raijin_theme::CLIENT_SIDE_DECORATION_ROUNDING),
                     )
                     // this border is to avoid a transparent gap in the rounded corners

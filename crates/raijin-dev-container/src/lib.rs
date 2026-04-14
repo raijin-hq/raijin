@@ -35,7 +35,7 @@ use raijin_ui::{
 };
 use inazuma_util::ResultExt;
 use inazuma_util::rel_path::RelPath;
-use raijin_workspace::{ModalView, Workspace, with_active_or_new_workspace};
+use raijin_workspace::{ModalView, Workspace};
 
 use futures::AsyncReadExt;
 use http::Request;
@@ -97,7 +97,7 @@ struct InitializeDevContainer;
 
 pub fn init(cx: &mut App) {
     cx.on_action(|_: &InitializeDevContainer, cx| {
-        with_active_or_new_workspace(cx, move |workspace, window, cx| {
+        raijin_shell::with_active_workspace(cx, move |workspace, window, cx| {
             let weak_entity = cx.weak_entity();
             workspace.toggle_modal(window, cx, |window, cx| {
                 DevContainerModal::new(weak_entity, window, cx)

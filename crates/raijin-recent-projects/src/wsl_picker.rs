@@ -8,7 +8,7 @@ use raijin_ui::{
     Render, Styled, StyledExt, Toggleable, Window, div, h_flex, rems, v_flex,
 };
 use inazuma_util::ResultExt as _;
-use raijin_workspace::{ModalView, MultiWorkspace};
+use raijin_workspace::ModalView;
 
 use crate::open_remote_project;
 
@@ -244,20 +244,8 @@ impl WslOpenModal {
             user: None,
         });
 
-        let replace_current_window = match self.create_new_window {
-            true => secondary,
-            false => !secondary,
-        };
-        let replace_window = match replace_current_window {
-            true => window.window_handle().downcast::<MultiWorkspace>(),
-            false => None,
-        };
-
         let paths = self.paths.clone();
-        let open_options = raijin_workspace::OpenOptions {
-            replace_window,
-            ..Default::default()
-        };
+        let open_options = raijin_workspace::OpenOptions::default();
 
         cx.emit(DismissEvent);
         cx.spawn_in(window, async move |_, cx| {

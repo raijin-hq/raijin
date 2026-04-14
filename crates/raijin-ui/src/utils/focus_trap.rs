@@ -50,7 +50,7 @@ pub trait FocusTrapElement: InteractiveElement + Sized {
 impl<T: InteractiveElement + Sized> FocusTrapElement for T {}
 
 /// Global state to manage all focus trap containers
-pub(crate) struct FocusTrapManager {
+pub struct FocusTrapManager {
     /// Map from container element ID to its focus trap info
     traps: HashMap<GlobalElementId, WeakFocusHandle>,
 }
@@ -81,7 +81,7 @@ impl FocusTrapManager {
     }
 
     /// Find which focus trap contains the currently focused element
-    pub(crate) fn find_active_trap(window: &Window, cx: &App) -> Option<FocusHandle> {
+    pub fn find_active_trap(window: &Window, cx: &App) -> Option<FocusHandle> {
         for (_id, container_handle) in Self::global(cx).traps.iter() {
             let Some(container) = container_handle.upgrade() else {
                 continue;

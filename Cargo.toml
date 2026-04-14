@@ -82,6 +82,7 @@ members = [
     "crates/raijin-settings",
     "crates/raijin-json-compat",
     "crates/raijin-shell",
+    "crates/raijin-shell-integration",
     "crates/raijin-snippet",
     "crates/raijin-syntax",
     "crates/raijin-snippet-provider",
@@ -356,6 +357,7 @@ raijin-session = { path = "crates/raijin-session" }
 raijin-settings = { path = "crates/raijin-settings" }
 raijin-json-compat = { path = "crates/raijin-json-compat" }
 raijin-shell = { path = "crates/raijin-shell" }
+raijin-shell-integration = { path = "crates/raijin-shell-integration" }
 raijin-snippet = { path = "crates/raijin-snippet" }
 raijin-syntax = { path = "crates/raijin-syntax" }
 raijin-snippet-provider = { path = "crates/raijin-snippet-provider" }

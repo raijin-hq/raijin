@@ -96,7 +96,7 @@ impl Render for UpdateVersion {
                 let tooltip = Self::version_tooltip_message(&version);
                 UpdateButton::updated(tooltip)
                     .on_click(|_, _, cx| {
-                        raijin_workspace::reload(cx);
+                        raijin_shell::reload(cx);
                     })
                     .on_dismiss(cx.listener(|this, _, _window, cx| {
                         this.dismissed = true;

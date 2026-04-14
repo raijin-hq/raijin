@@ -51,8 +51,9 @@ use inazuma_util::{
     paths::{PathStyle, RemotePathBuf},
     rel_path::RelPath,
 };
+use raijin_shell::AppShell;
 use raijin_workspace::{
-    AppState, ModalView, MultiWorkspace, OpenLog, OpenOptions, Toast, Workspace,
+    AppState, ModalView, OpenLog, Toast, Workspace,
     notifications::{DetachAndPromptErr, NotificationId},
     open_remote_project_with_existing_connection,
 };
@@ -494,12 +495,12 @@ impl ProjectPicker {
                                 raijin_telemetry::event!("SSH Project Created");
                                 Workspace::new(None, project.clone(), app_state.clone(), window, cx)
                             });
-                            cx.new(|cx| MultiWorkspace::new(workspace, window, cx))
+                            cx.new(|cx| AppShell::new(workspace, window, cx))
                         })
                         .log_err()?;
 
                     let items = open_remote_project_with_existing_connection(
-                        connection, project, paths, app_state, window, cx,
+                        connection, project, paths, app_state, window.into(), cx,
                     )
                     .await
                     .log_err();
@@ -1556,7 +1557,7 @@ impl RemoteServerProjects {
                 let replace_window = match (create_new_window, secondary_confirm) {
                     (true, false) | (false, true) => None,
                     (true, true) | (false, false) => {
-                        window.window_handle().downcast::<MultiWorkspace>()
+                        window.window_handle().downcast::<AppShell>()
                     }
                 };
 
@@ -1565,9 +1566,9 @@ impl RemoteServerProjects {
                         server.into(),
                         project.paths.into_iter().map(PathBuf::from).collect(),
                         app_state,
-                        OpenOptions {
+                        raijin_shell::OpenOptions {
                             replace_window,
-                            ..OpenOptions::default()
+                            ..Default::default()
                         },
                         cx,
                     )
@@ -1851,7 +1852,7 @@ impl RemoteServerProjects {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let replace_window = window.window_handle().downcast::<MultiWorkspace>();
+        let replace_window = window.window_handle().downcast::<AppShell>();
 
         let app_state = Arc::downgrade(&app_state);
         cx.spawn_in(window, async move |entity, cx| {
@@ -1894,9 +1895,9 @@ impl RemoteServerProjects {
                 connection.into(),
                 vec![starting_dir].into_iter().map(PathBuf::from).collect(),
                 app_state,
-                OpenOptions {
+                raijin_shell::OpenOptions {
                     replace_window,
-                    ..OpenOptions::default()
+                    ..Default::default()
                 },
                 cx,
             )

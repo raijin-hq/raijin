@@ -10,7 +10,7 @@ use inazuma_settings_framework::{ProjectPanelAutoOpenSettings, SettingsStore};
 use std::path::{Path, PathBuf};
 use inazuma_util::{path, paths::PathStyle, rel_path::rel_path};
 use raijin_workspace::{
-    AppState, ItemHandle, MultiWorkspace, Pane, Workspace,
+    AppState, ItemHandle, Pane, Workspace,
     item::{Item, ProjectItem},
     register_project_item,
 };
@@ -57,10 +57,9 @@ async fn test_visible_list(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -126,10 +125,9 @@ async fn test_opening_file(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/src").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -216,10 +214,9 @@ async fn test_exclusions_in_visible_list(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -330,10 +327,9 @@ async fn test_auto_collapse_dir_paths(cx: &mut inazuma::TestAppContext) {
         cx,
     )
     .await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     cx.update(|_, cx| {
         let settings = *ProjectPanelSettings::get_global(cx);
@@ -417,10 +413,9 @@ async fn test_auto_collapse_dir_paths(cx: &mut inazuma::TestAppContext) {
     {
         let project = Project::test(fs.clone(), [path!("/root1").as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            .root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
         cx.update(|_, cx| {
             let settings = *ProjectPanelSettings::get_global(cx);
@@ -520,10 +515,9 @@ async fn test_editing_files(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, |workspace, window, cx| {
         let panel = ProjectPanel::new(workspace, window, cx);
@@ -953,10 +947,9 @@ async fn test_adding_directories_via_file(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, |workspace, window, cx| {
         let panel = ProjectPanel::new(workspace, window, cx);
@@ -1066,10 +1059,9 @@ async fn test_adding_directory_via_file(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root1").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, |workspace, window, cx| {
         let panel = ProjectPanel::new(workspace, window, cx);
@@ -1197,10 +1189,9 @@ async fn test_copy_paste(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -1307,10 +1298,9 @@ async fn test_cut_paste(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -1415,10 +1405,9 @@ async fn test_cut_paste_between_different_worktrees(cx: &mut inazuma::TestAppCon
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -1515,10 +1504,9 @@ async fn test_copy_paste_between_different_worktrees(cx: &mut inazuma::TestAppCo
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -1644,10 +1632,9 @@ async fn test_copy_paste_directory(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -1822,10 +1809,9 @@ async fn test_copy_paste_directory_with_sibling_file(cx: &mut inazuma::TestAppCo
     .await;
 
     let project = Project::test(fs.clone(), ["/test".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -1931,10 +1917,9 @@ async fn test_copy_paste_nested_and_root_entries(cx: &mut inazuma::TestAppContex
     .await;
 
     let project = Project::test(fs.clone(), ["/test".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2009,10 +1994,9 @@ async fn test_undo_rename(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2070,10 +2054,9 @@ async fn test_undo_create_file(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2126,10 +2109,9 @@ async fn test_undo_create_directory(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2183,10 +2165,9 @@ async fn test_undo_cut_paste(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2247,10 +2228,9 @@ async fn test_undo_drag_single_entry(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2305,10 +2285,9 @@ async fn test_undo_drag_multiple_entries(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2369,10 +2348,9 @@ async fn test_multiple_sequential_undos(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2451,10 +2429,9 @@ async fn test_undo_with_empty_stack(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2486,10 +2463,9 @@ async fn test_undo_batch(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     let worktree_id = project.update(cx, |project, cx| {
@@ -2572,10 +2548,9 @@ async fn test_paste_external_paths(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2617,10 +2592,9 @@ async fn test_copy_and_cut_write_to_system_clipboard(cx: &mut inazuma::TestAppCo
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2672,10 +2646,9 @@ async fn test_remove_opened_file(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/src").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2763,10 +2736,9 @@ async fn test_auto_open_new_file_when_enabled(cx: &mut inazuma::TestAppContext) 
     fs.insert_tree(path!("/root"), json!({})).await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2802,10 +2774,9 @@ async fn test_auto_open_new_file_when_disabled(cx: &mut inazuma::TestAppContext)
     fs.insert_tree(path!("/root"), json!({})).await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2850,10 +2821,9 @@ async fn test_auto_open_on_paste_when_enabled(cx: &mut inazuma::TestAppContext) 
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2899,10 +2869,9 @@ async fn test_auto_open_on_paste_when_disabled(cx: &mut inazuma::TestAppContext)
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2949,10 +2918,9 @@ async fn test_auto_open_on_drop_when_enabled(cx: &mut inazuma::TestAppContext) {
         .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -2987,10 +2955,9 @@ async fn test_auto_open_on_drop_when_disabled(cx: &mut inazuma::TestAppContext) 
         .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -3026,10 +2993,9 @@ async fn test_create_duplicate_items(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/src".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, |workspace, window, cx| {
         let panel = ProjectPanel::new(workspace, window, cx);
@@ -3232,10 +3198,9 @@ async fn test_create_duplicate_items_and_check_history(cx: &mut inazuma::TestApp
     .await;
 
     let project = Project::test(fs.clone(), ["/src".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, |workspace, window, cx| {
         let panel = ProjectPanel::new(workspace, window, cx);
@@ -3498,10 +3463,9 @@ async fn test_rename_item_and_check_history(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/src".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, |workspace, window, cx| {
         let panel = ProjectPanel::new(workspace, window, cx);
@@ -3671,10 +3635,9 @@ async fn test_select_git_entry(cx: &mut inazuma::TestAppContext) {
     scan2_complete.await;
     cx.run_until_parked();
 
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -3923,10 +3886,9 @@ async fn test_select_directory(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4024,10 +3986,9 @@ async fn test_select_first_last(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4133,10 +4094,9 @@ async fn test_dir_toggle_collapse(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4188,10 +4148,9 @@ async fn test_collapse_all_entries(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4246,10 +4205,9 @@ async fn test_collapse_all_entries_multiple_worktrees(cx: &mut inazuma::TestAppC
         cx,
     )
     .await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4292,10 +4250,9 @@ async fn test_collapse_all_entries_with_collapsed_root(cx: &mut inazuma::TestApp
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4364,10 +4321,9 @@ async fn test_collapse_all_entries_with_invisible_worktree(cx: &mut inazuma::Tes
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4407,10 +4363,9 @@ async fn test_new_file_move(cx: &mut inazuma::TestAppContext) {
     let fs = FakeFs::new(cx.executor());
     fs.as_fake().insert_tree(path!("/root"), json!({})).await;
     let project = Project::test(fs, [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4489,10 +4444,9 @@ async fn test_rename_root_of_worktree(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4574,10 +4528,9 @@ async fn test_rename_with_hide_root(cx: &mut inazuma::TestAppContext) {
     {
         let project = Project::test(fs.clone(), ["/root1".as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            .root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
         cx.update(|_, cx| {
@@ -4616,10 +4569,9 @@ async fn test_rename_with_hide_root(cx: &mut inazuma::TestAppContext) {
     {
         let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            .root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
         cx.update(|_, cx| {
@@ -4677,10 +4629,9 @@ async fn test_multiple_marked_entries(cx: &mut inazuma::TestAppContext) {
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
     let worktree_id = cx.update(|cx| project.read(cx).worktrees(cx).next().unwrap().read(cx).id());
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -4882,10 +4833,9 @@ async fn test_dragged_selection_resolve_entry(cx: &mut inazuma::TestAppContext) 
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     cx.update(|_, cx| {
@@ -5049,10 +4999,9 @@ async fn test_drag_marked_entries_in_folded_directories(cx: &mut inazuma::TestAp
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     cx.update(|_, cx| {
@@ -5131,10 +5080,9 @@ async fn test_dragging_same_named_files_preserves_one_source_on_conflict(
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |multi_workspace, _| multi_workspace.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -5228,10 +5176,9 @@ async fn test_drag_entries_between_different_worktrees(cx: &mut inazuma::TestApp
     .await;
 
     let project = Project::test(fs.clone(), ["/root_a".as_ref(), "/root_b".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -5323,10 +5270,9 @@ async fn test_drag_multiple_entries(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -5424,10 +5370,9 @@ async fn test_autoreveal_and_gitignored_files(cx: &mut inazuma::TestAppContext) 
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -5733,10 +5678,9 @@ async fn test_gitignored_and_always_included(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -5850,10 +5794,9 @@ async fn test_explicit_reveal(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/project_root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -6044,10 +5987,9 @@ async fn test_creating_excluded_entries(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, |workspace, window, cx| {
         let panel = ProjectPanel::new(workspace, window, cx);
@@ -6229,10 +6171,9 @@ async fn test_selection_restored_when_creation_cancelled(cx: &mut inazuma::TestA
     .await;
 
     let project = Project::test(fs.clone(), ["/src".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, |workspace, window, cx| {
         let panel = ProjectPanel::new(workspace, window, cx);
@@ -6335,10 +6276,9 @@ async fn test_basic_file_deletion_scenarios(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -6460,10 +6400,9 @@ async fn test_deletion_gitignored(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     // Test 1: Auto selection with one gitignored file next to the deleted file
@@ -6562,10 +6501,9 @@ async fn test_nested_deletion_gitignore(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     cx.update(|_, cx| {
@@ -6639,10 +6577,9 @@ async fn test_complex_selection_scenarios(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -6755,10 +6692,9 @@ async fn test_delete_all_files_and_directories(cx: &mut inazuma::TestAppContext)
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -6831,10 +6767,9 @@ async fn test_nested_selection_deletion(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -6909,10 +6844,9 @@ async fn test_multiple_worktrees_deletion(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -7044,10 +6978,9 @@ async fn test_selection_vs_marked_entries_priority(cx: &mut inazuma::TestAppCont
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -7151,10 +7084,9 @@ async fn test_selection_fallback_to_next_highest_worktree(cx: &mut inazuma::Test
     .await;
 
     let project = Project::test(fs.clone(), ["/root_b".as_ref(), "/root_c".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -7255,10 +7187,9 @@ async fn test_expand_all_for_entry(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     // Test 1: When auto-fold is enabled
@@ -7444,10 +7375,9 @@ async fn test_collapse_all_for_entry(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     // Test 1: Basic collapsing
@@ -7633,10 +7563,9 @@ async fn test_collapse_selected_entry_and_children_action(cx: &mut inazuma::Test
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, ProjectPanel::new);
@@ -7723,10 +7652,9 @@ async fn test_collapse_root_single_worktree(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, ProjectPanel::new);
@@ -7818,10 +7746,9 @@ async fn test_collapse_root_multi_worktree(cx: &mut inazuma::TestAppContext) {
         cx,
     )
     .await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, ProjectPanel::new);
@@ -7923,10 +7850,9 @@ async fn test_collapse_non_root_multi_worktree(cx: &mut inazuma::TestAppContext)
         cx,
     )
     .await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, ProjectPanel::new);
@@ -8019,10 +7945,9 @@ async fn test_collapse_all_for_root_single_worktree(cx: &mut inazuma::TestAppCon
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, ProjectPanel::new);
@@ -8110,10 +8035,9 @@ async fn test_collapse_all_for_root_multi_worktree(cx: &mut inazuma::TestAppCont
         cx,
     )
     .await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, ProjectPanel::new);
@@ -8181,10 +8105,9 @@ async fn test_collapse_all_for_root_noop_on_non_root(cx: &mut inazuma::TestAppCo
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, ProjectPanel::new);
@@ -8245,10 +8168,9 @@ async fn test_create_entries_without_selection(cx: &mut inazuma::TestAppContext)
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, |workspace, window, cx| {
@@ -8314,10 +8236,9 @@ async fn test_create_entries_without_selection_hide_root(cx: &mut inazuma::TestA
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     cx.update(|_, cx| {
@@ -8470,10 +8391,9 @@ async fn test_create_entry_with_trailing_dot_windows(cx: &mut inazuma::TestAppCo
     .await;
 
     let project = Project::test(fs.clone(), [path!("/root").as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, |workspace, window, cx| {
@@ -8542,10 +8462,9 @@ async fn test_highlight_entry_for_external_drag(cx: &mut inazuma::TestAppContext
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -8619,10 +8538,9 @@ async fn test_highlight_entry_for_selection_drag(cx: &mut inazuma::TestAppContex
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -8762,10 +8680,9 @@ async fn test_highlight_entry_for_selection_drag_cross_worktree(cx: &mut inazuma
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -8856,10 +8773,9 @@ async fn test_should_highlight_background_for_selection_drag(cx: &mut inazuma::T
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -9019,10 +8935,9 @@ async fn test_hide_root(cx: &mut inazuma::TestAppContext) {
     {
         let project = Project::test(fs.clone(), ["/root1".as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            .root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
         cx.update(|_, cx| {
@@ -9056,10 +8971,9 @@ async fn test_hide_root(cx: &mut inazuma::TestAppContext) {
     {
         let project = Project::test(fs.clone(), ["/root1".as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            .root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
         // Set hide_root to true
@@ -9102,10 +9016,9 @@ async fn test_hide_root(cx: &mut inazuma::TestAppContext) {
     {
         let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            .root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
         // Set hide_root to true
@@ -9142,10 +9055,9 @@ async fn test_hide_root(cx: &mut inazuma::TestAppContext) {
     {
         let project = Project::test(fs.clone(), ["/root1".as_ref(), "/root2".as_ref()], cx).await;
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let workspace = window
-            .read_with(cx, |mw, _| mw.workspace().clone())
-            .unwrap();
+            .root(cx).unwrap();
         let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
         cx.update(|_, cx| {
@@ -9196,10 +9108,9 @@ async fn test_compare_selected_files(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -9301,10 +9212,9 @@ async fn test_compare_files_context_menu(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -9385,10 +9295,9 @@ async fn test_reveal_in_file_manager_path_falls_back_to_worktree_root(
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -9451,10 +9360,9 @@ async fn test_hide_hidden_entries(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     cx.update(|_, cx| {
@@ -9799,10 +9707,9 @@ async fn test_sort_mode_directories_first(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -9839,10 +9746,9 @@ async fn test_sort_mode_mixed(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     // Switch to Mixed mode
@@ -9891,10 +9797,9 @@ async fn test_sort_mode_files_first(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     // Switch to FilesFirst mode
@@ -9940,10 +9845,9 @@ async fn test_sort_mode_toggle(cx: &mut inazuma::TestAppContext) {
     .await;
 
     let project = Project::test(fs.clone(), ["/root".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
     let panel = workspace.update_in(cx, ProjectPanel::new);
     cx.run_until_parked();
@@ -10128,10 +10032,9 @@ async fn test_preserve_temporary_unfolded_active_index_on_blur_from_context_menu
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, |workspace, window, cx| {
@@ -10312,10 +10215,9 @@ async fn run_create_file_in_folded_path_case(
     .await;
 
     let project = Project::test(fs.clone(), ["/root1".as_ref()], cx).await;
-    let window = cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+    let window = cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
     let workspace = window
-        .read_with(cx, |mw, _| mw.workspace().clone())
-        .unwrap();
+        .root(cx).unwrap();
     let cx = &mut VisualTestContext::from_window(window.into(), cx);
 
     let panel = workspace.update_in(cx, |workspace, window, cx| {

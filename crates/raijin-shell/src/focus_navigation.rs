@@ -1,6 +1,6 @@
 use inazuma::{Context, Window};
 
-use crate::utils::focus_trap::FocusTrapManager;
+use raijin_ui::utils::focus_trap::FocusTrapManager;
 use super::shell::{AppShell, Tab, TabPrev};
 
 impl AppShell {

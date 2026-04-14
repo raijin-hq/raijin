@@ -21,6 +21,39 @@ Nicht anders. Keine parallele Trait-Schicht die später verdrahtet wird. Keine "
 
 **Reihenfolge: nach Aufwand.** Einfache Wins zuerst, schwere Brocken später. Begründung: nach jeder Woche soll es etwas Sichtbares geben. Wenn die Reihenfolge "wertvollstes zuerst" wäre, würden die ersten 4 Wochen nur an `raijin-search` und `raijin-diagnostics` brennen ohne sichtbaren Fortschritt.
 
+## Update-Loop nach jeder Station
+
+Wenn eine Station fertig ist, müssen **drei Dinge parallel** passieren — sonst driftet die Plan-Dokumentation vom realen Code-Stand weg und die nächste Station startet auf falscher Grundlage:
+
+1. **Plan 28 aktualisieren** (`plan/28-FEATURES-AND-EXTENSIONS.md`) — die entsprechende Feature-Zeile in den Audit-Tabellen ändern:
+   - **Status-Spalte:** `Code da, nicht verdrahtet` → `funktioniert`
+   - **Audit-Spalte:** Verdrahtungs-Detail eintragen (z.B. "raijin-search verdrahtet, SearchableItem auf TerminalPane mit BlockMatch, Cmd+F öffnet Toolbar")
+   - **Phase-Spalte:** Stationsnummer → `vorhanden`
+
+   Plan 28 ist die **Audit-Wahrheitsquelle** des Projekts. Wenn Plan 28 sagt "funktioniert", muss es im Code wirklich funktionieren. Wenn Plan 28 sagt "Code da, nicht verdrahtet", darf der nächste Dev sich darauf verlassen.
+
+2. **Plan 25 aktualisieren** (diese Datei) — die fertige Station mit `✓ DONE` in der Überschrift markieren. Beispiel:
+
+       ### Station 5 — raijin-search ✓ DONE
+
+   Damit ist beim Reinschauen sofort klar wo der nächste Dev anfängt.
+
+3. **Vision-Dokumente verschieben** (falls die Station eines hat) — nach `plan/done/`, mit Stub im `plan/` der auf den done-Pfad verweist:
+   - **Station 11 (raijin-agent) fertig** → `plan/26-AGENTIC-DEVELOPMENT-ENVIRONMENT.md` nach `plan/done/`
+   - **Station 13 (raijin-repl) fertig** → `plan/29-HYBRID-TERMINAL-REPL.md` nach `plan/done/`
+
+   Stub-Format (siehe Plan 27 als Vorlage): kurze Datei im plan/ die nur sagt "STATUS: ERLEDIGT, siehe done/26-AGENTIC-DEVELOPMENT-ENVIRONMENT.md".
+
+**Git-Commit pro Station:** Eine Station = ein Commit (oder eine Commit-Reihe mit klarem Prefix). Commit-Message-Format:
+
+    Station N (crate-name): Kurzbeschreibung was jetzt funktioniert
+
+Beispiel: `Station 5 (raijin-search): Cmd+F öffnet Search-Toolbar im Terminal, Block-Matches highlighted`
+
+Macht später Bisect bei Bugs trivial — wenn "Search ist seit gestern kaputt" gemeldet wird, weißt du sofort welcher Station-Commit es war.
+
+**Was passiert wenn du den Update-Loop vergisst:** Plan 28 und Code drift apart. In drei Stationen weiß keiner mehr ob `raijin-search` jetzt verdrahtet ist oder nicht, weil Plan 28 noch "neu bauen" sagt aber Code es schon kann. Dann musst du wieder die ganze Code-Inventur machen die du heute schon einmal gemacht hast. Nicht nochmal.
+
 ## Code-Inventur (verifiziert April 2026)
 
 ### Was `raijin-app` heute tatsächlich lädt
@@ -34,9 +67,11 @@ raijin-command-palette, raijin-completions, raijin-credentials-provider,
 raijin-db, raijin-fs, raijin-http-client, raijin-paths, raijin-language,
 raijin-node-runtime, raijin-platform-title-bar, raijin-project,
 raijin-project-registry, raijin-release-channel, raijin-session,
-raijin-settings, raijin-settings-ui, raijin-shell, raijin-tab-switcher,
-raijin-term, raijin-terminal, raijin-terminal-view, raijin-ui,
-raijin-theme, raijin-theme-settings, raijin-title-bar, raijin-workspace
+raijin-settings, raijin-settings-ui, raijin-shell (Window-Shell/AppShell),
+raijin-shell-integration (ehemals raijin-shell — ShellContext/Hooks),
+raijin-tab-switcher, raijin-term, raijin-terminal, raijin-terminal-view,
+raijin-ui, raijin-theme, raijin-theme-settings, raijin-title-bar,
+raijin-workspace
 ```
 
 Das ist alles. Insbesondere **nicht** geladen: `raijin-editor`, `raijin-search`, `raijin-diagnostics`, `raijin-outline`, `raijin-outline-panel`, `raijin-file-finder`, `raijin-project-panel`, `raijin-go-to-line`, `raijin-vim`, `raijin-copilot`, `raijin-edit-prediction`, `raijin-agent`, `raijin-agent-ui`, `raijin-language-model`, `raijin-language-models`, alle 13+ AI-Provider-Crates, `raijin-repl`, `raijin-image-viewer`, `raijin-markdown-preview`, `raijin-language-tools`, `raijin-breadcrumbs`, `raijin-multi-buffer`, `raijin-streaming-diff`.
@@ -84,7 +119,7 @@ Was **fehlt** und in den Stationen 1-2 hinzukommt:
 
 ## Pre-Work: Plan 35 (Dead Code Cleanup)
 
-Vor Station 1 läuft **Plan 35** — Removal von `MultiWorkspace`, `WorkspaceStore`, MultiWorkspace-Downcasts. Begründung:
+Vor Station 1 läuft **Plan 35** — Removal von `MultiWorkspace`, `WorkspaceStore`, MultiWorkspace-Downcasts, plus Crate-Restrukturierung (AppShell-Extraktion in neue Crate `raijin-shell`, Umbenennung `raijin-shell` → `raijin-shell-integration`). Begründung:
 
 - Beim Verdrahten neuer Crates kämpfen wir sonst gegen `window.downcast::<MultiWorkspace>()` Pfade die bei uns immer fehlschlagen
 - Plan 35 ist mechanisch und in 5 Subphasen gut strukturiert
@@ -882,7 +917,7 @@ Phase 25 ist "fertig" wenn der User folgende Sätze als wahr empfindet:
 ## Stations-Dependencies untereinander
 
 ```
-Plan 35 (Dead Code Cleanup) ──→ Pre-Work (Item-Basis-Methoden)
+Plan 35 (Dead Code Cleanup + AppShell-Crate-Extraktion) ──→ Pre-Work (Item-Basis-Methoden)
                                           ↓
                               Station 1 (tab-switcher)
                                           ↓

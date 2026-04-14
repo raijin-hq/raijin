@@ -22,7 +22,7 @@ use raijin_language::{
 use raijin_lsp::{notification, request};
 use raijin_project::Project;
 use smol::stream::StreamExt;
-use raijin_workspace::{AppState, MultiWorkspace, Workspace, WorkspaceHandle};
+use raijin_workspace::{AppState, Workspace, WorkspaceHandle};
 
 use super::editor_test_coninazuma_text::{AssertionContextManager, EditorTestContext};
 
@@ -96,7 +96,7 @@ impl EditorLspTestContext {
             .await;
 
         let window =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let workspace = window.root(cx).unwrap();
 
@@ -110,17 +110,13 @@ impl EditorLspTestContext {
         cx.read(|cx| {
             workspace
                 .read(cx)
-                .workspace()
-                .read(cx)
                 .worktree_scans_complete(cx)
         })
         .await;
-        let file = cx.read(|cx| workspace.read(cx).workspace().file_project_paths(cx)[0].clone());
+        let file = cx.read(|cx| workspace.file_project_paths(cx)[0].clone());
         let item = workspace
             .update_in(&mut cx, |workspace, window, cx| {
-                workspace.workspace().update(cx, |workspace, cx| {
-                    workspace.open_path(file, None, true, window, cx)
-                })
+                workspace.open_path(file, None, true, window, cx)
             })
             .await
             .expect("Could not open test file");
@@ -130,8 +126,6 @@ impl EditorLspTestContext {
         });
         editor.update_in(&mut cx, |editor, window, cx| {
             let nav_history = workspace
-                .read(cx)
-                .workspace()
                 .read(cx)
                 .active_pane()
                 .read(cx)
@@ -144,8 +138,6 @@ impl EditorLspTestContext {
 
         // Ensure the language server is fully registered with the buffer
         cx.executor().run_until_parked();
-
-        let workspace = cx.read(|cx| workspace.read(cx).workspace().clone());
 
         Self {
             cx: EditorTestContext {

@@ -422,7 +422,7 @@ mod tests {
     use serde_json::json;
     use inazuma_util::{path, rel_path::rel_path};
     use raijin_workspace::{
-        CloseActiveItem, MoveItemToPaneInDirection, MultiWorkspace, OpenOptions,
+        CloseActiveItem, MoveItemToPaneInDirection, OpenOptions, Workspace,
         item::{Item as _, SaveOptions},
     };
 
@@ -460,9 +460,8 @@ mod tests {
         .await;
 
         let project = Project::test(fs, [path!("/a").as_ref()], cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let (workspace, cx) =
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
 
         let language_registry = project.read_with(cx, |project, _| project.languages().clone());
         language_registry.add(rust_lang());

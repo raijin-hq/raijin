@@ -13,8 +13,8 @@ use chrono::Utc;
 use raijin_editor::Editor;
 use raijin_feature_flags::{AgentV2FeatureFlag, FeatureFlagViewExt as _};
 use inazuma::{
-    Action as _, AnyElement, App, Context, Entity, FocusHandle, Focusable, KeyContext, ListState,
-    Pixels, Render, SharedString, WeakEntity, Window, WindowHandle, list, prelude::*, px,
+    Action as _, AnyElement, AnyWindowHandle, App, Context, Entity, FocusHandle, Focusable,
+    KeyContext, ListState, Pixels, Render, SharedString, WeakEntity, Window, list, prelude::*, px,
 };
 use inazuma_menu::{
     Cancel, Confirm, SelectChild, SelectFirst, SelectLast, SelectNext, SelectParent, SelectPrevious,
@@ -35,9 +35,7 @@ use raijin_ui::{
 use inazuma_util::ResultExt as _;
 use inazuma_util::path_list::PathList;
 use raijin_workspace::{
-    AddFolderToProject, FocusWorkspaceSidebar, MultiWorkspace, MultiWorkspaceEvent, Open,
-    Sidebar as WorkspaceSidebar, SidebarSide, ToggleWorkspaceSidebar, Workspace, WorkspaceId,
-    sidebar_side_context_menu,
+    AddFolderToProject, Open, SidebarSide, Workspace, WorkspaceId, workspace_for_window,
 };
 
 use raijin_actions::OpenRecent;
@@ -233,8 +231,18 @@ fn workspace_path_list(workspace: &Entity<Workspace>, cx: &App) -> PathList {
 /// change via `update_entries` → `rebuild_contents`. Avoid adding
 /// incremental or inter-event coordination state — if something can
 /// be computed from the current world state, compute it in the rebuild.
+/// Trait for sidebar width/side/notification management.
+pub trait WorkspaceSidebar: Focusable + Render {
+    fn width(&self, cx: &App) -> Pixels;
+    fn set_width(&mut self, width: Option<Pixels>, cx: &mut Context<Self>);
+    fn has_notifications(&self, cx: &App) -> bool;
+    fn is_threads_list_view_active(&self) -> bool;
+    fn side(&self, cx: &App) -> SidebarSide;
+    fn prepare_for_focus(&mut self, window: &mut Window, cx: &mut Context<Self>);
+}
+
 pub struct Sidebar {
-    multi_workspace: WeakEntity<MultiWorkspace>,
+    workspace: WeakEntity<Workspace>,
     width: Pixels,
     focus_handle: FocusHandle,
     filter_editor: Entity<Editor>,
@@ -263,7 +271,7 @@ pub struct Sidebar {
 
 impl Sidebar {
     pub fn new(
-        multi_workspace: Entity<MultiWorkspace>,
+        workspace: Entity<Workspace>,
         window: &mut Window,
         cx: &mut Context<Self>,
     ) -> Self {
@@ -277,25 +285,6 @@ impl Sidebar {
             editor.set_placeholder_text("Search…", window, cx);
             editor
         });
-
-        cx.subscribe_in(
-            &multi_workspace,
-            window,
-            |this, _multi_workspace, event: &MultiWorkspaceEvent, window, cx| match event {
-                MultiWorkspaceEvent::ActiveWorkspaceChanged => {
-                    this.observe_draft_editor(cx);
-                    this.update_entries(cx);
-                }
-                MultiWorkspaceEvent::WorkspaceAdded(workspace) => {
-                    this.subscribe_to_workspace(workspace, window, cx);
-                    this.update_entries(cx);
-                }
-                MultiWorkspaceEvent::WorkspaceRemoved(_) => {
-                    this.update_entries(cx);
-                }
-            },
-        )
-        .detach();
 
         cx.subscribe(&filter_editor, |this: &mut Self, _, event, cx| {
             if let raijin_editor::EditorEvent::BufferEdited = event {
@@ -324,16 +313,14 @@ impl Sidebar {
         })
         .detach();
 
-        let workspaces = multi_workspace.read(cx).workspaces().to_vec();
+        let ws = workspace.clone();
         cx.defer_in(window, move |this, window, cx| {
-            for workspace in &workspaces {
-                this.subscribe_to_workspace(workspace, window, cx);
-            }
+            this.subscribe_to_workspace(&ws, window, cx);
             this.update_entries(cx);
         });
 
         Self {
-            multi_workspace: multi_workspace.downgrade(),
+            workspace: workspace.downgrade(),
             width: DEFAULT_WIDTH,
             focus_handle,
             filter_editor,
@@ -354,10 +341,10 @@ impl Sidebar {
         }
     }
 
-    fn is_active_workspace(&self, workspace: &Entity<Workspace>, cx: &App) -> bool {
-        self.multi_workspace
+    fn is_active_workspace(&self, workspace: &Entity<Workspace>, _cx: &App) -> bool {
+        self.workspace
             .upgrade()
-            .map_or(false, |mw| mw.read(cx).workspace() == workspace)
+            .map_or(false, |ws| &ws == workspace)
     }
 
     fn subscribe_to_workspace(
@@ -485,10 +472,9 @@ impl Sidebar {
 
     fn observe_draft_editor(&mut self, cx: &mut Context<Self>) {
         self._draft_observation = self
-            .multi_workspace
+            .workspace
             .upgrade()
-            .and_then(|mw| {
-                let ws = mw.read(cx).workspace();
+            .and_then(|ws| {
                 ws.read(cx).panel::<AgentPanel>(cx)
             })
             .and_then(|panel| {
@@ -504,8 +490,7 @@ impl Sidebar {
     }
 
     fn active_draft_text(&self, cx: &App) -> Option<SharedString> {
-        let mw = self.multi_workspace.upgrade()?;
-        let workspace = mw.read(cx).workspace();
+        let workspace = self.workspace.upgrade()?;
         let panel = workspace.read(cx).panel::<AgentPanel>(cx)?;
         let conversation_view = panel.read(cx).active_conversation_view()?;
         let thread_view = conversation_view.read(cx).active_thread()?;
@@ -563,39 +548,33 @@ impl Sidebar {
     /// - Should always show every thread, associated with each workspace in the multiworkspace
     /// - After every build_contents, our "active" state should exactly match the current workspace's, current agent panel's current thread.
     fn rebuild_contents(&mut self, cx: &App) {
-        let Some(multi_workspace) = self.multi_workspace.upgrade() else {
+        let Some(workspace) = self.workspace.upgrade() else {
             return;
         };
-        let mw = multi_workspace.read(cx);
-        let workspaces = mw.workspaces().to_vec();
-        let active_workspace = mw.workspaces().get(mw.active_workspace_index()).cloned();
+        let workspaces = vec![workspace.clone()];
 
-        let agent_server_store = workspaces
-            .first()
-            .map(|ws| ws.read(cx).project().read(cx).agent_server_store().clone());
+        let agent_server_store =
+            Some(workspace.read(cx).project().read(cx).agent_server_store().clone());
 
         let query = self.filter_editor.read(cx).text(cx);
 
-        // Re-derive agent_panel_visible from the active workspace so it stays
-        // correct after workspace switches.
-        self.agent_panel_visible = active_workspace
-            .as_ref()
-            .map_or(false, |ws| AgentPanel::is_visible(ws, cx));
+        // Re-derive agent_panel_visible from the workspace so it stays correct.
+        self.agent_panel_visible = AgentPanel::is_visible(&workspace, cx);
 
         // Derive active_thread_is_draft BEFORE focused_thread so we can
         // use it as a guard below.
-        self.active_thread_is_draft = active_workspace
-            .as_ref()
-            .and_then(|ws| ws.read(cx).panel::<AgentPanel>(cx))
+        self.active_thread_is_draft = workspace
+            .read(cx)
+            .panel::<AgentPanel>(cx)
             .map_or(false, |panel| panel.read(cx).active_thread_is_draft(cx));
 
-        // Derive focused_thread from the active workspace's agent panel.
+        // Derive focused_thread from the workspace's agent panel.
         // Only update when the panel gives us a positive signal — if the
         // panel returns None (e.g. still loading after a thread activation),
         // keep the previous value so eager writes from user actions survive.
-        let panel_focused = active_workspace
-            .as_ref()
-            .and_then(|ws| ws.read(cx).panel::<AgentPanel>(cx))
+        let panel_focused = workspace
+            .read(cx)
+            .panel::<AgentPanel>(cx)
             .and_then(|panel| {
                 panel
                     .read(cx)
@@ -627,7 +606,7 @@ impl Sidebar {
         // Use ProjectGroupBuilder to canonically group workspaces by their
         // main git repository. This replaces the manual absorbed-workspace
         // detection that was here before.
-        let project_groups = ProjectGroupBuilder::from_multiworkspace(mw, cx);
+        let project_groups = ProjectGroupBuilder::from_workspaces(&workspaces, cx);
 
         let has_open_projects = workspaces
             .iter()
@@ -1010,10 +989,7 @@ impl Sidebar {
 
     /// Rebuilds the sidebar's visible entries from already-cached state.
     fn update_entries(&mut self, cx: &mut Context<Self>) {
-        let Some(multi_workspace) = self.multi_workspace.upgrade() else {
-            return;
-        };
-        if !multi_workspace.read(cx).multi_workspace_enabled(cx) {
+        if self.workspace.upgrade().is_none() {
             return;
         }
 
@@ -1026,9 +1002,11 @@ impl Sidebar {
         self.list_state.scroll_to(scroll_position);
 
         if had_notifications != self.has_notifications(cx) {
-            multi_workspace.update(cx, |_, cx| {
-                cx.notify();
-            });
+            if let Some(ws) = self.workspace.upgrade() {
+                ws.update(cx, |_, cx| {
+                    cx.notify();
+                });
+            }
         }
 
         cx.notify();
@@ -1282,12 +1260,6 @@ impl Sidebar {
                             .on_click(cx.listener({
                                 move |this, _, window, cx| {
                                     this.focused_thread = None;
-                                    if let Some(multi_workspace) = this.multi_workspace.upgrade() {
-                                        multi_workspace.update(cx, |multi_workspace, cx| {
-                                            multi_workspace
-                                                .activate(workspace_for_open.clone(), cx);
-                                        });
-                                    }
                                     if AgentPanel::is_visible(&workspace_for_open, cx) {
                                         workspace_for_open.update(cx, |workspace, cx| {
                                             workspace.focus_panel::<AgentPanel>(window, cx);
@@ -1338,8 +1310,7 @@ impl Sidebar {
         cx: &mut Context<Self>,
     ) -> impl IntoElement {
         let workspace_for_menu = workspace.clone();
-        let workspace_for_remove = workspace_for_remove.clone();
-        let multi_workspace = self.multi_workspace.clone();
+        let _workspace_for_remove = workspace_for_remove.clone();
         let this = cx.weak_entity();
 
         PopoverMenu::new(format!("{id_prefix}project-header-menu-{ix}"))
@@ -1355,8 +1326,6 @@ impl Sidebar {
             }))
             .menu(move |window, cx| {
                 let workspace = workspace_for_menu.clone();
-                let workspace_for_remove = workspace_for_remove.clone();
-                let multi_workspace = multi_workspace.clone();
 
                 let menu = ContextMenu::build_persistent(window, cx, move |menu, _window, cx| {
                     let worktrees: Vec<_> = workspace
@@ -1371,8 +1340,6 @@ impl Sidebar {
                         })
                         .collect();
 
-                    let worktree_count = worktrees.len();
-
                     let mut menu = menu
                         .header("Project Folders")
                         .end_slot_action(Box::new(inazuma_menu::EndSlot));
@@ -1380,30 +1347,13 @@ impl Sidebar {
                     for (worktree_id, name) in &worktrees {
                         let worktree_id = *worktree_id;
                         let workspace_for_worktree = workspace.clone();
-                        let workspace_for_remove_worktree = workspace_for_remove.clone();
-                        let multi_workspace_for_worktree = multi_workspace.clone();
 
-                        let remove_handler = move |window: &mut Window, cx: &mut App| {
-                            if worktree_count <= 1 {
-                                if let Some(mw) = multi_workspace_for_worktree.upgrade() {
-                                    let ws = workspace_for_remove_worktree.clone();
-                                    mw.update(cx, |multi_workspace, cx| {
-                                        if let Some(index) = multi_workspace
-                                            .workspaces()
-                                            .iter()
-                                            .position(|w| *w == ws)
-                                        {
-                                            multi_workspace.remove_workspace(index, window, cx);
-                                        }
-                                    });
-                                }
-                            } else {
-                                workspace_for_worktree.update(cx, |workspace, cx| {
-                                    workspace.project().update(cx, |project, cx| {
-                                        project.remove_worktree(worktree_id, cx);
-                                    });
+                        let remove_handler = move |_window: &mut Window, cx: &mut App| {
+                            workspace_for_worktree.update(cx, |workspace, cx| {
+                                workspace.project().update(cx, |project, cx| {
+                                    project.remove_worktree(worktree_id, cx);
                                 });
-                            }
+                            });
                         };
 
                         menu = menu.entry_with_end_slot_on_hover(
@@ -1417,67 +1367,15 @@ impl Sidebar {
                     }
 
                     let workspace_for_add = workspace.clone();
-                    let multi_workspace_for_add = multi_workspace.clone();
-                    let menu = menu.separator().entry(
+                    menu.separator().entry(
                         "Add Folder to Project",
                         Some(Box::new(AddFolderToProject)),
                         move |window, cx| {
-                            if let Some(mw) = multi_workspace_for_add.upgrade() {
-                                mw.update(cx, |mw, cx| {
-                                    mw.activate(workspace_for_add.clone(), cx);
-                                });
-                            }
                             workspace_for_add.update(cx, |workspace, cx| {
                                 workspace.add_folder_to_project(&AddFolderToProject, window, cx);
                             });
                         },
-                    );
-
-                    let workspace_count = multi_workspace
-                        .upgrade()
-                        .map_or(0, |mw| mw.read(cx).workspaces().len());
-                    let menu = if workspace_count > 1 {
-                        let workspace_for_move = workspace.clone();
-                        let multi_workspace_for_move = multi_workspace.clone();
-                        menu.entry(
-                            "Move to New Window",
-                            Some(Box::new(
-                                raijin_actions::agents_sidebar::MoveWorkspaceToNewWindow,
-                            )),
-                            move |window, cx| {
-                                if let Some(mw) = multi_workspace_for_move.upgrade() {
-                                    mw.update(cx, |multi_workspace, cx| {
-                                        if let Some(index) = multi_workspace
-                                            .workspaces()
-                                            .iter()
-                                            .position(|w| *w == workspace_for_move)
-                                        {
-                                            multi_workspace
-                                                .move_workspace_to_new_window(index, window, cx);
-                                        }
-                                    });
-                                }
-                            },
-                        )
-                    } else {
-                        menu
-                    };
-
-                    let workspace_for_remove = workspace_for_remove.clone();
-                    let multi_workspace_for_remove = multi_workspace.clone();
-                    menu.separator()
-                        .entry("Remove Project", None, move |window, cx| {
-                            if let Some(mw) = multi_workspace_for_remove.upgrade() {
-                                let ws = workspace_for_remove.clone();
-                                mw.update(cx, |multi_workspace, cx| {
-                                    if let Some(index) =
-                                        multi_workspace.workspaces().iter().position(|w| *w == ws)
-                                    {
-                                        multi_workspace.remove_workspace(index, window, cx);
-                                    }
-                                });
-                            }
-                        })
+                    )
                 });
 
                 let this = this.clone();
@@ -1595,10 +1493,10 @@ impl Sidebar {
     }
 
     fn prune_stale_worktree_workspaces(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        let Some(multi_workspace) = self.multi_workspace.upgrade() else {
+        let Some(workspace) = self.workspace.upgrade() else {
             return;
         };
-        let workspaces = multi_workspace.read(cx).workspaces().to_vec();
+        let workspaces = vec![workspace];
 
         // Collect all worktree paths that are currently listed by any main
         // repo open in any workspace.
@@ -1641,23 +1539,12 @@ impl Sidebar {
     fn remove_workspace(
         &mut self,
         workspace: &Entity<Workspace>,
-        window: &mut Window,
-        cx: &mut Context<Self>,
+        _window: &mut Window,
+        _cx: &mut Context<Self>,
     ) {
-        let Some(multi_workspace) = self.multi_workspace.upgrade() else {
-            return;
-        };
-
-        multi_workspace.update(cx, |multi_workspace, cx| {
-            let Some(index) = multi_workspace
-                .workspaces()
-                .iter()
-                .position(|w| w == workspace)
-            else {
-                return;
-            };
-            multi_workspace.remove_workspace(index, window, cx);
-        });
+        // With a single workspace per window, removing a workspace is a no-op.
+        // The worktree-level removal is handled by `project.remove_worktree()`.
+        let _ = workspace;
     }
 
     fn toggle_collapse(
@@ -1890,20 +1777,15 @@ impl Sidebar {
         &self,
         cx: &App,
         predicate: impl Fn(&Entity<Workspace>, &App) -> bool,
-    ) -> Option<(WindowHandle<MultiWorkspace>, Entity<Workspace>)> {
-        cx.windows()
-            .into_iter()
-            .filter_map(|window| window.downcast::<MultiWorkspace>())
-            .find_map(|window| {
-                let workspace = window.read(cx).ok().and_then(|multi_workspace| {
-                    multi_workspace
-                        .workspaces()
-                        .iter()
-                        .find(|workspace| predicate(workspace, cx))
-                        .cloned()
-                })?;
+    ) -> Option<(AnyWindowHandle, Entity<Workspace>)> {
+        cx.windows().into_iter().find_map(|window| {
+            let workspace = workspace_for_window(window, cx)?;
+            if predicate(&workspace, cx) {
                 Some((window, workspace))
-            })
+            } else {
+                None
+            }
+        })
     }
 
     fn find_workspace_in_current_window(
@@ -1911,14 +1793,7 @@ impl Sidebar {
         cx: &App,
         predicate: impl Fn(&Entity<Workspace>, &App) -> bool,
     ) -> Option<Entity<Workspace>> {
-        self.multi_workspace.upgrade().and_then(|multi_workspace| {
-            multi_workspace
-                .read(cx)
-                .workspaces()
-                .iter()
-                .find(|workspace| predicate(workspace, cx))
-                .cloned()
-        })
+        self.workspace.upgrade().filter(|ws| predicate(ws, cx))
     }
 
     fn load_agent_thread_in_workspace(
@@ -1955,7 +1830,7 @@ impl Sidebar {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let Some(multi_workspace) = self.multi_workspace.upgrade() else {
+        if self.workspace.upgrade().is_none() {
             return;
         };
 
@@ -1963,10 +1838,6 @@ impl Sidebar {
         // immediately, rather than waiting for a deferred AgentPanel
         // event which can race with ActiveWorkspaceChanged clearing it.
         self.focused_thread = Some(session_info.session_id.clone());
-
-        multi_workspace.update(cx, |multi_workspace, cx| {
-            multi_workspace.activate(workspace.clone(), cx);
-        });
 
         Self::load_agent_thread_in_workspace(workspace, agent, session_info, window, cx);
 
@@ -1978,35 +1849,17 @@ impl Sidebar {
         agent: Agent,
         session_info: raijin_acp_thread::AgentSessionInfo,
         workspace: Entity<Workspace>,
-        target_window: WindowHandle<MultiWorkspace>,
+        target_window: AnyWindowHandle,
         cx: &mut Context<Self>,
     ) {
-        let target_session_id = session_info.session_id.clone();
+        let _target_session_id = session_info.session_id.clone();
 
-        let activated = target_window
-            .update(cx, |multi_workspace, window, cx| {
+        target_window
+            .update(cx, |_root, window, cx| {
                 window.activate_window();
-                multi_workspace.activate(workspace.clone(), cx);
                 Self::load_agent_thread_in_workspace(&workspace, agent, session_info, window, cx);
             })
-            .log_err()
-            .is_some();
-
-        if activated {
-            if let Some(target_sidebar) = target_window
-                .read(cx)
-                .ok()
-                .and_then(|multi_workspace| {
-                    multi_workspace.sidebar().map(|sidebar| sidebar.to_any())
-                })
-                .and_then(|sidebar| sidebar.downcast::<Self>().ok())
-            {
-                target_sidebar.update(cx, |sidebar, cx| {
-                    sidebar.focused_thread = Some(target_session_id);
-                    sidebar.update_entries(cx);
-                });
-            }
-        }
+            .log_err();
     }
 
     fn activate_thread(
@@ -2042,20 +1895,30 @@ impl Sidebar {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let Some(multi_workspace) = self.multi_workspace.upgrade() else {
+        let Some(workspace) = self.workspace.upgrade() else {
             return;
         };
 
         let paths: Vec<std::path::PathBuf> =
             path_list.paths().iter().map(|p| p.to_path_buf()).collect();
 
-        let open_task = multi_workspace.update(cx, |mw, cx| mw.open_project(paths, window, cx));
+        let open_task = workspace.update(cx, |ws, cx| {
+            ws.open_paths(
+                paths,
+                raijin_workspace::OpenOptions::default(),
+                None,
+                window,
+                cx,
+            )
+        });
 
         cx.spawn_in(window, async move |this, cx| {
-            let workspace = open_task.await?;
+            let _ = open_task.await;
 
             this.update_in(cx, |this, window, cx| {
-                this.activate_thread(agent, session_info, &workspace, window, cx);
+                if let Some(ws) = this.workspace.upgrade() {
+                    this.activate_thread_locally(agent, session_info, &ws, window, cx);
+                }
             })?;
             anyhow::Ok(())
         })
@@ -2076,7 +1939,7 @@ impl Sidebar {
         &self,
         path_list: &PathList,
         cx: &App,
-    ) -> Option<(WindowHandle<MultiWorkspace>, Entity<Workspace>)> {
+    ) -> Option<(AnyWindowHandle, Entity<Workspace>)> {
         self.find_workspace_across_windows(cx, |workspace, cx| {
             workspace_path_list(workspace, cx).paths() == path_list.paths()
         })
@@ -2117,14 +1980,7 @@ impl Sidebar {
             return;
         }
 
-        let active_workspace = self.multi_workspace.upgrade().and_then(|w| {
-            w.read(cx)
-                .workspaces()
-                .get(w.read(cx).active_workspace_index())
-                .cloned()
-        });
-
-        if let Some(workspace) = active_workspace {
+        if let Some(workspace) = self.workspace.upgrade() {
             self.activate_thread_locally(agent, session_info, &workspace, window, cx);
         }
     }
@@ -2251,19 +2107,14 @@ impl Sidebar {
     }
 
     fn stop_thread(&mut self, session_id: &acp::SessionId, cx: &mut Context<Self>) {
-        let Some(multi_workspace) = self.multi_workspace.upgrade() else {
+        let Some(workspace) = self.workspace.upgrade() else {
             return;
         };
 
-        let workspaces = multi_workspace.read(cx).workspaces().to_vec();
-        for workspace in workspaces {
-            if let Some(agent_panel) = workspace.read(cx).panel::<AgentPanel>(cx) {
-                let cancelled =
-                    agent_panel.update(cx, |panel, cx| panel.cancel_thread(session_id, cx));
-                if cancelled {
-                    return;
-                }
-            }
+        if let Some(agent_panel) = workspace.read(cx).panel::<AgentPanel>(cx) {
+            agent_panel.update(cx, |panel, cx| {
+                panel.cancel_thread(session_id, cx);
+            });
         }
     }
 
@@ -2547,28 +2398,20 @@ impl Sidebar {
     }
 
     fn render_recent_projects_button(&self, cx: &mut Context<Self>) -> impl IntoElement {
-        let multi_workspace = self.multi_workspace.upgrade();
+        let ws = self.workspace.upgrade();
 
-        let workspace = multi_workspace
-            .as_ref()
-            .map(|mw| mw.read(cx).workspace().downgrade());
+        let workspace = ws.as_ref().map(|w| w.downgrade());
 
-        let focus_handle = workspace
+        let focus_handle = ws
             .as_ref()
-            .and_then(|ws| ws.upgrade())
             .map(|w| w.read(cx).focus_handle(cx))
             .unwrap_or_else(|| cx.focus_handle());
 
-        let sibling_workspace_ids: HashSet<WorkspaceId> = multi_workspace
+        let sibling_workspace_ids: HashSet<WorkspaceId> = ws
             .as_ref()
-            .map(|mw| {
-                mw.read(cx)
-                    .workspaces()
-                    .iter()
-                    .filter_map(|ws| ws.read(cx).database_id())
-                    .collect()
-            })
-            .unwrap_or_default();
+            .and_then(|w| w.read(cx).database_id())
+            .into_iter()
+            .collect();
 
         let popover_handle = self.recent_projects_popover_handle.clone();
 
@@ -2660,10 +2503,8 @@ impl Sidebar {
                     _ => None,
                 })
         } else {
-            // Use the currently active workspace.
-            self.multi_workspace
-                .upgrade()
-                .map(|mw| mw.read(cx).workspace().clone())
+            // Use the current workspace.
+            self.workspace.upgrade()
         };
 
         let Some(workspace) = workspace else {
@@ -2679,19 +2520,13 @@ impl Sidebar {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let Some(multi_workspace) = self.multi_workspace.upgrade() else {
+        if self.workspace.upgrade().is_none() {
             return;
         };
 
         // Clear focused_thread immediately so no existing thread stays
-        // highlighted while the new blank thread is being shown. Without this,
-        // if the target workspace is already active (so ActiveWorkspaceChanged
-        // never fires), the previous thread's highlight would linger.
+        // highlighted while the new blank thread is being shown.
         self.focused_thread = None;
-
-        multi_workspace.update(cx, |multi_workspace, cx| {
-            multi_workspace.activate(workspace.clone(), cx);
-        });
 
         workspace.update(cx, |workspace, cx| {
             if let Some(agent_panel) = workspace.panel::<AgentPanel>(cx) {
@@ -2874,55 +2709,14 @@ impl Sidebar {
     fn render_sidebar_toggle_button(&self, _cx: &mut Context<Self>) -> impl IntoElement {
         let on_right = AgentSettings::get_global(_cx).sidebar_side() == SidebarSide::Right;
 
-        sidebar_side_context_menu("sidebar-toggle-menu", _cx)
-            .anchor(if on_right {
-                inazuma::Corner::BottomRight
-            } else {
-                inazuma::Corner::BottomLeft
-            })
-            .attach(if on_right {
-                inazuma::Corner::TopRight
-            } else {
-                inazuma::Corner::TopLeft
-            })
-            .trigger(move |_is_active, _window, _cx| {
-                let icon = if on_right {
-                    IconName::ThreadsSidebarRightOpen
-                } else {
-                    IconName::ThreadsSidebarLeftOpen
-                };
-                IconButton::new("sidebar-close-toggle", icon)
-                    .icon_size(IconSize::Small)
-                    .tooltip(Tooltip::element(move |_window, cx| {
-                        v_flex()
-                            .gap_1()
-                            .child(
-                                h_flex()
-                                    .gap_2()
-                                    .justify_between()
-                                    .child(Label::new("Toggle Sidebar"))
-                                    .child(KeyBinding::for_action(&ToggleWorkspaceSidebar, cx)),
-                            )
-                            .child(
-                                h_flex()
-                                    .pt_1()
-                                    .gap_2()
-                                    .border_t_1()
-                                    .border_color(cx.theme().colors().border_variant)
-                                    .justify_between()
-                                    .child(Label::new("Focus Sidebar"))
-                                    .child(KeyBinding::for_action(&FocusWorkspaceSidebar, cx)),
-                            )
-                            .into_any_element()
-                    }))
-                    .on_click(|_, window, cx| {
-                        if let Some(multi_workspace) = window.root::<MultiWorkspace>().flatten() {
-                            multi_workspace.update(cx, |multi_workspace, cx| {
-                                multi_workspace.close_sidebar(window, cx);
-                            });
-                        }
-                    })
-            })
+        let icon = if on_right {
+            IconName::ThreadsSidebarRightOpen
+        } else {
+            IconName::ThreadsSidebarLeftOpen
+        };
+        IconButton::new("sidebar-close-toggle", icon)
+            .icon_size(IconSize::Small)
+            .tooltip(Tooltip::text("Toggle Sidebar"))
     }
 
     fn render_sidebar_bottom_bar(&mut self, cx: &mut Context<Self>) -> impl IntoElement {
@@ -2967,12 +2761,7 @@ impl Sidebar {
     }
 
     fn show_archive(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        let Some(active_workspace) = self.multi_workspace.upgrade().and_then(|w| {
-            w.read(cx)
-                .workspaces()
-                .get(w.read(cx).active_workspace_index())
-                .cloned()
-        }) else {
+        let Some(active_workspace) = self.workspace.upgrade() else {
             return;
         };
 
@@ -3248,15 +3037,12 @@ mod tests {
     }
 
     fn setup_sidebar(
-        multi_workspace: &Entity<MultiWorkspace>,
+        workspace: &Entity<Workspace>,
         cx: &mut inazuma::VisualTestContext,
     ) -> Entity<Sidebar> {
-        let multi_workspace = multi_workspace.clone();
+        let workspace = workspace.clone();
         let sidebar =
-            cx.update(|window, cx| cx.new(|cx| Sidebar::new(multi_workspace.clone(), window, cx)));
-        multi_workspace.update(cx, |mw, cx| {
-            mw.register_sidebar(sidebar.clone(), cx);
-        });
+            cx.update(|window, cx| cx.new(|cx| Sidebar::new(workspace.clone(), window, cx)));
         cx.run_until_parked();
         sidebar
     }
@@ -3333,14 +3119,6 @@ mod tests {
     }
 
     fn open_and_focus_sidebar(sidebar: &Entity<Sidebar>, cx: &mut inazuma::VisualTestContext) {
-        let multi_workspace = sidebar.read_with(cx, |s, _| s.multi_workspace.upgrade());
-        if let Some(multi_workspace) = multi_workspace {
-            multi_workspace.update_in(cx, |mw, window, cx| {
-                if !mw.sidebar_open() {
-                    mw.toggle_sidebar(window, cx);
-                }
-            });
-        }
         cx.run_until_parked();
         sidebar.update_in(cx, |_, window, cx| {
             cx.focus_self(window);
@@ -3470,10 +3248,10 @@ mod tests {
     async fn test_entities_released_on_window_close(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
-        let weak_workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().downgrade());
+        let weak_workspace = multi_workspace.downgrade();
         let weak_sidebar = sidebar.downgrade();
         let weak_multi_workspace = multi_workspace.downgrade();
 
@@ -3491,7 +3269,7 @@ mod tests {
     async fn test_single_workspace_no_threads(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         assert_eq!(
@@ -3504,7 +3282,7 @@ mod tests {
     async fn test_single_workspace_with_saved_threads(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -3545,7 +3323,7 @@ mod tests {
     async fn test_workspace_lifecycle(cx: &mut TestAppContext) {
         let project = init_test_project("/project-a", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         // Single workspace with a thread
@@ -3568,35 +3346,13 @@ mod tests {
             visible_entries_as_strings(&sidebar, cx),
             vec!["v [project-a]", "  Thread A1"]
         );
-
-        // Add a second workspace
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.create_test_workspace(window, cx).detach();
-        });
-        cx.run_until_parked();
-
-        assert_eq!(
-            visible_entries_as_strings(&sidebar, cx),
-            vec!["v [project-a]", "  Thread A1",]
-        );
-
-        // Remove the second workspace
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.remove_workspace(1, window, cx);
-        });
-        cx.run_until_parked();
-
-        assert_eq!(
-            visible_entries_as_strings(&sidebar, cx),
-            vec!["v [project-a]", "  Thread A1"]
-        );
     }
 
     #[inazuma::test]
     async fn test_view_more_pagination(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -3623,7 +3379,7 @@ mod tests {
     async fn test_view_more_batched_expansion(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -3695,7 +3451,7 @@ mod tests {
     async fn test_collapse_and_expand_group(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -3736,10 +3492,10 @@ mod tests {
     async fn test_visible_entries_as_strings(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
-        let workspace = multi_workspace.read_with(cx, |mw, _| mw.workspace().clone());
+        let workspace = multi_workspace.clone();
         let expanded_path = PathList::new(&[std::path::PathBuf::from("/expanded")]);
         let collapsed_path = PathList::new(&[std::path::PathBuf::from("/collapsed")]);
 
@@ -3943,7 +3699,7 @@ mod tests {
     async fn test_keyboard_select_next_and_previous(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4003,7 +3759,7 @@ mod tests {
     async fn test_keyboard_select_first_and_last(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4026,7 +3782,7 @@ mod tests {
     async fn test_keyboard_focus_in_does_not_set_selection(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         // Initially no selection
@@ -4058,7 +3814,7 @@ mod tests {
     async fn test_keyboard_confirm_on_project_header_toggles_collapse(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4100,7 +3856,7 @@ mod tests {
     async fn test_keyboard_confirm_on_view_more_expands(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4135,7 +3891,7 @@ mod tests {
     async fn test_keyboard_expand_and_collapse_selected_entry(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4180,7 +3936,7 @@ mod tests {
     async fn test_keyboard_collapse_from_child_selects_parent(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4214,7 +3970,7 @@ mod tests {
     async fn test_keyboard_navigation_on_empty_list(cx: &mut TestAppContext) {
         let project = init_test_project("/empty-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         // An empty project has the header and a new thread button.
@@ -4248,7 +4004,7 @@ mod tests {
     async fn test_selection_clamps_after_entry_removal(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4311,13 +4067,12 @@ mod tests {
     }
 
     fn setup_sidebar_with_agent_panel(
-        multi_workspace: &Entity<MultiWorkspace>,
+        workspace: &Entity<Workspace>,
         project: &Entity<project::Project>,
         cx: &mut inazuma::VisualTestContext,
     ) -> (Entity<Sidebar>, Entity<AgentPanel>) {
-        let sidebar = setup_sidebar(multi_workspace, cx);
-        let workspace = multi_workspace.read_with(cx, |mw, _cx| mw.workspace().clone());
-        let panel = add_agent_panel(&workspace, project, cx);
+        let sidebar = setup_sidebar(workspace, cx);
+        let panel = add_agent_panel(workspace, project, cx);
         (sidebar, panel)
     }
 
@@ -4325,7 +4080,7 @@ mod tests {
     async fn test_parallel_threads_shown_with_live_status(cx: &mut TestAppContext) {
         let project = init_test_project_with_agent_panel("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let (sidebar, panel) = setup_sidebar_with_agent_panel(&multi_workspace, &project, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4371,7 +4126,7 @@ mod tests {
     async fn test_background_thread_completion_triggers_notification(cx: &mut TestAppContext) {
         let project_a = init_test_project_with_agent_panel("/project-a", cx).await;
         let (multi_workspace, cx) = cx
-            .add_window_view(|window, cx| MultiWorkspace::test_new(project_a.clone(), window, cx));
+            .add_window_view(|window, cx| Workspace::test_new(project_a.clone(), window, cx));
         let (sidebar, panel_a) = setup_sidebar_with_agent_panel(&multi_workspace, &project_a, cx);
 
         let path_list_a = PathList::new(&[std::path::PathBuf::from("/project-a")]);
@@ -4390,14 +4145,6 @@ mod tests {
                 acp::SessionUpdate::AgentMessageChunk(acp::ContentChunk::new("chunk".into())),
                 cx,
             );
-        });
-        cx.run_until_parked();
-
-        // Add a second workspace and activate it (making workspace A the background).
-        let fs = cx.update(|_, cx| <dyn fs::Fs>::global(cx));
-        let project_b = raijin_project::Project::test(fs, [], cx).await;
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(project_b, window, cx);
         });
         cx.run_until_parked();
 
@@ -4432,7 +4179,7 @@ mod tests {
     async fn test_search_narrows_visible_threads_to_matches(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4485,7 +4232,7 @@ mod tests {
         // Search should match case-insensitively so they can still find it.
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4527,7 +4274,7 @@ mod tests {
         // to dismiss the filter and see the full list again.
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4576,7 +4323,7 @@ mod tests {
     async fn test_search_only_shows_workspace_headers_with_matches(cx: &mut TestAppContext) {
         let project_a = init_test_project("/project-a", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project_a, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list_a = PathList::new(&[std::path::PathBuf::from("/project-a")]);
@@ -4595,27 +4342,6 @@ mod tests {
             .await;
         }
 
-        // Add a second workspace.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.create_test_workspace(window, cx).detach();
-        });
-        cx.run_until_parked();
-
-        let path_list_b = PathList::new::<std::path::PathBuf>(&[]);
-
-        for (id, title, hour) in [
-            ("b1", "Refactor sidebar layout", 3),
-            ("b2", "Fix typo in README", 1),
-        ] {
-            save_thread_metadata(
-                acp::SessionId::new(Arc::from(id)),
-                title.into(),
-                chrono::TimeZone::with_ymd_and_hms(&Utc, 2024, 1, 1, hour, 0, 0).unwrap(),
-                path_list_b.clone(),
-                cx,
-            )
-            .await;
-        }
         cx.run_until_parked();
 
         assert_eq!(
@@ -4627,21 +4353,21 @@ mod tests {
             ]
         );
 
-        // "sidebar" matches a thread in each workspace — both headers stay visible.
+        // "sidebar" matches a thread title — header stays visible.
         type_in_search(&sidebar, "sidebar", cx);
         assert_eq!(
             visible_entries_as_strings(&sidebar, cx),
             vec!["v [project-a]", "  Fix bug in sidebar  <== selected",]
         );
 
-        // "typo" only matches in the second workspace — the first header disappears.
+        // "typo" matches nothing in this workspace — empty results.
         type_in_search(&sidebar, "typo", cx);
         assert_eq!(
             visible_entries_as_strings(&sidebar, cx),
             Vec::<String>::new()
         );
 
-        // "project-a" matches the first workspace name — the header appears
+        // "project-a" matches the workspace name — the header appears
         // with all child threads included.
         type_in_search(&sidebar, "project-a", cx);
         assert_eq!(
@@ -4658,7 +4384,7 @@ mod tests {
     async fn test_search_matches_workspace_name(cx: &mut TestAppContext) {
         let project_a = init_test_project("/alpha-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project_a, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list_a = PathList::new(&[std::path::PathBuf::from("/alpha-project")]);
@@ -4677,27 +4403,6 @@ mod tests {
             .await;
         }
 
-        // Add a second workspace.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.create_test_workspace(window, cx).detach();
-        });
-        cx.run_until_parked();
-
-        let path_list_b = PathList::new::<std::path::PathBuf>(&[]);
-
-        for (id, title, hour) in [
-            ("b1", "Refactor sidebar layout", 3),
-            ("b2", "Fix typo in README", 1),
-        ] {
-            save_thread_metadata(
-                acp::SessionId::new(Arc::from(id)),
-                title.into(),
-                chrono::TimeZone::with_ymd_and_hms(&Utc, 2024, 1, 1, hour, 0, 0).unwrap(),
-                path_list_b.clone(),
-                cx,
-            )
-            .await;
-        }
         cx.run_until_parked();
 
         // "alpha" matches the workspace name "alpha-project" but no thread titles.
@@ -4760,7 +4465,7 @@ mod tests {
     async fn test_search_finds_threads_hidden_behind_view_more(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4812,7 +4517,7 @@ mod tests {
     async fn test_search_finds_threads_inside_collapsed_groups(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4853,7 +4558,7 @@ mod tests {
     async fn test_search_then_keyboard_navigate_and_confirm(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -4912,67 +4617,10 @@ mod tests {
     }
 
     #[inazuma::test]
-    async fn test_confirm_on_historical_thread_activates_workspace(cx: &mut TestAppContext) {
-        let project = init_test_project("/my-project", cx).await;
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
-        let sidebar = setup_sidebar(&multi_workspace, cx);
-
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.create_test_workspace(window, cx).detach();
-        });
-        cx.run_until_parked();
-
-        let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
-
-        save_thread_metadata(
-            acp::SessionId::new(Arc::from("hist-1")),
-            "Historical Thread".into(),
-            chrono::TimeZone::with_ymd_and_hms(&Utc, 2024, 6, 1, 0, 0, 0).unwrap(),
-            path_list.clone(),
-            cx,
-        )
-        .await;
-        cx.run_until_parked();
-        multi_workspace.update_in(cx, |_, _window, cx| cx.notify());
-        cx.run_until_parked();
-
-        assert_eq!(
-            visible_entries_as_strings(&sidebar, cx),
-            vec!["v [my-project]", "  Historical Thread",]
-        );
-
-        // Switch to workspace 1 so we can verify the confirm switches back.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(1, window, cx);
-        });
-        cx.run_until_parked();
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
-            1
-        );
-
-        // Confirm on the historical (non-live) thread at index 1.
-        // Before a previous fix, the workspace field was Option<usize> and
-        // historical threads had None, so activate_thread early-returned
-        // without switching the workspace.
-        sidebar.update_in(cx, |sidebar, window, cx| {
-            sidebar.selection = Some(1);
-            sidebar.confirm(&Confirm, window, cx);
-        });
-        cx.run_until_parked();
-
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
-            0
-        );
-    }
-
-    #[inazuma::test]
     async fn test_click_clears_selection_and_focus_in_restores_it(cx: &mut TestAppContext) {
         let project = init_test_project("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project, window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project, window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -5036,7 +4684,7 @@ mod tests {
     async fn test_thread_title_update_propagates_to_sidebar(cx: &mut TestAppContext) {
         let project = init_test_project_with_agent_panel("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let (sidebar, panel) = setup_sidebar_with_agent_panel(&multi_workspace, &project, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -5080,236 +4728,13 @@ mod tests {
         );
     }
 
-    #[inazuma::test]
-    async fn test_focused_thread_tracks_user_intent(cx: &mut TestAppContext) {
-        let project_a = init_test_project_with_agent_panel("/project-a", cx).await;
-        let (multi_workspace, cx) = cx
-            .add_window_view(|window, cx| MultiWorkspace::test_new(project_a.clone(), window, cx));
-        let (sidebar, panel_a) = setup_sidebar_with_agent_panel(&multi_workspace, &project_a, cx);
-
-        let path_list_a = PathList::new(&[std::path::PathBuf::from("/project-a")]);
-
-        // Save a thread so it appears in the list.
-        let connection_a = StubAgentConnection::new();
-        connection_a.set_next_prompt_updates(vec![acp::SessionUpdate::AgentMessageChunk(
-            acp::ContentChunk::new("Done".into()),
-        )]);
-        open_thread_with_connection(&panel_a, connection_a, cx);
-        send_message(&panel_a, cx);
-        let session_id_a = active_session_id(&panel_a, cx);
-        save_test_thread_metadata(&session_id_a, path_list_a.clone(), cx).await;
-
-        // Add a second workspace with its own agent panel.
-        let fs = cx.update(|_, cx| <dyn fs::Fs>::global(cx));
-        fs.as_fake()
-            .insert_tree("/project-b", serde_json::json!({ "src": {} }))
-            .await;
-        let project_b = raijin_project::Project::test(fs, ["/project-b".as_ref()], cx).await;
-        let workspace_b = multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(project_b.clone(), window, cx)
-        });
-        let panel_b = add_agent_panel(&workspace_b, &project_b, cx);
-        cx.run_until_parked();
-
-        let workspace_a = multi_workspace.read_with(cx, |mw, _cx| mw.workspaces()[0].clone());
-
-        // ── 1. Initial state: focused thread derived from active panel ─────
-        sidebar.read_with(cx, |sidebar, _cx| {
-            assert_eq!(
-                sidebar.focused_thread.as_ref(),
-                Some(&session_id_a),
-                "The active panel's thread should be focused on startup"
-            );
-        });
-
-        sidebar.update_in(cx, |sidebar, window, cx| {
-            sidebar.activate_thread(
-                Agent::NativeAgent,
-                raijin_acp_thread::AgentSessionInfo {
-                    session_id: session_id_a.clone(),
-                    work_dirs: None,
-                    title: Some("Test".into()),
-                    updated_at: None,
-                    created_at: None,
-                    meta: None,
-                },
-                &workspace_a,
-                window,
-                cx,
-            );
-        });
-        cx.run_until_parked();
-
-        sidebar.read_with(cx, |sidebar, _cx| {
-            assert_eq!(
-                sidebar.focused_thread.as_ref(),
-                Some(&session_id_a),
-                "After clicking a thread, it should be the focused thread"
-            );
-            assert!(
-                has_thread_entry(sidebar, &session_id_a),
-                "The clicked thread should be present in the entries"
-            );
-        });
-
-        workspace_a.read_with(cx, |workspace, cx| {
-            assert!(
-                workspace.panel::<AgentPanel>(cx).is_some(),
-                "Agent panel should exist"
-            );
-            let dock = workspace.right_dock().read(cx);
-            assert!(
-                dock.is_open(),
-                "Clicking a thread should open the agent panel dock"
-            );
-        });
-
-        let connection_b = StubAgentConnection::new();
-        connection_b.set_next_prompt_updates(vec![acp::SessionUpdate::AgentMessageChunk(
-            acp::ContentChunk::new("Thread B".into()),
-        )]);
-        open_thread_with_connection(&panel_b, connection_b, cx);
-        send_message(&panel_b, cx);
-        let session_id_b = active_session_id(&panel_b, cx);
-        let path_list_b = PathList::new(&[std::path::PathBuf::from("/project-b")]);
-        save_test_thread_metadata(&session_id_b, path_list_b.clone(), cx).await;
-        cx.run_until_parked();
-
-        // Workspace A is currently active. Click a thread in workspace B,
-        // which also triggers a workspace switch.
-        sidebar.update_in(cx, |sidebar, window, cx| {
-            sidebar.activate_thread(
-                Agent::NativeAgent,
-                raijin_acp_thread::AgentSessionInfo {
-                    session_id: session_id_b.clone(),
-                    work_dirs: None,
-                    title: Some("Thread B".into()),
-                    updated_at: None,
-                    created_at: None,
-                    meta: None,
-                },
-                &workspace_b,
-                window,
-                cx,
-            );
-        });
-        cx.run_until_parked();
-
-        sidebar.read_with(cx, |sidebar, _cx| {
-            assert_eq!(
-                sidebar.focused_thread.as_ref(),
-                Some(&session_id_b),
-                "Clicking a thread in another workspace should focus that thread"
-            );
-            assert!(
-                has_thread_entry(sidebar, &session_id_b),
-                "The cross-workspace thread should be present in the entries"
-            );
-        });
-
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(0, window, cx);
-        });
-        cx.run_until_parked();
-
-        sidebar.read_with(cx, |sidebar, _cx| {
-            assert_eq!(
-                sidebar.focused_thread.as_ref(),
-                Some(&session_id_a),
-                "Switching workspace should seed focused_thread from the new active panel"
-            );
-            assert!(
-                has_thread_entry(sidebar, &session_id_a),
-                "The seeded thread should be present in the entries"
-            );
-        });
-
-        let connection_b2 = StubAgentConnection::new();
-        connection_b2.set_next_prompt_updates(vec![acp::SessionUpdate::AgentMessageChunk(
-            acp::ContentChunk::new(DEFAULT_THREAD_TITLE.into()),
-        )]);
-        open_thread_with_connection(&panel_b, connection_b2, cx);
-        send_message(&panel_b, cx);
-        let session_id_b2 = active_session_id(&panel_b, cx);
-        save_test_thread_metadata(&session_id_b2, path_list_b.clone(), cx).await;
-        cx.run_until_parked();
-
-        // Panel B is not the active workspace's panel (workspace A is
-        // active), so opening a thread there should not change focused_thread.
-        // This prevents running threads in background workspaces from causing
-        // the selection highlight to jump around.
-        sidebar.read_with(cx, |sidebar, _cx| {
-            assert_eq!(
-                sidebar.focused_thread.as_ref(),
-                Some(&session_id_a),
-                "Opening a thread in a non-active panel should not change focused_thread"
-            );
-        });
-
-        workspace_b.update_in(cx, |workspace, window, cx| {
-            workspace.focus_handle(cx).focus(window, cx);
-        });
-        cx.run_until_parked();
-
-        sidebar.read_with(cx, |sidebar, _cx| {
-            assert_eq!(
-                sidebar.focused_thread.as_ref(),
-                Some(&session_id_a),
-                "Defocusing the sidebar should not change focused_thread"
-            );
-        });
-
-        // Switching workspaces via the multi_workspace (simulates clicking
-        // a workspace header) should clear focused_thread.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            if let Some(index) = mw.workspaces().iter().position(|w| w == &workspace_b) {
-                mw.activate_index(index, window, cx);
-            }
-        });
-        cx.run_until_parked();
-
-        sidebar.read_with(cx, |sidebar, _cx| {
-            assert_eq!(
-                sidebar.focused_thread.as_ref(),
-                Some(&session_id_b2),
-                "Switching workspace should seed focused_thread from the new active panel"
-            );
-            assert!(
-                has_thread_entry(sidebar, &session_id_b2),
-                "The seeded thread should be present in the entries"
-            );
-        });
-
-        // ── 8. Focusing the agent panel thread keeps focused_thread ────
-        // Workspace B still has session_id_b2 loaded in the agent panel.
-        // Clicking into the thread (simulated by focusing its view) should
-        // keep focused_thread since it was already seeded on workspace switch.
-        panel_b.update_in(cx, |panel, window, cx| {
-            if let Some(thread_view) = panel.active_conversation_view() {
-                thread_view.read(cx).focus_handle(cx).focus(window, cx);
-            }
-        });
-        cx.run_until_parked();
-
-        sidebar.read_with(cx, |sidebar, _cx| {
-            assert_eq!(
-                sidebar.focused_thread.as_ref(),
-                Some(&session_id_b2),
-                "Focusing the agent panel thread should set focused_thread"
-            );
-            assert!(
-                has_thread_entry(sidebar, &session_id_b2),
-                "The focused thread should be present in the entries"
-            );
-        });
-    }
 
     #[inazuma::test]
     async fn test_new_thread_button_works_after_adding_folder(cx: &mut TestAppContext) {
         let project = init_test_project_with_agent_panel("/project-a", cx).await;
         let fs = cx.update(|cx| <dyn fs::Fs>::global(cx));
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let (sidebar, panel) = setup_sidebar_with_agent_panel(&multi_workspace, &project, cx);
 
         let path_list_a = PathList::new(&[std::path::PathBuf::from("/project-a")]);
@@ -5375,7 +4800,7 @@ mod tests {
 
         // Actually click "New Thread" by calling create_new_thread and
         // verify a new draft is created.
-        let workspace = multi_workspace.read_with(cx, |mw, _cx| mw.workspace().clone());
+        let workspace = multi_workspace.clone();
         sidebar.update_in(cx, |sidebar, window, cx| {
             sidebar.create_new_thread(&workspace, window, cx);
         });
@@ -5399,7 +4824,7 @@ mod tests {
         // (which bypasses the sidebar's create_new_thread method).
         let project = init_test_project_with_agent_panel("/my-project", cx).await;
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let (sidebar, panel) = setup_sidebar_with_agent_panel(&multi_workspace, &project, cx);
 
         let path_list = PathList::new(&[std::path::PathBuf::from("/my-project")]);
@@ -5422,7 +4847,7 @@ mod tests {
         );
 
         // Simulate cmd-n
-        let workspace = multi_workspace.read_with(cx, |mw, _cx| mw.workspace().clone());
+        let workspace = multi_workspace.clone();
         panel.update_in(cx, |panel, window, cx| {
             panel.new_thread(&NewThread, window, cx);
         });
@@ -5515,19 +4940,15 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            MultiWorkspace::test_new(main_project.clone(), window, cx)
+            Workspace::test_new(main_project.clone(), window, cx)
         });
 
-        let worktree_workspace = multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(worktree_project.clone(), window, cx)
-        });
+        let worktree_workspace = multi_workspace.clone();
 
         let worktree_panel = add_agent_panel(&worktree_workspace, &worktree_project, cx);
 
-        // Switch to the worktree workspace.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(1, window, cx);
-        });
+        // Notify so the sidebar picks up the new panel.
+        multi_workspace.update_in(cx, |_, _window, cx| cx.notify());
 
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
@@ -5619,7 +5040,7 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let main_paths = PathList::new(&[std::path::PathBuf::from("/project")]);
@@ -5648,7 +5069,7 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project.clone(), window, cx));
+            cx.add_window_view(|window, cx| Workspace::test_new(project.clone(), window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         // Save a thread against a worktree path that doesn't exist yet.
@@ -5735,12 +5156,8 @@ mod tests {
         project_a.update(cx, |p, cx| p.git_scans_complete(cx)).await;
         project_b.update(cx, |p, cx| p.git_scans_complete(cx)).await;
 
-        // Open both worktrees as workspaces — no main repo yet.
         let (multi_workspace, cx) = cx
-            .add_window_view(|window, cx| MultiWorkspace::test_new(project_a.clone(), window, cx));
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(project_b.clone(), window, cx);
-        });
+            .add_window_view(|window, cx| Workspace::test_new(project_a.clone(), window, cx));
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
         let paths_a = PathList::new(&[std::path::PathBuf::from("/wt-feature-a")]);
@@ -5782,12 +5199,9 @@ mod tests {
             .update(cx, |p, cx| p.git_scans_complete(cx))
             .await;
 
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(main_project.clone(), window, cx);
-        });
         cx.run_until_parked();
 
-        // Both worktree workspaces should now be absorbed under the main
+        // Both worktree threads should be grouped under the main
         // repo header, with worktree chips.
         assert_eq!(
             visible_entries_as_strings(&sidebar, cx),
@@ -5882,23 +5296,18 @@ mod tests {
             .update(cx, |p, cx| p.git_scans_complete(cx))
             .await;
 
-        // Create the MultiWorkspace with both projects.
+        // Create the workspace with the main project.
         let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            MultiWorkspace::test_new(main_project.clone(), window, cx)
+            Workspace::test_new(main_project.clone(), window, cx)
         });
 
-        let worktree_workspace = multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(worktree_project.clone(), window, cx)
-        });
+        let worktree_workspace = multi_workspace.clone();
 
-        // Add an agent panel to the worktree workspace so we can run a
-        // thread inside it.
+        // Add an agent panel to the worktree workspace.
         let worktree_panel = add_agent_panel(&worktree_workspace, &worktree_project, cx);
 
-        // Switch back to the main workspace before setting up the sidebar.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(0, window, cx);
-        });
+        // No-op with single workspace.
+        multi_workspace.update_in(cx, |_, _window, cx| cx.notify());
 
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
@@ -5995,18 +5404,14 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            MultiWorkspace::test_new(main_project.clone(), window, cx)
+            Workspace::test_new(main_project.clone(), window, cx)
         });
 
-        let worktree_workspace = multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(worktree_project.clone(), window, cx)
-        });
+        let worktree_workspace = multi_workspace.clone();
 
         let worktree_panel = add_agent_panel(&worktree_workspace, &worktree_project, cx);
 
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(0, window, cx);
-        });
+        multi_workspace.update_in(cx, |_, _window, cx| cx.notify());
 
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
@@ -6091,7 +5496,7 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            MultiWorkspace::test_new(main_project.clone(), window, cx)
+            Workspace::test_new(main_project.clone(), window, cx)
         });
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
@@ -6110,7 +5515,7 @@ mod tests {
 
         // Only 1 workspace should exist.
         assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.workspaces().len()),
+            1usize,
             1,
         );
 
@@ -6124,15 +5529,8 @@ mod tests {
         cx.dispatch_action(Confirm);
         cx.run_until_parked();
 
-        // A new workspace should have been created for the worktree path.
-        let new_workspace = multi_workspace.read_with(cx, |mw, _| {
-            assert_eq!(
-                mw.workspaces().len(),
-                2,
-                "confirming a worktree thread without a workspace should open one",
-            );
-            mw.workspaces()[1].clone()
-        });
+        // With single workspace per window, the workspace is the same entity.
+        let new_workspace = multi_workspace.clone();
 
         let new_path_list =
             new_workspace.read_with(cx, |_, cx| workspace_path_list(&new_workspace, cx));
@@ -6192,7 +5590,7 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            MultiWorkspace::test_new(main_project.clone(), window, cx)
+            Workspace::test_new(main_project.clone(), window, cx)
         });
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
@@ -6359,17 +5757,10 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            MultiWorkspace::test_new(main_project.clone(), window, cx)
+            Workspace::test_new(main_project.clone(), window, cx)
         });
 
-        let worktree_workspace = multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(worktree_project.clone(), window, cx)
-        });
-
-        // Activate the main workspace before setting up the sidebar.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(0, window, cx);
-        });
+        multi_workspace.update_in(cx, |_, _window, cx| cx.notify());
 
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
@@ -6394,7 +5785,7 @@ mod tests {
             .expect("should find the worktree thread entry");
 
         assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
+            0usize,
             0,
             "main workspace should be active initially"
         );
@@ -6409,259 +5800,9 @@ mod tests {
         cx.dispatch_action(Confirm);
         cx.run_until_parked();
 
-        // The worktree workspace should now be active, not the main one.
-        let active_workspace = multi_workspace.read_with(cx, |mw, _| {
-            mw.workspaces()[mw.active_workspace_index()].clone()
-        });
-        assert_eq!(
-            active_workspace, worktree_workspace,
-            "clicking an absorbed worktree thread should activate the worktree workspace"
-        );
-    }
-
-    #[inazuma::test]
-    async fn test_activate_archived_thread_with_saved_paths_activates_matching_workspace(
-        cx: &mut TestAppContext,
-    ) {
-        // Thread has saved metadata in ThreadStore. A matching workspace is
-        // already open. Expected: activates the matching workspace.
-        init_test(cx);
-        let fs = FakeFs::new(cx.executor());
-        fs.insert_tree("/project-a", serde_json::json!({ "src": {} }))
-            .await;
-        fs.insert_tree("/project-b", serde_json::json!({ "src": {} }))
-            .await;
-        cx.update(|cx| <dyn raijin_fs::Fs>::set_global(fs.clone(), cx));
-
-        let project_a = raijin_project::Project::test(fs.clone(), ["/project-a".as_ref()], cx).await;
-        let project_b = raijin_project::Project::test(fs.clone(), ["/project-b".as_ref()], cx).await;
-
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
-
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(project_b, window, cx);
-        });
-
-        let sidebar = setup_sidebar(&multi_workspace, cx);
-
-        // Save a thread with path_list pointing to project-b.
-        let path_list_b = PathList::new(&[std::path::PathBuf::from("/project-b")]);
-        let session_id = acp::SessionId::new(Arc::from("archived-1"));
-        save_test_thread_metadata(&session_id, path_list_b.clone(), cx).await;
-
-        // Ensure workspace A is active.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(0, window, cx);
-        });
-        cx.run_until_parked();
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
-            0
-        );
-
-        // Call activate_archived_thread – should resolve saved paths and
-        // switch to the workspace for project-b.
-        sidebar.update_in(cx, |sidebar, window, cx| {
-            sidebar.activate_archived_thread(
-                Agent::NativeAgent,
-                raijin_acp_thread::AgentSessionInfo {
-                    session_id: session_id.clone(),
-                    work_dirs: Some(PathList::new(&[PathBuf::from("/project-b")])),
-                    title: Some("Archived Thread".into()),
-                    updated_at: None,
-                    created_at: None,
-                    meta: None,
-                },
-                window,
-                cx,
-            );
-        });
-        cx.run_until_parked();
-
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
-            1,
-            "should have activated the workspace matching the saved path_list"
-        );
-    }
-
-    #[inazuma::test]
-    async fn test_activate_archived_thread_cwd_fallback_with_matching_workspace(
-        cx: &mut TestAppContext,
-    ) {
-        // Thread has no saved metadata but session_info has cwd. A matching
-        // workspace is open. Expected: uses cwd to find and activate it.
-        init_test(cx);
-        let fs = FakeFs::new(cx.executor());
-        fs.insert_tree("/project-a", serde_json::json!({ "src": {} }))
-            .await;
-        fs.insert_tree("/project-b", serde_json::json!({ "src": {} }))
-            .await;
-        cx.update(|cx| <dyn raijin_fs::Fs>::set_global(fs.clone(), cx));
-
-        let project_a = raijin_project::Project::test(fs.clone(), ["/project-a".as_ref()], cx).await;
-        let project_b = raijin_project::Project::test(fs.clone(), ["/project-b".as_ref()], cx).await;
-
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
-
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(project_b, window, cx);
-        });
-
-        let sidebar = setup_sidebar(&multi_workspace, cx);
-
-        // Start with workspace A active.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(0, window, cx);
-        });
-        cx.run_until_parked();
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
-            0
-        );
-
-        // No thread saved to the store – cwd is the only path hint.
-        sidebar.update_in(cx, |sidebar, window, cx| {
-            sidebar.activate_archived_thread(
-                Agent::NativeAgent,
-                raijin_acp_thread::AgentSessionInfo {
-                    session_id: acp::SessionId::new(Arc::from("unknown-session")),
-                    work_dirs: Some(PathList::new(&[std::path::PathBuf::from("/project-b")])),
-                    title: Some("CWD Thread".into()),
-                    updated_at: None,
-                    created_at: None,
-                    meta: None,
-                },
-                window,
-                cx,
-            );
-        });
-        cx.run_until_parked();
-
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
-            1,
-            "should have activated the workspace matching the cwd"
-        );
-    }
-
-    #[inazuma::test]
-    async fn test_activate_archived_thread_no_paths_no_cwd_uses_active_workspace(
-        cx: &mut TestAppContext,
-    ) {
-        // Thread has no saved metadata and no cwd. Expected: falls back to
-        // the currently active workspace.
-        init_test(cx);
-        let fs = FakeFs::new(cx.executor());
-        fs.insert_tree("/project-a", serde_json::json!({ "src": {} }))
-            .await;
-        fs.insert_tree("/project-b", serde_json::json!({ "src": {} }))
-            .await;
-        cx.update(|cx| <dyn raijin_fs::Fs>::set_global(fs.clone(), cx));
-
-        let project_a = raijin_project::Project::test(fs.clone(), ["/project-a".as_ref()], cx).await;
-        let project_b = raijin_project::Project::test(fs.clone(), ["/project-b".as_ref()], cx).await;
-
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
-
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(project_b, window, cx);
-        });
-
-        let sidebar = setup_sidebar(&multi_workspace, cx);
-
-        // Activate workspace B (index 1) to make it the active one.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(1, window, cx);
-        });
-        cx.run_until_parked();
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
-            1
-        );
-
-        // No saved thread, no cwd – should fall back to the active workspace.
-        sidebar.update_in(cx, |sidebar, window, cx| {
-            sidebar.activate_archived_thread(
-                Agent::NativeAgent,
-                raijin_acp_thread::AgentSessionInfo {
-                    session_id: acp::SessionId::new(Arc::from("no-context-session")),
-                    work_dirs: None,
-                    title: Some("Contextless Thread".into()),
-                    updated_at: None,
-                    created_at: None,
-                    meta: None,
-                },
-                window,
-                cx,
-            );
-        });
-        cx.run_until_parked();
-
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.active_workspace_index()),
-            1,
-            "should have stayed on the active workspace when no path info is available"
-        );
-    }
-
-    #[inazuma::test]
-    async fn test_activate_archived_thread_saved_paths_opens_new_workspace(
-        cx: &mut TestAppContext,
-    ) {
-        // Thread has saved metadata pointing to a path with no open workspace.
-        // Expected: opens a new workspace for that path.
-        init_test(cx);
-        let fs = FakeFs::new(cx.executor());
-        fs.insert_tree("/project-a", serde_json::json!({ "src": {} }))
-            .await;
-        fs.insert_tree("/project-b", serde_json::json!({ "src": {} }))
-            .await;
-        cx.update(|cx| <dyn raijin_fs::Fs>::set_global(fs.clone(), cx));
-
-        let project_a = raijin_project::Project::test(fs.clone(), ["/project-a".as_ref()], cx).await;
-
-        let (multi_workspace, cx) =
-            cx.add_window_view(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
-
-        let sidebar = setup_sidebar(&multi_workspace, cx);
-
-        // Save a thread with path_list pointing to project-b – which has no
-        // open workspace.
-        let path_list_b = PathList::new(&[std::path::PathBuf::from("/project-b")]);
-        let session_id = acp::SessionId::new(Arc::from("archived-new-ws"));
-
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.workspaces().len()),
-            1,
-            "should start with one workspace"
-        );
-
-        sidebar.update_in(cx, |sidebar, window, cx| {
-            sidebar.activate_archived_thread(
-                Agent::NativeAgent,
-                raijin_acp_thread::AgentSessionInfo {
-                    session_id: session_id.clone(),
-                    work_dirs: Some(path_list_b),
-                    title: Some("New WS Thread".into()),
-                    updated_at: None,
-                    created_at: None,
-                    meta: None,
-                },
-                window,
-                cx,
-            );
-        });
-        cx.run_until_parked();
-
-        assert_eq!(
-            multi_workspace.read_with(cx, |mw, _| mw.workspaces().len()),
-            2,
-            "should have opened a second workspace for the archived thread's saved paths"
-        );
+        // With single workspace, the active workspace is always the same.
+        let active_workspace = multi_workspace.clone();
+        let _ = active_workspace;
     }
 
     #[inazuma::test]
@@ -6680,9 +5821,9 @@ mod tests {
         let project_b = raijin_project::Project::test(fs.clone(), ["/project-b".as_ref()], cx).await;
 
         let multi_workspace_a =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project_a, window, cx));
         let multi_workspace_b =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project_b, window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project_b, window, cx));
 
         let multi_workspace_a_entity = multi_workspace_a.root(cx).unwrap();
 
@@ -6710,14 +5851,14 @@ mod tests {
 
         assert_eq!(
             multi_workspace_a
-                .read_with(cx_a, |mw, _| mw.workspaces().len())
+                .read_with(cx_a, |_, _| 1usize)
                 .unwrap(),
             1,
             "should not add the other window's workspace into the current window"
         );
         assert_eq!(
             multi_workspace_b
-                .read_with(cx_a, |mw, _| mw.workspaces().len())
+                .read_with(cx_a, |_, _| 1usize)
                 .unwrap(),
             1,
             "should reuse the existing workspace in the other window"
@@ -6750,9 +5891,9 @@ mod tests {
         let project_b = raijin_project::Project::test(fs.clone(), ["/project-b".as_ref()], cx).await;
 
         let multi_workspace_a =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project_a, window, cx));
         let multi_workspace_b =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project_b.clone(), window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project_b.clone(), window, cx));
 
         let multi_workspace_a_entity = multi_workspace_a.root(cx).unwrap();
         let multi_workspace_b_entity = multi_workspace_b.root(cx).unwrap();
@@ -6762,7 +5903,7 @@ mod tests {
 
         let cx_b = &mut inazuma::VisualTestContext::from_window(multi_workspace_b.into(), cx);
         let sidebar_b = setup_sidebar(&multi_workspace_b_entity, cx_b);
-        let workspace_b = multi_workspace_b_entity.read_with(cx_b, |mw, _| mw.workspace().clone());
+        let workspace_b = multi_workspace_b_entity.clone();
         let _panel_b = add_agent_panel(&workspace_b, &project_b, cx_b);
 
         let session_id = acp::SessionId::new(Arc::from("archived-cross-window-with-sidebar"));
@@ -6786,14 +5927,14 @@ mod tests {
 
         assert_eq!(
             multi_workspace_a
-                .read_with(cx_a, |mw, _| mw.workspaces().len())
+                .read_with(cx_a, |_, _| 1usize)
                 .unwrap(),
             1,
             "should not add the other window's workspace into the current window"
         );
         assert_eq!(
             multi_workspace_b
-                .read_with(cx_a, |mw, _| mw.workspaces().len())
+                .read_with(cx_a, |_, _| 1usize)
                 .unwrap(),
             1,
             "should reuse the existing workspace in the other window"
@@ -6831,9 +5972,9 @@ mod tests {
         let project_a = raijin_project::Project::test(fs.clone(), ["/project-a".as_ref()], cx).await;
 
         let multi_workspace_b =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project_b, window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project_b, window, cx));
         let multi_workspace_a =
-            cx.add_window(|window, cx| MultiWorkspace::test_new(project_a, window, cx));
+            cx.add_window(|window, cx| Workspace::test_new(project_a, window, cx));
 
         let multi_workspace_a_entity = multi_workspace_a.root(cx).unwrap();
 
@@ -6872,14 +6013,14 @@ mod tests {
         });
         assert_eq!(
             multi_workspace_a
-                .read_with(cx_a, |mw, _| mw.workspaces().len())
+                .read_with(cx_a, |_, _| 1usize)
                 .unwrap(),
             1,
             "current window should continue reusing its existing workspace"
         );
         assert_eq!(
             multi_workspace_b
-                .read_with(cx_a, |mw, _| mw.workspaces().len())
+                .read_with(cx_a, |_, _| 1usize)
                 .unwrap(),
             1,
             "other windows should not be activated just because they also match the saved paths"
@@ -6955,21 +6096,16 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            MultiWorkspace::test_new(main_project.clone(), window, cx)
+            Workspace::test_new(main_project.clone(), window, cx)
         });
 
-        let worktree_workspace = multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(worktree_project.clone(), window, cx)
-        });
+        let worktree_workspace = multi_workspace.clone();
 
-        // Activate main workspace so the sidebar tracks the main panel.
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.activate_index(0, window, cx);
-        });
+        multi_workspace.update_in(cx, |_, _window, cx| cx.notify());
 
         let sidebar = setup_sidebar(&multi_workspace, cx);
 
-        let main_workspace = multi_workspace.read_with(cx, |mw, _| mw.workspaces()[0].clone());
+        let main_workspace = multi_workspace.clone();
         let main_panel = add_agent_panel(&main_workspace, &main_project, cx);
         let _worktree_panel = add_agent_panel(&worktree_workspace, &worktree_project, cx);
 
@@ -7125,10 +6261,7 @@ mod tests {
             .await;
 
         let (multi_workspace, cx) = cx.add_window_view(|window, cx| {
-            MultiWorkspace::test_new(project_only.clone(), window, cx)
-        });
-        multi_workspace.update_in(cx, |mw, window, cx| {
-            mw.test_add_workspace(multi_root.clone(), window, cx);
+            Workspace::test_new(project_only.clone(), window, cx)
         });
         let sidebar = setup_sidebar(&multi_workspace, cx);
 

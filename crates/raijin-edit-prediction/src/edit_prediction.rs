@@ -41,7 +41,7 @@ use inazuma_settings_framework::{
 use std::collections::{VecDeque, hash_map};
 use std::env;
 use inazuma_text::{AnchorRangeExt, Edit};
-use raijin_workspace::{AppState, Workspace};
+use raijin_workspace::Workspace;
 use raijin_zeta_prompt::{ZetaFormat, ZetaPromptInput};
 
 use std::mem;
@@ -1991,23 +1991,9 @@ impl EditPredictionStore {
     pub const THROTTLE_TIMEOUT: Duration = Duration::from_millis(300);
 }
 
-fn currently_following(project: &Entity<Project>, cx: &App) -> bool {
-    let Some(app_state) = AppState::try_global(cx).and_then(|app_state| app_state.upgrade()) else {
-        return false;
-    };
-
-    app_state
-        .workspace_store
-        .read(cx)
-        .workspaces()
-        .filter_map(|workspace| workspace.upgrade())
-        .any(|workspace| {
-            workspace.read(cx).project().entity_id() == project.entity_id()
-                && workspace
-                    .read(cx)
-                    .leader_for_pane(workspace.read(cx).active_pane())
-                    .is_some()
-        })
+fn currently_following(_project: &Entity<Project>, _cx: &App) -> bool {
+    // Raijin has a single window and no collaboration — never following anyone.
+    false
 }
 
 fn is_ep_store_provider(provider: EditPredictionProvider) -> bool {

@@ -37,7 +37,7 @@ use raijin_ui::{
 };
 use inazuma_util::{ResultExt, TryFutureExt, maybe};
 use raijin_workspace::{
-    CopyRoomId, Deafen, LeaveCall, MultiWorkspace, Mute, OpenChannelNotes, OpenChannelNotesById,
+    CopyRoomId, Deafen, LeaveCall, Mute, OpenChannelNotes, OpenChannelNotesById,
     ScreenShare, ShareProject, Workspace,
     dock::{DockPosition, Panel, PanelEvent},
     notifications::{DetachAndPromptErr, NotifyResultExt},
@@ -1157,7 +1157,7 @@ impl CollabPanel {
                 this.workspace
                     .update(cx, |workspace, cx| {
                         let app_state = workspace.app_state().clone();
-                        raijin_workspace::join_in_room_project(project_id, host_user_id, app_state, cx)
+                        raijin_shell::join_in_room_project(project_id, host_user_id, app_state, cx)
                             .detach_and_prompt_err(
                                 "Failed to join project",
                                 window,
@@ -1720,7 +1720,7 @@ impl CollabPanel {
                 } => {
                     if let Some(workspace) = self.workspace.upgrade() {
                         let app_state = workspace.read(cx).app_state().clone();
-                        raijin_workspace::join_in_room_project(*project_id, *host_user_id, app_state, cx)
+                        raijin_shell::join_in_room_project(*project_id, *host_user_id, app_state, cx)
                             .detach_and_prompt_err(
                                 "Failed to join project",
                                 window,
@@ -2429,13 +2429,10 @@ impl CollabPanel {
             return;
         };
 
-        let Some(handle) = window.window_handle().downcast::<MultiWorkspace>() else {
-            return;
-        };
         raijin_workspace::join_channel(
             channel_id,
             workspace.read(cx).app_state().clone(),
-            Some(handle),
+            Some(window.window_handle()),
             Some(self.workspace.clone()),
             cx,
         )

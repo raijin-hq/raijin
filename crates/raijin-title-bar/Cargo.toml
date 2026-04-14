@@ -58,6 +58,7 @@ raijin-telemetry.workspace = true
 raijin-theme.workspace = true
 raijin-ui.workspace = true
 inazuma-util.workspace = true
+raijin-shell.workspace = true
 raijin-workspace.workspace = true
 raijin-actions.workspace = true
 
