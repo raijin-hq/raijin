@@ -30,7 +30,7 @@ pub fn init(client: Arc<Client>, user_store: Entity<UserStore>, cx: &mut App) {
     let active_call = cx.new(|cx| ActiveCall::new(client, user_store, cx));
     let active_call_handle = active_call.downgrade();
 
-    cx.observe_new(move |workspace: &mut Workspace, window, cx| {
+    cx.observe_new(move |_: &mut Workspace, window, cx| {
         let Some(window) = window else {
             return;
         };

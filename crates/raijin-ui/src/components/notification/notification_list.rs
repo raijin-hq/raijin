@@ -67,7 +67,7 @@ impl NotificationType {
 }
 
 #[derive(Debug, PartialEq, Clone, Hash, Eq)]
-pub(crate) enum NotificationId {
+pub enum NotificationId {
     Id(TypeId),
     IdAndElementId(TypeId, ElementId),
 }

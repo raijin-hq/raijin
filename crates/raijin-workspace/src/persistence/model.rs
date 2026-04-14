@@ -157,7 +157,7 @@ impl Bind for DockData {
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub(crate) enum SerializedPaneGroup {
+pub enum SerializedPaneGroup {
     Group {
         axis: SerializedAxis,
         flexes: Option<Vec<f32>>,

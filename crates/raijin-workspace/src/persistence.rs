@@ -65,7 +65,7 @@ fn parse_timestamp(text: &str) -> DateTime<Utc> {
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
-pub(crate) struct SerializedAxis(pub(crate) inazuma::Axis);
+pub struct SerializedAxis(pub(crate) inazuma::Axis);
 impl raijin_sqlez::bindable::StaticColumnCount for SerializedAxis {}
 impl raijin_sqlez::bindable::Bind for SerializedAxis {
     fn bind(

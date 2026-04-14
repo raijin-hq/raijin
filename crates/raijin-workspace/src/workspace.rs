@@ -44,7 +44,7 @@ use futures::{
         mpsc::{self, UnboundedReceiver, UnboundedSender},
         oneshot,
     },
-    future::{Shared, try_join_all},
+    future::Shared,
 };
 use inazuma::{
     Action, AnyEntity, AnyView, AnyWeakView, AnyWindowHandle, App, AsyncApp, AsyncWindowContext,
@@ -52,7 +52,7 @@ use inazuma::{
     EventEmitter, FocusHandle, Focusable, Global, HitboxBehavior, Oklch, KeyContext, Keystroke,
     ManagedView, MouseButton, PathPromptOptions, Point, PromptLevel, Render, ResizeEdge, Size,
     Stateful, Subscription, SystemWindowTabController, Task, Tiling, WeakEntity, WindowBounds,
-    WindowHandle, WindowId, WindowOptions, actions, canvas, point, relative, size,
+    WindowId, WindowOptions, actions, canvas, point, relative, size,
     transparent_black,
 };
 pub use history_manager::*;
@@ -142,7 +142,7 @@ pub use workspace_settings::{
     AutosaveSetting, BottomDockLayout, RestoreOnStartupBehavior, StatusBarSettings, TabBarSettings,
     WorkspaceSettings,
 };
-use raijin_actions::{Spawn, feedback::FileBugReport, theme::ToggleMode};
+use raijin_actions::{Spawn, theme::ToggleMode};
 
 use crate::{item::ItemBufferKind, notifications::NotificationId};
 use crate::{
@@ -1425,7 +1425,6 @@ pub struct Workspace {
     panes_by_item: HashMap<EntityId, WeakEntity<Pane>>,
     active_pane: Entity<Pane>,
     last_active_center_pane: Option<WeakEntity<Pane>>,
-    last_active_view_id: Option<proto::ViewId>,
     status_bar: Entity<StatusBar>,
     pub(crate) modal_layer: Entity<ModalLayer>,
     toast_layer: Entity<ToastLayer>,
@@ -1439,12 +1438,10 @@ pub struct Workspace {
     last_window_title: Option<String>,
     dirty_items: HashMap<EntityId, Subscription>,
     active_call: Option<(GlobalAnyActiveCall, Vec<Subscription>)>,
-    leader_updates_tx: mpsc::UnboundedSender<(PeerId, proto::UpdateFollowers)>,
     database_id: Option<WorkspaceId>,
     app_state: Arc<AppState>,
     dispatching_keystrokes: Rc<RefCell<DispatchingKeystrokes>>,
     _subscriptions: Vec<Subscription>,
-    _apply_leader_updates: Task<Result<()>>,
     _observe_current_user: Task<Result<()>>,
     _schedule_serialize_workspace: Option<Task<()>>,
     _serialize_workspace_task: Option<Task<()>>,
@@ -1711,20 +1708,6 @@ impl Workspace {
             anyhow::Ok(())
         });
 
-        // All leader updates are enqueued and then processed in a single task, so
-        // that each asynchronous operation can be run in order.
-        let (leader_updates_tx, mut leader_updates_rx) =
-            mpsc::unbounded::<(PeerId, proto::UpdateFollowers)>();
-        let _apply_leader_updates = cx.spawn_in(window, async move |this, cx| {
-            while let Some((leader_id, update)) = leader_updates_rx.next().await {
-                Self::process_leader_update(&this, leader_id, update, cx)
-                    .await
-                    .log_err();
-            }
-
-            Ok(())
-        });
-
         cx.emit(Event::WorkspaceCreated(weak_handle.clone()));
         let modal_layer = cx.new(|_| ModalLayer::new());
         let toast_layer = cx.new(|_| ToastLayer::new());
@@ -1817,7 +1800,6 @@ impl Workspace {
             panes_by_item: Default::default(),
             active_pane: center_pane.clone(),
             last_active_center_pane: Some(center_pane.downgrade()),
-            last_active_view_id: None,
             status_bar,
             modal_layer,
             toast_layer,
@@ -1840,11 +1822,9 @@ impl Workspace {
             database_id: workspace_id,
             app_state,
             _observe_current_user,
-            _apply_leader_updates,
             _schedule_serialize_workspace: None,
             _serialize_workspace_task: None,
             _schedule_serialize_ssh_paths: None,
-            leader_updates_tx,
             _subscriptions: subscriptions,
             pane_history_timestamp,
             workspace_actions: Default::default(),
@@ -2140,10 +2120,6 @@ impl Workspace {
         window: &mut Window,
         cx: &mut Context<Self>,
     ) {
-        let focus_handle = panel.panel_focus_handle(cx);
-        cx.on_focus_in(&focus_handle, window, Self::handle_panel_focused)
-            .detach();
-
         let dock_position = panel.position(window, cx);
         let dock = self.dock_at_position(dock_position);
         let any_panel = panel.to_any();
@@ -4760,7 +4736,6 @@ impl Workspace {
         }
         self.zoomed_position = None;
         cx.emit(Event::ZoomChanged);
-        self.update_active_view_for_followers(window, cx);
         pane.update(cx, |pane, _| {
             pane.track_alternate_file_items();
         });
@@ -4779,9 +4754,6 @@ impl Workspace {
         self.last_active_center_pane = Some(pane.downgrade());
     }
 
-    fn handle_panel_focused(&mut self, window: &mut Window, cx: &mut Context<Self>) {
-        self.update_active_view_for_followers(window, cx);
-    }
 
     fn handle_pane_event(
         &mut self,
@@ -4836,7 +4808,6 @@ impl Workspace {
                 serialize_workspace = *focus_changed || pane != self.active_pane();
                 if pane == self.active_pane() {
                     self.active_item_path_changed(*focus_changed, window, cx);
-                    self.update_active_view_for_followers(window, cx);
                 } else if *local {
                     self.set_active_pane(pane, window, cx);
                 }
@@ -5444,142 +5415,6 @@ impl Workspace {
         }
     }
 
-    // RPC handlers
-
-    fn active_view_for_follower(
-        &self,
-        follower_project_id: Option<u64>,
-        window: &mut Window,
-        cx: &mut Context<Self>,
-    ) -> Option<proto::View> {
-        let (item, panel_id) = self.active_item_for_followers(window, cx);
-        let item = item?;
-        let leader_id = self
-            .pane_for(&*item)
-            .and_then(|pane| self.leader_for_pane(&pane));
-        let leader_peer_id = match leader_id {
-            Some(CollaboratorId::PeerId(peer_id)) => Some(peer_id),
-            Some(CollaboratorId::Agent) | None => None,
-        };
-
-        let item_handle = item.to_followable_item_handle(cx)?;
-        let id = item_handle.remote_id(&self.app_state.client, window, cx)?;
-        let variant = item_handle.to_state_proto(window, cx)?;
-
-        if item_handle.is_project_item(window, cx)
-            && (follower_project_id.is_none()
-                || follower_project_id != self.project.read(cx).remote_id())
-        {
-            return None;
-        }
-
-        Some(proto::View {
-            id: id.to_proto(),
-            leader_id: leader_peer_id,
-            variant: Some(variant),
-            panel_id: panel_id.map(|id| id as i32),
-        })
-    }
-
-    fn handle_follow(
-        &mut self,
-        follower_project_id: Option<u64>,
-        window: &mut Window,
-        cx: &mut Context<Self>,
-    ) -> proto::FollowResponse {
-        let active_view = self.active_view_for_follower(follower_project_id, window, cx);
-
-        cx.notify();
-        proto::FollowResponse {
-            views: active_view.iter().cloned().collect(),
-            active_view,
-        }
-    }
-
-    fn handle_update_followers(
-        &mut self,
-        leader_id: PeerId,
-        message: proto::UpdateFollowers,
-        _window: &mut Window,
-        _cx: &mut Context<Self>,
-    ) {
-        self.leader_updates_tx
-            .unbounded_send((leader_id, message))
-            .ok();
-    }
-
-    async fn process_leader_update(
-        this: &WeakEntity<Self>,
-        leader_id: PeerId,
-        update: proto::UpdateFollowers,
-        cx: &mut AsyncWindowContext,
-    ) -> Result<()> {
-        match update.variant.context("invalid update")? {
-            proto::update_followers::Variant::CreateView(view) => {
-                let view_id = ViewId::from_proto(view.id.clone().context("invalid view id")?)?;
-                let should_add_view = this.update(cx, |this, _| {
-                    if let Some(state) = this.follower_states.get_mut(&leader_id.into()) {
-                        anyhow::Ok(!state.items_by_leader_view_id.contains_key(&view_id))
-                    } else {
-                        anyhow::Ok(false)
-                    }
-                })??;
-
-                if should_add_view {
-                    Self::add_view_from_leader(this.clone(), leader_id, &view, cx).await?
-                }
-            }
-            proto::update_followers::Variant::UpdateActiveView(update_active_view) => {
-                let should_add_view = this.update(cx, |this, _| {
-                    if let Some(state) = this.follower_states.get_mut(&leader_id.into()) {
-                        state.active_view_id = update_active_view
-                            .view
-                            .as_ref()
-                            .and_then(|view| ViewId::from_proto(view.id.clone()?).ok());
-
-                        if state.active_view_id.is_some_and(|view_id| {
-                            !state.items_by_leader_view_id.contains_key(&view_id)
-                        }) {
-                            anyhow::Ok(true)
-                        } else {
-                            anyhow::Ok(false)
-                        }
-                    } else {
-                        anyhow::Ok(false)
-                    }
-                })??;
-
-                if should_add_view && let Some(view) = update_active_view.view {
-                    Self::add_view_from_leader(this.clone(), leader_id, &view, cx).await?
-                }
-            }
-            proto::update_followers::Variant::UpdateView(update_view) => {
-                let variant = update_view.variant.context("missing update view variant")?;
-                let id = update_view.id.context("missing update view id")?;
-                let mut tasks = Vec::new();
-                this.update_in(cx, |this, window, cx| {
-                    let project = this.project.clone();
-                    if let Some(state) = this.follower_states.get(&leader_id.into()) {
-                        let view_id = ViewId::from_proto(id.clone())?;
-                        if let Some(item) = state.items_by_leader_view_id.get(&view_id) {
-                            tasks.push(item.view.apply_update_proto(
-                                &project,
-                                variant.clone(),
-                                window,
-                                cx,
-                            ));
-                        }
-                    }
-                    anyhow::Ok(())
-                })??;
-                try_join_all(tasks).await.log_err();
-            }
-        }
-        this.update_in(cx, |this, window, cx| {
-            this.leader_updated(leader_id, window, cx)
-        })?;
-        Ok(())
-    }
 
     async fn add_view_from_leader(
         this: WeakEntity<Self>,
@@ -5739,92 +5574,6 @@ impl Workspace {
         self.leader_updated(CollaboratorId::Agent, window, cx);
     }
 
-    pub fn update_active_view_for_followers(&mut self, window: &mut Window, cx: &mut App) {
-        let mut is_project_item = true;
-        let mut update = proto::UpdateActiveView::default();
-        if window.is_window_active() {
-            let (active_item, panel_id) = self.active_item_for_followers(window, cx);
-
-            if let Some(item) = active_item
-                && item.item_focus_handle(cx).contains_focused(window, cx)
-            {
-                let leader_id = self
-                    .pane_for(&*item)
-                    .and_then(|pane| self.leader_for_pane(&pane));
-                let leader_peer_id = match leader_id {
-                    Some(CollaboratorId::PeerId(peer_id)) => Some(peer_id),
-                    Some(CollaboratorId::Agent) | None => None,
-                };
-
-                if let Some(item) = item.to_followable_item_handle(cx) {
-                    let id = item
-                        .remote_id(&self.app_state.client, window, cx)
-                        .map(|id| id.to_proto());
-
-                    if let Some(id) = id
-                        && let Some(variant) = item.to_state_proto(window, cx)
-                    {
-                        let view = Some(proto::View {
-                            id,
-                            leader_id: leader_peer_id,
-                            variant: Some(variant),
-                            panel_id: panel_id.map(|id| id as i32),
-                        });
-
-                        is_project_item = item.is_project_item(window, cx);
-                        update = proto::UpdateActiveView { view };
-                    };
-                }
-            }
-        }
-
-        let active_view_id = update.view.as_ref().and_then(|view| view.id.as_ref());
-        if active_view_id != self.last_active_view_id.as_ref() {
-            self.last_active_view_id = active_view_id.cloned();
-            self.update_followers(
-                is_project_item,
-                proto::update_followers::Variant::UpdateActiveView(update),
-                window,
-                cx,
-            );
-        }
-    }
-
-    fn active_item_for_followers(
-        &self,
-        window: &mut Window,
-        cx: &mut App,
-    ) -> (Option<Box<dyn ItemHandle>>, Option<proto::PanelId>) {
-        let mut active_item = None;
-        let mut panel_id = None;
-        for dock in self.all_docks() {
-            if dock.focus_handle(cx).contains_focused(window, cx)
-                && let Some(panel) = dock.read(cx).active_panel()
-                && let Some(pane) = panel.pane(cx)
-                && let Some(item) = pane.read(cx).active_item()
-            {
-                active_item = Some(item);
-                panel_id = panel.remote_id();
-                break;
-            }
-        }
-
-        if active_item.is_none() {
-            active_item = self.active_pane().read(cx).active_item();
-        }
-        (active_item, panel_id)
-    }
-
-    fn update_followers(
-        &self,
-        _project_only: bool,
-        _update: proto::update_followers::Variant,
-        _: &mut Window,
-        _cx: &mut App,
-    ) -> Option<()> {
-        None
-    }
-
     pub fn leader_for_pane(&self, pane: &Entity<Pane>) -> Option<CollaboratorId> {
         self.follower_states.iter().find_map(|(leader_id, state)| {
             if state.center_pane == *pane || state.dock_pane.as_ref() == Some(pane) {
@@ -5947,8 +5696,6 @@ impl Workspace {
 
     pub fn on_window_activation_changed(&mut self, window: &mut Window, cx: &mut Context<Self>) {
         if window.is_window_active() {
-            self.update_active_view_for_followers(window, cx);
-
             if let Some(database_id) = self.database_id {
                 let db = WorkspaceDb::global(cx);
                 cx.background_spawn(async move { db.update_timestamp(database_id).await })
@@ -8099,17 +7846,6 @@ impl ViewId {
                 .context("creator is missing")?,
             id: message.id,
         })
-    }
-
-    pub(crate) fn to_proto(self) -> Option<proto::ViewId> {
-        if let CollaboratorId::PeerId(peer_id) = self.creator {
-            Some(proto::ViewId {
-                creator: Some(peer_id),
-                id: self.id,
-            })
-        } else {
-            None
-        }
     }
 }
 

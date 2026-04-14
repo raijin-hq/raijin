@@ -1099,7 +1099,7 @@ impl InputState {
         cx.emit(InputEvent::Focus);
     }
 
-    fn on_blur(&mut self, window: &mut Window, cx: &mut Context<Self>) {
+    fn on_blur(&mut self, _: &mut Window, cx: &mut Context<Self>) {
         if self.is_context_menu_open(cx) {
             return;
         }

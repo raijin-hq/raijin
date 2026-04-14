@@ -7,7 +7,7 @@ use raijin_theme::ActiveTheme;
 
 use raijin_ui::StyledExt as _;
 use raijin_ui::utils::window_border::{self, window_border};
-use raijin_ui::input::{InputState, FocusedInputTracker};
+use raijin_ui::input::InputState;
 use raijin_ui::NotificationList;
 use raijin_ui::{PendingDialogs, CloseDialog, DeferCloseDialog, CloseAllDialogs, CloseSheet, ClearNotifications};
 
@@ -23,6 +23,54 @@ pub fn init(cx: &mut App) {
         KeyBinding::new("tab", Tab, Some(CONTEXT)),
         KeyBinding::new("shift-tab", TabPrev, Some(CONTEXT)),
     ]);
+
+    // Register the WorkspaceOpener so raijin-workspace can open windows via raijin-shell
+    raijin_workspace::set_workspace_opener(std::sync::Arc::new(ShellWorkspaceOpener), cx);
+}
+
+/// WorkspaceOpener implementation that delegates to raijin-shell's open functions.
+struct ShellWorkspaceOpener;
+
+impl raijin_workspace::WorkspaceOpener for ShellWorkspaceOpener {
+    fn open_paths(
+        &self,
+        abs_paths: &[std::path::PathBuf],
+        app_state: std::sync::Arc<raijin_workspace::AppState>,
+        env: Option<inazuma_collections::HashMap<String, String>>,
+        cx: &mut App,
+    ) -> inazuma::Task<anyhow::Result<Entity<raijin_workspace::Workspace>>> {
+        let open_options = crate::open::OpenOptions {
+            env,
+            ..Default::default()
+        };
+        let paths = abs_paths.to_vec();
+        let task = crate::open::open_paths(&paths, app_state, open_options, cx);
+        cx.spawn(async move |_cx| {
+            let result = task.await?;
+            Ok(result.workspace)
+        })
+    }
+
+    fn reload(&self, cx: &mut App) {
+        crate::open::reload(cx);
+    }
+
+    fn join_in_room_project(
+        &self,
+        project_id: u64,
+        follow_user_id: u64,
+        app_state: std::sync::Arc<raijin_workspace::AppState>,
+        cx: &mut App,
+    ) -> inazuma::Task<anyhow::Result<()>> {
+        crate::open::join_in_room_project(project_id, follow_user_id, app_state, cx)
+    }
+
+    fn local_workspace_windows(&self, cx: &App) -> Vec<inazuma::AnyWindowHandle> {
+        crate::open::local_workspace_windows(cx)
+            .into_iter()
+            .map(|wh| wh.into())
+            .collect()
+    }
 }
 
 /// The top-level window shell that orchestrates overlay layers
@@ -36,41 +84,56 @@ pub struct AppShell {
     pub(crate) notification: Entity<NotificationList>,
     pub(crate) window_shadow_size: Pixels,
     pub(crate) pending_focus_restore: Option<inazuma::WeakFocusHandle>,
+    _subscriptions: Vec<inazuma::Subscription>,
 }
 
 impl AppShell {
     pub fn new(view: impl Into<AnyView>, window: &mut Window, cx: &mut Context<Self>) -> Self {
-        let this = Self {
+        let mut subscriptions = Vec::new();
+
+        // Observe PendingDialogs queue — drain and promote to active dialogs
+        subscriptions.push(
+            cx.observe_global_in::<PendingDialogs>(window, |this: &mut Self, window, cx| {
+                let pending: Vec<_> = cx.global_mut::<PendingDialogs>().queue.drain(..).collect();
+                for builder in pending {
+                    let mut previous_focused_handle = window.focused(cx).map(|h| h.downgrade());
+                    if let Some(pending_handle) = this.pending_focus_restore.take() {
+                        previous_focused_handle = Some(pending_handle);
+                    }
+                    let focus_handle = cx.focus_handle();
+                    focus_handle.focus(window, cx);
+                    this.active_dialogs.push(ActiveDialog::new(
+                        focus_handle,
+                        previous_focused_handle,
+                        move |dialog, w, cx| (*builder)(dialog, w, cx),
+                    ));
+                }
+                cx.notify();
+            }),
+        );
+
+        let view: AnyView = view.into();
+
+        // Register workspace in the global WorkspaceRegistry so Workspace::for_window() works
+        if let Ok(workspace) = view.clone().downcast::<raijin_workspace::Workspace>() {
+            raijin_workspace::register_workspace_for_window(
+                window.window_handle().window_id(),
+                workspace.downgrade(),
+                cx,
+            );
+        }
+
+        Self {
             style: StyleRefinement::default(),
-            view: view.into(),
+            view,
             active_sheet: None,
             active_dialogs: Vec::new(),
             focused_input: None,
             notification: cx.new(|cx| NotificationList::new(window, cx)),
             window_shadow_size: window_border::SHADOW_SIZE,
             pending_focus_restore: None,
-        };
-
-        // Observe PendingDialogs queue — drain and promote to active dialogs
-        cx.observe_global_in::<PendingDialogs>(window, |this: &mut Self, window, cx| {
-            let pending: Vec<_> = cx.global_mut::<PendingDialogs>().queue.drain(..).collect();
-            for builder in pending {
-                let mut previous_focused_handle = window.focused(cx).map(|h| h.downgrade());
-                if let Some(pending_handle) = this.pending_focus_restore.take() {
-                    previous_focused_handle = Some(pending_handle);
-                }
-                let focus_handle = cx.focus_handle();
-                focus_handle.focus(window, cx);
-                this.active_dialogs.push(ActiveDialog::new(
-                    focus_handle,
-                    previous_focused_handle,
-                    move |dialog, w, cx| (*builder)(dialog, w, cx),
-                ));
-            }
-            cx.notify();
-        });
-
-        this
+            _subscriptions: subscriptions,
+        }
     }
 
     pub fn window_shadow_size(mut self, size: impl Into<Pixels>) -> Self {
